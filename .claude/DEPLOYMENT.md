@@ -21,6 +21,18 @@ Env vars:
 Dev is unchanged: Vite on :5175, server on :8081 (`import.meta.env.DEV`
 selects the dev WS URL in `client/src/net.js`).
 
+### Fly launch post-mortem (2026-07-07)
+
+First UI-driven deploy (release v1) failed for two reasons:
+1. **Trial plan** — machines stop after 5 min without a credit card on file
+   (the app boots fine; the log shows a clean SIGINT flush). Card required.
+2. **Port mismatch** — Fly's Launch wizard regenerates fly.toml and resets
+   `internal_port` to 8080 (its Node default; it pushed its version to the
+   `flyio-new-files` branch), so health checks probed 8080 while the app
+   listened on 8081. Rather than fight the wizard forever, production now
+   uses 8080: fly.toml sets `PORT=8080` + `internal_port=8080`. Local dev
+   still defaults to 8081 (code default, unchanged).
+
 ### Repo & Fly.io (added 2026-07-07)
 
 - GitHub: https://github.com/msholty-fd/tcg-mmo (**public** — `.gitignore`

@@ -4,8 +4,11 @@
 app = "tcg-mmo"
 primary_region = "sjc"
 
+# PORT is 8080 in production because Fly's Launch wizard resets internal_port
+# to 8080 whenever it regenerates config — matching it beats fighting it.
+# Local dev stays on 8081 (code default).
 [env]
-  PORT = "8081"
+  PORT = "8080"
   TRUST_PROXY = "1"
   DATA_FILE = "/data/profiles.json"
 
@@ -14,7 +17,7 @@ primary_region = "sjc"
   destination = "/data"
 
 [http_service]
-  internal_port = 8081
+  internal_port = 8080
   force_https = true
   # never sleep a stateful game server — it would disconnect everyone
   auto_stop_machines = "off"
