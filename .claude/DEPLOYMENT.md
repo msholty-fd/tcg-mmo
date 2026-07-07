@@ -115,16 +115,15 @@ Gaps not covered by the original checklist; all live in `server/index.js` /
 
 ## Infrastructure
 
-- [ ] **Pick a host** — a single small Node process + one JSON file. Anything
-      works: Fly.io / Railway / a $5 VPS. WebSocket support is the only hard
-      requirement (rules out most serverless).
+- [x] **Pick a host** — Fly.io (app `tcg-mmo`, SJC). See Repo & Fly.io above.
 - [x] **Client hosting** — the game server now serves `client/dist` itself
       (plus `/health`); `npm start` = build + serve the full stack on one port.
       A CDN is still an option (set `ALLOWED_ORIGIN` + `VITE_WS_URL`).
 - [x] **Server URL config** — same-origin `ws(s)://${location.host}` in
       production, `ws://hostname:8081` under Vite dev, `VITE_WS_URL` overrides.
-- [ ] **Process supervision** — the server currently runs as a loose background
-      process. Use systemd / the platform's supervisor so it restarts on crash.
+- [x] **Process supervision** — Fly restarts the machine on crash and
+      health-checks `/health` every 30s. (Local dev is still a loose
+      background process — that's fine for dev.)
 - [x] **CORS/origin check** — browser WS connects are rejected (1008) unless
       the Origin host matches the server's host, is localhost, or equals
       `ALLOWED_ORIGIN`. Originless (non-browser) clients are allowed.
@@ -134,8 +133,10 @@ Gaps not covered by the original checklist; all live in `server/index.js` /
 - [ ] **Persistence upgrade** — profiles live in `server/profiles.json`
       (debounced full-file rewrite). Fine for dozens of players; move to SQLite
       before it matters. Schema is simple: profiles keyed by token.
-- [ ] **Backups** — whatever holds profiles is the players' collections and
-      Chronicle histories. Snapshot it (even a cron `cp` to start).
+- [x] **Backups (baseline)** — Fly takes automatic daily volume snapshots
+      (`fly volumes snapshots list`). Manual `fly ssh sftp get
+      /data/profiles.json` before risky changes. Revisit (off-provider copy)
+      if the realm's population starts to matter.
 - [ ] **Server-side session expiry** — tokens never expire. Decide on a policy
       (probably fine to leave for now).
 
@@ -149,8 +150,8 @@ Gaps not covered by the original checklist; all live in `server/index.js` /
 - [ ] **Reconnect polish** — duel grace period is 60s; world position resets to
       spawn on reconnect (only duels resume). Consider persisting position
       server-side.
-- [ ] **NPC duel room leak check** — a player who walks away mid-NPC-duel holds
-      the room until forfeit; verify timers clean up under load.
+- [x] **NPC duel room leak check** — resolved by the PvP turn timer (90s idle
+      auto-end, 3 strikes forfeit) which also frees abandoned NPC rooms.
 
 ## Nice-to-have before inviting people
 
