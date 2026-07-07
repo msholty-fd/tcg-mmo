@@ -1,7 +1,8 @@
 # Emberwood Online — Deployment Checklist
 
-Status: **not deployed** — local dev only. This is the punch list for putting the
-realm somewhere friends can reach.
+Status: **LIVE at https://tcg-mmo.fly.dev** (deployed 2026-07-07, Fly.io app
+`tcg-mmo`, single machine in SJC, volume `emberwood_data` for profiles).
+Verified: /health 200, client over HTTPS, wss:// join from outside.
 
 ## Ship plan (decided 2026-07-06)
 
@@ -37,6 +38,12 @@ First UI-driven deploy (release v1) failed for two reasons:
    Dockerfile (app on 8080, checks on 8081 — inverted mismatch). Lesson:
    every port signal the wizard can read (fly.toml, Dockerfile EXPOSE) must
    agree. EXPOSE is now 8080 too.
+4. **Fly's PR merge trap** — the dashboard's "merge new files" banner merged
+   the `flyio-new-files` branch into main (PR #1), reverting internal_port
+   to 8081 again. Don't click it; main is the source of truth. Resolved in
+   63a0770, which deployed successfully — the realm went live 2026-07-07.
+   (A throwaway `LiveCheck` profile from the verification exists in prod
+   profiles.json — harmless; delete when admin tooling exists.)
 
 ### Repo & Fly.io (added 2026-07-07)
 
