@@ -14,5 +14,6 @@ RUN npm ci --omit=dev
 COPY server ./server
 COPY shared ./shared
 COPY --from=build /app/client/dist ./client/dist
-EXPOSE 8081
+# must match fly.toml's internal_port/PORT — Fly's launch scanner reads this
+EXPOSE 8080
 CMD ["node", "server/index.js"]

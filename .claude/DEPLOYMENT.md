@@ -32,6 +32,11 @@ First UI-driven deploy (release v1) failed for two reasons:
    listened on 8081. Rather than fight the wizard forever, production now
    uses 8080: fly.toml sets `PORT=8080` + `internal_port=8080`. Local dev
    still defaults to 8081 (code default, unchanged).
+3. **Second deploy leapfrog** — after the PORT=8080 fix, the wizard flipped
+   `internal_port` to 8081, apparently reading `EXPOSE 8081` from the
+   Dockerfile (app on 8080, checks on 8081 — inverted mismatch). Lesson:
+   every port signal the wizard can read (fly.toml, Dockerfile EXPOSE) must
+   agree. EXPOSE is now 8080 too.
 
 ### Repo & Fly.io (added 2026-07-07)
 
