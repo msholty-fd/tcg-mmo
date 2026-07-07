@@ -18,7 +18,7 @@ primary_region = 'sjc'
   destination = '/data'
 
 [http_service]
-  internal_port = 8081
+  internal_port = 8080
   force_https = true
   auto_stop_machines = 'off'
   auto_start_machines = false
