@@ -1,0 +1,33 @@
+# Fly.io config — one machine is the whole stack (WS + static client + /health).
+# Region is arbitrary; change it (and the volume's region) to wherever is
+# closest to the players.
+app = "tcg-mmo"
+primary_region = "sjc"
+
+[env]
+  PORT = "8081"
+  TRUST_PROXY = "1"
+  DATA_FILE = "/data/profiles.json"
+
+[mounts]
+  source = "emberwood_data"
+  destination = "/data"
+
+[http_service]
+  internal_port = 8081
+  force_https = true
+  # never sleep a stateful game server — it would disconnect everyone
+  auto_stop_machines = "off"
+  auto_start_machines = false
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    method = "GET"
+    path = "/health"
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"

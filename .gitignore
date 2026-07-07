@@ -1,0 +1,12 @@
+node_modules/
+client/dist/
+
+# player data — collections, Chronicle histories, password hashes
+server/profiles.json
+server/profiles.json.tmp
+
+# local session handoff (contains test-account credentials; repo is public)
+.claude/STATUS.md
+
+*.log
+.DS_Store

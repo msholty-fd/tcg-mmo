@@ -1,0 +1,8 @@
+node_modules
+client/dist
+server/profiles.json
+server/profiles.json.tmp
+.git
+.claude
+*.log
+.DS_Store

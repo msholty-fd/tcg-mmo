@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emberwood Online — Classic-Style Web RPG</title>
+<style>
+  :root{
+    --gold:#c8a24a; --gold-dim:#8a7238; --ink:#e8dcb8; --ink-dim:#9a9078;
+    --panel:rgba(10,10,14,.86); --hp:#2fae4a; --hp-enemy:#c23a2e; --xp:#7a4fc9; --cast:#d8a53a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;overflow:hidden;background:#050509;font-family:Georgia,serif;color:var(--ink)}
+  canvas.game{display:block}
+  .panel{background:var(--panel);border:1px solid var(--gold-dim);border-radius:4px;box-shadow:0 0 0 1px #000,0 4px 16px rgba(0,0,0,.6)}
+  /* ---- esc menu ---- */
+  #escmenu{position:fixed;inset:0;z-index:15;background:rgba(5,5,10,.6);display:none;align-items:center;justify-content:center;pointer-events:auto;backdrop-filter:blur(2px)}
+  #escmenu.open{display:flex}
+  #escmenu-box{display:flex;flex-direction:column;gap:10px;padding:26px 34px;min-width:260px;text-align:center}
+  #escmenu-box h2{color:var(--gold);font-variant:small-caps;letter-spacing:.14em;font-weight:normal;font-size:20px;margin-bottom:8px}
+  #escmenu-box .esc-note{color:var(--ink-dim);font-size:11px;margin-top:6px}
+
+  .hud-close{position:absolute;top:2px;right:5px;font-size:10px;color:var(--ink-dim);cursor:pointer;padding:2px 3px}
+  .hud-close:hover{color:var(--ink)}
+  #tracker,#hints,#prompt{cursor:move}
+  #hud{position:fixed;inset:0;pointer-events:none;user-select:none}
+
+  .uframe{position:fixed;top:14px;padding:8px 10px;width:230px}
+  #pframe{left:14px}
+  #tframe{left:258px;display:none}
+  .uframe .row{display:flex;align-items:center;gap:8px}
+  .portrait{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold);background:#1a1626;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;position:relative}
+  .lvlbadge{position:absolute;bottom:-5px;right:-5px;background:#12101c;border:1px solid var(--gold);border-radius:50%;width:18px;height:18px;font-size:11px;display:flex;align-items:center;justify-content:center;color:var(--gold)}
+  .uinfo{flex:1;min-width:0}
+  .uname{font-size:13px;white-space:nowrap;overflow:hidden;color:var(--ink)}
+  .bar{height:14px;background:#1c1c22;border:1px solid #000;border-radius:2px;margin-top:3px;position:relative;overflow:hidden}
+  .bar .fill{height:100%;width:100%;background:var(--hp);transition:width .15s}
+  .bar .txt{position:absolute;inset:0;text-align:center;font-size:10px;line-height:14px;color:#fff;text-shadow:0 1px 2px #000}
+  #tframe .fill{background:var(--hp-enemy)}
+
+  #abar{position:fixed;bottom:34px;left:50%;transform:translateX(-50%);display:flex;gap:6px;padding:7px}
+  .slot{width:52px;height:52px;background:#15131e;border:1px solid var(--gold-dim);border-radius:4px;position:relative;display:flex;align-items:center;justify-content:center;font-size:24px}
+  .slot .key{position:absolute;top:1px;left:4px;font-size:10px;color:var(--gold);font-family:monospace}
+  .slot .nm{position:absolute;bottom:-16px;width:100%;text-align:center;font-size:9px;color:var(--ink-dim);left:0}
+  .slot .cool{position:absolute;left:0;bottom:0;width:100%;height:0;background:rgba(0,0,20,.75);border-radius:3px}
+  .slot.oor{filter:saturate(.2) brightness(.6)}
+  .slot .cdtxt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;text-shadow:0 1px 3px #000}
+
+  #xpwrap{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);width:min(560px,80vw);height:8px;background:#17151f;border:1px solid var(--gold-dim);border-radius:3px;overflow:hidden}
+  #xpfill{height:100%;width:0;background:var(--xp)}
+
+  #chat{position:fixed;bottom:16px;left:14px;width:330px;max-height:150px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;font-size:12.5px;line-height:1.5;text-shadow:0 1px 2px #000}
+  #chat .l{opacity:.95}
+  #chat .sys{color:#f0d060}
+  #chat .cmb{color:#d6d2c8}
+  #chat .say{color:#8fd0f0}
+  #chat .ding{color:#ffd76a;font-weight:bold}
+  #chat .bad{color:#e06a5a}
+
+  #tracker{position:fixed;top:70px;right:14px;width:230px;padding:8px 12px;font-size:12.5px}
+  #tracker h3{font-variant:small-caps;letter-spacing:.16em;font-size:11px;color:var(--gold);font-weight:normal;border-bottom:1px solid var(--gold-dim);padding-bottom:4px;margin-bottom:6px}
+  #tracker .q{margin-bottom:7px}
+  #tracker .q .t{color:#f0d060}
+  #tracker .q .o{color:var(--ink-dim)}
+  #tracker .q .o.done{color:#7ac96a}
+
+  #mmwrap{position:fixed;top:14px;right:14px;width:150px}
+  #minimap{border-radius:50%;border:2px solid var(--gold-dim);box-shadow:0 0 0 1px #000,0 4px 12px rgba(0,0,0,.6);display:block}
+  #zone-mm{text-align:center;font-size:11px;color:var(--gold);margin-top:3px;font-variant:small-caps;letter-spacing:.1em;text-shadow:0 1px 2px #000}
+
+  #zonebanner{position:fixed;top:16%;left:0;right:0;text-align:center;font-size:clamp(26px,4.5vw,44px);color:var(--gold);letter-spacing:.12em;font-variant:small-caps;text-shadow:0 2px 12px #000,0 0 30px rgba(200,162,74,.3);opacity:0;transition:opacity 1.2s;pointer-events:none}
+
+  #dialogue{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);width:min(540px,90vw);padding:12px 16px;display:none}
+  #dialogue .name{font-variant:small-caps;letter-spacing:.14em;color:var(--gold);font-size:13px;margin-bottom:4px}
+  #dialogue .text{font-size:14.5px;line-height:1.45}
+  #dialogue .reward{font-size:12px;color:#7ac96a;margin-top:6px}
+
+  #prompt{position:fixed;bottom:190px;left:50%;transform:translateX(-50%);padding:6px 24px 6px 14px;font-size:13px;display:none}
+  #prompt b{color:var(--gold);font-family:monospace}
+
+  .fct{position:fixed;font-size:17px;font-weight:bold;color:#fff;text-shadow:0 1px 3px #000;pointer-events:none;animation:fct 1s ease-out forwards;font-family:Georgia,serif}
+  .fct.crit{font-size:24px;color:#ffd050}
+  .fct.heal{color:#6ae06a}
+  .fct.taken{color:#e05a4a}
+  .fct.xp{color:#b58fff;font-size:14px}
+  .fct.miss{color:#aaa;font-size:14px}
+  @keyframes fct{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-56px);opacity:0}}
+
+  #flash{position:fixed;inset:0;background:radial-gradient(ellipse at center,transparent 45%,rgba(170,20,10,.5));opacity:0;transition:opacity .2s;pointer-events:none}
+  #dingflash{position:fixed;inset:0;background:radial-gradient(ellipse at center,rgba(255,215,100,.28),transparent 70%);opacity:0;transition:opacity .4s;pointer-events:none}
+
+  #hints{position:fixed;bottom:120px;right:14px;padding:6px 10px;font-size:10.5px;color:var(--ink-dim);text-align:right;line-height:1.7}
+  #hints b{color:var(--ink);font-family:monospace}
+
+  #death{position:fixed;inset:0;background:rgba(20,4,4,.55);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:8;pointer-events:auto;backdrop-filter:grayscale(.8)}
+  #death h2{font-size:42px;color:#c04a3a;letter-spacing:.2em;font-variant:small-caps;text-shadow:0 2px 20px #000}
+  #death button{margin-top:24px;pointer-events:auto}
+
+  button.wow{background:linear-gradient(#3a2f18,#241d10);border:1px solid var(--gold);color:var(--ink);font-family:Georgia,serif;font-size:15px;padding:9px 26px;border-radius:4px;cursor:pointer;letter-spacing:.08em;font-variant:small-caps}
+  button.wow:hover{background:linear-gradient(#4a3d20,#2e2514);box-shadow:0 0 12px rgba(200,162,74,.35)}
+
+  #charselect{position:fixed;inset:0;z-index:10;background:radial-gradient(ellipse at 50% 25%,#141020 0%,#050509 75%);display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto}
+  #charselect h1{font-size:clamp(30px,5vw,50px);color:var(--gold);letter-spacing:.1em;font-variant:small-caps;text-shadow:0 0 40px rgba(200,162,74,.3)}
+  #charselect .sub{color:var(--ink-dim);font-style:italic;margin:6px 0 30px;font-size:14px}
+  #classes{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+  .ccard{width:180px;padding:16px 14px;background:var(--panel);border:1px solid var(--gold-dim);border-radius:6px;cursor:pointer;text-align:center;transition:all .15s}
+  .ccard:hover{border-color:var(--gold);transform:translateY(-3px)}
+  .ccard.sel{border-color:var(--gold);box-shadow:0 0 16px rgba(200,162,74,.4)}
+  .ccard .ic{font-size:34px}
+  .ccard h3{color:var(--gold);font-variant:small-caps;letter-spacing:.12em;font-weight:normal;margin:6px 0 4px}
+  .ccard p{font-size:11.5px;color:var(--ink-dim);line-height:1.5}
+  #namerow{margin-top:26px;display:flex;gap:10px;align-items:center}
+  #charname,#charpass{background:#15131e;border:1px solid var(--gold-dim);color:var(--ink);font-family:Georgia,serif;font-size:15px;padding:8px 12px;border-radius:4px;width:170px;text-align:center}
+  #charname:focus,#charpass:focus{outline:none;border-color:var(--gold)}
+
+  /* ---- duel ---- */
+  #duel{position:fixed;inset:0;z-index:9;background:rgba(5,5,12,.82);display:none;flex-direction:column;pointer-events:auto;backdrop-filter:blur(2px)}
+  #duel.open{display:flex}
+  .drow{display:flex;justify-content:center;align-items:center;gap:8px;min-height:96px}
+  #d-foe-hand{padding-top:8px}
+  #d-board{flex:1;display:flex;flex-direction:column;justify-content:space-around;border-top:1px solid var(--gold-dim);border-bottom:1px solid var(--gold-dim);margin:4px 10%;position:relative}
+  .dcard{width:88px;height:142px;background:linear-gradient(#241f30,#17131f);border:1px solid var(--gold-dim);border-radius:6px;padding:5px 6px;font-size:10px;position:relative;cursor:pointer;transition:transform .08s,border-color .08s;flex-shrink:0}
+  .dcard .art{height:38px;display:flex;align-items:center;justify-content:center;margin-top:6px;background:radial-gradient(rgba(200,162,74,.08),transparent 70%)}
+  .dcard .art img{width:32px;height:32px;image-rendering:pixelated}
+  .dcard:hover{transform:translateY(-6px);border-color:var(--gold)}
+  .dcard .cost{position:absolute;top:-6px;left:-6px;width:20px;height:20px;border-radius:50%;background:#d8a53a;color:#1a1206;font-weight:bold;font-size:12px;display:flex;align-items:center;justify-content:center;border:1px solid #000}
+  .dcard .cname{font-size:10px;color:var(--ink);margin-top:2px;line-height:1.15}
+  .dcard .ctext{font-size:8.5px;color:var(--ink-dim);margin-top:4px;line-height:1.25}
+  .dcard .stats{position:absolute;bottom:4px;left:6px;right:6px;display:flex;justify-content:space-between;font-size:12px;font-weight:bold}
+  .dcard .atk{color:#f0c060}.dcard .hp{color:#e05a4a}
+  .dcard.spell .stats{display:none}
+  .dcard.unplayable{filter:saturate(.3) brightness(.65)}
+  .dcard.cardback{background:repeating-linear-gradient(45deg,#1a1626,#1a1626 6px,#221c30 6px,#221c30 12px);width:60px;height:82px}
+  .dunit{width:74px;height:98px;background:linear-gradient(#2a2438,#1a1624);border:1px solid var(--gold-dim);border-radius:6px;padding:4px 5px;font-size:9px;position:relative;cursor:pointer;transition:transform .08s,box-shadow .08s}
+  .dunit .art{height:36px;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .dunit .art img{width:32px;height:32px;image-rendering:pixelated}
+  .dunit .cname{font-size:9px;color:var(--ink);line-height:1.1}
+  .dunit .stats{position:absolute;bottom:3px;left:5px;right:5px;display:flex;justify-content:space-between;font-size:12px;font-weight:bold}
+  .dunit .atk{color:#f0c060}.dunit .hp{color:#e05a4a}.dunit .hp.hurt{color:#ff8877}
+  .dunit.canact{border-color:#7ac96a;box-shadow:0 0 8px rgba(122,201,106,.35)}
+  .dunit.selected{border-color:var(--gold);box-shadow:0 0 12px rgba(200,162,74,.7);transform:translateY(-4px)}
+  .dunit.targetable{border-color:#e05a4a;box-shadow:0 0 10px rgba(224,90,74,.6)}
+  .dunit .kw{position:absolute;top:2px;right:3px;font-size:9px}
+  .dhearth{width:64px;height:64px;border-radius:50%;border:2px solid var(--gold);background:radial-gradient(#3a2515,#1a0f08);display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:bold;color:#ffd76a;cursor:pointer;position:relative;flex-shrink:0}
+  .dhearth.targetable{border-color:#e05a4a;box-shadow:0 0 14px rgba(224,90,74,.7)}
+  .dember{font-size:13px;color:#d8a53a;text-align:center}
+  #d-controls{display:flex;justify-content:center;gap:18px;align-items:center;padding:6px}
+  #d-endturn:disabled{opacity:.4;cursor:default}
+  #d-auto.on{border-color:#7ac96a;color:#7ac96a;box-shadow:0 0 10px rgba(122,201,106,.35)}
+  #d-msg{text-align:center;font-size:13px;color:var(--gold);min-height:20px;padding:2px}
+  #d-cardmenu{position:fixed;display:none;z-index:11;flex-direction:column;gap:4px;padding:6px}
+  #d-cardmenu button{font-size:12px;padding:5px 14px}
+  #d-result{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(5,5,10,.75);z-index:12}
+  #d-result h2{font-size:40px;color:var(--gold);font-variant:small-caps;letter-spacing:.15em}
+  #d-result .rewards{margin:14px 0;display:flex;gap:10px}
+
+  /* ---- deck builder ---- */
+  #deckbuilder{position:fixed;inset:0;z-index:9;background:rgba(5,5,12,.92);display:none;flex-direction:column;pointer-events:auto;padding:18px 3vw}
+  #deckbuilder.open{display:flex}
+  #db-head{display:flex;align-items:center;gap:18px;margin-bottom:10px}
+  #db-head h2{color:var(--gold);font-variant:small-caps;letter-spacing:.14em;font-weight:normal;font-size:22px}
+  #db-count{font-size:15px;color:var(--ink)}
+  #db-count.bad{color:#e06a5a}
+  #db-count.good{color:#7ac96a}
+  #db-main{flex:1;display:flex;gap:16px;min-height:0}
+  #db-collection{flex:1;overflow-y:auto;display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start;padding:12px}
+  #db-deck{width:290px;overflow-y:auto;padding:10px 12px}
+  #db-deck h3{font-variant:small-caps;letter-spacing:.14em;font-size:12px;color:var(--gold);font-weight:normal;border-bottom:1px solid var(--gold-dim);padding-bottom:4px;margin-bottom:8px}
+  .db-slot{position:relative}
+  .db-slot .owned{position:absolute;bottom:-7px;right:-5px;background:#12101c;border:1px solid var(--gold-dim);border-radius:9px;font-size:10px;padding:1px 7px;color:var(--ink-dim);z-index:1}
+  .db-slot .owned.indeck{color:#7ac96a;border-color:#4a7338}
+  .db-slot .dcard.none{filter:grayscale(1) brightness(.45);cursor:default}
+  .db-row{display:flex;align-items:center;gap:8px;padding:4px 6px;margin-bottom:3px;background:#15131e;border:1px solid var(--gold-dim);border-radius:4px;cursor:pointer;font-size:12px}
+  .db-row:hover{border-color:#e06a5a}
+  .db-row .cost{width:18px;height:18px;border-radius:50%;background:#d8a53a;color:#1a1206;font-weight:bold;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .db-row .n{flex:1;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .db-row .ct{color:var(--gold);font-family:monospace}
+
+  /* ---- chat input & challenge banner ---- */
+  #chatinput{position:fixed;bottom:170px;left:14px;width:330px;pointer-events:auto;background:var(--panel);border:1px solid var(--gold);color:var(--ink);font-family:Georgia,serif;font-size:13px;padding:7px 10px;border-radius:4px}
+  #chatinput:focus{outline:none}
+  #challenge{position:fixed;top:130px;left:50%;transform:translateX(-50%);display:none;align-items:center;gap:14px;padding:12px 18px;font-size:14px;pointer-events:auto;z-index:7}
+  #challenge b{color:var(--gold)}
+  #challenge button{padding:6px 16px;font-size:13px}
+
+  /* ---- chronicle levels: worn-in card frames ---- */
+  .dcard.lv1,.dunit.lv1{border-color:#a08a54;box-shadow:inset 0 0 12px rgba(160,138,84,.25)}
+  .dcard.lv2,.dunit.lv2{border-color:#d8b860;box-shadow:0 0 8px rgba(216,184,96,.35),inset 0 0 14px rgba(216,184,96,.2)}
+  .dcard.lv3,.dunit.lv3{border-color:#ffd76a;box-shadow:0 0 14px rgba(255,215,106,.55),inset 0 0 18px rgba(255,215,106,.25);background:linear-gradient(#2e2740,#1d1728)}
+  .dcard.lv3::after,.dunit.lv3::after{content:'★';position:absolute;top:-8px;right:-6px;color:#ffd76a;text-shadow:0 0 6px rgba(255,215,106,.8);font-size:13px}
+  .db-row .lv{color:#d8b860;font-size:11px;letter-spacing:.05em}
+
+  /* ---- duel event log ---- */
+  #d-log{position:absolute;right:-15vw;top:0;bottom:0;width:14vw;min-width:150px;overflow-y:auto;font-size:10.5px;line-height:1.55;color:var(--ink-dim);padding:6px 8px;background:rgba(8,8,14,.5);border-left:1px solid var(--gold-dim)}
+  #d-log div:last-child{color:var(--ink)}
+
+  /* ---- duel help ---- */
+  #d-help{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(480px,92vw);padding:16px 20px;z-index:13;font-size:12.5px;line-height:1.7}
+  #d-help h3{color:var(--gold);font-variant:small-caps;letter-spacing:.14em;font-weight:normal;margin-bottom:6px}
+  #d-help b{color:var(--gold)}
+
+  /* ---- chronicle panel ---- */
+  #chronicle{display:none;position:fixed;right:3vw;top:80px;bottom:80px;width:300px;padding:12px 14px;overflow-y:auto;z-index:12;pointer-events:auto}
+  #chronicle h3{color:var(--gold);font-variant:small-caps;letter-spacing:.14em;font-weight:normal;border-bottom:1px solid var(--gold-dim);padding-bottom:5px;margin-bottom:8px;display:flex;justify-content:space-between}
+  #ch-close{cursor:pointer;color:var(--ink-dim)}
+  .ch-card{border:1px solid var(--gold-dim);border-radius:5px;padding:7px 9px;margin-bottom:8px;font-size:11px}
+  .ch-card.lv1{border-color:#a08a54}.ch-card.lv2{border-color:#d8b860}.ch-card.lv3{border-color:#ffd76a;box-shadow:0 0 10px rgba(255,215,106,.3)}
+  .ch-head{display:flex;justify-content:space-between;color:var(--gold);margin-bottom:3px}
+  .ch-head span{color:var(--ink-dim);font-size:10px}
+  .ch-line{color:var(--ink-dim);line-height:1.5}
+  .ch-line.bonus{color:#7ac96a}
+
+  /* ---- card zoom inspector ---- */
+  #cardzoom{display:none;position:fixed;left:18px;top:50%;transform:translateY(-50%);width:264px;padding:16px 18px;z-index:14;pointer-events:none;background:linear-gradient(#241f30,#15111e);border:1px solid var(--gold);border-radius:8px;box-shadow:0 0 0 1px #000,0 8px 30px rgba(0,0,0,.7)}
+  .cz-head{display:flex;align-items:center;gap:10px;margin-bottom:2px}
+  .cz-cost{width:30px;height:30px;border-radius:50%;background:#d8a53a;color:#1a1206;font-weight:bold;font-size:17px;display:flex;align-items:center;justify-content:center;border:1px solid #000;flex-shrink:0}
+  .cz-name{font-size:17px;color:var(--ink);line-height:1.2}
+  .cz-type{font-size:11px;color:var(--ink-dim);font-variant:small-caps;letter-spacing:.1em;border-bottom:1px solid var(--gold-dim);padding-bottom:6px;margin-bottom:8px}
+  .cz-art{display:flex;justify-content:center;padding:8px 0 10px;background:radial-gradient(rgba(200,162,74,.1),transparent 72%)}
+  .cz-art img{width:96px;height:96px;image-rendering:pixelated}
+  .cz-chron{font-size:12px;color:#ffd76a;margin-bottom:6px}
+  .cz-kw{font-size:12.5px;color:var(--ink);line-height:1.5;margin-bottom:4px}
+  .cz-kw b{color:var(--gold)}
+  .cz-storied{color:#ffd76a;font-size:11px}
+  .cz-rules{font-size:13px;color:var(--ink);line-height:1.5;margin:6px 0}
+  .cz-flavor{font-size:12.5px;color:var(--ink-dim);font-style:italic;line-height:1.5;margin:8px 0 0;border-top:1px solid rgba(138,114,56,.4);padding-top:8px}
+  .cz-stats{font-size:16px;font-weight:bold;margin-top:10px;text-align:center}
+  .cz-stats .atk{color:#f0c060}.cz-stats .hp{color:#e05a4a}
+</style>
+</head>
+<body>
+<div id="hud">
+  <div id="pframe" class="uframe panel">
+    <div class="row">
+      <div class="portrait" id="p-portrait">?<div class="lvlbadge" id="p-lvl">1</div></div>
+      <div class="uinfo">
+        <div class="uname" id="p-name">Adventurer</div>
+        <div class="uname" id="p-coins" style="color:var(--ink-dim);margin-top:3px">🪙 0</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="mmwrap"><canvas id="minimap" width="150" height="150"></canvas><div id="zone-mm">Meadowbrook</div></div>
+  <div id="tracker" class="panel"><h3>Quests</h3><div id="tracker-list"><div style="color:var(--ink-dim);font-style:italic">No quests. Look for a golden <span style="color:#f0d060">!</span></div></div></div>
+  <div id="zonebanner"></div>
+  <div id="chat"></div>
+  <div id="xpwrap"><div id="xpfill"></div></div>
+  <div id="prompt" class="panel"><span id="prompt-text"></span></div>
+  <div id="dialogue" class="panel"><div class="name" id="d-name"></div><div class="text" id="d-text"></div><div class="reward" id="d-reward"></div></div>
+  <div id="hints" class="panel"><b>WASD</b> move · <b>Space</b> jump · <b>drag</b> camera<br><b>E</b> talk/challenge · <b>B</b> deck builder · <b>Enter</b> chat<br><b>Q</b> quests · <b>H</b> controls · <b>P</b> prompt · drag windows to move</div>
+  <div id="dingflash"></div>
+  <input id="chatinput" maxlength="200" placeholder="Say something… (Enter to send, Esc to close)" style="display:none">
+  <div id="escmenu">
+    <div class="panel" id="escmenu-box">
+      <h2>Emberwood Online</h2>
+      <button class="wow" id="esc-resume">Return to Game</button>
+      <button class="wow" id="esc-help">Toggle Controls Panel</button>
+      <button class="wow" id="esc-logout">Log Out</button>
+      <div class="esc-note">Recover this character anywhere with name + password</div>
+    </div>
+  </div>
+  <div id="challenge" class="panel">
+    <span><b id="challenge-name"></b> challenges you to a duel!</span>
+    <button class="wow" id="challenge-accept">Accept</button>
+    <button class="wow" id="challenge-decline">Decline</button>
+  </div>
+</div>
+
+<div id="duel">
+  <div class="drow" id="d-foe-hand"></div>
+  <div class="drow"><div class="dhearth" id="d-foe-hearth">20</div><div class="dember" id="d-foe-ember"></div><div id="d-foe-name" style="color:var(--ink-dim);font-size:13px"></div></div>
+  <div id="d-board">
+    <div class="drow" id="d-foe-field"></div>
+    <div class="drow" id="d-my-field"></div>
+    <div id="d-log"></div>
+  </div>
+  <div class="drow"><div class="dhearth" id="d-my-hearth">20</div><div class="dember" id="d-my-ember"></div></div>
+  <div id="d-msg"></div>
+  <div class="drow" id="d-my-hand"></div>
+  <div id="d-controls">
+    <button class="wow" id="d-endturn">End Turn</button>
+    <button class="wow" id="d-auto" title="Let the duelist brain play your turns">Auto: Off</button>
+    <button class="wow" id="d-concede">Concede</button>
+    <button class="wow" id="d-helpbtn">?</button>
+  </div>
+  <div id="d-help" class="panel">
+    <h3>How to Duel</h3>
+    Each turn: draw a card, then act. <b>Kindle</b> a card (once per turn) to raise your permanent Ember — cards are your resource AND your fuel; choosing what to burn is the game.<br>
+    Play creatures and attack with them next turn (or now, with Ambush). Strike the enemy <b>Hearth</b> to 0 to win.<br><br>
+    <b>🗡 Ambush</b> — attacks the turn it's played ·
+    <b>🛡 Guardian</b> — must be attacked first ·
+    <b>✨ Ward</b> — untargetable by spells ·
+    <b>⚡ Frenzy</b> — attacks twice ·
+    <b>🩸 Lifesteal</b> — attacks restore Hearth ·
+    <b>🎯 Piercing</b> — kill overflow hits the Hearth<br><br>
+    Cards remember. Duels earn a copy <b>Renown</b>: Seasoned → <b>Veteran (+1/+1)</b> → <b>Storied (+2/+2 + keyword)</b>. Decks carry at most 8 Legend points (Veteran 1, Storied 2).
+  </div>
+  <div id="d-cardmenu" class="panel">
+    <button class="wow" id="d-menu-play">Play</button>
+    <button class="wow" id="d-menu-kindle">Kindle 🔥</button>
+  </div>
+  <div id="d-result">
+    <h2 id="d-result-title"></h2>
+    <div class="rewards" id="d-result-rewards"></div>
+    <button class="wow" id="d-result-close">Return to World</button>
+  </div>
+</div>
+
+<div id="deckbuilder">
+  <div id="db-head">
+    <h2>Deck Builder</h2>
+    <span id="db-count"></span>
+    <span id="db-legend" style="color:#d8b860"></span>
+    <span style="color:var(--ink-dim);font-size:11px">right-click a card for its Chronicle</span>
+    <span style="flex:1"></span>
+    <button class="wow" id="db-save">Save Deck</button>
+    <button class="wow" id="db-close">Close</button>
+  </div>
+  <div id="db-main">
+    <div id="db-collection" class="panel"></div>
+    <div id="db-deck" class="panel"><h3>Your Deck</h3><div id="db-deck-list"></div></div>
+  </div>
+</div>
+
+<div id="chronicle" class="panel">
+  <h3><span id="ch-title"></span><span id="ch-close">✕</span></h3>
+  <div id="ch-list"></div>
+</div>
+
+<div id="cardzoom"></div>
+
+<div id="charselect">
+  <h1>Emberwood Online</h1>
+  <div class="sub">An open-world card game · choose your starter deck</div>
+  <div id="classes">
+    <div class="ccard" data-starter="boarherd"><div class="ic">🐗</div><h3>Boarherd</h3><p>Aggressive creatures that hit hard and fast. Overwhelm before they can answer.</p></div>
+    <div class="ccard" data-starter="wardens"><div class="ic">🛡️</div><h3>Wardens</h3><p>Guardians, healing, and card draw. Outlast everything, then win at leisure.</p></div>
+    <div class="ccard" data-starter="redsash"><div class="ic">🗡️</div><h3>Red-Sash</h3><p>Ambush and Frenzy tempo. Strike from nowhere and never stop swinging.</p></div>
+  </div>
+  <div id="namerow">
+    <input id="charname" maxlength="14" placeholder="Character name" value="">
+    <input id="charpass" type="password" maxlength="64" placeholder="Password">
+    <button class="wow" id="enterworld">Enter World</button>
+  </div>
+  <div style="color:var(--ink-dim);font-size:11.5px;margin-top:10px">New name creates a character · existing name + password recovers one</div>
+</div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

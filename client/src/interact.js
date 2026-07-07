@@ -1,0 +1,67 @@
+import { $, dist2 } from './utils.js';
+import { player, npcs } from './state.js';
+import { say } from './ui.js';
+import { npcQuest, npcTurnin, npcActiveQuest, questHave } from './quests.js';
+import { marla } from './world.js';
+import { startDuel } from './duel/duelManager.js';
+import { isConnected, requestNpcDuel, sendQuestAccept, sendQuestTurnin } from './net.js';
+
+export let dialogueT = 0;
+
+export function tickDialogue(dt) {
+  if (dialogueT > 0) { dialogueT -= dt; if (dialogueT <= 0) $('dialogue').style.display = 'none'; }
+}
+
+export function nearestInteract() {
+  let best = null, bd = 3.9;
+  for (const n of npcs) { const d = dist2(n, player); if (d < bd) { bd = d; best = n; } }
+  return best;
+}
+
+export function handleInteract() {
+  const n = nearestInteract(); if (!n) return;
+
+  if (n.duelist) {
+    // online: server runs the duel (authoritative rewards); offline: local engine
+    if (isConnected()) requestNpcDuel(n.duelist.id);
+    else startDuel(n.duelist);
+    return;
+  }
+
+  // quests are server-managed — the dialogue is optimistic, the server
+  // validates and the profileUpdate/questEvent messages confirm
+  const turnin = npcTurnin(n);
+  if (turnin && isConnected()) {
+    sendQuestTurnin(turnin.id);
+    say(n.name, turnin.thanks, `Reward: ${turnin.xp} XP, ${turnin.coins} coins`);
+    dialogueT = 7;
+    return;
+  }
+
+  const offer = npcQuest(n);
+  if (offer && isConnected()) {
+    sendQuestAccept(offer.id);
+    say(n.name, offer.offer, `New quest: ${offer.title}`);
+    dialogueT = 7;
+    return;
+  }
+
+  if ((turnin || offer) && !isConnected()) {
+    say(n.name, 'The realm is quiet right now — reconnect to take on quests.');
+    dialogueT = 5;
+    return;
+  }
+
+  const active = npcActiveQuest(n);
+  if (active) {
+    const done = questHave(active.id) >= active.duels.need;
+    say(n.name, done ? 'Well?' : '(' + active.obj(questHave(active.id)) + ') Off you go — the cards won\'t play themselves.');
+    dialogueT = 7;
+    return;
+  }
+
+  say(n.name, n === marla
+    ? 'Supplies are thin and the wilds are thick. Story of this village.'
+    : 'Keep to the roads after dark, adventurer.');
+  dialogueT = 5;
+}

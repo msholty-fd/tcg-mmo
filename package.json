@@ -1,0 +1,19 @@
+{
+  "name": "emberwood-online",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite client",
+    "build": "vite build client",
+    "preview": "vite preview client",
+    "server": "node server/index.js",
+    "start": "npm run build && node server/index.js"
+  },
+  "dependencies": {
+    "three": "0.128.0",
+    "ws": "^8.21.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
