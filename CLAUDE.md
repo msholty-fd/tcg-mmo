@@ -64,7 +64,11 @@ progression) when the server is down; it auto-reconnects every 4s.
 - Auth: name+password creates/recovers characters; server issues a device
   token (`emberwood.token`) for auto-login; session (`emberwood.session`)
   auto-enters the world with saved position. Log Out (Esc menu) clears both.
-- Day/night: 20 real min/day (`main.js update()`); at night the directional
+- Day/night: 20 real min/day (`main.js update()`). The hour is **server-synced**:
+  the server derives it from wall clock (`(Date.now()/50_000) % 24` — no stored
+  state, survives restarts) and ships it in `welcome` + the 10 Hz `state`
+  broadcast; `net.js` calls `setGameHour()` so all players share one sky.
+  Offline mode falls back to the local 10:00 start. At night the directional
   light becomes a FIXED "moon" (a horizon-grazing moving light casts sweeping
   shadow streaks — that bug is why). Visible sun/moon discs are fog-immune
   sprites in scene.js, positioned each frame. `setGameHour(h)` exported for

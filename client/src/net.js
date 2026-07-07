@@ -14,6 +14,7 @@ import { questById } from '../../shared/quests.js';
 import { getCard } from '../../shared/engine/cards.js';
 import { LEVEL_NAMES } from '../../shared/chronicle.js';
 import { startRemoteDuel, applyRemoteView, endRemoteDuel, duelActive } from './duel/duelManager.js';
+import { setGameHour } from './main.js';   // safe cycle: called at runtime only
 
 // production build is served by the game server itself, so the WS lives on
 // our own origin; dev keeps Vite (:5175) + server (:8081) split
@@ -79,6 +80,7 @@ function handle(msg) {
       if (msg.token) localStorage.setItem(TOKEN_KEY, msg.token);
       joinInfo.password = '';   // token covers future reconnects
       log(`[Server] Claudemoon realm — ${msg.online} player${msg.online === 1 ? '' : 's'} online`, 'sys');
+      if (msg.hour !== undefined) setGameHour(msg.hour);   // shared world clock
       // server profile is authoritative
       adoptProfile(msg.profile);
       player.xp = msg.profile.xp; player.lvl = msg.profile.lvl; player.coins = msg.profile.coins;
@@ -115,6 +117,7 @@ function handle(msg) {
       log(msg.from + ': ' + msg.text, msg.from === '[Server]' ? 'sys' : 'say');
       break;
     case 'state': {
+      if (msg.hour !== undefined) setGameHour(msg.hour);
       const seen = new Set();
       for (const p of msg.players) {
         if (p.id === myId) continue;

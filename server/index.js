@@ -205,6 +205,10 @@ const challenges = new Map();    // 'fromId:targetId' -> expiry ms
 const CHALLENGE_TTL_MS = 20_000;
 const CHALLENGE_RANGE = 10;      // world units; client requires 3.9, slack for pos lag
 
+// world clock: 20 real minutes per day, derived from wall time (50s per game
+// hour) — no stored state, identical across restarts, shared by all players
+const gameHour = () => (Date.now() / 50_000) % 24;
+
 function send(p, msg) { if (p.ws.readyState === 1) p.ws.send(JSON.stringify(msg)); }
 function broadcast(msg, except = null) {
   for (const p of players.values()) if (p !== except) send(p, msg);
@@ -339,7 +343,7 @@ wss.on('connection', (ws, req) => {
       players.set(me.id, me);
       console.log(`join: ${me.name} (#${me.id}, ${players.size} online)`);
       const { passwordHash, salt, pwAlg, ...pub } = profile;   // never ship credentials
-      send(me, { t: 'welcome', id: me.id, token, online: players.size, profile: pub });
+      send(me, { t: 'welcome', id: me.id, token, online: players.size, profile: pub, hour: gameHour() });
       broadcast({ t: 'chat', from: '[Server]', text: me.name + ' has entered the realm.' }, me);
 
       const pending = activeDuels.get(token);
@@ -467,7 +471,7 @@ setInterval(() => {
   const snapshot = [...players.values()].map(p => ({
     id: p.id, name: p.name, outfit: p.outfit, x: p.x, z: p.z, yaw: p.yaw, inDuel: !!p.room,
   }));
-  broadcast({ t: 'state', players: snapshot });
+  broadcast({ t: 'state', players: snapshot, hour: gameHour() });
 }, 100);
 
 httpServer.listen(PORT, () => {
