@@ -81,6 +81,12 @@ function handle(msg) {
       joinInfo.password = '';   // token covers future reconnects
       log(`[Server] Claudemoon realm — ${msg.online} player${msg.online === 1 ? '' : 's'} online`, 'sys');
       if (msg.hour !== undefined) setGameHour(msg.hour);   // shared world clock
+      if (msg.x !== undefined) {
+        // server-persisted position wins (works cross-device); the per-frame
+        // update loop moves the mesh to player.x/z
+        player.x = msg.x; player.z = msg.z;
+        if (msg.yaw !== undefined) player.yaw = msg.yaw;
+      }
       // server profile is authoritative
       adoptProfile(msg.profile);
       player.xp = msg.profile.xp; player.lvl = msg.profile.lvl; player.coins = msg.profile.coins;

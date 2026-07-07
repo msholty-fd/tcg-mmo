@@ -339,11 +339,12 @@ wss.on('connection', (ws, req) => {
         console.log(`kick: superseded session for ${profile.name}`);
       }
 
-      me = { id: nextId++, ws, token, name: profile.name, outfit: profile.outfit, x: 0, z: 9, yaw: 0, profile, room: null };
+      // restore last world position (fresh characters spawn at the well)
+      me = { id: nextId++, ws, token, name: profile.name, outfit: profile.outfit, x: profile.x ?? 0, z: profile.z ?? 9, yaw: profile.yaw ?? 0, profile, room: null };
       players.set(me.id, me);
       console.log(`join: ${me.name} (#${me.id}, ${players.size} online)`);
       const { passwordHash, salt, pwAlg, ...pub } = profile;   // never ship credentials
-      send(me, { t: 'welcome', id: me.id, token, online: players.size, profile: pub, hour: gameHour() });
+      send(me, { t: 'welcome', id: me.id, token, online: players.size, profile: pub, hour: gameHour(), x: me.x, z: me.z, yaw: me.yaw });
       broadcast({ t: 'chat', from: '[Server]', text: me.name + ' has entered the realm.' }, me);
 
       const pending = activeDuels.get(token);
@@ -362,6 +363,9 @@ wss.on('connection', (ws, req) => {
         const r = Math.hypot(x, z);
         const s = r > WORLD_RADIUS ? WORLD_RADIUS / r : 1;
         me.x = x * s; me.z = z * s; me.yaw = +msg.yaw || 0;
+        // in-memory only at 10Hz; persisted by the disconnect markDirty and
+        // whatever other saves happen along the way
+        me.profile.x = me.x; me.profile.z = me.z; me.profile.yaw = me.yaw;
         break;
       }
       case 'chat': {
@@ -445,6 +449,7 @@ wss.on('connection', (ws, req) => {
   ws.on('close', () => {
     if (!me || players.get(me.id) !== me) return;   // already superseded by a newer login
     players.delete(me.id);
+    markDirty();   // persist last position (profile.x/z/yaw)
     console.log(`leave: ${me.name} (#${me.id}, ${players.size} online)`);
     if (me.room && me.room.duel.winner === null) {
       me.room.detach(me.room.players.findIndex(p => p.live === me));

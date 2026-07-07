@@ -147,9 +147,9 @@ Gaps not covered by the original checklist; all live in `server/index.js` /
       after any card changes.
 - [ ] **Autobattle renown policy** — auto-wins currently earn full renown/XP;
       decide whether idle farming is a feature or needs a discount.
-- [ ] **Reconnect polish** — duel grace period is 60s; world position resets to
-      spawn on reconnect (only duels resume). Consider persisting position
-      server-side.
+- [x] **Reconnect polish** — world position now persists server-side
+      (profile.x/z/yaw; `welcome` carries it and the client snaps to it, so it
+      works cross-device). Duel grace period remains 60s.
 - [x] **NPC duel room leak check** — resolved by the PvP turn timer (90s idle
       auto-end, 3 strikes forfeit) which also frees abandoned NPC rooms.
 

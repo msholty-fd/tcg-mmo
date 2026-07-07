@@ -93,5 +93,8 @@ progression) when the server is down; it auto-reconnects every 4s.
 
 - Balance: boarherd starter beats redsash ~75% in AI-vs-AI.
 - Autobattle earns full renown/XP (idle-farming policy undecided).
-- World position resets to spawn on reconnect (duels resume; position doesn't).
+- World position is persisted server-side (profile.x/z/yaw, updated in memory
+  per pos msg, saved on disconnect + any other profile save; `welcome` carries
+  it and the client snaps to it — works cross-device). Fresh characters spawn
+  at (0, 9).
 - Trading not built yet — Chronicle `owners[]` ledger is ready for it.
