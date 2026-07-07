@@ -155,7 +155,9 @@ Gaps not covered by the original checklist; all live in `server/index.js` /
 
 ## Nice-to-have before inviting people
 
-- [ ] Trading between players (the Chronicle `owners` ledger is ready for it)
+- [x] Trading between players — live 2026-07-07 (T near a player; offers +
+      coins, double-confirm with anti-scam reset, deck cards untradable,
+      owners[] provenance appended; see DESIGN.md for the full decision)
 - [ ] A second card set / zone to give the world more to chase
 - [ ] Admin tooling: at minimum a way to inspect/delete a profile
 

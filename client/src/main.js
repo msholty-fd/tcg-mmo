@@ -11,7 +11,7 @@ import { keys, cam, started, setStarted } from './input.js';
 import { nearestInteract, handleInteract, tickDialogue } from './interact.js';
 import { renderTracker, updateMark } from './quests.js';
 import { initCollection } from './collection.js';
-import { startNet, initNet, netTick, nearestRemote, challengePlayer } from './net.js';
+import { startNet, initNet, netTick, nearestRemote, challengePlayer, requestTrade } from './net.js';
 import { initDuels, duelActive } from './duel/duelManager.js';
 import { initDeckbuilder, deckbuilderOpen } from './deckbuilder.js';
 
@@ -98,7 +98,7 @@ function zoneAt(x, z) {
   for (const zn of ZONES) if (d < zn.r) return zn.name;
 }
 
-let ePressed = false;
+let ePressed = false, tPressed = false;
 
 // ---------- game loop ----------
 let gameHour = 10, uiT = 0;
@@ -188,7 +188,7 @@ function update(dt) {
 
   netTick(dt);
 
-  // interact prompt + E key: NPCs first, then nearby real players
+  // interact prompt + E key: NPCs first, then nearby real players (E duel / T trade)
   const n = nearestInteract();
   const rp = n ? null : nearestRemote();
   const pr = $('prompt');
@@ -196,7 +196,7 @@ function update(dt) {
     pr.style.display = 'block';
     $('prompt-text').innerHTML = n
       ? (n.duelist ? `<b>E</b> — challenge ${n.name}` : `<b>E</b> — speak with ${n.name}`)
-      : `<b>E</b> — challenge ${rp.name} <span style="color:#8fd0f0">(player)</span>`;
+      : `<b>E</b> — challenge · <b>T</b> — trade with ${rp.name} <span style="color:#8fd0f0">(player)</span>`;
   } else {
     pr.style.display = 'none';
   }
@@ -206,6 +206,11 @@ function update(dt) {
     else if (rp) challengePlayer(rp.id);
   }
   if (!keys.KeyE) ePressed = false;
+  if (keys.KeyT && !tPressed) {
+    tPressed = true;
+    if (rp) requestTrade(rp.id);
+  }
+  if (!keys.KeyT) tPressed = false;
   tickDialogue(dt);
 
   // zone banner

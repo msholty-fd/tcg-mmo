@@ -1,6 +1,7 @@
 import { $, clamp } from './utils.js';
 import { duelActive } from './duel/duelManager.js';
 import { deckbuilderOpen, toggleDeckbuilder } from './deckbuilder.js';
+import { tradeOpen, cancelTrade } from './trade.js';
 import { sendChat } from './net.js';
 import { toggleWindow } from './hudWindows.js';
 import { toggleEscMenu, escMenuOpen } from './escMenu.js';
@@ -27,16 +28,17 @@ addEventListener('keydown', e => {
   }
   if (e.target.tagName === 'INPUT') return;
   if (e.code === 'Escape') {
-    if (deckbuilderOpen) toggleDeckbuilder();
+    if (tradeOpen) cancelTrade();
+    else if (deckbuilderOpen) toggleDeckbuilder();
     else toggleEscMenu();
     return;
   }
   if (escMenuOpen) return;   // menu captures all other input
   if (e.code === 'Enter') { chat.style.display = 'block'; chat.focus(); e.preventDefault(); return; }
 
-  if (e.code === 'KeyB') { toggleDeckbuilder(); return; }
+  if (e.code === 'KeyB' && !tradeOpen) { toggleDeckbuilder(); return; }
   if (HUD_KEYS[e.code]) { toggleWindow(HUD_KEYS[e.code]); return; }
-  if (deckbuilderOpen) return;
+  if (deckbuilderOpen || tradeOpen) return;
   if (e.code === 'Space') e.preventDefault();
   keys[e.code] = true;
 });

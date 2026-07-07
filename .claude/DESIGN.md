@@ -82,10 +82,27 @@ considered and rejected.
   torch-lit settlements as warm islands; moonlight is a fixed light so shadows
   don't crawl. Potential future hook: night-only content.
 
+- **Trading (2026-07-07)** — the vision item, designed for trust and story:
+  - *Proximity ritual*: you trade by walking up to someone (same range as a
+    challenge) and pressing **T** — invite → accept, like duels. Trading is a
+    thing you do *in the world*, not a global marketplace; scarcity of
+    encounter is part of the fantasy (physical-TCG feel).
+  - *Double-confirm with anti-scam reset*: both sides build offers (cards +
+    coins); ANY change to either offer clears BOTH confirmations. Classic MMO
+    pattern; prevents last-second swaps.
+  - *Active-deck cards can't be traded* — keeps every deck permanently valid
+    (30 cards) and makes "I'd have to un-deck it first" a natural friction on
+    parting with a card you actually use.
+  - *Provenance is the product*: on transfer the recipient is appended to the
+    instance's owners[] chain; renown/level travel with the card. A Storied
+    card that passed through four hands is the whole point of the game.
+  - *Server-authoritative and atomic*: offers validated on every change AND
+    re-validated at execution; both sides' cards/coins move in one step or
+    not at all. Max 8 cards per side per trade. Blocked while dueling (and
+    vice versa). Online-only — offline mode has no trading.
+
 ## Open questions
 
 - Autobattle renown: full rate (idle-farming as a feature) or discounted?
-- Trading UX (the ledger is ready; needs offer/accept flow + trade recorded in
-  owners[] chain).
 - Renown pacing: thresholds 20/60/150 are untested against real play.
 - Starter balance: boarherd ~75% vs redsash (AI-vs-AI); needs a card pass.

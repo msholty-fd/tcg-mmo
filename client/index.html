@@ -183,6 +183,35 @@
   #challenge b{color:var(--gold)}
   #challenge button{padding:6px 16px;font-size:13px}
 
+  /* ---- trading ---- */
+  #tradeinvite{position:fixed;top:180px;left:50%;transform:translateX(-50%);display:none;align-items:center;gap:14px;padding:12px 18px;font-size:14px;pointer-events:auto;z-index:7}
+  #tradeinvite b{color:var(--gold)}
+  #tradeinvite button{padding:6px 16px;font-size:13px}
+  #trade{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);display:none;flex-direction:column;gap:8px;
+    width:min(720px,94vw);max-height:86vh;padding:14px 16px;pointer-events:auto;z-index:8;font-size:13px}
+  #trade .t-head{font-size:15px;text-align:center}
+  #trade .t-head b{color:var(--gold)}
+  #trade .t-cols{display:flex;gap:10px}
+  #trade .t-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+  #trade .t-title{color:var(--gold);font-size:12px;letter-spacing:.4px}
+  #trade .t-hint{color:#9a8f78;font-size:11px;letter-spacing:0}
+  #trade .t-cards{min-height:72px;max-height:150px;overflow-y:auto;border:1px solid var(--gold-dim);border-radius:3px;padding:4px;display:flex;flex-direction:column;gap:2px;background:rgba(0,0,0,.25)}
+  #trade .t-pool{max-height:170px;overflow-y:auto;border:1px solid var(--gold-dim);border-radius:3px;padding:4px;display:flex;flex-direction:column;gap:2px;background:rgba(0,0,0,.25)}
+  .t-row{display:flex;align-items:center;gap:8px;padding:3px 6px;border-radius:3px;cursor:pointer;background:rgba(255,255,255,.03)}
+  .t-row:hover{background:rgba(255,215,130,.12)}
+  .t-row .cost{color:#7ec4ff;width:14px;text-align:center}
+  .t-row .n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .t-row .lv{color:var(--gold)}
+  .t-row .rn{color:#9a8f78;font-size:11px}
+  .t-row.lv2 .n{color:#c9e6ff}
+  .t-row.lv3 .n{color:#ffd782}
+  #trade .t-coinrow{color:var(--gold)}
+  #trade .t-coinrow input{width:80px;background:#141210;color:var(--gold);border:1px solid var(--gold-dim);border-radius:3px;padding:3px 6px;font:inherit}
+  #trade .t-actions{display:flex;align-items:center;gap:10px;justify-content:flex-end}
+  #trade #t-status{flex:1;color:#9a8f78;font-size:12px}
+  #trade #t-status.good{color:#8fe08f}
+  #trade #t-confirm.confirmed{background:#2c4a2c;border-color:#8fe08f}
+
   /* ---- chronicle levels: worn-in card frames ---- */
   .dcard.lv1,.dunit.lv1{border-color:#a08a54;box-shadow:inset 0 0 12px rgba(160,138,84,.25)}
   .dcard.lv2,.dunit.lv2{border-color:#d8b860;box-shadow:0 0 8px rgba(216,184,96,.35),inset 0 0 14px rgba(216,184,96,.2)}
@@ -263,6 +292,33 @@
     <span><b id="challenge-name"></b> challenges you to a duel!</span>
     <button class="wow" id="challenge-accept">Accept</button>
     <button class="wow" id="challenge-decline">Decline</button>
+  </div>
+  <div id="tradeinvite" class="panel">
+    <span><b id="ti-name"></b> wants to trade!</span>
+    <button class="wow" id="ti-accept">Accept</button>
+    <button class="wow" id="ti-decline">Decline</button>
+  </div>
+  <div id="trade" class="panel">
+    <div class="t-head">Trading with <b id="t-partner"></b></div>
+    <div class="t-cols">
+      <div class="t-col">
+        <div class="t-title">You offer</div>
+        <div class="t-cards" id="t-yours"></div>
+        <div class="t-coinrow"><label>🪙 <input id="t-coins" type="number" min="0" step="1" value="0"></label></div>
+      </div>
+      <div class="t-col">
+        <div class="t-title" id="t-theirs-title">They offer</div>
+        <div class="t-cards" id="t-theirs"></div>
+        <div class="t-coinrow" id="t-their-coins">🪙 0</div>
+      </div>
+    </div>
+    <div class="t-title">Your tradable cards <span class="t-hint">(cards in your deck can't be traded — un-deck them first)</span></div>
+    <div class="t-pool" id="t-pool"></div>
+    <div class="t-actions">
+      <span id="t-status"></span>
+      <button class="wow" id="t-confirm">Confirm Trade</button>
+      <button class="wow" id="t-cancel">Cancel</button>
+    </div>
   </div>
 </div>
 

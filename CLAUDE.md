@@ -47,6 +47,8 @@ progression) when the server is down; it auto-reconnects every 4s.
 - `server/duelRoom.js` — duel rooms: PvP + NPC(AI), reconnect grace, rewards
 - `client/src/net.js` — connection, remote players, profile sync
 - `client/src/duel/` — duel UI (duelUI.js) + mode bridge (duelManager.js)
+- `client/src/trade.js` — player trading window (T near a player; invite →
+  offers+coins → double-confirm; server messages trade*/`server/index.js`)
 - `client/src/pixelArt.js` — card art: hand-authored 16×16 palette-keyed pixel
   grids rendered to data-URLs (`image-rendering: pixelated`). One sprite serves
   a family via palette swaps (all boars share `boar`; hooded humans share
@@ -97,4 +99,6 @@ progression) when the server is down; it auto-reconnects every 4s.
   per pos msg, saved on disconnect + any other profile save; `welcome` carries
   it and the client snaps to it — works cross-device). Fresh characters spawn
   at (0, 9).
-- Trading not built yet — Chronicle `owners[]` ledger is ready for it.
+- Trading is live (2026-07-07): proximity invite, cards+coins, anti-scam
+  confirm reset, deck cards untradable, owners[] provenance appended on
+  transfer. See DESIGN.md for the reasoning.

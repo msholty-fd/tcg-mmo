@@ -202,8 +202,10 @@ let nextId = 1;
 const players = new Map();
 const activeDuels = new Map();   // token -> {room, side}
 const challenges = new Map();    // 'fromId:targetId' -> expiry ms
+const tradeInvites = new Map();  // 'fromId:targetId' -> expiry ms
 const CHALLENGE_TTL_MS = 20_000;
 const CHALLENGE_RANGE = 10;      // world units; client requires 3.9, slack for pos lag
+const TRADE_MAX_CARDS = 8;
 
 // world clock: 20 real minutes per day, derived from wall time (50s per game
 // hour) — no stored state, identical across restarts, shared by all players
@@ -217,6 +219,76 @@ function broadcast(msg, except = null) {
 function sendProfile(p) {
   const { xp, lvl, coins, quests, cards, deck } = p.profile;
   send(p, { t: 'profileUpdate', xp, lvl, coins, quests, cards, deck });
+}
+
+// ---- trading ----
+// session: {players:[a,b], offers:[{iids,coins}×2], confirmed:[bool×2]}
+// any offer change resets BOTH confirmations (anti-scam); execution re-validates
+// and moves cards+coins atomically, appending the recipient to owners[]
+
+function validOffer(profile, iids, coins) {
+  if (!Array.isArray(iids) || iids.length > TRADE_MAX_CARDS || new Set(iids).size !== iids.length) return false;
+  if (!Number.isInteger(coins) || coins < 0 || coins > profile.coins) return false;
+  const owned = new Set(profile.cards.map(c => c.iid));
+  const decked = new Set(profile.deck);   // deck cards can't be traded — decks stay valid
+  return iids.every(iid => typeof iid === 'string' && owned.has(iid) && !decked.has(iid));
+}
+
+function startTrade(a, b) {
+  const tr = { players: [a, b], offers: [{ iids: [], coins: 0 }, { iids: [], coins: 0 }], confirmed: [false, false] };
+  a.trade = tr; b.trade = tr;
+  for (let s = 0; s < 2; s++) send(tr.players[s], { t: 'tradeStart', partner: tr.players[1 - s].name });
+  sendTradeState(tr);
+  console.log(`trade start: ${a.name} <-> ${b.name}`);
+}
+
+function sendTradeState(tr) {
+  for (let s = 0; s < 2; s++) {
+    const other = tr.players[1 - s];
+    const byId = new Map(other.profile.cards.map(c => [c.iid, c]));
+    send(tr.players[s], {
+      t: 'tradeState',
+      yours: { iids: [...tr.offers[s].iids], coins: tr.offers[s].coins },
+      theirs: { cards: tr.offers[1 - s].iids.map(iid => byId.get(iid)).filter(Boolean), coins: tr.offers[1 - s].coins },
+      confirmed: [tr.confirmed[s], tr.confirmed[1 - s]],   // [you, them]
+    });
+  }
+}
+
+function endTrade(tr, reason) {
+  for (const p of tr.players) {
+    if (p.trade !== tr) continue;
+    p.trade = null;
+    send(p, { t: 'tradeCancelled', reason });
+  }
+}
+
+function executeTrade(tr) {
+  const [a, b] = tr.players;
+  if (!validOffer(a.profile, tr.offers[0].iids, tr.offers[0].coins) ||
+      !validOffer(b.profile, tr.offers[1].iids, tr.offers[1].coins)) {
+    return endTrade(tr, 'Trade failed validation.');
+  }
+  const move = (from, to, iids) => {
+    for (const iid of iids) {
+      const i = from.profile.cards.findIndex(c => c.iid === iid);
+      const [inst] = from.profile.cards.splice(i, 1);
+      inst.owners.push(to.profile.name);   // provenance grows with the trade
+      to.profile.cards.push(inst);
+    }
+  };
+  move(a, b, tr.offers[0].iids);
+  move(b, a, tr.offers[1].iids);
+  a.profile.coins += tr.offers[1].coins - tr.offers[0].coins;
+  b.profile.coins += tr.offers[0].coins - tr.offers[1].coins;
+  markDirty();
+  for (const p of tr.players) {
+    p.trade = null;
+    send(p, { t: 'tradeComplete' });
+    sendProfile(p);
+  }
+  broadcast({ t: 'chat', from: '[Server]', text: `${a.name} and ${b.name} completed a trade.` });
+  console.log(`trade done: ${a.name} gave ${tr.offers[0].iids.length} cards + ${tr.offers[0].coins}c, ${b.name} gave ${tr.offers[1].iids.length} cards + ${tr.offers[1].coins}c`);
 }
 
 // duel victory: XP + quest progress
@@ -334,6 +406,7 @@ wss.on('connection', (ws, req) => {
       const old = [...players.values()].find(p => p.token === token);
       if (old) {
         players.delete(old.id);
+        if (old.trade) endTrade(old.trade, old.name + ' disconnected.');
         send(old, { t: 'joinError', reason: 'You logged in from another location.' });
         old.ws.terminate();
         console.log(`kick: superseded session for ${profile.name}`);
@@ -404,9 +477,53 @@ wss.on('connection', (ws, req) => {
         }
         break;
       }
+      case 'tradeRequest': {
+        const target = players.get(msg.target);
+        if (target && !target.room && !me.room && !target.trade && !me.trade && target !== me
+            && Math.hypot(target.x - me.x, target.z - me.z) <= CHALLENGE_RANGE) {
+          tradeInvites.set(me.id + ':' + target.id, Date.now() + CHALLENGE_TTL_MS);
+          send(target, { t: 'tradeInvite', from: me.id, name: me.name });
+          send(me, { t: 'chat', from: '[Server]', text: 'Trade offer sent to ' + target.name + '.' });
+        }
+        break;
+      }
+      case 'tradeAccept': {
+        const key = msg.from + ':' + me.id;
+        const expiry = tradeInvites.get(key);
+        tradeInvites.delete(key);
+        if (!expiry || expiry < Date.now()) break;
+        const other = players.get(msg.from);
+        if (other && !other.room && !me.room && !other.trade && !me.trade && other !== me) startTrade(other, me);
+        break;
+      }
+      case 'tradeOffer': {
+        const tr = me.trade;
+        if (!tr) break;
+        const iids = Array.isArray(msg.iids) ? msg.iids : [];
+        const coins = Number.isInteger(msg.coins) ? msg.coins : 0;
+        if (!validOffer(me.profile, iids, coins)) {
+          send(me, { t: 'chat', from: '[Server]', text: 'Trade offer rejected — cards in your active deck can’t be traded.' });
+          break;
+        }
+        tr.offers[tr.players.indexOf(me)] = { iids: [...iids], coins };
+        tr.confirmed = [false, false];   // any change voids both confirmations
+        sendTradeState(tr);
+        break;
+      }
+      case 'tradeConfirm': {
+        const tr = me.trade;
+        if (!tr) break;
+        tr.confirmed[tr.players.indexOf(me)] = true;
+        if (tr.confirmed[0] && tr.confirmed[1]) executeTrade(tr);
+        else sendTradeState(tr);
+        break;
+      }
+      case 'tradeCancel':
+        if (me.trade) endTrade(me.trade, me.name + ' cancelled the trade.');
+        break;
       case 'challenge': {
         const target = players.get(msg.target);
-        if (target && !target.room && !me.room && target !== me
+        if (target && !target.room && !me.room && !target.trade && !me.trade && target !== me
             && Math.hypot(target.x - me.x, target.z - me.z) <= CHALLENGE_RANGE) {
           challenges.set(me.id + ':' + target.id, Date.now() + CHALLENGE_TTL_MS);
           send(target, { t: 'challenged', from: me.id, name: me.name });
@@ -420,7 +537,7 @@ wss.on('connection', (ws, req) => {
         challenges.delete(key);
         if (!expiry || expiry < Date.now()) break;
         const ch = players.get(msg.from);
-        if (ch && !ch.room && !me.room && ch !== me) {
+        if (ch && !ch.room && !me.room && !ch.trade && !me.trade && ch !== me) {
           const a = { name: ch.name, deckItems: deckItems(ch.profile), ws: ch.ws, profile: ch.profile, token: ch.token, live: ch };
           const b = { name: me.name, deckItems: deckItems(me.profile), ws: me.ws, profile: me.profile, token: me.token, live: me };
           const room = new DuelRoom(a, b, roomOpts({ kind: 'pvp' }));
@@ -432,7 +549,7 @@ wss.on('connection', (ws, req) => {
       }
       case 'npcduel': {
         const def = DUELISTS[msg.npc];
-        if (!def || me.room) break;
+        if (!def || me.room || me.trade) break;
         const a = { name: me.name, deckItems: deckItems(me.profile), ws: me.ws, profile: me.profile, token: me.token, live: me };
         const b = { name: def.name, deckItems: [...def.deck], ws: null, ai: true };
         const room = new DuelRoom(a, b, roomOpts({ kind: 'npc', npcId: msg.npc, rewardsPool: def.rewards }));
@@ -450,6 +567,7 @@ wss.on('connection', (ws, req) => {
     if (!me || players.get(me.id) !== me) return;   // already superseded by a newer login
     players.delete(me.id);
     markDirty();   // persist last position (profile.x/z/yaw)
+    if (me.trade) endTrade(me.trade, me.name + ' disconnected.');
     console.log(`leave: ${me.name} (#${me.id}, ${players.size} online)`);
     if (me.room && me.room.duel.winner === null) {
       me.room.detach(me.room.players.findIndex(p => p.live === me));
@@ -468,6 +586,7 @@ setInterval(() => {
   }
   const now = Date.now();
   for (const [k, exp] of challenges) if (exp < now) challenges.delete(k);
+  for (const [k, exp] of tradeInvites) if (exp < now) tradeInvites.delete(k);
   for (const [k, e] of joinFails) if (e.resetAt < now) joinFails.delete(k);
 }, 30_000);
 

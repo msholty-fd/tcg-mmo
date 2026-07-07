@@ -15,6 +15,7 @@ import { getCard } from '../../shared/engine/cards.js';
 import { LEVEL_NAMES } from '../../shared/chronicle.js';
 import { startRemoteDuel, applyRemoteView, endRemoteDuel, duelActive } from './duel/duelManager.js';
 import { setGameHour } from './main.js';   // safe cycle: called at runtime only
+import { initTrade, onTradeInvite, onTradeStart, onTradeState, onTradeComplete, onTradeCancelled } from './trade.js';
 
 // production build is served by the game server itself, so the WS lives on
 // our own origin; dev keeps Vite (:5175) + server (:8081) split
@@ -157,6 +158,11 @@ function handle(msg) {
         log(`🃏 Your ${getCard(ev.cardId).name} has become ${LEVEL_NAMES[ev.level]}!`, 'ding');
       }
       break;
+    case 'tradeInvite': onTradeInvite(msg); break;
+    case 'tradeStart': onTradeStart(msg); break;
+    case 'tradeState': onTradeState(msg); break;
+    case 'tradeComplete': onTradeComplete(); break;
+    case 'tradeCancelled': onTradeCancelled(msg); break;
   }
 }
 
@@ -210,6 +216,10 @@ export function challengePlayer(id) {
   log('Challenge sent. Waiting for them to accept…', 'sys');
 }
 
+export function requestTrade(id) {
+  if (connected && !duelActive) ws.send(JSON.stringify({ t: 'tradeRequest', target: id }));
+}
+
 export function requestNpcDuel(npcId) {
   if (connected) ws.send(JSON.stringify({ t: 'npcduel', npc: npcId }));
 }
@@ -243,4 +253,10 @@ export function initNet() {
     }
   });
   $('challenge-decline').addEventListener('click', dismissChallenge);
+  initTrade({
+    sendTradeAccept: from => connected && ws.send(JSON.stringify({ t: 'tradeAccept', from })),
+    sendTradeOffer: (iids, coins) => connected && ws.send(JSON.stringify({ t: 'tradeOffer', iids, coins })),
+    sendTradeConfirm: () => connected && ws.send(JSON.stringify({ t: 'tradeConfirm' })),
+    sendTradeCancel: () => connected && ws.send(JSON.stringify({ t: 'tradeCancel' })),
+  });
 }
