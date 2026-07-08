@@ -131,6 +131,9 @@
   .dcard.spell .stats{display:none}
   .dcard.unplayable{filter:saturate(.3) brightness(.65)}
   .dcard.cardback{background:repeating-linear-gradient(45deg,#1a1626,#1a1626 6px,#221c30 6px,#221c30 12px);width:60px;height:82px}
+  .dreacts{display:flex;gap:5px;margin-left:10px}
+  .dreact{width:30px;height:42px;border-radius:4px;border:1px solid var(--gold-dim);background:repeating-linear-gradient(45deg,#1a1626,#1a1626 5px,#221c30 5px,#221c30 10px);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--gold-dim)}
+  .dreact.mine{border-color:var(--gold);color:var(--gold);cursor:help}
   .dunit{width:74px;height:98px;background:linear-gradient(#2a2438,#1a1624);border:1px solid var(--gold-dim);border-radius:6px;padding:4px 5px;font-size:9px;position:relative;cursor:pointer;transition:transform .08s,box-shadow .08s}
   .dunit .art{height:36px;display:flex;align-items:center;justify-content:center;margin-top:2px}
   .dunit .art img{width:32px;height:32px;image-rendering:pixelated}
@@ -361,13 +364,13 @@
 
 <div id="duel">
   <div class="drow" id="d-foe-hand"></div>
-  <div class="drow"><div class="dhearth" id="d-foe-hearth">20</div><div class="dember" id="d-foe-ember"></div><div id="d-foe-name" style="color:var(--ink-dim);font-size:13px"></div></div>
+  <div class="drow"><div class="dhearth" id="d-foe-hearth">20</div><div class="dember" id="d-foe-ember"></div><div class="dreacts" id="d-foe-reacts"></div><div id="d-foe-name" style="color:var(--ink-dim);font-size:13px"></div></div>
   <div id="d-board">
     <div class="drow" id="d-foe-field"></div>
     <div class="drow" id="d-my-field"></div>
     <div id="d-log"></div>
   </div>
-  <div class="drow"><div class="dhearth" id="d-my-hearth">20</div><div class="dember" id="d-my-ember"></div></div>
+  <div class="drow"><div class="dhearth" id="d-my-hearth">20</div><div class="dember" id="d-my-ember"></div><div class="dreacts" id="d-my-reacts"></div></div>
   <div id="d-msg"></div>
   <div class="drow" id="d-my-hand"></div>
   <div id="d-controls">
@@ -379,7 +382,8 @@
   <div id="d-help" class="panel">
     <h3>How to Duel</h3>
     Each turn: draw a card, then act. <b>Kindle</b> a card (once per turn) to raise your permanent Ember — cards are your resource AND your fuel; choosing what to burn is the game.<br>
-    Play creatures and attack with them next turn (or now, with Ambush). Strike the enemy <b>Hearth</b> to 0 to win.<br><br>
+    Play creatures and attack with them next turn (or now, with Ambush). Strike the enemy <b>Hearth</b> to 0 to win.<br>
+    <b>Reactions</b> are set face-down (max 2) and spring automatically on the event they name — enemy attacks, creatures, or spells. Your opponent sees that you set something, not what.<br><br>
     <b>🗡 Ambush</b> — attacks the turn it's played ·
     <b>🛡 Guardian</b> — must be attacked first ·
     <b>✨ Ward</b> — untargetable by spells ·

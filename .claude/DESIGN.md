@@ -43,8 +43,9 @@ considered and rejected.
 - Keywords: ambush, guardian, ward, frenzy, lifesteal, piercing. Keywords are
   the extensibility surface — prefer new keywords/effect primitives over
   special-cased rules.
-- Card types: creature, spell, relic (attach = buff+grantKeyword effects).
-  Enchantment type reserved but unimplemented.
+- Card types: creature, spell, relic (attach = buff+grantKeyword effects),
+  reaction (set face-down, max 2, auto-fires on the named enemy event — see
+  "Reactions, not a stack" below). Enchantment type reserved but unimplemented.
 - Rules text and flavor are separate fields (`text` vs `flavor`); the hover
   inspector shows keyword glossary + rules + italic flavor.
 
@@ -131,6 +132,41 @@ considered and rejected.
   earlier the same day was removed. This closes the long-open "idle-farming
   policy" question: idle farming is accepted. Don't re-add reward penalties
   for autobattle without revisiting this decision.
+
+- **Reactions, not a stack (2026-07-08)**. Assessed MTG-style stack/priority
+  and rejected it: priority windows multiply the timer/disconnect/AFK surface,
+  fight the casual world-MMO pacing, and would force the shared AI (NPCs +
+  autobattle) to reason about held-back responses. Instead: **Reaction cards**
+  (Hearthstone-secret-shaped) — counterplay with zero protocol changes.
+  - *Card type `reaction`*: played face-down on your turn (cost paid then),
+    max **2 set** at once. Opponent sees a face-down card, not what it is.
+  - *Auto-trigger*: fires on the named enemy event, is revealed, resolves,
+    goes to the graveyard. If several match one event they fire in the order
+    they were set. No prompts, no priority — resolution stays synchronous.
+  - *Trigger events (v1)*: `enemySpell` (opponent plays a spell — fires
+    BEFORE its effects, so `counter` can cancel them; ember stays spent),
+    `enemyCreature` (fires AFTER the creature's onPlay resolves — reactions
+    punish the body, they don't preempt the battlecry), `enemyAttack` (fires
+    on attack declaration, before damage; if the attacker or the target dies
+    to the reaction, the attack fizzles and the attack is still consumed).
+  - *AI*: greedy brain sets reactions like any other playable card and does
+    NOT play around enemy reactions (v1) — acceptable; NPCs telegraphing
+    nothing is part of learning the pool. Revisit if autobattle win rates
+    warp.
+  - *Documented next rung if counterspells need to feel more active*: a
+    depth-1 reaction window ("Reflex") with auto-pass — deliberately NOT
+    built now. Full MTG stack: rejected, revisit only on a competitive pivot.
+- **Set expansion direction (2026-07-08)**: grow the CORE set in place
+  (~17 cards, 29 → 46) rather than opening a second zone-set — the Boarlands
+  pack pulls from `cardsInSet('core')` so new cards enter the economy with no
+  shop changes, and a second zone deserves its own worldbuilding push. Theme
+  the mechanics around what's already unique here: **kindle-matters**
+  (`onKindle` triggers — the signature resource becomes a build-around),
+  **graveyard-matters** (`exhume` / `graveBuff` primitives — the graveyard
+  was tracked but unused), plus the reaction suite and curve fillers for
+  sprite families we already have art for. New engine primitives: `counter`,
+  `exhume`, `graveBuff`, `resetKindle`; new trigger hook `onKindle`; new
+  target selector `trigger` (the unit that tripped a reaction).
 
 ## Open questions
 

@@ -47,6 +47,7 @@ function makePlayer(deckItems, rng) {
     deck,
     hand: [],
     field: [],
+    reactions: [],   // face-down reaction cards ({card, iid, level}), max 2
     graveyard: [],
     fatigue: 0,
   };
