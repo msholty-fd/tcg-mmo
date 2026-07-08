@@ -127,6 +127,17 @@ progression) when the server is down; it auto-reconnects every 4s.
   server before evals that poke module state, or assert via DOM/localStorage.
 - **Gotcha**: verify UI through real bubbling clicks — driving handlers
   directly missed a targeting bug that bubbling immediately cancelled.
+- **Gotcha**: the preview browser tab can get stuck with `document.hidden ===
+  true` mid-session (observed 2026-07-08 after several `preview_stop`/
+  `preview_start` cycles across a long session) — this fully suspends
+  `requestAnimationFrame`, so the ENTIRE game loop stalls silently: no
+  movement, no animation, no console errors, `started`/gating flags all
+  read correctly. Confirm before debugging "input isn't working": read a
+  value the loop updates every frame (e.g. `(await
+  import('/src/world.js')).fires[0].userData.fire.scale.y`) twice with a
+  ~1s gap — if it hasn't changed, it's this, not a code bug. A full
+  `preview_stop` + `preview_start` did NOT fix it in the observed case; no
+  reliable workaround found yet.
 
 ## Current state / known issues
 

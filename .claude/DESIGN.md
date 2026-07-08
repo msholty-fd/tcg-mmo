@@ -168,6 +168,21 @@ considered and rejected.
   `exhume`, `graveBuff`, `resetKindle`; new trigger hook `onKindle`; new
   target selector `trigger` (the unit that tripped a reaction).
 
+- **Buildings must be inline, never instanced (2026-07-08)**: a first pilot
+  let players "enter" a house by teleporting them to a small room built far
+  away in world space (invisible from the village via scene fog). Michael
+  tested it and rejected it: mechanically it worked, but it read as an
+  instance/loading-screen moment, not a seamless world — he wants a
+  WoW-style single continuous open world. Redone as a true inline interior:
+  the house's exterior box became 5 separate wall meshes (one wall split
+  into two segments around a 2-unit doorway gap) sitting at the house's real
+  world coordinates, with a flat interior ceiling, a small warm point light,
+  and per-segment colliders — no teleport, no position jump, walking through
+  the gap IS entering, exactly like walking through any other opening.
+  `client/src/world.js`'s `house1Interior()` is the reference pattern for
+  any future building interior. **Do not propose pocket-dimension/teleport
+  rooms again** — this was tried and explicitly rejected.
+
 ## Open questions
 
 - Renown pacing: thresholds 20/60/150 are untested against real play.
