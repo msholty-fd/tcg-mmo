@@ -292,6 +292,36 @@ registerCards([
     flavor: "He's still standing there when the fight ends. He was standing there when it started, too." },
   { id: 'bastion_keep', set: 'core', rarity: 'rare', type: 'creature', cost: 6, atk: 3, hp: 9, keywords: ['guardian'], storiedKeyword: 'ward',
     name: 'Bastion Keep', text: '', flavor: 'Every siege ends the same way: tired attackers, standing stone.' },
+
+  // ---- Kestrel Twinstrike: Frenzy as a deck-wide identity. Guardian
+  // (Rowan), Ambush (Vex), and Ward (Maren) each already had a duelist
+  // owner; Frenzy — the other half of Red-Sash's own tagline ("Ambush and
+  // Frenzy tempo", see STARTERS.redsash) — had none, and was the only
+  // keyword in the set with no relic/spell that grants it (compare
+  // wardenplate/stolen_blade/blessed_icon/piercing_barb/widows_kiss).
+  { id: 'hotblood_recruit', set: 'core', rarity: 'common', type: 'creature', cost: 2, atk: 1, hp: 3, keywords: ['frenzy'],
+    name: 'Hotblood Recruit', text: 'Frenzy.', flavor: "Vex won't have him yet. He keeps volunteering anyway." },
+  { id: 'twinblade_mercenary', set: 'core', rarity: 'common', type: 'creature', cost: 3, atk: 2, hp: 3, keywords: ['frenzy'],
+    name: 'Twinblade Mercenary', text: 'Frenzy.', flavor: 'One blade for the coin, one for the fun of it.' },
+  { id: 'twin_fangs', set: 'core', rarity: 'uncommon', type: 'relic', cost: 2,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 1, hp: 0 }, { effect: 'grantKeyword', target: 'chosen', keyword: 'frenzy' }] }, needsTarget: 'ownUnit',
+    name: 'Twin Fangs', text: 'Attach: your creature gets +1 attack and Frenzy.', flavor: 'Bite once, bite again before it falls.' },
+  { id: 'reckless_charge', set: 'core', rarity: 'common', type: 'spell', cost: 2,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 0, hp: 1 }, { effect: 'grantKeyword', target: 'chosen', keyword: 'frenzy' }] }, needsTarget: 'ownUnit',
+    name: 'Reckless Charge', text: 'Give a creature +0/+1 and Frenzy.', flavor: 'Think it through on the way back, if there is one.' },
+  { id: 'bandit_creed', set: 'core', rarity: 'rare', type: 'enchantment', cost: 5,
+    triggers: {
+      onPlay: [{ effect: 'grantKeyword', target: 'allAllies', keyword: 'frenzy' }],
+      onAllySummon: [{ effect: 'grantKeyword', target: 'self', keyword: 'frenzy' }],
+    },
+    name: 'Bandit Creed', text: 'When cast, your creatures gain Frenzy. Creatures you play afterward enter with Frenzy too.',
+    flavor: 'Kestrel\'s only rule: never let them get their breath back.' },
+  { id: 'kestrel', set: 'core', rarity: 'rare', type: 'creature', cost: 4, atk: 3, hp: 3, keywords: ['frenzy'],
+    triggers: { onPlay: [{ effect: 'damage', target: 'randomEnemy', amount: 1 }, { effect: 'damage', target: 'randomEnemy', amount: 1 }] },
+    name: 'Kestrel Twinstrike', text: 'Frenzy. When played, deal 1 damage to a random enemy, twice.',
+    flavor: "You hear the first cut. You're still flinching from it when the second one lands." },
+  { id: 'warband_champion', set: 'core', rarity: 'uncommon', type: 'creature', cost: 5, atk: 4, hp: 4, keywords: ['frenzy'], storiedKeyword: 'lifesteal',
+    name: 'Warband Champion', text: 'Frenzy.', flavor: 'Every scar is a fight the other guy lost twice.' },
 ]);
 
 // Starter decks (30 cards) — what a new character begins with,

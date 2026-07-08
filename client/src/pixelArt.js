@@ -534,6 +534,15 @@ const CARD_ART = {
   bulwark_doctrine:    { sprite: 'plate', pal: { p: '#7a8896', P: '#566068', g: '#ffe080' } },
   rowan:               { sprite: 'hooded', pal: { h: '#3a4a5e', H: '#293643', e: '#c8a24a' } },
   bastion_keep:        { sprite: 'colossus', pal: { l: '#6a7078', L: '#4e545c', t: '#8a94a0', T: '#5a636e', e: '#c8a24a' } },
+
+  // ---- Kestrel Twinstrike: Frenzy as a deck-wide identity ----
+  hotblood_recruit:    { sprite: 'hooded', pal: { h: '#c05030', H: '#8a3a20', m: '#5a2412' } },
+  twinblade_mercenary: { sprite: 'hooded', pal: { h: '#b03838', H: '#852a2a', m: '#5a1c1c', e: '#e0b050' } },
+  twin_fangs:          { sprite: 'fang', pal: { w: '#c8b8a0', W: '#9a8a70', f: '#ff3a3a', F: '#ff8a50' } },
+  reckless_charge:     { sprite: 'fury', pal: { f: '#e04040', F: '#ffb040', r: '#8a1a1a', d: '#5a2a2a' } },
+  bandit_creed:        { sprite: 'plate', pal: { p: '#6a2a2a', P: '#481c1c', g: '#e0b050' } },
+  kestrel:             { sprite: 'hooded', pal: { h: '#7a1f3a', H: '#591530', m: '#3a0e20', e: '#ffcf40' } },
+  warband_champion:    { sprite: 'hooded', pal: { h: '#8a4a2a', H: '#66351c', m: '#4a2814', e: '#ffb040' } },
 };
 
 const cache = new Map();
