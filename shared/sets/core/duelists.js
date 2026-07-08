@@ -77,7 +77,21 @@ const tarnDeck = swap(
 );
 // The Ashen Sentinel — night-only guardian of Emberwatch Ruins (DESIGN.md).
 // Boarherd-based, swapped toward ash/ember-flavored cards no other duelist uses.
-const sentinelDeck = swap(STARTER_DECKS.boarherd, ['wild_boar', 'wild_boar', 'tusker'], ['ash_sprite', 'flame_tender', 'ashen_shambler']);
+// Second swap (worldbuilding loop, deepening pass): the Sentinel was by far
+// the roster's thinnest deck (only 3 cards ever swapped in, the least of any
+// duelist) and the only long-standing duelist with no self-named signature
+// card. Her existing 3 cards dabble in kindle-matters and graveyard-matters,
+// both now fully owned elsewhere (Tarn; Marrow; Hessa's hybrid of the two) —
+// "ashfall" (onDeath/onAllyDeath triggers as immediate-value payoffs, not
+// graveyard-count buffing) was the one build-around axis still open, and
+// ashen_vigil (the enchantment mechanic's onAllyDeath hook) had sat unclaimed
+// in Maren's reward pool but never in an actual deck. Folds in 7 new cards
+// plus ashen_vigil, replacing generic burn filler that shares no theme with her.
+const sentinelDeck = swap(
+  swap(STARTER_DECKS.boarherd, ['wild_boar', 'wild_boar', 'tusker'], ['ash_sprite', 'flame_tender', 'ashen_shambler']),
+  ['ember_bolt', 'ember_bolt', 'ember_bolt', 'kindled_fury', 'kindled_fury', 'sudden_spark', 'hearth_meal', 'wolf_howl'],
+  ['ember_husk', 'watchfire_whelp', 'ashbound_warden', 'feed_the_fire', 'cinderfall_rite', 'sentinel', 'ashfall_colossus', 'ashen_vigil'],
+);
 // The footpad who works Bram's Rest (DESIGN.md) — Red-Sash-based, swapped
 // toward the two remaining ambush/road-themed cards no other duelist uses.
 // Second swap (worldbuilding loop, "existing NPC" case): the last of the

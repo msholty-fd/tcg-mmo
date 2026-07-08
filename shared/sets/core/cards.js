@@ -178,6 +178,58 @@ registerCards([
     name: 'Ashen Vigil', text: 'Whenever one of your creatures dies, restore 1 to your Hearth.',
     flavor: 'The bell tolls for the fallen, and the hearth burns on.' },
 
+  // ---- Ashen Sentinel: deepening pass, "ashfall" (onDeath/onAllyDeath
+  // payoffs) as a deck-wide identity (worldbuilding loop, DESIGN.md). Checked
+  // every named landmark for an open new-NPC spot first: all are claimed
+  // (Highgate/Verity+Tarn, Bram's Rest/Footpad, Hollowmere/Hessa, Cinderhollow
+  // Mine/Marrow, Cinderpass/Halvard, Harrow's Field/Cobb) except Waystones
+  // (deliberately card-light by design) and the Emberpeaks basin (Phase 3's
+  // own duelists, a concurrent worktree, now merged as its own roster in
+  // shared/sets/emberpeaks/ — not core). Neither is legitimate, so this falls
+  // back to (a). Precisely counted swapped-in cards per duelist: the Sentinel
+  // had only 3 (ash_sprite/flame_tender/ashen_shambler), the roster's
+  // thinnest by a wide margin (next was Vex at 5) and the only long-standing
+  // duelist with no self-named signature card. Her existing 3 cards already
+  // dabble in kindle-matters and graveyard-matters, but both are now fully
+  // owned elsewhere (Tarn, Marrow, and Hessa's hybrid of the two) — onDeath
+  // triggers as an immediate-value payoff (distinct from graveyard-matters'
+  // graveyard-count/exhume focus) was untouched: boar_matron/camp_torcher use
+  // onDeath only as generic starter filler, and ashen_vigil (onAllyDeath, the
+  // enchantment hook) had sat in Maren's reward pool but never in an actual
+  // deck. All existing effect primitives (damage/heal/draw/emberGain/buff) —
+  // no engine changes needed.
+  { id: 'ember_husk', set: 'core', rarity: 'common', type: 'creature', cost: 1, atk: 1, hp: 2,
+    triggers: { onDeath: [{ effect: 'emberGain', amount: 1 }] },
+    name: 'Ember Husk', text: 'When this dies, gain 1 Ember this turn.', flavor: 'Even snuffed out, it leaves a coal that still burns.' },
+  { id: 'watchfire_whelp', set: 'core', rarity: 'common', type: 'creature', cost: 2, atk: 2, hp: 2,
+    triggers: { onDeath: [{ effect: 'draw', amount: 1 }] },
+    name: 'Watchfire Whelp', text: 'When this dies, draw a card.', flavor: "It kept the watch until it couldn't." },
+  { id: 'ashbound_warden', set: 'core', rarity: 'uncommon', type: 'creature', cost: 3, atk: 2, hp: 4, keywords: ['guardian'],
+    triggers: { onDeath: [{ effect: 'buff', target: 'allAllies', atk: 1, hp: 0 }] },
+    name: 'Ashbound Warden', text: 'Guardian. When this dies, your other creatures get +1 attack.',
+    flavor: "Its last duty is the easiest: fall so the others don't have to." },
+  { id: 'feed_the_fire', set: 'core', rarity: 'uncommon', type: 'spell', cost: 2,
+    triggers: { onPlay: [{ effect: 'damage', target: 'chosen', amount: 2 }, { effect: 'draw', amount: 1 }] }, needsTarget: 'ownUnit',
+    name: 'Feed the Fire', text: 'Deal 2 damage to a creature you control. Draw a card.', flavor: 'What burns first, burns brightest.' },
+  { id: 'cinderfall_rite', set: 'core', rarity: 'rare', type: 'enchantment', cost: 4,
+    triggers: {
+      onPlay: [{ effect: 'damage', target: 'allEnemies', amount: 1 }],
+      onAllyDeath: [{ effect: 'damage', target: 'randomEnemy', amount: 1 }],
+    },
+    name: 'Cinderfall Rite', text: 'When cast, deal 1 damage to all enemy creatures. Whenever one of your creatures dies, deal 1 damage to a random enemy.',
+    flavor: 'The ruin remembers every fall as an ember owed.' },
+  { id: 'sentinel', set: 'core', rarity: 'rare', type: 'creature', cost: 5, atk: 4, hp: 5, keywords: ['guardian'], storiedKeyword: 'ward',
+    triggers: {
+      onPlay: [{ effect: 'damage', target: 'allEnemies', amount: 1 }],
+      onDeath: [{ effect: 'draw', amount: 2 }],
+    },
+    name: 'The Ashen Sentinel', text: 'Guardian. When played, deal 1 damage to all enemy creatures. When this dies, draw 2 cards.',
+    flavor: 'She has stood since before the fire had a name.' },
+  { id: 'ashfall_colossus', set: 'core', rarity: 'rare', type: 'creature', cost: 6, atk: 5, hp: 6, keywords: ['guardian'],
+    triggers: { onDeath: [{ effect: 'buff', target: 'allAllies', atk: 1, hp: 1 }] },
+    name: 'Ashfall Colossus', text: 'Guardian. When this dies, your other creatures get +1/+1.',
+    flavor: 'The mountain falls quietly. What it feeds does not.' },
+
   // ---- more new blood: keyword gaps + curve fillers ----
   { id: 'warded_acolyte', set: 'core', rarity: 'common', type: 'creature', cost: 2, atk: 1, hp: 3, keywords: ['ward'],
     name: 'Warded Acolyte', text: '', flavor: 'Words that turn blades, if you say them right.' },
