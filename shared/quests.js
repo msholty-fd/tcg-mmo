@@ -3,7 +3,17 @@
 // markers from the same data.
 //
 // Quest state lives in profile.quests: { [id]: { state: 'active'|'completed', have } }
-// (absent = hidden). All duel-objective: duels.target is a duelist id or 'any'.
+// (absent = hidden). Two objective shapes today:
+//   - duels: { target, need }   — win N duels vs a duelist id (or 'any').
+//     Progress is event-driven (progressDuelWin increments st.have on wins).
+//   - collect: { cardId, need } — own >= N copies of a card id. There's no
+//     "own a card" event to hook, so this is checked live against
+//     profile.cards (collectHave) rather than an incrementing counter.
+//     Turning in does NOT remove the cards — see DESIGN.md card-economy
+//     notes; taking a player's only copy of a card as a quest cost would be
+//     an unusually punishing design for a card game, and nothing else in
+//     the codebase consumes cards as a cost (trading is the only cards-out
+//     path, and it's opt-in/two-sided).
 
 export const QUESTS = [
   {
@@ -34,6 +44,20 @@ export const QUESTS = [
     obj: have => `Defeat Gruk the Boar King: ${have}/1`,
     thanks: "You out-played the Boar King himself. You'll be a story in this village for a hundred years.",
   },
+  {
+    id: 'sash_spoils', giver: 'aldric', title: 'Spoils of the Sash', minLvl: 3, prereq: 'vex',
+    collect: { cardId: 'red_sash_cutpurse', need: 2 }, xp: 150, coins: 15,
+    offer: "Beating Vex doesn't scatter her crew — it just makes them careless. Bring me a couple of their cutpurses, the ones that go for your throat before you've drawn a card. Proof the camp's still worth watching.",
+    obj: have => `Red-Sash Cutpurses owned: ${have}/2`,
+    thanks: "Two cutpurses, out of circulation. Vex's crew keeps getting smaller.",
+  },
+  {
+    id: 'hollow_bones', giver: 'aldric', title: "Bones Don't Lie", minLvl: 4, prereq: 'gruk',
+    collect: { cardId: 'ironhide_boar', need: 2 }, xp: 350, coins: 30,
+    offer: "Gruk's hollow didn't empty out just because he lost. Something's still moving bone in there — ironhide boars, thick-skinned things that shrugged off militia steel. Bring me two, and we'll know the hollow's finally quiet.",
+    obj: have => `Ironhide Boars owned: ${have}/2`,
+    thanks: "Two ironhides, accounted for. The hollow's bones can rest.",
+  },
 ];
 
 export const questById = id => QUESTS.find(q => q.id === id);
@@ -46,17 +70,29 @@ export function canAccept(profile, id) {
     (!q.prereq || stateOf(profile, q.prereq) === 'completed');
 }
 
+// live count of a card id owned — collect objectives check the player's
+// actual current collection, not a stored/incrementing counter, so gaining
+// or trading away copies is reflected immediately.
+export function collectHave(profile, q) {
+  return (profile.cards || []).filter(c => c.cardId === q.collect.cardId).length;
+}
+
+export const objNeed = q => (q.duels || q.collect).need;
+
 export function canTurnin(profile, id) {
   const q = questById(id);
   const st = profile.quests?.[id];
-  return !!q && st?.state === 'active' && st.have >= q.duels.need;
+  if (!q || st?.state !== 'active') return false;
+  return q.collect ? collectHave(profile, q) >= q.collect.need : st.have >= q.duels.need;
 }
 
 // duel-win progress: mutates profile.quests, returns [{id, have}] increments.
-// npcId is null for PvP wins (only 'any' quests progress).
+// npcId is null for PvP wins (only 'any' quests progress). Collect quests
+// have no duel hook — skipped here, checked live via collectHave instead.
 export function progressDuelWin(profile, npcId) {
   const events = [];
   for (const q of QUESTS) {
+    if (!q.duels) continue;
     const st = profile.quests?.[q.id];
     if (st?.state === 'active' && st.have < q.duels.need &&
         (q.duels.target === 'any' || q.duels.target === npcId)) {
