@@ -471,7 +471,9 @@ export const marla = spawnNPC('Quartermaster Marla', 3.5, 4, { shirt: 0x7a5aa8 }
 export const aldric = spawnNPC('Warden Aldric', -4, -6, { shirt: 0x55636e, hat: 0x3a444c });
 
 // ---------- duelist NPCs (roster shared with the server) ----------
-import { DUELISTS } from '../../shared/sets/core/duelists.js';
+import { DUELISTS as CORE_DUELISTS } from '../../shared/sets/core/duelists.js';
+import { EMBERPEAKS_DUELISTS } from '../../shared/sets/emberpeaks/duelists.js';
+const DUELISTS = { ...CORE_DUELISTS, ...EMBERPEAKS_DUELISTS };
 
 export function spawnDuelist(id, x, z, opts) {
   const def = DUELISTS[id];
@@ -1113,3 +1115,13 @@ for (let i = 0; i < 6; i++) {
   if (ez < 182) continue;
   spawnCritter(() => emberElementalMesh(1), ex, ez);
 }
+
+// ---- Emberpeaks duelists (Phase 3) — the fire roster (shared/sets/
+// emberpeaks/duelists.js), merged into DUELISTS above. Ashmonger guards the
+// near basin; Ignarok the Pyrelord holds the deep end, ringed by lava and
+// marked with an ember glow so the boss reads at a distance. Beating them is
+// how the emberpeaks card set enters circulation (reward pools).
+export const ashmonger = spawnDuelist('ashmonger', EP.x - 22, EP.z - 24, { shirt: 0x8a3320, hat: 0x3a1810 });
+export const pyrelord = spawnDuelist('pyrelord', EP.x, EP.z + 14, { shirt: 0x5a1a10, hat: 0xdd4400 });
+const pyreGlow = new THREE.PointLight(0xff5a1e, 1.6, 14); pyreGlow.position.y = 2.6; pyrelord.mesh.add(pyreGlow);
+lavaPool(EP.x, EP.z + 20, 5);   // a lava basin at the boss's back

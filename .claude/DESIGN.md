@@ -949,6 +949,41 @@ considered and rejected.
     exists, so risk is judged low; `mire_toll`'s `onAllyDeath` trigger wasn't
     isolated in its own test, only inferred from aggregate counts.
 
+- **Emberpeaks Phase 3a — fire duelists + quest chain (2026-07-08)**. Makes
+  the basin an actual destination: two fire duelists whose decks are built
+  from the `emberpeaks` set, so beating them is how that set enters
+  circulation (reward pools) — the founding pillar realized end-to-end for
+  the first new zone.
+  - *Roster in the set's own folder*: `shared/sets/emberpeaks/duelists.js`
+    exports `EMBERPEAKS_DUELISTS`, merged into the DUELISTS map at BOTH import
+    sites (`client/src/world.js`, `server/index.js`) via
+    `{ ...CORE_DUELISTS, ...EMBERPEAKS_DUELISTS }` — deliberately NOT editing
+    `core/duelists.js`, so this never collides with the parallel core-duelist
+    sessions. `ashmonger` (Ashmonger Cael, aggressive ember/burn gate) at
+    (-22,211); `pyrelord` (Ignarok the Pyrelord, control/finisher boss) at
+    (0,249) with an ember point-light + a lava pool at his back.
+  - *Difficulty gradient*: headless vs the boarherd starter (strongest), the
+    gate deck wins ~3/16 and the boss ~10/16 — Ashmonger is beatable on the
+    way in, Ignarok is a real wall. Both decks are legal 30 / ≤3-copies and
+    fully resolve; 0 crashes/stuck across 32 games.
+  - *Quest chain* (`shared/quests.js`, giver Aldric): `ep_ashfall` (minLvl 5,
+    prereq `gruk` → defeat Ashmonger) → `ep_pyrelord` (minLvl 6, prereq
+    `ep_ashfall` → defeat Ignarok). End-game gated; sends the player north
+    through Cinderpass. This is the in-world signposting the zone lacked.
+  - *Verified*: build + node --check clean; headless deck-legality +
+    playability sim + quest-gating all pass; live module check confirmed both
+    spawn in the basin at the right coords with 30-card decks and the merged
+    DUELISTS resolves client-side, zero console errors. NOT visually
+    eyeballed — the frozen-preview gotcha (document.hidden) recurred, so the
+    boss's on-screen look/glow is unconfirmed (cosmetic only; spawn + duel
+    path are proven).
+  - *Phase 3b remaining*: a zone-scoped Emberpeaks **pack + basin vendor**.
+    Deferred because the shop UI is currently single-pack/single-vendor
+    (Marla/boarlands hardcoded in shop.js + interact.js) — adding a second
+    vendor needs the shop to pick the pack by nearest vendor, a small UI
+    generalization worth its own focused branch. Reward pools already satisfy
+    "cards enter circulation," so the pack is a secondary sink, not a blocker.
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase
