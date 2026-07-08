@@ -80,7 +80,22 @@ const tarnDeck = swap(
 const sentinelDeck = swap(STARTER_DECKS.boarherd, ['wild_boar', 'wild_boar', 'tusker'], ['ash_sprite', 'flame_tender', 'ashen_shambler']);
 // The footpad who works Bram's Rest (DESIGN.md) — Red-Sash-based, swapped
 // toward the two remaining ambush/road-themed cards no other duelist uses.
-const footpadDeck = swap(STARTER_DECKS.redsash, ['tusker', 'tusker'], ['red_sash_ambusher', 'hidden_snare']);
+// Second swap (worldbuilding loop, "existing NPC" case): the last of the
+// original 7 duelists left un-deepened. Ambush/bandit is Vex's and Frenzy is
+// Kestrel's — both Red-Sash themes already — so this footpad needed an
+// angle distinct from its own family. "Ambush the ambusher": a deck built
+// entirely around punishing enemyAttack (hidden_snare was always the
+// footpad's one build-around hint, but sat alone) — narrower than Halvard's
+// reaction-control (which spans all three trigger events plus Ward walls).
+// Kept the roster's only anonymous entry anonymous: the road_toll quest
+// flavor text ("Old Bram won't say it outright") deliberately frames this
+// duelist as unidentified, so the signature card (The Uninvited Guest) plays
+// on that instead of giving them a name.
+const footpadDeck = swap(
+  swap(STARTER_DECKS.redsash, ['tusker', 'tusker'], ['red_sash_ambusher', 'hidden_snare']),
+  ['camp_torcher', 'ember_bolt', 'ember_bolt', 'controlled_burn', 'wolf_howl', 'hearth_meal', 'pack_alpha'],
+  ['wayside_watcher', 'quick_fingers', 'false_camp', 'roadblock', 'turned_tables', 'red_sash_watchman', 'uninvited_guest'],
+);
 // Old Hessa of Hollowmere (DESIGN.md) — Wardens-based, warding_bell is the
 // last fully-untouched signature card in the core set; ashen_shambler is
 // reused here (its "walks the way grief does" graveyard flavor fits a bog

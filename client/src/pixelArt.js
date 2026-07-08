@@ -597,6 +597,19 @@ const CARD_ART = {
   old_drover:          { sprite: 'hooded', pal: { h: '#8a9a5a', H: '#697544', m: '#9a7a4a', e: '#c8a24a' } },
   cobb:                { sprite: 'hooded', pal: { h: '#5a6a3a', H: '#43502a', m: '#8a6a3a', e: '#c8a24a' } },
   harrows_plow_ox:     { sprite: 'colossus', pal: { l: '#7a6a4a', L: '#5e5038', t: '#8a7862', T: '#6e5e4a', e: '#e0d0a0' } },
+
+  // ---- A Footpad: "ambush the ambusher" — dark shadow-green + pale
+  // moonlight-tan accent, new to the roster (distinct from Cobb's bright
+  // green/homespun-brown, Vex/Kestrel's bandit red, Marrow's purple, and
+  // every other prior duelist's palette — reads as underbrush at night
+  // rather than gang colors, even though this is a third Red-Sash duelist).
+  wayside_watcher:     { sprite: 'hooded', pal: { h: '#3a4438', H: '#283020', m: '#5a4a30' } },
+  quick_fingers:       { sprite: 'snare', pal: { r: '#8a9878', R: '#6a7a5c', g: '#c8c090' } },
+  false_camp:          { sprite: 'talisman', pal: { c: '#3a4438', w: '#c8c090', W: '#9a9870' } },
+  roadblock:           { sprite: 'snare', pal: { r: '#5a6a4c', R: '#425038', g: '#c8c090' } },
+  turned_tables:       { sprite: 'snare', pal: { r: '#2e3a26', R: '#1e2818', g: '#c8c090' } },
+  red_sash_watchman:   { sprite: 'hooded', pal: { h: '#5e3a3a', H: '#452a2a', m: '#3a4438' } },
+  uninvited_guest:     { sprite: 'wraith', pal: { a: '#3a4438', A: '#283020', e: '#c8c090', s: '#1c2416' } },
 };
 
 const cache = new Map();
