@@ -325,6 +325,24 @@ considered and rejected.
   - *Old Hessa*: an independent discovery (`hessa` quest via Aldric, minLvl
     3, no prereq) — same tier as Vex, not gated behind the late-game chain.
 
+- **Vex the Red-Sash — 6 new ambush/bandit cards (2026-07-08)**: this
+  iteration of the worldbuilding loop deepens an *existing* duelist rather
+  than adding a new one. Picked Vex over the other six because Red-Sash/
+  ambush was already her sharpest identity (Nightstalker + Tusk Talisman)
+  but had two clear gaps: no relic granted Ambush, and she had no
+  self-named signature card the way Gruk does (the `gruk` card is played by
+  Gruk the duelist). Filled both: `stolen_blade` (first Ambush-granting
+  relic) and `vex` (5c 4/3, Ambush+Lifesteal, pings a random enemy on
+  play — same "boss plays themself" pattern as Gruk, folded into her deck
+  at the cost of generic filler). Also added `red_sash_picklock` and
+  `masked_raider` (curve-filling Ambush bodies) and two non-creature
+  bandit cards, `ambush_horn` (reaction: summon a Red-Sash Cutpurse when
+  attacked) and `shakedown` (cheap damage+draw). Deliberately did not touch
+  the Footpad's cards even though he's also Red-Sash-based — he already has
+  his own exclusive pair (`red_sash_ambusher`, `hidden_snare`) from the
+  Bram's Rest iteration, and this pass's new cards are folded into Vex's
+  deck/rewards specifically, not shared.
+
 ## Open questions
 
 - Renown pacing: thresholds 20/60/150 are untested against real play.
