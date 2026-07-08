@@ -66,7 +66,7 @@ progression) when the server is down; it auto-reconnects every 4s.
 - `shared/engine/engine.js` — turn structure, actions, combat keywords
 - `shared/engine/state.js` — duel state, instance normalization, stats/chatter
 - `shared/engine/ai.js` — greedy duelist brain (NPCs, autobattle, headless sims)
-- `server/index.js` — auth (name+password, scrypt TODO), profiles, presence, chat
+- `server/index.js` — auth (name+password, scrypt + legacy-sha256 migration), profiles, presence, chat
 - `server/duelRoom.js` — duel rooms: PvP + NPC(AI), reconnect grace, rewards
 - `client/src/net.js` — connection, remote players, profile sync
 - `client/src/duel/` — duel UI (duelUI.js) + mode bridge (duelManager.js)
