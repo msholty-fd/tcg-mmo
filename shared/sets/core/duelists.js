@@ -35,7 +35,17 @@ const vexDeck = swap(
 );
 // boarherd already carries one 'gruk' (the "boss plays themself" pattern
 // also used for Vex/vex below) — no need to strip and re-append it.
-const grukDeck = swap(STARTER_DECKS.boarherd, ['young_boar', 'militia_recruit'], ['ironhide_boar', 'emberwood_colossus']);
+// Gruk was the roster's thinnest deck (only these 2 cards ever swapped in,
+// both Piercing) despite already leaning on that exact keyword. The second
+// swap deepens it: two curve-filling Piercing bodies, the spell/relic/
+// enchantment that grant it (Piercing had none of the three before this —
+// compare stand_and_hold/reckless_charge/pilgrims_vow), plus the previously
+// -unclaimed piercing_barb/warthog_battering_ram keyword-gap fillers.
+const grukDeck = swap(
+  swap(STARTER_DECKS.boarherd, ['young_boar', 'militia_recruit'], ['ironhide_boar', 'emberwood_colossus']),
+  ['quartermaster', 'quartermaster', 'kindled_fury', 'kindled_fury', 'wolf_howl', 'wild_boar', 'wild_boar'],
+  ['boar_lancer', 'tusked_reaver', 'honed_tusks', 'tusks_of_the_hollow', 'boarlords_fury', 'piercing_barb', 'warthog_battering_ram'],
+);
 // Highgate's roster (see DESIGN.md) — a Wardens-based gate captain and a
 // Boarherd-based road warden, swapped with cards no earlier duelist uses.
 const verityDeck = swap(STARTER_DECKS.wardens, ['wild_boar', 'wild_boar'], ['warden_captain', 'counterspark']);
@@ -88,7 +98,7 @@ export const DUELISTS = {
   },
   gruk: {
     name: 'Gruk the Boar King', deck: grukDeck,
-    rewards: [...grukDeck, 'ironhide_boar', 'emberwood_colossus', 'ember_fang'],
+    rewards: [...grukDeck, 'ironhide_boar', 'emberwood_colossus', 'ember_fang', 'rootbound_titan'],
   },
   verity: {
     name: 'Captain Verity', deck: verityDeck,
