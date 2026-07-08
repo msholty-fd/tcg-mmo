@@ -28,7 +28,7 @@ Worktree limitations (by design — plan around them):
   primary checkout. Verify with headless tools instead (see §2). If you truly
   need a live server, use `PORT=<other> node server/index.js` and
   `VITE_WS_URL` — don't fight over the default ports.
-- **No player data**: `server/profiles.json` is gitignored, so a worktree
+- **No player data**: `server/profiles.db` is gitignored, so a worktree
   server starts empty. Copy the file from the primary checkout if a test
   needs existing accounts.
 - **No STATUS.md**: `.claude/STATUS.md` is gitignored (local-only). Read it
@@ -84,7 +84,7 @@ Every merge to main deploys. From the primary checkout:
 ```bash
 # 1. Backup player data first if the change touches server/ or the profile
 #    schema (skip for pure client/balance changes):
-fly ssh sftp get /data/profiles.json ./profiles.backup.$(date +%Y%m%d-%H%M).json
+fly ssh sftp get /data/profiles.db ./profiles.backup.$(date +%Y%m%d-%H%M).db
 
 # 2. Final gate on the merged result:
 npm run build

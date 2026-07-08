@@ -24,7 +24,7 @@ Deeper notes live in `.claude/`:
 - **Merging to main = deploying.** After verification gates pass, merge
   (`--no-ff`, serially if multiple branches are ready), then `fly deploy`
   (app `tcg-mmo`) and confirm `https://tcg-mmo.fly.dev/health` returns 200.
-  Backup `/data/profiles.json` first when server/profile code changed.
+  Backup `/data/profiles.db` first when server/profile code changed.
   Never merge or deploy with a failing build — the realm is live.
 
 ## Run
@@ -73,7 +73,9 @@ progression) when the server is down; it auto-reconnects every 4s.
   a family via palette swaps (all boars share `boar`; hooded humans share
   `hooded`). New cards need a CARD_ART entry: reuse a sprite + palette, or
   author a new grid. No emoji in card art — this replaced it deliberately.
-- `server/profiles.json` — ALL player data (gitignore-worthy; wipe = full reset)
+- `server/profiles.db` — ALL player data, SQLite via `server/db.js`
+  (node:sqlite, one JSON row per profile; gitignored; wipe = full reset).
+  A legacy `profiles.json` is imported once on boot, then renamed `.migrated`.
 - `client/src/hudWindows.js` — draggable/closable HUD panels (Q/H/P hotkeys);
   new panels get drag/close/persist via `registerWindow(id, {label, key})`
 - `client/src/escMenu.js` — Esc menu (resume / controls / log out); Esc closes
