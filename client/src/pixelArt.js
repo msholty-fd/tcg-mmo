@@ -281,6 +281,94 @@ const SPRITES = {
     ],
   },
 
+  // ---- reaction icons ----
+  snare: {
+    pal: { k: '#1a1408', r: '#a8845a', R: '#86653e', g: '#3a6132' },
+    rows: [
+      '................',
+      '................',
+      '.....kkkkkk.....',
+      '...kkrrrrrrkk...',
+      '..krrkkkkkkrrk..',
+      '..krk......krk..',
+      '.krk........krk.',
+      '.kRk........krk.',
+      '.krk........kRk.',
+      '..krk......krk..',
+      '..krrkkkkkkrrk..',
+      '...kkrRrrRrkk...',
+      '.....kkkkkk.....',
+      '..g...g..g...g..',
+      '.gggggggggggggg.',
+      '................',
+    ],
+  },
+  bell: {
+    pal: { k: '#14100a', b: '#c8a24a', B: '#9a7a30', w: '#f0e8d0', r: '#86653e' },
+    rows: [
+      '................',
+      '.......kk.......',
+      '......krrk......',
+      '......krrk......',
+      '.....kkbbkk.....',
+      '....kbbbbbbk....',
+      '...kbwbbbbbbk...',
+      '...kbbbbbbbBk...',
+      '..kbbbbbbbbbBk..',
+      '..kbbbbbbbbbBk..',
+      '..kBbbbbbbbbBk..',
+      '.kBBbbbbbbbbBBk.',
+      '.kkkkkkkkkkkkkk.',
+      '......kbbk......',
+      '.......kk.......',
+      '................',
+    ],
+  },
+
+  // ---- new creature portraits ----
+  wraith: {
+    pal: { k: '#14121a', a: '#8a8a92', A: '#64646e', e: '#ff7a20', s: '#4a4a54' },
+    rows: [
+      '................',
+      '.....kkkkkk.....',
+      '....kaaaaaak....',
+      '...kaaaaaaaak...',
+      '...kaAaaaaAak...',
+      '..kaaeaaaaeaak..',
+      '..kaaaaaaaaaak..',
+      '..kaAaaaaaaAak..',
+      '..kaaaaaaaaaak..',
+      '...kaaAaaAaak...',
+      '...kaaaaaaaak...',
+      '....kaAaaAak....',
+      '....kasaasak....',
+      '.....ks..sk.....',
+      '......k..k......',
+      '................',
+    ],
+  },
+  emberling: {
+    pal: { k: '#1a0e04', f: '#ff7a20', F: '#ffd050', r: '#dd4400', e: '#fff8e0' },
+    rows: [
+      '................',
+      '.......kk.......',
+      '......kfFk......',
+      '......kFfk......',
+      '.....kfFFfk.....',
+      '....kfFFFFfk....',
+      '....kFFrFFFk....',
+      '...kfFFFFFFfk...',
+      '...kFeFFFFeFk...',
+      '...kfFFFFFFfk...',
+      '...kFFFrFFFFk...',
+      '....kfFFFFfk....',
+      '....krFFFFrk....',
+      '.....kfrrfk.....',
+      '......kkkk......',
+      '................',
+    ],
+  },
+
   // ---- relic icons ----
   talisman: {
     pal: { k: '#171008', c: '#7a5a38', w: '#f0e8d0', W: '#c8b890' },
@@ -380,6 +468,27 @@ const CARD_ART = {
   tusk_talisman:     { sprite: 'talisman' },
   wardenplate:       { sprite: 'plate' },
   ember_fang:        { sprite: 'fang' },
+
+  hidden_snare:      { sprite: 'snare' },
+  boar_pit:          { sprite: 'snare', pal: { r: '#6b4a2f', R: '#57391f' } },
+  alarm_bell:        { sprite: 'bell', pal: { b: '#8a94a0', B: '#5a636e' } },
+  warding_bell:      { sprite: 'bell' },
+  counterspark:      { sprite: 'spark', pal: { k: '#0a1420', F: '#8ff0f0', f: '#4a5ac0', w: '#e0ffff' } },
+
+  ash_sprite:        { sprite: 'emberling' },
+  flame_tender:      { sprite: 'hooded', pal: { h: '#c07a3a', H: '#96562a', e: '#ffd050' } },
+  pyre_keeper:       { sprite: 'emberling', pal: { f: '#dd4400', F: '#ff7a20', r: '#8a1c00' } },
+  stoke_the_flames:  { sprite: 'burn', pal: { f: '#ff9a40', F: '#ffe080' } },
+
+  ashen_shambler:    { sprite: 'wraith' },
+  last_rites:        { sprite: 'rite', pal: { b: '#c8c8d0', B: '#9a9aa8' } },
+  second_harvest:    { sprite: 'rite', pal: { e: '#6ac96a', f: '#aef07a' } },
+
+  forest_sow:        { sprite: 'boar', pal: { d: '#7a6242', D: '#60492e', n: '#c8a890' } },
+  dire_wolf:         { sprite: 'wolf', pal: { g: '#3a3d44', G: '#2c2f36', e: '#ff5a3a' } },
+  red_sash_ambusher: { sprite: 'hooded', pal: { h: '#b04848', H: '#883434', m: '#661f1f' } },
+  warden_captain:    { sprite: 'hooded', pal: { h: '#4a6a8a', H: '#33506a', e: '#c8a24a' } },
+  thicket_beast:     { sprite: 'colossus', pal: { l: '#4a7a3a', L: '#375c2c', t: '#7a5a38' } },
 };
 
 const cache = new Map();

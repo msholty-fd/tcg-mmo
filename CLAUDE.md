@@ -53,7 +53,10 @@ progression) when the server is down; it auto-reconnects every 4s.
   (unit.uid === instance iid). Tokens/NPC cards are anonymous fresh instances.
 - **Sets are folders** (`shared/sets/core/`). New cards = data registered via
   `registerCards()`; new mechanics = effect primitives via `registerEffect()`
-  or keywords handled in `engine.js attack()`. Duelist roster in
+  or keywords handled in `engine.js attack()`. Reaction cards (type
+  `reaction`, set face-down, auto-fire via `fireReactions()`) are the
+  counterplay surface — no priority/stack, by decision (DESIGN.md). Duelist
+  roster in
   `shared/sets/core/duelists.js` is shared by client (world spawns) and server
   (authoritative decks/rewards).
 

@@ -20,6 +20,7 @@ function selectTargets(duel, side, sel, ctx) {
     case 'ownHearth':   return [{ hearth: side }];
     case 'self':        return ctx.unit ? [{ unit: ctx.unit }] : [];
     case 'chosen':      return ctx.target ? [ctx.target] : [];
+    case 'trigger':     return ctx.trigger?.unit ? [{ unit: ctx.trigger.unit }] : [];
     case 'randomEnemy': {
       const pool = foe.field.filter(u => u.hp > 0);
       return pool.length ? [{ unit: pool[Math.floor(duel.rng() * pool.length)] }] : [{ hearth: 1 - side }];
@@ -103,4 +104,48 @@ registerEffect('emberGain', (duel, side, e) => {
   const p = duel.players[side];
   p.ember = Math.min(p.emberMax + 2, p.ember + e.amount);
   duel.log.push({ type: 'emberGain', side, amount: e.amount });
+});
+
+// cancel the effects of the spell that tripped this reaction (engine checks
+// ctx.countered before firing the spell's onPlay; the ember stays spent)
+registerEffect('counter', (duel, side, e, ctx) => {
+  ctx.countered = true;
+  duel.log.push({ type: 'counter', side, card: ctx.trigger?.card || null });
+  say(duel, `${srcName(ctx)} snuffs the spell out!`);
+});
+
+// return random creature card(s) from your graveyard to your hand
+registerEffect('exhume', (duel, side, e) => {
+  const p = duel.players[side];
+  for (let i = 0; i < (e.amount || 1); i++) {
+    const pool = p.graveyard.filter(c => getCard(c.card).type === 'creature');
+    if (!pool.length || p.hand.length >= 10) return;
+    const c = pool[Math.floor(duel.rng() * pool.length)];
+    p.graveyard.splice(p.graveyard.indexOf(c), 1);
+    p.hand.push(c);
+    duel.log.push({ type: 'exhume', side, card: c.card });
+    say(duel, `${getCard(c.card).name} is pulled back from the ashes.`);
+  }
+});
+
+// buff the source unit per matching card in your graveyard, up to e.cap
+registerEffect('graveBuff', (duel, side, e, ctx) => {
+  if (!ctx.unit) return;
+  const p = duel.players[side];
+  const n = Math.min(
+    p.graveyard.filter(c => !e.filter || getCard(c.card).type === e.filter).length,
+    e.cap ?? Infinity,
+  );
+  if (!n) return;
+  ctx.unit.atk += (e.atk || 0) * n;
+  ctx.unit.maxhp += (e.hp || 0) * n;
+  ctx.unit.hp += (e.hp || 0) * n;
+  duel.log.push({ type: 'buff', unit: ctx.unit.uid, atk: (e.atk || 0) * n, hp: (e.hp || 0) * n });
+  say(duel, `${getCard(ctx.unit.card).name} draws strength from ${n} fallen.`);
+});
+
+// let this player kindle again this turn
+registerEffect('resetKindle', (duel, side) => {
+  duel.players[side].kindledThisTurn = false;
+  duel.log.push({ type: 'resetKindle', side });
 });

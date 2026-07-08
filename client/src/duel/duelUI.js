@@ -75,6 +75,10 @@ export function render() {
   $('d-foe-ember').textContent = '🔥 ' + foe.ember + '/' + foe.emberMax;
   $('d-my-ember').textContent = '🔥 ' + me.ember + '/' + me.emberMax;
 
+  // face-down reactions: yours are inspectable (hover zoom), theirs are backs
+  renderReactions($('d-foe-reacts'), foe.reactions || [], false);
+  renderReactions($('d-my-reacts'), me.reactions || [], true);
+
   const foeHearthEl = $('d-foe-hearth');
   foeHearthEl.classList.toggle('targetable', targeting && canTargetHearth());
   foeHearthEl.onclick = () => {
@@ -99,6 +103,21 @@ export function render() {
   lg.scrollTop = lg.scrollHeight;
 
   $('d-endturn').disabled = !myTurn;
+}
+
+function renderReactions(el, arr, mine) {
+  el.innerHTML = '';
+  for (const r of arr) {
+    const d = document.createElement('div');
+    d.className = 'dreact' + (mine ? ' mine' : '');
+    d.textContent = '?';
+    if (mine && r) {
+      d.dataset.card = r.card;
+      d.dataset.level = r.level || 0;
+      d.title = getCard(r.card).name;
+    }
+    el.appendChild(d);
+  }
 }
 
 function canTargetHearth() {

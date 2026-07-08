@@ -54,6 +54,7 @@ export class DuelRoom {
         hearth: p.hearth, ember: p.ember, emberMax: p.emberMax,
         kindledThisTurn: p.kindledThisTurn,
         hand: i === side ? p.hand : p.hand.map(() => null),
+        reactions: i === side ? p.reactions : p.reactions.map(() => null),
         field: p.field,
         deckCount: p.deck.length, graveCount: p.graveyard.length,
       })),

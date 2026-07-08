@@ -9,6 +9,12 @@
 //   frenzy    — attacks twice per turn
 //   lifesteal — attacking restores that much Hearth
 //   piercing  — excess damage from kills carries to the enemy Hearth
+//
+// Reactions: type 'reaction' cards are set face-down (max 2) and auto-fire
+// on the named enemy event (def.reaction.on): 'enemySpell' fires before the
+// spell's effects (counterable), 'enemyCreature' after the creature's onPlay,
+// 'enemyAttack' on declaration before damage. Revealed → resolved → graveyard.
+// No priority windows, by design — see DESIGN.md "Reactions, not a stack".
 
 import { getCard } from './cards.js';
 import { drawCard, damageUnit, damageHearth, healHearth, findUnit, unitFromCard, say } from './state.js';
@@ -26,6 +32,30 @@ export function fireTriggers(duel, side, unitOrCard, when, ctx = {}) {
     runEffect(duel, side, e, { ...ctx, card: unitOrCard.card, srcIid, unit: unitOrCard.uid ? unitOrCard : ctx.unit });
   }
   sweepDead(duel);
+}
+
+// reveal + resolve `ownerSide`'s face-down reactions matching `on`, in the
+// order they were set. ctx.trigger carries what tripped them ({unit} or
+// {card}); returns ctx so callers can check ctx.countered.
+export function fireReactions(duel, ownerSide, on, ctx = {}) {
+  const p = duel.players[ownerSide];
+  for (const r of [...p.reactions]) {
+    const def = getCard(r.card);
+    if (def.reaction?.on !== on) continue;
+    const i = p.reactions.indexOf(r);
+    if (i < 0) continue;
+    p.reactions.splice(i, 1);
+    p.graveyard.push(r);
+    duel.log.push({ type: 'reactionReveal', side: ownerSide, card: r.card });
+    say(duel, `${duel.names[ownerSide]} springs ${def.name}!`);
+    // effects write back into the shared ctx (e.g. 'counter' sets
+    // ctx.countered, which playCard checks) — don't hand them a copy
+    ctx.card = r.card;
+    ctx.srcIid = r.iid;
+    for (const e of def.reaction.effects) runEffect(duel, ownerSide, e, ctx);
+  }
+  sweepDead(duel);
+  return ctx;
 }
 
 export function sweepDead(duel) {
@@ -91,6 +121,7 @@ export function kindle(duel, side, handIndex) {
   p.graveyard.push(c);
   duel.log.push({ type: 'kindle', side, card: c.card, emberMax: p.emberMax });
   say(duel, `${duel.names[side]} kindles a card (${p.emberMax} Ember).`);
+  for (const u of [...p.field]) fireTriggers(duel, side, u, 'onKindle');
   return true;
 }
 
@@ -102,6 +133,7 @@ export function canPlay(duel, side, handIndex) {
   const def = getCard(c.card);
   if (def.cost > p.ember) return false;
   if (def.type === 'creature' && p.field.length >= 6) return false;
+  if (def.type === 'reaction' && p.reactions.length >= 2) return false;
   return true;
 }
 
@@ -113,6 +145,15 @@ export function playCard(duel, side, handIndex, target = null) {
 
   const c = p.hand.splice(handIndex, 1)[0];
   p.ember -= def.cost;
+
+  if (def.type === 'reaction') {
+    // set face-down — the chatter line must not leak which card it is
+    p.reactions.push(c);
+    duel.log.push({ type: 'setReaction', side, card: c.card });
+    say(duel, `${duel.names[side]} sets a card face-down.`);
+    return true;
+  }
+
   duel.log.push({ type: 'play', side, card: c.card });
   say(duel, `${duel.names[side]} plays ${def.name}.`);
 
@@ -121,8 +162,13 @@ export function playCard(duel, side, handIndex, target = null) {
     p.field.push(u);
     duel.log.push({ type: 'summon', side, unit: u.uid, card: c.card });
     fireTriggers(duel, side, u, 'onPlay', { target });
+    fireReactions(duel, 1 - side, 'enemyCreature', { trigger: { unit: u } });
+  } else if (def.type === 'spell') {
+    const rctx = fireReactions(duel, 1 - side, 'enemySpell', { trigger: { card: c.card } });
+    if (!rctx.countered) fireTriggers(duel, side, c, 'onPlay', { target });
+    p.graveyard.push(c);
   } else {
-    // spell / relic — resolve onPlay effects, then to the graveyard
+    // relic — resolve onPlay effects, then to the graveyard
     fireTriggers(duel, side, c, 'onPlay', { target });
     p.graveyard.push(c);
   }
@@ -155,6 +201,10 @@ export function attack(duel, side, unit, target) {
   if (guardians.length && !(target.unit && guardians.includes(target.unit))) return false;
 
   unit.attacksLeft--;
+  // the defender's reactions spring on declaration, before any damage; if
+  // they kill the attacker or the target, the attack fizzles (still spent)
+  fireReactions(duel, 1 - side, 'enemyAttack', { trigger: { unit } });
+  if (unit.hp <= 0 || (target.unit && target.unit.hp <= 0)) return true;
   fireTriggers(duel, side, unit, 'onAttack', { target });
 
   if (target.hearth !== undefined) {
