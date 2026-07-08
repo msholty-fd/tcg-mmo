@@ -847,6 +847,43 @@ considered and rejected.
     browser-verified (worktrees have no dev server) — same code path as
     every other duelist, risk judged low.
 
+- **Emberpeaks Phase 2 — the `emberpeaks` card set (2026-07-08)**. The first
+  zone-set beyond core, and the first set to live in its OWN folder
+  (`shared/sets/emberpeaks/cards.js`) — a deliberate architecture choice: the
+  new cards stay out of the hotly-contended `core/cards.js` that the parallel
+  duelist sessions edit constantly, so this branch never collides with them.
+  Registered via a side-effect import next to core in BOTH
+  `client/src/duel/duelManager.js` and `server/duelRoom.js` (the two places
+  that already `import '.../core/cards.js'`). `cardsInSet()` filters by the
+  `set` field, so packs/reward-pools can pull `emberpeaks` cards without any
+  other wiring.
+  - *Theme = FIRE, spine = Kindle.* Core treats onKindle as a minor
+    sub-theme; Emberpeaks makes kindle-payoff the build-around. 16 cards (5
+    common / 6 uncommon / 5 rare; 9 creatures, 4 spells, 1 relic, 1
+    enchantment, 1 reaction): ember-kin that grow/ramp/burn when you kindle
+    (Cinder Imp, Cinder Acolyte, Flame Revenant), burn spells (Ember Lash,
+    Immolate, Wildfire), a Piercing-granting relic (Brand of Embers), a
+    Cinderwyrm finisher (2-to-all on play, à la Gruk), and the signature
+    **Eternal Pyre** enchantment — deals 1 to all on cast, then 1 to a random
+    enemy *every time you kindle* for the rest of the duel (leans on the
+    persistent-enchantment onKindle re-fire from the enchantment system).
+  - *All existing primitives, no engine change* (damage/heal/buff/
+    grantKeyword/summon/emberGain + existing keywords). `ep_`-prefixed ids to
+    keep the namespace clean and collision-free.
+  - *Not in circulation yet* — cards register (so they appear in the deck
+    builder) but nothing grants them until Phase 3 adds the Emberpeaks
+    duelists (reward pools) and the zone pack. That's intended: "a new zone
+    ships a new set," and the set is the prerequisite for the duelists.
+  - *Verified*: build + node --check clean; headless — all 16 register and
+    resolve via getCard, `cardsInSet('emberpeaks')` returns 16; a 30-game
+    AI-vs-AI sim with an emberpeaks-heavy deck ran 0 crashes / 0 stuck
+    (exercises the onKindle creatures, the Eternal Pyre kindle re-fire, burn,
+    the reaction, and the relic in real duels); live client check confirmed
+    all 16 `artFor()` calls return real pixel-art data URLs with zero console
+    errors. The raw emberpeaks pile won only 5/30 vs the boarherd starter, but
+    that's an untuned pile vs the strongest starter — irrelevant, since these
+    cards ship inside curated Phase-3 duelist decks, not as a deck.
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase

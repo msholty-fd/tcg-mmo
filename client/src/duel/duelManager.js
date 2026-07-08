@@ -3,7 +3,8 @@
 //  - remote: PvP duels — server is authoritative; we send actions and
 //            render the sanitized views it broadcasts
 
-import '../../../shared/sets/core/cards.js';   // register core set
+import '../../../shared/sets/core/cards.js';        // register core set
+import '../../../shared/sets/emberpeaks/cards.js';  // register Emberpeaks set
 import { createDuel } from '../../../shared/engine/state.js';
 import { startTurn, endTurn, playCard, kindle, attack } from '../../../shared/engine/engine.js';
 import { takeTurn } from '../../../shared/engine/ai.js';
