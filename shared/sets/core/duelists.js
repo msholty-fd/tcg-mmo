@@ -23,10 +23,9 @@ const vexDeck = swap(
   ['wild_boar', 'wild_boar', 'quartermaster'],
   ['red_sash_picklock', 'masked_raider', 'vex'],
 );
-const grukDeck = [
-  ...swap(STARTER_DECKS.boarherd.filter(c => c !== 'gruk'), ['young_boar', 'militia_recruit'], ['ironhide_boar', 'emberwood_colossus']),
-  'gruk', 'gruk', 'gruk',
-];
+// boarherd already carries one 'gruk' (the "boss plays themself" pattern
+// also used for Vex/vex below) — no need to strip and re-append it.
+const grukDeck = swap(STARTER_DECKS.boarherd, ['young_boar', 'militia_recruit'], ['ironhide_boar', 'emberwood_colossus']);
 // Highgate's roster (see DESIGN.md) — a Wardens-based gate captain and a
 // Boarherd-based road warden, swapped with cards no earlier duelist uses.
 const verityDeck = swap(STARTER_DECKS.wardens, ['wild_boar', 'wild_boar'], ['warden_captain', 'counterspark']);
