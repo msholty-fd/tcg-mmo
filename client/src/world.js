@@ -29,6 +29,14 @@ function tree(x, z, dark) {
   addCircle(x, z, .55); // trunk only — canopy overhang is walkable
 }
 
+// Camera collision registry: solid meshes the orbit camera should pull in
+// front of rather than clip through (see main.js's camera raycast). Houses
+// only, by design — 150 thin-trunked trees would be cheap to raycast but
+// risk a twitchy camera darting in/out near every trunk; the priority is
+// "never see inside a house" over "never clip a twig." Revisit if house
+// collision alone doesn't feel like enough coverage once it's played live.
+export const camCollidables = [];
+
 function house(x, z, rot, scale = 1) {
   const g = new THREE.Group();
   const b = new THREE.Mesh(new THREE.BoxGeometry(6 * scale, 3.6 * scale, 5 * scale), M.wall);
@@ -37,6 +45,7 @@ function house(x, z, rot, scale = 1) {
   r.position.y = 4.9 * scale; r.rotation.y = Math.PI / 4; r.castShadow = true; g.add(r);
   g.position.set(x, groundH(x, z), z); g.rotation.y = rot; scene.add(g);
   addRect(x, z, 6 * scale, 5 * scale, rot);
+  camCollidables.push(g);
 }
 
 function campfire(x, z) {

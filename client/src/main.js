@@ -5,7 +5,7 @@ import { groundH } from './terrain.js';
 import { humanoid, makeLabel } from './entities.js';
 import { STARTERS, ZONES } from './constants.js';
 import { player, critters } from './state.js';
-import { fires, torches, marla, aldric } from './world.js';
+import { fires, torches, marla, aldric, camCollidables } from './world.js';
 import { log, updateHUD } from './ui.js';
 import { keys, cam, started, setStarted } from './input.js';
 import { resolveCollision } from './colliders.js';
@@ -106,6 +106,13 @@ let gameHour = 10, uiT = 0;
 export function setGameHour(h) { gameHour = h; }   // debug/testing hook
 const clock = new THREE.Clock();
 
+// camera collision: reused across frames to avoid per-frame allocation
+const camRay = new THREE.Raycaster();
+const camRayOrigin = new THREE.Vector3();
+const camRayDir = new THREE.Vector3();
+const CAM_COLLISION_MARGIN = .5;   // stand-off from the hit surface so we don't clip into it
+const CAM_MIN_DIST = 2;            // never pull the camera in past this (avoid clipping the player)
+
 function update(dt) {
   // day/night — 20 real minutes per in-game day
   gameHour = (gameHour + dt * 24 / 1200) % 24;
@@ -167,11 +174,30 @@ function update(dt) {
   // camera — when the terrain clamp blocks the camera from dipping lower,
   // convert the blocked descent into upward gaze so you can still look at the sky
   const cd = 12;
-  const desiredY = player.mesh.position.y + 2 + Math.sin(cam.pitch) * cd;
+  const originY = player.mesh.position.y + 2;
+  // spherical direction from the orbit target (player, chest height) toward
+  // the desired camera position — already unit length (sin^2+cos^2 identity)
+  const dirX = Math.sin(cam.yaw) * Math.cos(cam.pitch);
+  const dirY = Math.sin(cam.pitch);
+  const dirZ = Math.cos(cam.yaw) * Math.cos(cam.pitch);
+
+  // camera collision: pull the camera in front of solid world geometry
+  // (houses — see world.js camCollidables) instead of clipping through it.
+  let camDist = cd;
+  if (camCollidables.length) {
+    camRayOrigin.set(player.x, originY, player.z);
+    camRayDir.set(dirX, dirY, dirZ);
+    camRay.set(camRayOrigin, camRayDir);
+    camRay.far = cd;
+    const hits = camRay.intersectObjects(camCollidables, true);
+    if (hits.length) camDist = Math.max(hits[0].distance - CAM_COLLISION_MARGIN, CAM_MIN_DIST);
+  }
+
+  const desiredY = originY + dirY * camDist;
   camera.position.set(
-    player.x + Math.sin(cam.yaw) * Math.cos(cam.pitch) * cd,
+    player.x + dirX * camDist,
     desiredY,
-    player.z + Math.cos(cam.yaw) * Math.cos(cam.pitch) * cd
+    player.z + dirZ * camDist
   );
   camera.position.y = Math.max(camera.position.y, groundH(camera.position.x, camera.position.z) + 1.3);
   const lift = camera.position.y - desiredY;
