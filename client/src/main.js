@@ -10,7 +10,6 @@ import { log, updateHUD } from './ui.js';
 import { keys, cam, started, setStarted } from './input.js';
 import { resolveCollision } from './colliders.js';
 import { nearestInteract, handleInteract, tickDialogue } from './interact.js';
-import { doorPrompt, handleDoorInteract, insideHouse1 } from './doors.js';
 import { renderTracker, updateMark, npcQuest, npcTurnin } from './quests.js';
 import { initCollection } from './collection.js';
 import { startNet, initNet, netTick, nearestRemote, challengePlayer, requestTrade } from './net.js';
@@ -162,9 +161,7 @@ function update(dt) {
     player.x += Math.sin(a) * player.speed * dt;
     player.z += Math.cos(a) * player.speed * dt;
     const r = Math.hypot(player.x, player.z);
-    // world-boundary clamp — skipped while inside the house-1 pocket room
-    // (doors.js), which deliberately lives far outside this radius.
-    if (!insideHouse1 && r > 210) { player.x *= 210 / r; player.z *= 210 / r; }
+    if (r > 210) { player.x *= 210 / r; player.z *= 210 / r; }
     const c = resolveCollision(player.x, player.z, .5);
     player.x = c.x; player.z = c.z;
     player.yaw = a; player.mesh.rotation.y = a;
@@ -228,16 +225,14 @@ function update(dt) {
   // interact prompt + E key: NPCs first, then nearby real players (E duel / T trade)
   const n = nearestInteract();
   const rp = n ? null : nearestRemote();
-  const dp = (!n && !rp) ? doorPrompt() : null;
   const pr = $('prompt');
-  if ((n || rp || dp) && hudOpen('prompt')) {
+  if ((n || rp) && hudOpen('prompt')) {
     pr.style.display = 'block';
     $('prompt-text').innerHTML = n
       ? ((n.duelist && !npcQuest(n) && !npcTurnin(n)) ? `<b>E</b> — challenge ${n.name}`
         : n === marla && !npcQuest(n) && !npcTurnin(n) ? `<b>E</b> — browse ${n.name}'s wares`
         : `<b>E</b> — speak with ${n.name}`)
-      : rp ? `<b>E</b> — challenge · <b>T</b> — trade with ${rp.name} <span style="color:#8fd0f0">(player)</span>`
-      : dp;
+      : `<b>E</b> — challenge · <b>T</b> — trade with ${rp.name} <span style="color:#8fd0f0">(player)</span>`;
   } else {
     pr.style.display = 'none';
   }
@@ -245,7 +240,6 @@ function update(dt) {
     ePressed = true;
     if (n) handleInteract();
     else if (rp) challengePlayer(rp.id);
-    else if (dp) handleDoorInteract();
   }
   if (!keys.KeyE) ePressed = false;
   if (keys.KeyT && !tPressed) {

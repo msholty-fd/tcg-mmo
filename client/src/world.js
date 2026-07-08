@@ -61,6 +61,63 @@ function house(x, z, rot, scale = 1) {
   camCollidables.push(g);
 }
 
+// ---------- inline interior pilot (house 1 only) ----------
+// Same footprint/position/rotation/roof as a plain house() shell (still
+// reads as "the same house" from outside), but built from a floor + 4 wall
+// faces + flat ceiling instead of one solid box, with a real gap in the
+// wall facing local z=+2.5 (the old door decal's direction) — walking
+// through the gap IS entering, no teleport/instance involved. Occupies the
+// exact same coordinate space as the exterior (unlike the earlier
+// pocket-dimension pilot, which built this room far away at world (3000,3000)
+// and teleported the player there — rejected for feeling like a loading
+// screen, not a continuous world).
+const H1_WALL_H = 3.6, H1_WALL_T = .3, H1_DOOR_W = 2, H1_HW = 3, H1_HD = 2.5;
+
+function house1Interior(x, z, rot) {
+  const g = new THREE.Group();
+  const c = Math.cos(rot), s = Math.sin(rot);
+  // local (lx,lz) -> world offset, matching THREE's rotation.y convention
+  // (same forward transform the old door-decal math used, and the inverse
+  // of colliders.js addRect's local-space projection).
+  const toWorld = (lx, lz) => ({ x: x + c * lx + s * lz, z: z - s * lx + c * lz });
+
+  const floor = new THREE.Mesh(new THREE.BoxGeometry(H1_HW * 2, .2, H1_HD * 2), M.wood);
+  floor.position.y = -.1; floor.receiveShadow = true; g.add(floor);
+  const ceil = new THREE.Mesh(new THREE.BoxGeometry(H1_HW * 2, .2, H1_HD * 2), M.wall);
+  ceil.position.y = H1_WALL_H + .1; g.add(ceil);   // flat interior ceiling, sitting at the roof cone's base height
+
+  function wall(w, d, lx, lz) {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(w, H1_WALL_H, d), M.wall);
+    m.position.set(lx, H1_WALL_H / 2, lz); m.castShadow = true; m.receiveShadow = true; g.add(m);
+    const wp = toWorld(lx, lz);
+    addRect(wp.x, wp.z, w, d, rot);
+  }
+  wall(H1_HW * 2, H1_WALL_T, 0, -H1_HD);                          // back wall
+  wall(H1_WALL_T, H1_HD * 2, -H1_HW, 0);                          // left wall
+  wall(H1_WALL_T, H1_HD * 2, H1_HW, 0);                           // right wall
+  const segW = (H1_HW * 2 - H1_DOOR_W) / 2;                       // front wall, split for the doorway gap
+  wall(segW, H1_WALL_T, -(H1_DOOR_W / 2 + segW / 2), H1_HD);
+  wall(segW, H1_WALL_T, (H1_DOOR_W / 2 + segW / 2), H1_HD);
+  // No collider spans local z=+2.5, x=[-1,1] — that's the doorway gap.
+
+  // warm interior light (was explicit playtest feedback: "house is very
+  // dark") — small room, so a much tighter range than campfire()'s 16 to
+  // avoid washing out the exterior through the doorway gap.
+  const light = new THREE.PointLight(0xff8830, 1.1, 7);
+  light.position.set(0, 2.3, -.3); g.add(light);
+
+  // light interior dressing — a rug only; the footprint is tight enough that
+  // a table risked a pinch point against the walls, so it's left out.
+  const rug = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), M.redSash);
+  rug.rotation.x = -Math.PI / 2; rug.position.set(0, .01, .6); g.add(rug);
+
+  const r = new THREE.Mesh(new THREE.ConeGeometry(4.6, 2.6, 4), M.roof);
+  r.position.y = 4.9; r.rotation.y = Math.PI / 4; r.castShadow = true; g.add(r);
+
+  g.position.set(x, groundH(x, z), z); g.rotation.y = rot; scene.add(g);
+  camCollidables.push(g);
+}
+
 function campfire(x, z) {
   const g = new THREE.Group();
   for (let i = 0; i < 5; i++) {
@@ -77,76 +134,8 @@ function campfire(x, z) {
 }
 
 // Village
-house(-13, 8, Math.PI * .9); house(14, 10, -Math.PI * .7);
+house1Interior(-13, 8, Math.PI * .9); house(14, 10, -Math.PI * .7);
 house(12, -11, -Math.PI * .2); house(-8, -15, Math.PI * .15, 1.3);
-
-// ---------- pocket-room interior pilot (house 1 only, see doors.js) ----------
-// "Walk into a building" pilot. Rather than carving a doorway into the
-// exterior box (fragile — risks clipping the walls/roof), the interior is a
-// small, fully separate room built far away in world space; the scene fog
-// (70..300, scene.js) makes it invisible to/from the village and vice versa.
-// Only the (-13, 8) house gets a door — the other 3 stay exterior shells.
-const H1 = { x: -13, z: 8, rot: Math.PI * .9 };
-
-{
-  // Door decal on H1's front wall (local x=0, z=2.5, i.e. the wall surface)
-  // — purely cosmetic, marks where E works. Local->world uses the same
-  // rotation convention as colliders.js's addRect (rot about Y).
-  const s = Math.sin(H1.rot), c = Math.cos(H1.rot);
-  const decal = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 2.1), M.wood);
-  decal.position.set(H1.x + s * 2.51, groundH(H1.x, H1.z) + 1.05, H1.z + c * 2.51);
-  decal.rotation.y = H1.rot;
-  scene.add(decal);
-}
-
-// Door trigger just outside H1's front wall (local x=0, z=3.6 — ~1.1 units
-// off the wall face, beyond where the house's own rect collider stops the
-// player at ~z=3.0). Press E within DOOR_ENTER_RADIUS to teleport inside.
-export const DOOR_OUTSIDE = (() => {
-  const s = Math.sin(H1.rot), c = Math.cos(H1.rot);
-  return { x: H1.x + s * 3.6, z: H1.z + c * 3.6 };
-})();
-export const DOOR_ENTER_RADIUS = 2.5;
-
-// The pocket room itself: 8x8, world-axis-aligned (no rotation — it's an
-// isolated space, nothing outside needs to line up with it), one doorway
-// gap centered on its south wall.
-const ROOM = { x: 3000, z: 3000, half: 4, wallH: 3.2, wallT: .3, doorW: 2 };
-export const ROOM_SPAWN = { x: ROOM.x, z: ROOM.z - 1.5 };          // appear here on entry
-export const ROOM_EXIT_TRIGGER = { x: ROOM.x, z: ROOM.z + 2.8 };  // press E here to leave
-export const ROOM_EXIT_RADIUS = 1.8;
-export const EXIT_SPAWN = DOOR_OUTSIDE;                            // reappear right outside H1's door
-
-{
-  const g = new THREE.Group();
-  const floor = new THREE.Mesh(new THREE.BoxGeometry(ROOM.half * 2, .2, ROOM.half * 2), M.wood);
-  floor.position.y = -.1; floor.receiveShadow = true; g.add(floor);
-  const ceil = new THREE.Mesh(new THREE.BoxGeometry(ROOM.half * 2, .2, ROOM.half * 2), M.wall);
-  ceil.position.y = ROOM.wallH + .1; g.add(ceil);
-
-  function wall(w, d, lx, lz) {
-    const m = new THREE.Mesh(new THREE.BoxGeometry(w, ROOM.wallH, d), M.wall);
-    m.position.set(lx, ROOM.wallH / 2, lz); m.castShadow = true; m.receiveShadow = true; g.add(m);
-    addRect(ROOM.x + lx, ROOM.z + lz, w, d, 0);
-  }
-  wall(ROOM.half * 2, ROOM.wallT, 0, -ROOM.half);                       // north
-  wall(ROOM.wallT, ROOM.half * 2, -ROOM.half, 0);                       // west
-  wall(ROOM.wallT, ROOM.half * 2, ROOM.half, 0);                        // east
-  const segW = (ROOM.half * 2 - ROOM.doorW) / 2;                        // south wall, split for the doorway
-  wall(segW, ROOM.wallT, -(ROOM.doorW / 2 + segW / 2), ROOM.half);
-  wall(segW, ROOM.wallT, (ROOM.doorW / 2 + segW / 2), ROOM.half);
-
-  // cosmetic dressing so the room doesn't read empty
-  const rug = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 2.4), M.redSash);
-  rug.rotation.x = -Math.PI / 2; rug.position.y = .01; g.add(rug);
-  const table = new THREE.Mesh(new THREE.BoxGeometry(1.2, .7, .8), M.wood);
-  table.position.set(1.6, .35, -1.6); table.castShadow = true; g.add(table);
-  addRect(ROOM.x + 1.6, ROOM.z - 1.6, 1.2, .8, 0);
-
-  g.position.set(ROOM.x, groundH(ROOM.x, ROOM.z), ROOM.z);
-  scene.add(g);
-  camCollidables.push(g);   // so the orbit camera doesn't clip through the room's walls/ceiling
-}
 
 // Well
 {
