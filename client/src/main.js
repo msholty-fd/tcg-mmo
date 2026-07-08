@@ -5,7 +5,7 @@ import { groundH } from './terrain.js';
 import { humanoid, makeLabel } from './entities.js';
 import { STARTERS, ZONES, CAMPS } from './constants.js';
 import { player, critters } from './state.js';
-import { fires, torches, marla, aldric, camCollidables } from './world.js';
+import { fires, torches, marla, aldric, camCollidables, sentinel } from './world.js';
 import { log, updateHUD } from './ui.js';
 import { keys, cam, started, setStarted } from './input.js';
 import { resolveCollision } from './colliders.js';
@@ -149,6 +149,10 @@ function update(dt) {
     t.light.intensity = night * (1.2 + flick);
     t.flame.scale.setScalar(.6 + night * (.55 + flick));
   }
+  // The Ashen Sentinel (Emberwatch Ruins) only manifests 20:00-6:00 — a
+  // night-only landmark, see DESIGN.md. Hard hour gate (not the smooth
+  // dayF/night blend above) so it's a discrete "it's here or it isn't."
+  sentinel.mesh.visible = gameHour >= 20 || gameHour < 6;
 
   // player movement
   let mx = 0, mz = 0;
