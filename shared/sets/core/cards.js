@@ -379,6 +379,36 @@ registerCards([
     triggers: { onPlay: [{ effect: 'draw', amount: 1 }, { effect: 'graveBuff', filter: 'creature', atk: 1, hp: 0, cap: 3 }] },
     name: 'Marrow, the Delver', text: 'When played, draw a card, then gain +1 attack for each creature in your graveyard (up to +3).',
     flavor: 'The mine took everyone it swallowed. Marrow just asks nicely for them back.' },
+
+  // ---- Captain Verity: Lifesteal as a deck-wide identity. Guardian (Rowan)
+  // and Ward (Maren) already own Wardens-adjacent defensive axes, so Verity
+  // leans on the one keyword that reads as "the line that doesn't fall"
+  // without duplicating either: Lifesteal had no spell that grants it
+  // (compare stand_and_hold/pilgrims_vow/reckless_charge/honed_tusks) and no
+  // enchantment (every other core keyword has one — herd_instinct/
+  // warding_litany/bulwark_doctrine/bandit_creed/boarlords_fury), and its two
+  // keyword-gap fillers (bloodmoon_wolf, widows_kiss) sat unclaimed by any
+  // roster deck since they shipped.
+  { id: 'sworn_medic', set: 'core', rarity: 'common', type: 'creature', cost: 2, atk: 1, hp: 3, keywords: ['lifesteal'],
+    name: 'Sworn Medic', text: 'Lifesteal.', flavor: 'She patches the line, then rejoins it.' },
+  { id: 'hearthguard_veteran', set: 'core', rarity: 'uncommon', type: 'creature', cost: 4, atk: 3, hp: 4, keywords: ['lifesteal'],
+    name: 'Hearthguard Veteran', text: 'Lifesteal.', flavor: 'Outlasted three captains. Reports to the fourth.' },
+  { id: 'crimson_vow', set: 'core', rarity: 'common', type: 'spell', cost: 2,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 0, hp: 1 }, { effect: 'grantKeyword', target: 'chosen', keyword: 'lifesteal' }] }, needsTarget: 'ownUnit',
+    name: 'Crimson Vow', text: 'Give a creature +0/+1 and Lifesteal.', flavor: 'Sworn on the gate, sealed in blood.' },
+  { id: 'verities_oath', set: 'core', rarity: 'rare', type: 'enchantment', cost: 4,
+    triggers: {
+      onPlay: [{ effect: 'grantKeyword', target: 'allAllies', keyword: 'lifesteal' }],
+      onAllySummon: [{ effect: 'grantKeyword', target: 'self', keyword: 'lifesteal' }],
+    },
+    name: "Verity's Oath", text: 'When cast, your creatures gain Lifesteal. Creatures you play afterward enter with Lifesteal too.',
+    flavor: 'Every soldier who bleeds for the gate gets some of it back.' },
+  { id: 'verity', set: 'core', rarity: 'rare', type: 'creature', cost: 5, atk: 4, hp: 4, keywords: ['guardian', 'lifesteal'],
+    triggers: { onPlay: [{ effect: 'damage', target: 'randomEnemy', amount: 2 }, { effect: 'heal', target: 'ownHearth', amount: 2 }] },
+    name: 'Captain Verity', text: 'Guardian, Lifesteal. When played, deal 2 damage to a random enemy and restore 2 to your Hearth.',
+    flavor: 'She takes their strength to hold her ground.' },
+  { id: 'hearthbound_champion', set: 'core', rarity: 'rare', type: 'creature', cost: 6, atk: 5, hp: 7, keywords: ['lifesteal'], storiedKeyword: 'guardian',
+    name: 'Hearthbound Champion', text: 'Lifesteal.', flavor: 'The gate has fallen before. She has not.' },
 ]);
 
 // Starter decks (30 cards) — what a new character begins with,
