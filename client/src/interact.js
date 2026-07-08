@@ -4,6 +4,7 @@ import { say } from './ui.js';
 import { npcQuest, npcTurnin, npcActiveQuest, questHave } from './quests.js';
 import { marla } from './world.js';
 import { startDuel } from './duel/duelManager.js';
+import { openShop } from './shop.js';
 import { isConnected, requestNpcDuel, sendQuestAccept, sendQuestTurnin } from './net.js';
 
 export let dialogueT = 0;
@@ -52,6 +53,12 @@ export function handleInteract() {
     return;
   }
 
+  // Marla's default conversation is her pack shop (quest business wins above)
+  if (n === marla) {
+    openShop();
+    return;
+  }
+
   const active = npcActiveQuest(n);
   if (active) {
     const done = questHave(active.id) >= active.duels.need;
@@ -60,8 +67,6 @@ export function handleInteract() {
     return;
   }
 
-  say(n.name, n === marla
-    ? 'Supplies are thin and the wilds are thick. Story of this village.'
-    : 'Keep to the roads after dark, adventurer.');
+  say(n.name, 'Keep to the roads after dark, adventurer.');
   dialogueT = 5;
 }

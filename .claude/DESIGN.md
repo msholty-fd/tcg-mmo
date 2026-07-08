@@ -101,8 +101,38 @@ considered and rejected.
     not at all. Max 8 cards per side per trade. Blocked while dueling (and
     vice versa). Online-only — offline mode has no trading.
 
+- **Card economy: packs yes, crafting no (2026-07-08)**. Coins had no sink
+  (only trade-sweetening) and no repeatable faucet (95 total from quests).
+  Decision: **packs complement trading, crafting substitutes for it** —
+  randomness creates the dupes/gaps that make players trade, while targeted
+  minting would price-ceiling every card and remove the reason to seek
+  players (the Hearthstone-vs-physical-TCG split). So:
+  - *Faucet*: coins per duel win — 5 NPC / 10 PvP. (Initially shipped with
+    autobattled wins paying 0; reversed the same day — see the autobattle
+    decision below.)
+  - *Sink*: zone-scoped supply packs (shared/sets/core/packs.js), sold
+    **in-world by Quartermaster Marla** (E when she has no quest business) —
+    same philosophy as proximity trading, no global shop UI. Boarlands pack:
+    25 coins, 5 cards from the core set, rarity-weighted 70/24/6. Pack mints
+    are fresh instances (origin "Bought from Quartermaster Marla", renown 0),
+    so storied traded copies stay strictly more valuable than anything money
+    buys. Server validates coins + proximity and mints; client only renders.
+  - *No crafting* unless pack luck proves painful in real play; then
+    dupe-transmute only (same-set, same-rarity, priced above trading).
+  - Considered and declined for now: surfacing duelist reward pools in
+    dialogue ("Vex is known to carry…") — liked, but drop pools stay
+    discovered knowledge for now.
+
+- **Autobattle earns full rewards — coins, XP, renown (Michael, 2026-07-08)**.
+  Autobattle is a **quality-of-life feature, not an exploit surface**: anyone
+  who wanted to automate battling could do it other ways (the client is
+  scriptable, position is client-authoritative), so nerfing the built-in
+  convenience only punishes honest players. The `usedAuto` coin gate shipped
+  earlier the same day was removed. This closes the long-open "idle-farming
+  policy" question: idle farming is accepted. Don't re-add reward penalties
+  for autobattle without revisiting this decision.
+
 ## Open questions
 
-- Autobattle renown: full rate (idle-farming as a feature) or discounted?
 - Renown pacing: thresholds 20/60/150 are untested against real play.
 - Starter balance: boarherd ~75% vs redsash (AI-vs-AI); needs a card pass.

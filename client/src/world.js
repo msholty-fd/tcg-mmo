@@ -4,6 +4,7 @@ import { groundH } from './terrain.js';
 import { humanoid, boarMesh, wolfMesh, makeLabel } from './entities.js';
 import { critters, npcs } from './state.js';
 import { rand } from './utils.js';
+import { addCircle, addRect } from './colliders.js';
 
 const M = {
   trunk:    new THREE.MeshLambertMaterial({ color: 0x6b4a2f }),
@@ -25,6 +26,7 @@ function tree(x, z, dark) {
     c.position.y = 2.6 + i * 1.5; c.castShadow = true; g.add(c);
   }
   g.position.set(x, h, z); scene.add(g);
+  addCircle(x, z, .55); // trunk only — canopy overhang is walkable
 }
 
 function house(x, z, rot, scale = 1) {
@@ -34,6 +36,7 @@ function house(x, z, rot, scale = 1) {
   const r = new THREE.Mesh(new THREE.ConeGeometry(4.6 * scale, 2.6 * scale, 4), M.roof);
   r.position.y = 4.9 * scale; r.rotation.y = Math.PI / 4; r.castShadow = true; g.add(r);
   g.position.set(x, groundH(x, z), z); g.rotation.y = rot; scene.add(g);
+  addRect(x, z, 6 * scale, 5 * scale, rot);
 }
 
 function campfire(x, z) {
@@ -47,6 +50,7 @@ function campfire(x, z) {
   fire.position.y = .7; g.add(fire); g.userData.fire = fire;
   const light = new THREE.PointLight(0xff8830, 1, 16); light.position.y = 1.4; g.add(light);
   g.position.set(x, groundH(x, z), z); scene.add(g);
+  addCircle(x, z, .9);
   return g;
 }
 
@@ -66,6 +70,7 @@ house(12, -11, -Math.PI * .2); house(-8, -15, Math.PI * .15, 1.3);
     p.position.set(dx, 1.5, 0); w.add(p);
   }
   w.position.set(0, groundH(0, 0), 0); scene.add(w);
+  addCircle(0, 0, 1.6);
 }
 
 // Flora
@@ -76,8 +81,10 @@ for (let i = 0; i < 150; i++) {
 for (let i = 0; i < 45; i++) {
   const x = rand(-190, 190), z = rand(-190, 190);
   if (Math.hypot(x, z) < 30) continue;
-  const r = new THREE.Mesh(new THREE.DodecahedronGeometry(rand(.5, 1.8)), M.rock);
+  const size = rand(.5, 1.8);
+  const r = new THREE.Mesh(new THREE.DodecahedronGeometry(size), M.rock);
   r.position.set(x, groundH(x, z) + .2, z); r.castShadow = true; scene.add(r);
+  if (size > .9) addCircle(x, z, size * .8); // small rocks are step-over pebbles
 }
 
 export const fires = [campfire(-92, 62), campfire(-86, 70), campfire(108, -62)];

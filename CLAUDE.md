@@ -6,7 +6,26 @@ to card duels, collect card *instances* that accrue history and power.
 Deeper notes live in `.claude/`:
 - `.claude/DESIGN.md` — vision, design pillars, decisions and their reasoning
 - `.claude/DEPLOYMENT.md` — deployment checklist (TLS, hashing, hosting…)
+- `.claude/WORKFLOW.md` — **required working style**: worktree per task →
+  verify → merge to main → deploy to Fly.io
 - `.claude/STATUS.md` — session handoff: env state, test account, next steps
+
+## Working style (see .claude/WORKFLOW.md for the full procedure)
+
+- Do feature work in a **git worktree** on a `feat/…` branch, never directly
+  on `main` (`git worktree add ../emberwood-<name> -b feat/<name>`; run
+  `npm install` there — node_modules is gitignored). One worktree = one
+  branch = one agent, so parallel agents can't conflict.
+- The primary checkout (`~/dev/emberwood-online`) stays on `main`: it alone
+  runs the dev servers (ports 8081/5175) and performs merges and deploys.
+  Gates are light while the realm has no real players (tight-loop posture):
+  `npm run build` + `node --check` on changed server/shared files. Revisit
+  in WORKFLOW.md §2 when real users arrive.
+- **Merging to main = deploying.** After verification gates pass, merge
+  (`--no-ff`, serially if multiple branches are ready), then `fly deploy`
+  (app `tcg-mmo`) and confirm `https://tcg-mmo.fly.dev/health` returns 200.
+  Backup `/data/profiles.json` first when server/profile code changed.
+  Never merge or deploy with a failing build — the realm is live.
 
 ## Run
 
@@ -60,6 +79,18 @@ progression) when the server is down; it auto-reconnects every 4s.
 - `client/src/escMenu.js` — Esc menu (resume / controls / log out); Esc closes
   the deck builder first if it's open
 - `client/src/cardZoom.js` — hover inspector for any `[data-card]` element
+- `shared/sets/core/packs.js` — supply-pack definitions + rarity-weighted
+  `rollPack()`. Coin economy: duel wins pay 5 (NPC) / 10 (PvP) — autobattle
+  included (QoL decision, DESIGN.md); packs are the sink,
+  sold in-world by Marla (`client/src/shop.js`, E when no quest business).
+  Server validates coins + proximity and mints (`buyPack` in server/index.js).
+  No crafting — deliberate, see DESIGN.md ("packs complement trading,
+  crafting substitutes for it").
+- `client/src/colliders.js` — 2D collision registry: world.js builders register
+  circles (trees/well/rocks/campfires) and rotated rects (houses) alongside
+  their meshes; `resolveCollision(x, z, r)` push-out runs after movement in
+  main.js (player + critters). New obstacles must register here or they're
+  walk-through. Client-side only — position is cosmetic/client-authoritative.
 
 ## Client conventions
 
@@ -94,7 +125,8 @@ progression) when the server is down; it auto-reconnects every 4s.
 ## Current state / known issues
 
 - Balance: boarherd starter beats redsash ~75% in AI-vs-AI.
-- Autobattle earns full renown/XP (idle-farming policy undecided).
+- Autobattle earns full rewards (coins/XP/renown) — decided 2026-07-08, it's
+  a QoL feature; see DESIGN.md before adding any autobattle penalty.
 - World position is persisted server-side (profile.x/z/yaw, updated in memory
   per pos msg, saved on disconnect + any other profile save; `welcome` carries
   it and the client snaps to it — works cross-device). Fresh characters spawn

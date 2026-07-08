@@ -13,6 +13,7 @@ import { STARTER_DECKS } from '../shared/sets/core/cards.js';
 import { DUELISTS } from '../shared/sets/core/duelists.js';
 import { applyXP } from '../shared/progression.js';
 import { questById, canAccept, canTurnin, progressDuelWin } from '../shared/quests.js';
+import { PACKS, rollPack } from '../shared/sets/core/packs.js';
 import { mintCard, levelOf, levelPoints, LEGEND_BUDGET, LEVEL_NAMES, renownFromDuel } from '../shared/chronicle.js';
 
 const PORT = +(process.env.PORT || 8081);
@@ -205,6 +206,7 @@ const challenges = new Map();    // 'fromId:targetId' -> expiry ms
 const tradeInvites = new Map();  // 'fromId:targetId' -> expiry ms
 const CHALLENGE_TTL_MS = 20_000;
 const CHALLENGE_RANGE = 10;      // world units; client requires 3.9, slack for pos lag
+const VENDOR_RANGE = 10;         // same slack for buying from an NPC vendor
 const TRADE_MAX_CARDS = 8;
 
 // world clock: 20 real minutes per day, derived from wall time (50s per game
@@ -296,9 +298,14 @@ function onDuelWin(w, room) {
   const winner = room.players[w];
   if (winner.ai || !winner.profile) return;
   applyXP(winner.profile, room.kind === 'npc' ? 40 : 60);
+  // coin faucet — autobattle earns full rewards by decision (DESIGN.md
+  // 2026-07-08: it's QoL, automation is possible either way)
+  const coins = room.kind === 'npc' ? 5 : 10;
+  winner.profile.coins += coins;
   const events = progressDuelWin(winner.profile, room.npcId);
   markDirty();
   if (winner.live) {
+    if (coins) send(winner.live, { t: 'coinGain', amount: coins });
     for (const ev of events) send(winner.live, { t: 'questEvent', kind: 'progress', ...ev });
   }
 }
@@ -475,6 +482,24 @@ wss.on('connection', (ws, req) => {
           send(me, { t: 'questEvent', kind: 'completed', id: msg.id });
           sendProfile(me);
         }
+        break;
+      }
+      case 'buyPack': {
+        // proximity vendor purchase — validated like everything else that
+        // grants cards: server checks coins + range and mints authoritatively
+        const pack = PACKS[msg.pack];
+        if (!pack || me.room || me.trade) break;
+        if (Math.hypot(me.x - pack.vendor.x, me.z - pack.vendor.z) > VENDOR_RANGE) break;
+        if (me.profile.coins < pack.price) {
+          send(me, { t: 'packResult', error: 'Not enough coins.' });
+          break;
+        }
+        me.profile.coins -= pack.price;
+        const pulls = rollPack(pack).map(id => grant(me.profile, id, 'Bought from ' + pack.vendor.name));
+        markDirty();
+        sendProfile(me);   // coins + new cards land before the reveal renders
+        send(me, { t: 'packResult', pack: pack.id, cards: pulls.map(c => ({ cardId: c.cardId, iid: c.iid })) });
+        console.log(`${me.name} bought a ${pack.name} (${pulls.map(c => c.cardId).join(', ')})`);
         break;
       }
       case 'tradeRequest': {

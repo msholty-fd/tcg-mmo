@@ -8,8 +8,9 @@ import { player, critters } from './state.js';
 import { fires, torches, marla, aldric } from './world.js';
 import { log, updateHUD } from './ui.js';
 import { keys, cam, started, setStarted } from './input.js';
+import { resolveCollision } from './colliders.js';
 import { nearestInteract, handleInteract, tickDialogue } from './interact.js';
-import { renderTracker, updateMark } from './quests.js';
+import { renderTracker, updateMark, npcQuest, npcTurnin } from './quests.js';
 import { initCollection } from './collection.js';
 import { startNet, initNet, netTick, nearestRemote, challengePlayer, requestTrade } from './net.js';
 import { initDuels, duelActive } from './duel/duelManager.js';
@@ -152,6 +153,8 @@ function update(dt) {
     player.z += Math.cos(a) * player.speed * dt;
     const r = Math.hypot(player.x, player.z);
     if (r > 210) { player.x *= 210 / r; player.z *= 210 / r; }
+    const c = resolveCollision(player.x, player.z, .5);
+    player.x = c.x; player.z = c.z;
     player.yaw = a; player.mesh.rotation.y = a;
   }
   player.vy -= 22 * dt;
@@ -182,6 +185,8 @@ function update(dt) {
     if (d > .6) {
       const a = Math.atan2(c.tx - c.x, c.tz - c.z);
       c.x += Math.sin(a) * 1.3 * dt; c.z += Math.cos(a) * 1.3 * dt; c.mesh.rotation.y = a;
+      const p = resolveCollision(c.x, c.z, .4);
+      c.x = p.x; c.z = p.z;
     }
     c.mesh.position.set(c.x, groundH(c.x, c.z), c.z);
   }
@@ -195,7 +200,9 @@ function update(dt) {
   if ((n || rp) && hudOpen('prompt')) {
     pr.style.display = 'block';
     $('prompt-text').innerHTML = n
-      ? (n.duelist ? `<b>E</b> — challenge ${n.name}` : `<b>E</b> — speak with ${n.name}`)
+      ? (n.duelist ? `<b>E</b> — challenge ${n.name}`
+        : n === marla && !npcQuest(n) && !npcTurnin(n) ? `<b>E</b> — browse ${n.name}'s wares`
+        : `<b>E</b> — speak with ${n.name}`)
       : `<b>E</b> — challenge · <b>T</b> — trade with ${rp.name} <span style="color:#8fd0f0">(player)</span>`;
   } else {
     pr.style.display = 'none';

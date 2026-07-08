@@ -16,6 +16,7 @@ import { LEVEL_NAMES } from '../../shared/chronicle.js';
 import { startRemoteDuel, applyRemoteView, endRemoteDuel, duelActive } from './duel/duelManager.js';
 import { setGameHour } from './main.js';   // safe cycle: called at runtime only
 import { initTrade, onTradeInvite, onTradeStart, onTradeState, onTradeComplete, onTradeCancelled } from './trade.js';
+import { initShop, onPackResult } from './shop.js';
 
 // production build is served by the game server itself, so the WS lives on
 // our own origin; dev keeps Vite (:5175) + server (:8081) split
@@ -158,6 +159,13 @@ function handle(msg) {
         log(`🃏 Your ${getCard(ev.cardId).name} has become ${LEVEL_NAMES[ev.level]}!`, 'ding');
       }
       break;
+    case 'coinGain':
+      log(`You earned 🪙 ${msg.amount}.`, 'sys');
+      fct(player.x, groundH(player.x, player.z) + 2.6, player.z, `+${msg.amount} 🪙`, 'heal');
+      break;
+    case 'packResult':
+      onPackResult(msg);
+      break;
     case 'tradeInvite': onTradeInvite(msg); break;
     case 'tradeStart': onTradeStart(msg); break;
     case 'tradeState': onTradeState(msg); break;
@@ -258,5 +266,9 @@ export function initNet() {
     sendTradeOffer: (iids, coins) => connected && ws.send(JSON.stringify({ t: 'tradeOffer', iids, coins })),
     sendTradeConfirm: () => connected && ws.send(JSON.stringify({ t: 'tradeConfirm' })),
     sendTradeCancel: () => connected && ws.send(JSON.stringify({ t: 'tradeCancel' })),
+  });
+  initShop({
+    isConnected: () => connected,
+    sendBuyPack: pack => connected && ws.send(JSON.stringify({ t: 'buyPack', pack })),
   });
 }
