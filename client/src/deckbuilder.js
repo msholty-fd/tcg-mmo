@@ -8,6 +8,7 @@ import { levelOf, levelPoints, LEVEL_NAMES, LEGEND_BUDGET, RENOWN_THRESHOLDS } f
 import { getCards, getDeck, getInstance, setDeck } from './collection.js';
 import { log } from './ui.js';
 import { artFor } from './pixelArt.js';
+import { FAMILIES } from '../../shared/sets/core/families.js';
 
 export const DECK_SIZE = 30;
 export const MAX_COPIES = 3;
@@ -15,6 +16,103 @@ export const MAX_COPIES = 3;
 export let deckbuilderOpen = false;
 
 let working = [];   // selected instance iids
+
+// ---- collection organization: family grouping (core set) + set tabs ----
+// families.js is a curated cardId -> family mapping kept OUT of cards.js on
+// purpose (see DESIGN.md) so the deck builder can show flavorful sections
+// without touching a field on every card definition, and without colliding
+// with concurrent sessions that edit cards.js constantly. Non-core sets
+// (e.g. emberpeaks) have no family data yet and get their own ungrouped
+// set-section instead, driven straight off each card's `.set` — new sets
+// need zero deckbuilder.js changes to show up as a tab.
+const FAMILY_BY_CARD = new Map();
+for (const fam of FAMILIES) for (const id of fam.cardIds) FAMILY_BY_CARD.set(id, fam.id);
+const UNCATEGORIZED = { id: 'uncategorized', name: 'Uncategorized' };
+const SET_LABELS = { core: 'Core', emberpeaks: 'The Emberpeaks' };
+const labelForSet = s => SET_LABELS[s] || (s.charAt(0).toUpperCase() + s.slice(1));
+
+function familyOf(cardId) {
+  const famId = FAMILY_BY_CARD.get(cardId);
+  return FAMILIES.find(f => f.id === famId) || UNCATEGORIZED;
+}
+
+let activeSet = 'all';      // 'all' | 'core' | any other card.set value (e.g. 'emberpeaks')
+let activeFamily = 'all';   // 'all' | a FAMILIES id | 'uncategorized'
+
+// Group all registered cards into display sections honoring the current
+// set/family filters. Core cards are grouped by family (FAMILIES order,
+// Uncategorized last); every other set gets one ungrouped section, shown
+// only when the family filter is 'all' (family filtering doesn't apply to
+// sets with no family data — picking a non-core set tab resets it, see
+// renderFilters()).
+function buildSections() {
+  const all = allCards();
+  const setIds = [...new Set(all.map(c => c.set))];
+  const sections = [];
+
+  if ((activeSet === 'all' || activeSet === 'core') && setIds.includes('core')) {
+    const byFam = new Map();
+    for (const def of all.filter(c => c.set === 'core')) {
+      const fam = familyOf(def.id);
+      if (!byFam.has(fam.id)) byFam.set(fam.id, { id: fam.id, name: fam.name, cards: [] });
+      byFam.get(fam.id).cards.push(def);
+    }
+    for (const f of [...FAMILIES, UNCATEGORIZED]) {
+      if (!byFam.has(f.id)) continue;
+      if (activeFamily !== 'all' && activeFamily !== f.id) continue;
+      sections.push(byFam.get(f.id));
+    }
+  }
+
+  if (activeFamily === 'all') {
+    for (const s of setIds) {
+      if (s === 'core') continue;
+      if (activeSet !== 'all' && activeSet !== s) continue;
+      sections.push({ id: 'set:' + s, name: labelForSet(s), cards: all.filter(c => c.set === s) });
+    }
+  }
+
+  return sections;
+}
+
+function renderFilters() {
+  const all = allCards();
+  const setIds = [...new Set(all.map(c => c.set))];
+
+  const tabs = $('db-tabs');
+  tabs.innerHTML = '';
+  const tabDefs = [{ id: 'all', label: 'All Sets' }, ...setIds.map(s => ({ id: s, label: labelForSet(s) }))];
+  for (const t of tabDefs) {
+    const btn = document.createElement('button');
+    btn.textContent = t.label;
+    if (activeSet === t.id) btn.classList.add('active');
+    btn.onclick = () => {
+      activeSet = t.id;
+      if (t.id !== 'all' && t.id !== 'core') activeFamily = 'all';   // non-core sets have no families
+      renderFilters();
+      renderGrid();
+    };
+    tabs.appendChild(btn);
+  }
+
+  const chips = $('db-chips');
+  chips.innerHTML = '';
+  if (activeSet === 'all' || activeSet === 'core') {
+    const coreCards = all.filter(c => c.set === 'core');
+    const hasUncategorized = coreCards.some(c => !FAMILY_BY_CARD.has(c.id));
+    const famDefs = [{ id: 'all', name: 'All' }, ...FAMILIES, ...(hasUncategorized ? [UNCATEGORIZED] : [])];
+    for (const f of famDefs) {
+      const btn = document.createElement('button');
+      btn.textContent = f.name;
+      if (activeFamily === f.id) btn.classList.add('active');
+      btn.onclick = () => { activeFamily = f.id; renderFilters(); renderGrid(); };
+      chips.appendChild(btn);
+    }
+    chips.style.display = '';
+  } else {
+    chips.style.display = 'none';
+  }
+}
 
 export function toggleDeckbuilder() {
   if (deckbuilderOpen) close();
@@ -25,6 +123,7 @@ function open() {
   deckbuilderOpen = true;
   working = getDeck().filter(iid => getInstance(iid));
   $('deckbuilder').classList.add('open');
+  renderFilters();
   render();
 }
 
@@ -48,33 +147,7 @@ function render() {
   $('db-legend').className = legend > LEGEND_BUDGET ? 'bad' : '';
   $('db-save').disabled = total !== DECK_SIZE || legend > LEGEND_BUDGET;
 
-  // group owned instances by cardId
-  const groups = new Map();
-  for (const inst of getCards()) {
-    if (!groups.has(inst.cardId)) groups.set(inst.cardId, []);
-    groups.get(inst.cardId).push(inst);
-  }
-  for (const g of groups.values()) g.sort((a, b) => b.renown - a.renown);
-
-  const grid = $('db-collection');
-  grid.innerHTML = '';
-  const cards = allCards().slice().sort((a, b) => a.cost - b.cost || a.name.localeCompare(b.name));
-  for (const def of cards) {
-    const owned = groups.get(def.id) || [];
-    const inDeck = working.filter(iid => getInstance(iid).cardId === def.id).length;
-    const best = owned[0];
-    const slot = document.createElement('div');
-    slot.className = 'db-slot';
-    const el = cardEl(def, best ? instLevel(best) : 0);
-    if (!owned.length) el.classList.add('none');
-    const badge = document.createElement('div');
-    badge.className = 'owned' + (inDeck ? ' indeck' : '');
-    badge.textContent = inDeck ? `${inDeck} in deck · own ${owned.length}` : `own ${owned.length}`;
-    slot.appendChild(el); slot.appendChild(badge);
-    el.onclick = () => addCopy(def.id, groups);
-    el.oncontextmenu = ev => { ev.preventDefault(); if (owned.length) showChronicle(def, owned); };
-    grid.appendChild(slot);
-  }
+  renderGrid();
 
   // deck list, grouped
   const list = $('db-deck-list');
@@ -102,6 +175,51 @@ function render() {
       render();
     };
     list.appendChild(row);
+  }
+}
+
+// Rebuilds just the collection grid (card slots grouped into family/set
+// sections) — split out from render() so clicking a filter tab/chip doesn't
+// need to touch the deck count/legend/deck-list.
+function renderGrid() {
+  // group owned instances by cardId
+  const groups = new Map();
+  for (const inst of getCards()) {
+    if (!groups.has(inst.cardId)) groups.set(inst.cardId, []);
+    groups.get(inst.cardId).push(inst);
+  }
+  for (const g of groups.values()) g.sort((a, b) => b.renown - a.renown);
+
+  const grid = $('db-grid');
+  grid.innerHTML = '';
+
+  for (const section of buildSections()) {
+    const header = document.createElement('div');
+    header.className = 'db-fam-header';
+    header.textContent = section.name;
+    const n = document.createElement('span');
+    n.className = 'n';
+    n.textContent = `(${section.cards.length})`;
+    header.appendChild(n);
+    grid.appendChild(header);
+
+    const cards = section.cards.slice().sort((a, b) => a.cost - b.cost || a.name.localeCompare(b.name));
+    for (const def of cards) {
+      const owned = groups.get(def.id) || [];
+      const inDeck = working.filter(iid => getInstance(iid).cardId === def.id).length;
+      const best = owned[0];
+      const slot = document.createElement('div');
+      slot.className = 'db-slot';
+      const el = cardEl(def, best ? instLevel(best) : 0);
+      if (!owned.length) el.classList.add('none');
+      const badge = document.createElement('div');
+      badge.className = 'owned' + (inDeck ? ' indeck' : '');
+      badge.textContent = inDeck ? `${inDeck} in deck · own ${owned.length}` : `own ${owned.length}`;
+      slot.appendChild(el); slot.appendChild(badge);
+      el.onclick = () => addCopy(def.id, groups);
+      el.oncontextmenu = ev => { ev.preventDefault(); if (owned.length) showChronicle(def, owned); };
+      grid.appendChild(slot);
+    }
   }
 }
 
