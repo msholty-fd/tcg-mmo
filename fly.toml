@@ -9,7 +9,8 @@ primary_region = 'sjc'
 [build]
 
 [env]
-  DATA_FILE = '/data/profiles.json'
+  DB_FILE = '/data/profiles.db'
+  DATA_FILE = '/data/profiles.json'   # legacy JSON; imported into the DB on first boot
   PORT = '8080'
   TRUST_PROXY = '1'
 

@@ -4,6 +4,11 @@ client/dist/
 # player data — collections, Chronicle histories, password hashes
 server/profiles.json
 server/profiles.json.tmp
+server/profiles.json.migrated
+server/profiles.db
+server/profiles.db-journal
+server/profiles.db-wal
+server/profiles.db-shm
 
 # local session handoff (contains test-account credentials; repo is public)
 .claude/STATUS.md

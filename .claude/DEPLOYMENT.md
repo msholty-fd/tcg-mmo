@@ -48,11 +48,12 @@ First UI-driven deploy (release v1) failed for two reasons:
 ### Repo & Fly.io (added 2026-07-07)
 
 - GitHub: https://github.com/msholty-fd/tcg-mmo (**public** — `.gitignore`
-  excludes `server/profiles.json` (player data + password hashes) and
-  `.claude/STATUS.md` (contains the test account password; local-only)).
+  excludes `server/profiles.db` + legacy `profiles.json*` (player data +
+  password hashes) and `.claude/STATUS.md` (test account password; local-only)).
 - `Dockerfile` builds the client and runs the server; `fly.toml` maps a
-  volume to `/data` and sets `DATA_FILE=/data/profiles.json` (the server
-  reads `DATA_FILE` env, defaulting to `server/profiles.json` for dev).
+  volume to `/data` and sets `DB_FILE=/data/profiles.db` (the server reads
+  `DB_FILE` env, defaulting to `server/profiles.db` for dev). `DATA_FILE`
+  still points at the legacy JSON so a first boot can import it.
 - First deploy:
   ```
   fly apps create tcg-mmo
@@ -64,7 +65,7 @@ First UI-driven deploy (release v1) failed for two reasons:
   and sends SIGINT on stop/migrate (server flushes profiles). Auto-stop is
   disabled — a sleeping game server would disconnect everyone.
 - Backups: `fly volumes snapshots list <vol>` (automatic dailies) — plus copy
-  `/data/profiles.json` off-box before risky changes (`fly ssh sftp get`).
+  `/data/profiles.db` off-box before risky changes (`fly ssh sftp get`).
 
 ## Security (blockers — do these before the server touches the internet)
 
@@ -130,12 +131,14 @@ Gaps not covered by the original checklist; all live in `server/index.js` /
 
 ## Data
 
-- [ ] **Persistence upgrade** — profiles live in `server/profiles.json`
-      (debounced full-file rewrite). Fine for dozens of players; move to SQLite
-      before it matters. Schema is simple: profiles keyed by token.
+- [x] **Persistence upgrade** — profiles moved to SQLite (2026-07-08):
+      `server/db.js` (node:sqlite, built into Node 22 — zero deps), one row
+      per profile (token PK, name, JSON data), dirty profiles upserted in one
+      transaction on the same 1s debounce. Legacy `profiles.json` is imported
+      once on boot and renamed `*.migrated`.
 - [x] **Backups (baseline)** — Fly takes automatic daily volume snapshots
       (`fly volumes snapshots list`). Manual `fly ssh sftp get
-      /data/profiles.json` before risky changes. Revisit (off-provider copy)
+      /data/profiles.db` before risky changes. Revisit (off-provider copy)
       if the realm's population starts to matter.
 - [ ] **Server-side session expiry** — tokens never expire. Decide on a policy
       (probably fine to leave for now).
@@ -164,7 +167,7 @@ Gaps not covered by the original checklist; all live in `server/index.js` /
 ## How it runs today (reference)
 
 ```
-npm run server   # WS game server on :8081, profiles in server/profiles.json
+npm run server   # WS game server on :8081, profiles in server/profiles.db (SQLite)
 npm run dev      # Vite client on :5175 (dev)
 npm run build    # static client bundle in client/dist
 ```

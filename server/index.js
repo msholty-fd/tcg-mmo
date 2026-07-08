@@ -8,6 +8,7 @@ import http from 'node:http';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { openProfileStore } from './db.js';
 import { DuelRoom } from './duelRoom.js';
 import { STARTER_DECKS } from '../shared/sets/core/cards.js';
 import { DUELISTS } from '../shared/sets/core/duelists.js';
@@ -18,57 +19,54 @@ import { mintCard, levelOf, levelPoints, LEGEND_BUDGET, LEVEL_NAMES, renownFromD
 
 const PORT = +(process.env.PORT || 8081);
 const DIR = path.dirname(fileURLToPath(import.meta.url));
-const DATA_FILE = process.env.DATA_FILE || path.join(DIR, 'profiles.json');
+const DB_FILE = process.env.DB_FILE || path.join(DIR, 'profiles.db');
+const LEGACY_DATA_FILE = process.env.DATA_FILE || path.join(DIR, 'profiles.json');
 const DIST_DIR = path.join(DIR, '../client/dist');
 const MAX_COPIES = 3;
 const WORLD_RADIUS = 220;   // playable disc is r=210 (client/src/main.js); slack for lag
 
-// ---- profiles (persistent) ----
+// ---- profiles (persistent, SQLite — see db.js) ----
 // profile: {name, outfit, cards: [instance], deck: [iid], xp, lvl, coins, quests}
-let profiles = {};
-try {
-  profiles = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-} catch (err) {
-  if (err.code !== 'ENOENT') {
-    // starting with {} here would overwrite every player on the next save
-    console.error(`FATAL: ${DATA_FILE} exists but could not be parsed: ${err.message}`);
-    console.error('Refusing to start. Fix or move the file, then restart.');
-    process.exit(1);
-  }
+// The in-memory map stays the runtime source of truth (game code mutates
+// profiles in place); the DB is the durable copy, written per-profile.
+const store = openProfileStore(DB_FILE, LEGACY_DATA_FILE);
+const profiles = store.loadAll();
+
+const tokenOf = new Map(Object.entries(profiles).map(([t, p]) => [p, t]));
+function registerProfile(token, profile) {
+  profiles[token] = profile;
+  tokenOf.set(profile, token);
 }
 
-// writes go to a temp file then rename, so a crash mid-write can't truncate
-const TMP_FILE = DATA_FILE + '.tmp';
+const dirty = new Set();   // tokens with unsaved changes
 let saveT = null;
-function markDirty() {
+function markDirty(profile) {
+  const token = tokenOf.get(profile);
+  if (!token) return console.error('markDirty: unregistered profile', profile && profile.name);
+  dirty.add(token);
   if (saveT) return;
-  saveT = setTimeout(() => {
-    saveT = null;
-    fs.writeFile(TMP_FILE, JSON.stringify(profiles), err => {
-      if (err) return console.error('profile save failed:', err.message);
-      fs.rename(TMP_FILE, DATA_FILE, err2 => {
-        if (err2) console.error('profile save failed:', err2.message);
-      });
-    });
-  }, 1000);
+  saveT = setTimeout(flushProfiles, 1000);
 }
 
-function flushProfilesSync() {
+function flushProfiles() {
   clearTimeout(saveT);
   saveT = null;
+  if (!dirty.size) return;
+  const entries = [...dirty].map(t => [t, profiles[t]]);
+  dirty.clear();
   try {
-    fs.writeFileSync(TMP_FILE, JSON.stringify(profiles));
-    fs.renameSync(TMP_FILE, DATA_FILE);
+    store.saveMany(entries);
   } catch (err) {
-    console.error('profile flush failed:', err.message);
+    console.error('profile save failed:', err.message);
+    for (const [t] of entries) dirty.add(t);   // retried on the next flush
   }
 }
 
-process.on('SIGINT', () => { flushProfilesSync(); process.exit(0); });
-process.on('SIGTERM', () => { flushProfilesSync(); process.exit(0); });
+process.on('SIGINT', () => { flushProfiles(); process.exit(0); });
+process.on('SIGTERM', () => { flushProfiles(); process.exit(0); });
 process.on('uncaughtException', err => {
   console.error('uncaught exception:', err);
-  flushProfilesSync();
+  flushProfiles();
   process.exit(1);
 });
 
@@ -81,7 +79,7 @@ function setPassword(profile, pw) {
   profile.salt = crypto.randomBytes(16).toString('hex');
   profile.passwordHash = hashPw(pw, profile.salt);
   profile.pwAlg = 'scrypt';
-  markDirty();
+  markDirty(profile);
 }
 
 function verifyPw(profile, pw) {
@@ -127,7 +125,7 @@ function validDeck(profile, iids) {
 function grant(profile, cardId, origin) {
   const inst = mintCard(cardId, origin, profile.name);
   profile.cards.push(inst);
-  markDirty();
+  markDirty(profile);
   return inst;
 }
 
@@ -283,7 +281,8 @@ function executeTrade(tr) {
   move(b, a, tr.offers[1].iids);
   a.profile.coins += tr.offers[1].coins - tr.offers[0].coins;
   b.profile.coins += tr.offers[0].coins - tr.offers[1].coins;
-  markDirty();
+  markDirty(a.profile);
+  markDirty(b.profile);
   for (const p of tr.players) {
     p.trade = null;
     send(p, { t: 'tradeComplete' });
@@ -303,7 +302,7 @@ function onDuelWin(w, room) {
   const coins = room.kind === 'npc' ? 5 : 10;
   winner.profile.coins += coins;
   const events = progressDuelWin(winner.profile, room.npcId);
-  markDirty();
+  markDirty(winner.profile);
   if (winner.live) {
     if (coins) send(winner.live, { t: 'coinGain', amount: coins });
     for (const ev of events) send(winner.live, { t: 'questEvent', kind: 'progress', ...ev });
@@ -330,7 +329,7 @@ function onChronicle(room) {
       const after = levelOf(inst.renown);
       if (after > before) events.push({ iid: inst.iid, cardId: inst.cardId, level: after, levelName: LEVEL_NAMES[after] });
     }
-    markDirty();
+    markDirty(p.profile);
     if (p.live) {
       if (events.length) send(p.live, { t: 'chronicle', events });
       sendProfile(p.live);
@@ -404,9 +403,8 @@ wss.on('connection', (ws, req) => {
           if (password.length < 3) return fail('Choose a password (3+ characters) so you can recover this character later.');
           token = crypto.randomUUID();
           profile = newProfile(name, outfit, msg.deck);
-          setPassword(profile, password);
-          profiles[token] = profile;
-          markDirty();
+          registerProfile(token, profile);
+          setPassword(profile, password);   // marks the (registered) profile dirty
         }
       }
       // a new login supersedes any lingering session (covers ghost connections)
@@ -460,13 +458,13 @@ wss.on('connection', (ws, req) => {
         break;
       }
       case 'deck':
-        if (validDeck(me.profile, msg.deck)) { me.profile.deck = [...msg.deck]; markDirty(); }
+        if (validDeck(me.profile, msg.deck)) { me.profile.deck = [...msg.deck]; markDirty(me.profile); }
         else send(me, { t: 'chat', from: '[Server]', text: 'Deck rejected — invalid cards or Legend Budget exceeded.' });
         break;
       case 'questAccept': {
         if (canAccept(me.profile, msg.id)) {
           me.profile.quests[msg.id] = { state: 'active', have: 0 };
-          markDirty();
+          markDirty(me.profile);
           send(me, { t: 'questEvent', kind: 'accepted', id: msg.id });
           sendProfile(me);
         }
@@ -478,7 +476,7 @@ wss.on('connection', (ws, req) => {
           me.profile.quests[msg.id].state = 'completed';
           applyXP(me.profile, q.xp);
           me.profile.coins += q.coins;
-          markDirty();
+          markDirty(me.profile);
           send(me, { t: 'questEvent', kind: 'completed', id: msg.id });
           sendProfile(me);
         }
@@ -496,7 +494,7 @@ wss.on('connection', (ws, req) => {
         }
         me.profile.coins -= pack.price;
         const pulls = rollPack(pack).map(id => grant(me.profile, id, 'Bought from ' + pack.vendor.name));
-        markDirty();
+        markDirty(me.profile);
         sendProfile(me);   // coins + new cards land before the reveal renders
         send(me, { t: 'packResult', pack: pack.id, cards: pulls.map(c => ({ cardId: c.cardId, iid: c.iid })) });
         console.log(`${me.name} bought a ${pack.name} (${pulls.map(c => c.cardId).join(', ')})`);
@@ -591,7 +589,7 @@ wss.on('connection', (ws, req) => {
   ws.on('close', () => {
     if (!me || players.get(me.id) !== me) return;   // already superseded by a newer login
     players.delete(me.id);
-    markDirty();   // persist last position (profile.x/z/yaw)
+    markDirty(me.profile);   // persist last position (profile.x/z/yaw)
     if (me.trade) endTrade(me.trade, me.name + ' disconnected.');
     console.log(`leave: ${me.name} (#${me.id}, ${players.size} online)`);
     if (me.room && me.room.duel.winner === null) {
