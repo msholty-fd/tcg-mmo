@@ -53,6 +53,15 @@ export const CAMPS = [
   // scenic discovery, not enterable (seeds future underground content). See
   // DESIGN.md "Cinderhollow Mine".
   { x: -15, z: 115, r: 18, name: 'Cinderhollow Mine' },
+  // ---- The Emberpeaks: the first zone beyond the grassland (2026-07-08) ----
+  // A volcanic mountain range walling off the far north. You cross the ridge
+  // through Cinderpass (a gap in the boulder wall at x=0, z~158) into the
+  // Emberpeaks basin beyond. Listed before the basin so the pass label wins
+  // in their small overlap. See DESIGN.md "Emberpeaks". The terrain, ridge,
+  // and volcanic recolor live in terrain.js; the world boundary was grown
+  // 210→300 (main.js) to make the basin reachable.
+  { x: 0, z: 158, r: 15, name: 'Cinderpass' },
+  { x: 0, z: 235, r: 92, name: 'The Emberpeaks' },
 ];
 
 export const BOTCHAT = [

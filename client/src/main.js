@@ -165,7 +165,11 @@ function update(dt) {
     player.x += Math.sin(a) * player.speed * dt;
     player.z += Math.cos(a) * player.speed * dt;
     const r = Math.hypot(player.x, player.z);
-    if (r > 210) { player.x *= 210 / r; player.z *= 210 / r; }
+    // World boundary. Grown 210→300 for the Emberpeaks basin to the far
+    // north (terrain plane is ±320, fog map is ±320, so 300 stays on-mesh
+    // and on-map). Radial, so the other edges open up too — that's just
+    // more empty grassland/Darkwood, same as before, no content there yet.
+    if (r > 300) { player.x *= 300 / r; player.z *= 300 / r; }
     const c = resolveCollision(player.x, player.z, .5);
     player.x = c.x; player.z = c.z;
     player.yaw = a; player.mesh.rotation.y = a;

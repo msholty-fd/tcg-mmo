@@ -579,8 +579,65 @@ considered and rejected.
     server) — same `spawnDuelist`/`interact.js` code path as every other
     duelist, so risk is judged low but it's a real gap, not a formality.
 
+- **Emberpeaks — the first zone BEYOND the grassland (Michael, 2026-07-08)**.
+  Michael asked for a genuinely separate biome you leave the grassland to
+  reach (options offered: lakeside fish-folk / fire mountains / underground).
+  Chose **fire-elemental mountains**, built as a **seamless continuous
+  biome** (not a portal/instance — honours the "one continuous world"
+  decision), at **full scope** (zone + its own card set + duelists). This is
+  the game's founding pillar finally realised literally: "shipping a new
+  world zone and shipping a new card set are the same act."
+  - *How "separate" works without instancing*: the overworld is one ground
+    plane. Rather than a loading transition, the Emberpeaks are walled off by
+    a **mountain ridge** to the far north; you cross through **Cinderpass**
+    (a gap in the wall) into the volcanic basin beyond. Leaving the grassland
+    is a *spatial/visual* threshold (climb through the pass, the ground turns
+    to basalt and ember), not a loading screen. Underground was declined for
+    now precisely because it can't be done seamlessly on a single ground
+    plane — it would need the rejected teleport/instance system.
+  - *Terrain (terrain.js)*: plane grown 480→640 (±320, matching the
+    fog-of-war map's HALF=320); `groundH` gains a ridge Gaussian (crest ~39 at
+    z≈160) + a raised basin, **both gated on `z` via smoothstep(135,185)** so
+    the entire existing world (all content sits at z≤130, incl. Cinderhollow
+    Mine at z=115) is bit-for-bit unchanged (verified: max height delta
+    0.0002 across existing POIs). Volcanic vertex recolor (basalt/ash/ember
+    glow) blended in by northness. World boundary grown 210→300 (main.js) so
+    the basin is reachable.
+  - *The ridge is a visual wall; the real barrier is collision*: movement has
+    no slope limit, so raised terrain alone wouldn't stop anyone walking over
+    the mountain. A dense line of collidered obsidian boulders along the crest
+    (68 colliders) forms the actual wall, with the pass as the one gap.
+  - *Phase plan (this is a multi-branch epic)*: **Phase 1 (DONE, this branch
+    `feat/emberpeaks-terrain`)** — terrain, ridge+pass barrier, volcanic
+    recolor, zone labels (Cinderpass / The Emberpeaks), basin props (lava
+    pools, obsidian spires, fumaroles, scree) and ambient **ember elementals**
+    (new `emberElementalMesh`, glowing emissive, wanders via spawnCritter).
+    All client-only (terrain/main/entities/world/constants) — deliberately
+    zero card-file touch so it can't collide with the duelist-adding sessions.
+    **Phase 2 (next)** — the `emberpeaks` **card set as its own folder**
+    (`shared/sets/emberpeaks/cards.js`, registered via side-effect import
+    alongside core in duelManager.js + duelRoom.js), fire-themed, leaning into
+    the existing Kindle/ember resource; keeps new cards OUT of the contended
+    `core/cards.js`. **Phase 3** — fire-elemental **duelists** in the basin
+    (roster in `shared/sets/emberpeaks/duelists.js`, merged into the spawn
+    lists at the world.js + server import sites), a **quest chain** to send
+    players north through the pass, and a **zone-scoped Emberpeaks pack** +
+    vendor (the pillar: beating the zone's duelists / buying its pack is how
+    its cards enter circulation).
+
 ## Open questions
 
+- **Emberpeaks needs a real in-game look (never eyeballed — preview gotcha).**
+  Phase 1 is headless-verified (terrain heights, zone labels, 68 ridge
+  colliders, 6 elementals, zero console errors) but nobody has SEEN it. Live
+  checks wanted: (a) does the ridge read as mountains and the basin as a
+  volcanic caldera, or does the elevation look wrong; (b) does Cinderpass
+  actually let you through while the boulder wall blocks the rest — the pass
+  gap is x∈[-13,13], worth confirming it's wide enough to walk but not so
+  wide the wall looks broken; (c) does the volcanic recolor + lava glow look
+  right, especially at night; (d) does the grown 300 boundary feel right and
+  not strand you on empty terrain on the non-north edges. If the ridge is
+  climbable-over anywhere but the pass, thicken the boulder line in world.js.
 - Renown pacing: thresholds 20/60/150 are untested against real play.
 - Starter balance: boarherd ~75% vs redsash (AI-vs-AI); needs a card pass.
 - Highgate placement/scale is untested in real play — verify the walk feels

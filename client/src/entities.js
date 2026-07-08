@@ -38,6 +38,26 @@ export function wolfMesh() {
   return g;
 }
 
+// Ember elemental — the Emberpeaks' ambient wildlife: a charred rock body
+// with a glowing molten core, ember-lit cracks, and a flame crown. Uses
+// emissive materials (same trick as campfire flames) so it glows day and
+// night in the volcanic basin. Wanders via spawnCritter like the beasts.
+export function emberElementalMesh(scale = 1) {
+  const g = new THREE.Group();
+  const mk = (geo, c, em) => new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ color: c, emissive: em || 0x000000 }));
+  const body = mk(new THREE.BoxGeometry(.8, 1.1, .7), 0x2a2320); body.position.y = 1.0; body.castShadow = true; g.add(body);
+  const core = mk(new THREE.SphereGeometry(.3, 8, 7), 0xff6a1a, 0xdd4400); core.position.y = 1.05; g.add(core);
+  for (const [dx, dy] of [[-.2, .7], [.25, 1.3], [0, .5], [-.12, 1.45]]) {
+    const crack = mk(new THREE.BoxGeometry(.1, .1, .74), 0xff7a20, 0xcc3300); crack.position.set(dx, dy, 0); g.add(crack);
+  }
+  const flame = mk(new THREE.ConeGeometry(.34, .9, 6), 0xff9a30, 0xdd5500); flame.position.y = 1.95; g.add(flame);
+  for (const dx of [-.22, .22]) { const l = mk(new THREE.BoxGeometry(.22, .5, .24), 0x241d1a); l.position.set(dx, .25, 0); g.add(l); }
+  // arms of molten rock
+  for (const dx of [-.5, .5]) { const a = mk(new THREE.BoxGeometry(.18, .6, .18), 0x2a2320, 0x551500); a.position.set(dx, 1.05, 0); g.add(a); }
+  g.scale.setScalar(scale);
+  return g;
+}
+
 // Ambient grazing deer — taller and leaner than the boars, with a raised
 // neck and small antlers so it reads as a deer at a glance. Same box-group
 // idiom as boarMesh/wolfMesh; wanders via spawnCritter like the rest.
