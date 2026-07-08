@@ -23,6 +23,9 @@ const grukDeck = [
 // Boarherd-based road warden, swapped with cards no earlier duelist uses.
 const verityDeck = swap(STARTER_DECKS.wardens, ['wild_boar', 'wild_boar'], ['warden_captain', 'counterspark']);
 const tarnDeck = swap(STARTER_DECKS.boarherd, ['young_boar', 'young_boar'], ['dire_wolf', 'second_harvest']);
+// The Ashen Sentinel — night-only guardian of Emberwatch Ruins (DESIGN.md).
+// Boarherd-based, swapped toward ash/ember-flavored cards no other duelist uses.
+const sentinelDeck = swap(STARTER_DECKS.boarherd, ['wild_boar', 'wild_boar', 'tusker'], ['ash_sprite', 'flame_tender', 'ashen_shambler']);
 
 export const DUELISTS = {
   rowan: {
@@ -44,5 +47,9 @@ export const DUELISTS = {
   tarn: {
     name: 'Tarn the Tollkeeper', deck: tarnDeck,
     rewards: [...tarnDeck, 'dire_wolf', 'second_harvest', 'thicket_beast'],
+  },
+  sentinel: {
+    name: 'The Ashen Sentinel', deck: sentinelDeck,
+    rewards: [...sentinelDeck, 'stoke_the_flames', 'last_rites', 'pyre_keeper'],
   },
 };

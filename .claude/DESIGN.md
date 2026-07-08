@@ -216,6 +216,38 @@ considered and rejected.
     part of the design intent, but revisit if it feels punishing once played
     live).
 
+- **Emberwatch Ruins — night-only landmark (2026-07-08)**: the first
+  standing-loop worldbuilding iteration (Michael asked for the world to keep
+  growing autonomously in a self-paced loop, committing as it goes). Picked
+  deliberately *different* from a camp/town: a ruined watchtower in the
+  unclaimed northeast wilds (100,100) whose guardian, the Ashen Sentinel,
+  only manifests 20:00–6:00 game-time. This is the "night-only content" hook
+  the night-design decision above flagged as a future possibility — first
+  time night is a mechanic, not just ambiance.
+  - *Mechanism*: `sentinel.mesh.visible` is toggled by a hard `gameHour`
+    check in main.js's per-frame `update()` (already has `gameHour` and
+    already imports NPCs from world.js, so no new import cycle).
+    `interact.js`'s `nearestInteract()` now skips NPCs with
+    `mesh.visible === false` generically — reusable by any future
+    conditionally-visible NPC, not Sentinel-specific.
+  - *Deliberately client-side only, not server-validated*: checked first —
+    the server's `npcduel` handler (server/index.js) validates NO duelist's
+    proximity or time-of-day, ever (Rowan/Vex/Gruk/Verity/Tarn included), so
+    a scripted client could already challenge any of them from anywhere.
+    Adding a server-side night check for just the Sentinel would be a new,
+    inconsistent security boundary for one landmark while leaving the same
+    "hole" open everywhere else. Matches the existing
+    client-authoritative-position and autobattle precedents (both above) —
+    the gate is about discovery/atmosphere, not fairness.
+  - *Roster*: Boarherd-based deck swapped toward the ash/ember card family
+    (`ash_sprite`, `flame_tender`, `ashen_shambler`) that no other duelist
+    uses — ties into the still-unused "kindle-matters"/ash flavor from the
+    set-expansion decision above. An eternal, untended campfire (always lit,
+    day or night) marks the ruin even before dark. Quest is discovery
+    flavor: Aldric (prereq `gruk`, so it surfaces after the existing
+    late-game chain) points at the rumor; finding the guardian itself means
+    being out there at the right hour, no map marker.
+
 ## Open questions
 
 - Renown pacing: thresholds 20/60/150 are untested against real play.
@@ -223,3 +255,8 @@ considered and rejected.
 - Highgate placement/scale is untested in real play — verify the walk feels
   like a destination, not a slog, and that the wall gate doesn't create a
   collision pinch point.
+- Emberwatch Ruins' 20:00-6:00 window is a first guess (~1/2.4 of a 20-min
+  day, ~8 real minutes) — untested whether that's a fair amount of time to
+  stumble onto it. The visibility toggle itself (mesh.visible via gameHour)
+  is also a new pattern — worth a live check that it flips cleanly at both
+  boundaries with no flicker.

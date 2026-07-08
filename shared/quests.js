@@ -118,6 +118,17 @@ export const QUESTS = [
     obj: have => `Warden Captain owned: ${have}/1`,
     thanks: "Filed and countersigned. Highgate's word is good again, and that's worth more than the card.",
   },
+  // Emberwatch Ruins — a night-only landmark (DESIGN.md). The Sentinel only
+  // manifests after dark (client-side visibility gate in world.js/main.js),
+  // so this quest is discovery flavor: Aldric points at the rumor, finding
+  // the guardian itself means being out there at the right hour.
+  {
+    id: 'ashen_sentinel', giver: 'aldric', title: 'A Light After Dark', minLvl: 4, prereq: 'gruk',
+    duels: { target: 'sentinel', need: 1 }, xp: 400, coins: 35,
+    offer: "Northeast past the wilds, there's a watchtower that's been a ruin longer than anyone's lived to remember it — and travelers swear it's lit at night, though no one tends a flame up there. If something's keeping watch, I want to know if it still remembers how to fight.",
+    obj: have => `Defeat the Ashen Sentinel: ${have}/1`,
+    thanks: "So it does still watch. Whatever's up in that tower, you've earned its respect — or at least its notice.",
+  },
 ];
 
 export const questById = id => QUESTS.find(q => q.id === id);

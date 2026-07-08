@@ -16,7 +16,10 @@ export function tickDialogue(dt) {
 
 export function nearestInteract() {
   let best = null, bd = 3.9;
-  for (const n of npcs) { const d = dist2(n, player); if (d < bd) { bd = d; best = n; } }
+  for (const n of npcs) {
+    if (n.mesh && n.mesh.visible === false) continue;   // e.g. the night-only Ashen Sentinel by day
+    const d = dist2(n, player); if (d < bd) { bd = d; best = n; }
+  }
   return best;
 }
 
