@@ -7,7 +7,7 @@ import { STARTERS, ZONES, CAMPS } from './constants.js';
 import { player, critters } from './state.js';
 import { fires, torches, marla, aldric, camCollidables, sentinel } from './world.js';
 import { log, updateHUD } from './ui.js';
-import { keys, cam, started, setStarted } from './input.js';
+import { keys, cam, started, setStarted, autoWalk } from './input.js';
 import { resolveCollision } from './colliders.js';
 import { nearestInteract, handleInteract, tickDialogue } from './interact.js';
 import { renderTracker, updateMark, npcQuest, npcTurnin } from './quests.js';
@@ -156,7 +156,7 @@ function update(dt) {
 
   // player movement
   let mx = 0, mz = 0;
-  if (keys.KeyW) mz -= 1; if (keys.KeyS) mz += 1;
+  if (keys.KeyW || autoWalk) mz -= 1; if (keys.KeyS) mz += 1;
   if (keys.KeyA) mx -= 1; if (keys.KeyD) mx += 1;
   const gy = groundH(player.x, player.z);
   if (keys.Space && player.mesh.position.y <= gy + .01 && player.vy === 0) player.vy = 7.5;
