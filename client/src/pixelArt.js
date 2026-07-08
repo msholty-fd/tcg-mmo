@@ -518,6 +518,13 @@ const CARD_ART = {
   stolen_blade:        { sprite: 'fang', pal: { w: '#c8b8a0', W: '#9a8a70', f: '#8a3a3a', F: '#a85050' } },
   ambush_horn:         { sprite: 'bell', pal: { b: '#8a3a3a', B: '#661f1f', w: '#f0d8c8', r: '#4a1414' } },
   shakedown:           { sprite: 'bolt', pal: { f: '#8a3a3a', F: '#c85a4a', r: '#5a1e1e' } },
+
+  // ---- Maren the Shrinekeeper: Ward as a persistent axis ----
+  warding_litany:      { sprite: 'plate', pal: { p: '#e8e0c8', P: '#c8b890', g: '#8fd0ff' } },
+  blessed_icon:        { sprite: 'talisman', pal: { c: '#d8c890', w: '#eaf6ff', W: '#bcd8f0' } },
+  shrines_grace:       { sprite: 'bell', pal: { b: '#eaf6ff', B: '#bcd8f0', w: '#ffffff', r: '#8fa8c0' } },
+  pilgrims_vow:        { sprite: 'rite', pal: { b: '#eaf6ff', B: '#bcd8f0', e: '#8fd0ff', f: '#ffffff' } },
+  shrine_elder:        { sprite: 'hooded', pal: { h: '#d8d0c0', H: '#b0a890', e: '#8fd0ff' } },
 };
 
 const cache = new Map();

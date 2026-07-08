@@ -465,6 +465,13 @@ export function spawnDuelist(id, x, z, opts) {
 export const rowan = spawnDuelist('rowan', 8, -3, { shirt: 0x3a6b8a, hat: 0x2a3a4a });
 export const vex = spawnDuelist('vex', -88, 66, { shirt: 0xa03a3a, hat: 0x2a2a2a });
 
+// Maren the Shrinekeeper (DESIGN.md) — stands watch at the village shrine
+// (shrine(-30, 5, -.4) above, built during the town-expansion pass and
+// purely decorative until now). Deliberately minimal footprint: no new
+// structure, no CAMPS entry — she's a reason for a building that already
+// exists to matter, not a new destination.
+export const maren = spawnDuelist('maren', -33, 8, { shirt: 0xd8d0c0, hat: 0x9a8a6a });
+
 // Gruk — the final boss duelist, boar-shaped, in his hollow of bones
 export const grukNpc = (() => {
   const def = DUELISTS.gruk;
