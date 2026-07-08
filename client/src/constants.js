@@ -46,6 +46,9 @@ export const CAMPS = [
   // Boarlands/Darkwood seam (~73 from origin) — the last safe fire before
   // the road gets dangerous. See DESIGN.md "Bram's Rest".
   { x: 20,  z: -70, r: 14, name: "Bram's Rest" },
+  // A sunken swamp in the unclaimed southwest quadrant — every other named
+  // place sits NW/SE/S/NE of origin. See DESIGN.md "Hollowmere".
+  { x: -100, z: -90, r: 22, name: 'Hollowmere' },
 ];
 
 export const BOTCHAT = [

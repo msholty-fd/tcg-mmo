@@ -303,6 +303,28 @@ considered and rejected.
     Highgate/Aldric-late-game chains — this is content for a player who
     hasn't gotten far yet, on the same road Highgate sits at the end of.
 
+- **Hollowmere — sunken swamp (2026-07-08)**: fourth standing-loop
+  iteration, placed in the one quadrant (southwest, negative x/negative z)
+  every prior landmark left empty. Deliberately no buildings, unlike every
+  earlier camp/town — dead trees, bog pools, and reed clusters around Old
+  Hessa's fire, using a new desaturated `M.deadwood`/`bogWater`/`reed`
+  palette so it reads as a swamp rather than "more forest" (`deadTree()` is
+  the first genuinely new tree silhouette — bare trunk + angled bare
+  branches — since every earlier iteration reused the green pine `tree()`).
+  - *Card budget note*: before picking Hessa's deck, checked which
+    duelist-signature cards were still untouched across all 7 existing
+    duelists (rowan/vex/gruk/verity/tarn/sentinel/footpad) — only
+    `warding_bell` was. The 2026-07-08 set-expansion decision's
+    exclusive-card budget is effectively spent; Hessa reuses
+    `ashen_shambler` (its graveyard flavor text fits a bog hermit better
+    than anywhere it's landed so far) alongside it. This is expected and
+    fine (precedent: `ashen_rite` is already shared by Rowan and Vex) but
+    worth flagging — genuinely fresh duelist-signature cards need the
+    second card set, which is now more concretely motivated than when it
+    was first flagged as a someday-item.
+  - *Old Hessa*: an independent discovery (`hessa` quest via Aldric, minLvl
+    3, no prereq) — same tier as Vex, not gated behind the late-game chain.
+
 ## Open questions
 
 - Renown pacing: thresholds 20/60/150 are untested against real play.

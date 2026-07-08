@@ -29,6 +29,14 @@ const sentinelDeck = swap(STARTER_DECKS.boarherd, ['wild_boar', 'wild_boar', 'tu
 // The footpad who works Bram's Rest (DESIGN.md) — Red-Sash-based, swapped
 // toward the two remaining ambush/road-themed cards no other duelist uses.
 const footpadDeck = swap(STARTER_DECKS.redsash, ['tusker', 'tusker'], ['red_sash_ambusher', 'hidden_snare']);
+// Old Hessa of Hollowmere (DESIGN.md) — Wardens-based, warding_bell is the
+// last fully-untouched signature card in the core set; ashen_shambler is
+// reused here (its "walks the way grief does" graveyard flavor fits a bog
+// hermit better than anywhere it's been used so far). The exclusive-card
+// budget from the 2026-07-08 set-expansion decision is now fully allocated
+// across 7 duelists — see DESIGN.md, a real second set is the next unlock
+// for fresh duelist-signature cards.
+const hessaDeck = swap(STARTER_DECKS.wardens, ['wild_boar', 'wild_boar'], ['warding_bell', 'ashen_shambler']);
 
 export const DUELISTS = {
   rowan: {
@@ -58,5 +66,9 @@ export const DUELISTS = {
   footpad: {
     name: 'A Footpad', deck: footpadDeck,
     rewards: [...footpadDeck, 'boar_pit', 'forest_sow', 'alarm_bell'],
+  },
+  hessa: {
+    name: 'Old Hessa of the Mire', deck: hessaDeck,
+    rewards: [...hessaDeck, 'warding_bell', 'last_rites', 'second_harvest'],
   },
 };

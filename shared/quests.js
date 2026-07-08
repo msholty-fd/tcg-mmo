@@ -139,6 +139,16 @@ export const QUESTS = [
     obj: have => `Defeat the footpad: ${have}/1`,
     thanks: "Bram's fire burns easier tonight. That road was never going to clear itself.",
   },
+  // Hollowmere — a sunken swamp in the unclaimed southwest (DESIGN.md).
+  // minLvl 3, no prereq: an independent discovery like Vex, not gated
+  // behind the Aldric late-game chain.
+  {
+    id: 'hessa', giver: 'aldric', title: 'What the Mire Remembers', minLvl: 3, prereq: null,
+    duels: { target: 'hessa', need: 1 }, xp: 300, coins: 25,
+    offer: "Southwest of the Boarlands the ground gives out into a sunken mire — Hollowmere, the old maps call it. An old woman lives out there among the dead trees, and she plays cards like she's still settling scores with people who died before you were born. Go find out what she remembers.",
+    obj: have => `Defeat Old Hessa of the Mire: ${have}/1`,
+    thanks: "You've met Hessa and lived to talk about it. Most people just hear the stories and stay well clear.",
+  },
 ];
 
 export const questById = id => QUESTS.find(q => q.id === id);
