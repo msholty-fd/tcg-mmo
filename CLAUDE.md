@@ -17,15 +17,16 @@ Deeper notes live in `.claude/`:
   `npm install` there — node_modules is gitignored). One worktree = one
   branch = one agent, so parallel agents can't conflict.
 - The primary checkout (`~/dev/emberwood-online`) stays on `main`: it alone
-  runs the dev servers (ports 8081/5175) and performs merges and deploys.
+  runs the dev servers (ports 8081/5175) and performs merges.
   Gates are light while the realm has no real players (tight-loop posture):
   `npm run build` + `node --check` on changed server/shared files. Revisit
   in WORKFLOW.md §2 when real users arrive.
-- **Merging to main = deploying.** After verification gates pass, merge
-  (`--no-ff`, serially if multiple branches are ready), then `fly deploy`
-  (app `tcg-mmo`) and confirm `https://tcg-mmo.fly.dev/health` returns 200.
-  Backup `/data/profiles.db` first when server/profile code changed.
-  Never merge or deploy with a failing build — the realm is live.
+- **Agents merge; Michael deploys (decided 2026-07-08).** After verification
+  gates pass, merge (`--no-ff`, serially if multiple branches are ready),
+  build the merged result, update STATUS.md with "deploy pending" + anything
+  the deploy needs to know (schema changes, backups) — then STOP. Do not run
+  `fly deploy`/`fly ssh`/`git push`; the deploy checklist in WORKFLOW.md §4
+  is Michael's. Never merge with a failing build — main is what he ships.
 
 ## Run
 

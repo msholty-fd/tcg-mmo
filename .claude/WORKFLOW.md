@@ -2,8 +2,8 @@
 
 This is the standard working style for agents in this repo. The short version:
 **do feature work in a git worktree on a branch, verify it, merge to main,
-deploy to Fly.io, verify the live realm.** Main is the source of truth and
-main is what production runs — treat merging as deploying.
+note the pending deploy in STATUS.md — and stop.** Main is the source of
+truth; **deploys and GitHub pushes are Michael's, done manually** (§4).
 
 ## 1. Start work in a worktree
 
@@ -74,12 +74,20 @@ git merge --no-ff feat/<name>
   worktree, re-run the §2 gates, then merge again. Never resolve conflicts
   by guessing on main.
 - If several agents finish around the same time, merge **serially**: merge
-  one, run the §2 build gate on main, deploy, then merge the next. Parallel
-  work, serial integration.
+  one, run the §2 build gate on main, then merge the next. Parallel work,
+  serial integration.
+- After merging, run `npm run build` once on the merged result, clean up
+  the worktree, and update STATUS.md (§5). **An agent's job ends here.**
 
-## 4. Deploy to Fly.io (automatic after every merge)
+## 4. Deploy to Fly.io (MANUAL — Michael only, decided 2026-07-08)
 
-Every merge to main deploys. From the primary checkout:
+**Agents do not deploy and do not push to GitHub.** Merging to main is the
+end of agent work; Michael deploys manually when he chooses (deploys were
+getting auto-triggered by every merge, and prod pushes deserve a human on
+the button). Agents: note "deploy pending" in STATUS.md and stop — do not
+run `fly deploy`, `fly ssh`, or `git push`, and do not ask to.
+
+Michael's deploy checklist (from the primary checkout):
 
 ```bash
 # 1. Backup player data first if the change touches server/ or the profile
@@ -99,8 +107,11 @@ curl -fsS https://tcg-mmo.fly.dev/health     # must return 200
 
 # 5. Push main to GitHub (public repo msholty-fd/tcg-mmo):
 git push origin main
+```
 
-# 6. Clean up:
+Worktree cleanup (agents may do this right after merging):
+
+```bash
 git worktree remove ../emberwood-<short-name>
 git branch -d feat/<name>
 ```
@@ -120,9 +131,12 @@ Deploy rules (hard-won — see DEPLOYMENT.md post-mortem):
   Prefer batching several merged features into one deploy window over many
   back-to-back deploys.
 
-## 5. After deploying
+## 5. After merging
 
-- Update `.claude/STATUS.md` (primary checkout) with what shipped and any
-  follow-ups, and DEPLOYMENT.md / DESIGN.md if the change affects them.
-- Record the verification you actually ran (sim results, health check) —
+- Update `.claude/STATUS.md` (primary checkout) with what merged, that a
+  deploy is pending, and any follow-ups; update DEPLOYMENT.md / DESIGN.md
+  if the change affects them.
+- Record the verification you actually ran (sim results, build gate) —
   don't claim checks you skipped.
+- Flag anything the deploy needs to know (profile schema changes, required
+  backups, migration behavior) in the STATUS.md entry.
