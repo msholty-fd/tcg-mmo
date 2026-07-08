@@ -439,6 +439,28 @@ considered and rejected.
   rowanDeck via a second chained swap(), replacing generic removal/tempo
   filler (camp_torcher x2, ember_bolt, kindled_fury x2, sudden_spark x2).
 
+- **Harrow's Field — a working farmstead (2026-07-08)**: seventh
+  worldbuilding-loop iteration. Every location so far is wild (camps,
+  swamp, ruins), martial (duelists), or mercantile (Highgate, Marla) —
+  nothing showed where Meadowbrook's *food* comes from. A barn, a fenced
+  paddock, tilled crop rows, a scarecrow, and Farmer Harrow (flavour NPC)
+  at (-55,-28), west-southwest of the village. New builders `barn()`,
+  `fenceRun()`, `cropRow()`, `scarecrow()` in world.js; reuses
+  `hayBale`/`crate`/`barrel`. Card-light, world.js-only (safe lane — the
+  Rowan-guardian session was in the card/duelist/art files).
+  - *Fences are cosmetic* (no colliders): a knee-high rail you'd step over,
+    same call as the open market stall and banners. Post-only colliders
+    would leave walk-through gaps between posts — a janky
+    invisible-wall-with-holes feel — so a clean visual boundary with no
+    collision is the better trade for a low fence. If a *pen* ever needs to
+    actually contain something, revisit with a continuous rect collider per
+    fence segment rather than per-post circles.
+  - *Harrow's flavour ties the economy together*: his lines reference Marla
+    buying his surplus for the tavern, boars raiding the field, turnips vs
+    stories — grounding the farm as Meadowbrook's larder rather than set
+    dressing. Third flavour NPC (after Bram, the Wayfarer), all on the same
+    n.flavor system.
+
 ## Open questions
 
 - Renown pacing: thresholds 20/60/150 are untested against real play.
