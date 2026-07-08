@@ -348,6 +348,37 @@ registerCards([
     },
     name: "Boarlord's Fury", text: 'When cast, your creatures gain Piercing. Creatures you play afterward enter with Piercing too.',
     flavor: 'The herd charges as one, and one is all it takes.' },
+
+  // ---- Marrow the Delver: graveyard-matters as a deck-wide identity. Every
+  // other new-blood build-around axis (Guardian/Ambush/Ward/Frenzy/Piercing)
+  // picked up a duelist owner across the last five iterations; graveyard-
+  // matters (exhume/graveBuff) never did — ashen_shambler/last_rites/
+  // second_harvest are scattered across sentinel/hessa/tarn as shared filler,
+  // but charnel_hound, grave_caller, and the ashen_vigil enchantment (shipped
+  // with the mechanic) sat completely unclaimed by any roster deck. Folds
+  // those three unclaimed cards in alongside 5 new ones, all built from
+  // existing effect primitives (exhume/graveBuff/buff/draw — no engine
+  // changes needed).
+  { id: 'bone_delver', set: 'core', rarity: 'common', type: 'creature', cost: 2, atk: 1, hp: 3,
+    triggers: { onPlay: [{ effect: 'graveBuff', filter: 'creature', atk: 1, hp: 0, cap: 2 }] },
+    name: 'Bone Delver', text: 'When played, gains +1 attack for each creature in your graveyard (up to +2).',
+    flavor: 'Digs where the ground remembers.' },
+  { id: 'charnel_colossus', set: 'core', rarity: 'rare', type: 'creature', cost: 6, atk: 4, hp: 7, keywords: ['guardian'],
+    triggers: { onPlay: [{ effect: 'graveBuff', filter: 'creature', atk: 1, hp: 1, cap: 5 }] },
+    name: 'Charnel Colossus', text: 'Guardian. When played, gains +1/+1 for each creature in your graveyard (up to +5/+5).',
+    flavor: 'Cinderhollow gave up its dead, and they did not want to leave.' },
+  { id: 'unquiet_grave', set: 'core', rarity: 'uncommon', type: 'spell', cost: 3,
+    triggers: { onPlay: [{ effect: 'exhume', amount: 1 }, { effect: 'buff', target: 'chosen', atk: 1, hp: 1 }] }, needsTarget: 'ownUnit',
+    name: 'Unquiet Grave', text: 'Return a random creature from your graveyard to your hand. Give a creature +1/+1.',
+    flavor: "Marrow doesn't ask what's buried. Marrow asks what's still useful." },
+  { id: 'delvers_pick', set: 'core', rarity: 'uncommon', type: 'relic', cost: 2,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 1, hp: 0 }, { effect: 'exhume', amount: 1 }] }, needsTarget: 'ownUnit',
+    name: "Delver's Pick", text: 'Attach: your creature gets +1 attack. Return a random creature from your graveyard to your hand.',
+    flavor: 'Worn smooth on the haft, sharp everywhere it matters.' },
+  { id: 'marrow', set: 'core', rarity: 'rare', type: 'creature', cost: 5, atk: 3, hp: 5,
+    triggers: { onPlay: [{ effect: 'draw', amount: 1 }, { effect: 'graveBuff', filter: 'creature', atk: 1, hp: 0, cap: 3 }] },
+    name: 'Marrow, the Delver', text: 'When played, draw a card, then gain +1 attack for each creature in your graveyard (up to +3).',
+    flavor: 'The mine took everyone it swallowed. Marrow just asks nicely for them back.' },
 ]);
 
 // Starter decks (30 cards) — what a new character begins with,

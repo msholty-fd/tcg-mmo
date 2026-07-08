@@ -969,3 +969,11 @@ function boulder(x, z, s) {
   // a warning signpost on the approach
   signpost(x + 2, z + 12, -.4);
 })();
+
+// Marrow the Delver (DESIGN.md) — graveyard-matters as a deck-wide identity.
+// Cinderhollow Mine was seeded on purpose as "a landmark with no NPC and no
+// duel... an intentional seed for future underground content (a mine-themed
+// duelist...)" — this is that hook being claimed. Stationed clear of the
+// boulders/rails/spoil heaps above, off to the east of the mine mouth, still
+// well within the existing "Cinderhollow Mine" CAMPS radius (no new zone).
+export const marrow = spawnDuelist('marrow', MINE.x + 12, MINE.z - 2, { shirt: 0x4a4438, hat: 0x2a2620 });

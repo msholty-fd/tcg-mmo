@@ -86,6 +86,19 @@ const kestrelDeck = swap(
   ['controlled_burn', 'wolf_howl', 'hearth_meal', 'pack_alpha', 'kindled_fury', 'kindled_fury', 'sudden_spark'],
   ['hotblood_recruit', 'twinblade_mercenary', 'twin_fangs', 'reckless_charge', 'bandit_creed', 'kestrel', 'warband_champion'],
 );
+// Marrow the Delver (DESIGN.md) — Boarherd-based (tied with Red-Sash as the
+// roster's least-used base, keeping Wardens from stacking a 5th duelist).
+// Graveyard-matters (exhume/graveBuff) was the one build-around axis with no
+// deck-wide owner: charnel_hound, grave_caller, and the ashen_vigil
+// enchantment sat completely unclaimed since they shipped. Folds those three
+// in alongside 5 new cards (bone_delver/charnel_colossus curve fillers,
+// unquiet_grave/delvers_pick spell+relic exhume-and-buff, and her own
+// signature marrow), replacing generic non-thematic filler.
+const marrowDeck = swap(
+  STARTER_DECKS.boarherd,
+  ['quartermaster', 'quartermaster', 'kindled_fury', 'kindled_fury', 'sudden_spark', 'sudden_spark', 'wolf_howl', 'ember_bolt'],
+  ['bone_delver', 'grave_caller', 'charnel_hound', 'ashen_vigil', 'marrow', 'charnel_colossus', 'unquiet_grave', 'delvers_pick'],
+);
 
 export const DUELISTS = {
   rowan: {
@@ -127,5 +140,9 @@ export const DUELISTS = {
   kestrel: {
     name: 'Kestrel Twinstrike', deck: kestrelDeck,
     rewards: [...kestrelDeck, 'tuskblade_berserker'],
+  },
+  marrow: {
+    name: 'Marrow the Delver', deck: marrowDeck,
+    rewards: [...marrowDeck, 'last_rites', 'second_harvest'],
   },
 };
