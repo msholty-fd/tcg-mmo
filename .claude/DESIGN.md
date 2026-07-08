@@ -984,6 +984,50 @@ considered and rejected.
     generalization worth its own focused branch. Reward pools already satisfy
     "cards enter circulation," so the pack is a secondary sink, not a blocker.
 
+- **Deck builder reorganized — family sections + a real set filter
+  (2026-07-08)**. Michael's ask: the deck builder's 137-card grid was one
+  flat cost-sorted list with zero organization, and he specifically asked
+  about filtering by set. When this branch started, core was the only set
+  (so a set filter would've been a no-op); by the time it merged,
+  `feat/emberpeaks-duelists` had landed a real second set, so this does
+  both: a genuine Core/Emberpeaks/All set-tab filter AND flavorful family
+  sections within the core set.
+  - *Why a separate mapping file over a per-card field*: adding a `family`
+    field to all 137 `cards.js` entries would touch nearly every line of the
+    file a parallel session (card/duelist/pixel-art content) edits
+    constantly — a large, avoidable merge-conflict surface for a purely
+    presentational grouping. `shared/sets/core/families.js` (`FAMILIES =
+    [{id, name, cardIds}]`) is additive, isolated, and a card missing from it
+    falls back to "Uncategorized" instead of crashing — safe for future
+    cards added before this file catches up.
+  - *Why keyword-first grouping*: rather than generic type buckets
+    ("creatures"/"spells", the thing Michael was implicitly reacting
+    against), cards are grouped primarily by the mechanical identity axis
+    Michael has been deepening duelist-by-duelist (ambush/Vex, ward/Maren,
+    guardian/Rowan, frenzy/Kestrel, piercing/Gruk, graveyard-matters/Marrow,
+    lifesteal/Verity, kindle-matters/Tarn) — the same grouping a player
+    would actually want when building a themed deck. Relics/Reactions/
+    Enchantments stayed as their own type-based sections since those types
+    are already distinct play patterns (attach/trap/persistent), not a
+    generic catchall; the two flavor-only leftover buckets (Boars & Beasts,
+    Village & Hearth) catch cards with no owned keyword or build-around
+    trigger. Result: 13 families, 0 uncategorized, 0 duplicates across all
+    137 core cards (verified by script against the live registry).
+  - *Emberpeaks stays ungrouped for now*: only 16 cards, already a single
+    coherent fire/kindle theme — a family breakdown would be over-engineering
+    at this size. It gets its own set-tab section instead; the deckbuilder
+    code reads sets generically off `card.set` so a third set (or Emberpeaks
+    families later) needs no further changes.
+  - *Verified*: build + node --check clean; headless script confirms every
+    core card resolves to exactly one family via the real card registry, and
+    set/family filter combinations produce the expected counts (`all`+`all`
+    → 153 across 14 sections, `core`+`all` → 137, `emberpeaks`+`all` → 16).
+    **Not live-verified** — no dev server was reachable from the worktree
+    (see STATUS.md for detail); this is a DOM/CSS-only change with the same
+    click/context-menu handlers as before, so risk is judged low, but
+    Michael should press B in-world after deploying to confirm the section
+    headers, tabs, and chips actually look right.
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase
