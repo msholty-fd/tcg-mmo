@@ -80,6 +80,16 @@ export function sweepDead(duel) {
   let died = true;
   while (died) {
     died = false;
+    // Splice out every currently-dead unit on both fields BEFORE firing any
+    // onDeath trigger. onDeath effects (and the sweepDead(duel) call at the
+    // end of fireTriggers) can recurse into this function — e.g. an AOE like
+    // Gruk's "damage 2 to all enemy creatures" kills several units at once,
+    // and the first one's onDeath trigger would otherwise re-enter this loop
+    // while it's still mid-splice over the same p.field array, desyncing the
+    // index and reading past the shrunk array. Removing the whole batch
+    // first means a nested sweepDead only ever sees fields with no stale
+    // corpses left to collide with.
+    const casualties = [];
     for (let s = 0; s < 2; s++) {
       const p = duel.players[s];
       for (let i = p.field.length - 1; i >= 0; i--) {
@@ -90,10 +100,13 @@ export function sweepDead(duel) {
           p.graveyard.push({ card: u.card, iid: u.uid, level: u.level });
           duel.log.push({ type: 'death', side: s, unit: u.uid, card: u.card });
           say(duel, `${uname(u)} is destroyed.`);
-          fireTriggers(duel, s, u, 'onDeath');
-          fireEnchantmentTriggers(duel, s, 'onAllyDeath', { unit: u });
+          casualties.push({ s, u });
         }
       }
+    }
+    for (const { s, u } of casualties) {
+      fireTriggers(duel, s, u, 'onDeath');
+      fireEnchantmentTriggers(duel, s, 'onAllyDeath', { unit: u });
     }
   }
 }
