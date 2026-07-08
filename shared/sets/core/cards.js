@@ -261,6 +261,37 @@ registerCards([
     triggers: { onPlay: [{ effect: 'heal', target: 'ownHearth', amount: 3 }] },
     name: 'Shrine Elder', text: 'Ward. When played, restore 3 to your Hearth.',
     flavor: 'She has buried more wards than she can count, and outlived them all.' },
+
+  // ---- Duelist Rowan: deepening the Guardian/wall identity. Rowan's deck
+  // was the least-developed roster entry (only 2 cards ever swapped in,
+  // wardenplate/second_wind) despite Wardens leaning hardest on Guardian of
+  // any theme in the set — Guardian had zero build-around cards anywhere
+  // (every other keyword got at least one: darkwood_wolf/lifesteal,
+  // ashen_shambler/graveyard, ash_sprite/kindle). He also had no self-named
+  // signature card the way Gruk/Vex do.
+  { id: 'line_holder', set: 'core', rarity: 'common', type: 'creature', cost: 2, atk: 1, hp: 4, keywords: ['guardian'],
+    name: 'Line Holder', text: '', flavor: "He doesn't move. That's the whole plan." },
+  { id: 'shieldwall_sergeant', set: 'core', rarity: 'uncommon', type: 'creature', cost: 3, atk: 2, hp: 5, keywords: ['guardian'],
+    name: 'Shieldwall Sergeant', text: '', flavor: 'Keeps the line straighter than the officers do.' },
+  { id: 'stand_and_hold', set: 'core', rarity: 'common', type: 'spell', cost: 2,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 0, hp: 2 }, { effect: 'grantKeyword', target: 'chosen', keyword: 'guardian' }] }, needsTarget: 'ownUnit',
+    name: 'Stand and Hold', text: 'Give a creature +0/+2 and Guardian.', flavor: 'Two words. Whole strategy.' },
+  { id: 'watchers_oath', set: 'core', rarity: 'uncommon', type: 'relic', cost: 2,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 1, hp: 0 }, { effect: 'grantKeyword', target: 'chosen', keyword: 'guardian' }] }, needsTarget: 'ownUnit',
+    name: "Watcher's Oath", text: 'Attach: your creature gets +1 attack and Guardian.', flavor: 'Sworn once, kept every day since.' },
+  { id: 'bulwark_doctrine', set: 'core', rarity: 'uncommon', type: 'enchantment', cost: 3,
+    triggers: {
+      onPlay: [{ effect: 'grantKeyword', target: 'allAllies', keyword: 'guardian' }],
+      onAllySummon: [{ effect: 'grantKeyword', target: 'self', keyword: 'guardian' }],
+    },
+    name: 'Bulwark Doctrine', text: 'When cast, your creatures gain Guardian. Creatures you play afterward enter with Guardian too.',
+    flavor: 'Rowan drilled it into every recruit: hold, do not chase.' },
+  { id: 'rowan', set: 'core', rarity: 'rare', type: 'creature', cost: 4, atk: 3, hp: 5, keywords: ['guardian'],
+    triggers: { onPlay: [{ effect: 'heal', target: 'ownHearth', amount: 3 }] },
+    name: 'Duelist Rowan', text: 'Guardian. When played, restore 3 to your Hearth.',
+    flavor: "He's still standing there when the fight ends. He was standing there when it started, too." },
+  { id: 'bastion_keep', set: 'core', rarity: 'rare', type: 'creature', cost: 6, atk: 3, hp: 9, keywords: ['guardian'], storiedKeyword: 'ward',
+    name: 'Bastion Keep', text: '', flavor: 'Every siege ends the same way: tired attackers, standing stone.' },
 ]);
 
 // Starter decks (30 cards) — what a new character begins with,

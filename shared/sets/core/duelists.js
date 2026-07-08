@@ -13,7 +13,17 @@ const swap = (deck, out, ins) => {
   return d;
 };
 
-const rowanDeck = swap(STARTER_DECKS.wardens, ['wild_boar', 'wild_boar'], ['wardenplate', 'second_wind']);
+// Rowan was the least-developed roster entry (only 2 cards ever swapped in)
+// despite the Wardens deck leaning hardest on Guardian of any theme in the
+// set, and Guardian had zero build-around cards anywhere (every other
+// keyword got at least one). The second swap folds in 7 Guardian-identity
+// cards plus his own signature card (the "boss plays themself" pattern
+// already used for Gruk/Vex), replacing generic removal/tempo filler.
+const rowanDeck = swap(
+  swap(STARTER_DECKS.wardens, ['wild_boar', 'wild_boar'], ['wardenplate', 'second_wind']),
+  ['camp_torcher', 'camp_torcher', 'ember_bolt', 'kindled_fury', 'kindled_fury', 'sudden_spark', 'sudden_spark'],
+  ['line_holder', 'shieldwall_sergeant', 'stand_and_hold', 'watchers_oath', 'bulwark_doctrine', 'rowan', 'bastion_keep'],
+);
 // Vex's Red-Sash roster deepened (worldbuilding loop iteration, DESIGN.md):
 // the original swap gave her ambush+lifesteal (nightstalker) and a tempo
 // relic; the second swap folds in her own signature card plus two more
