@@ -476,6 +476,13 @@ export function spawnDuelist(id, x, z, opts) {
 export const rowan = spawnDuelist('rowan', 8, -3, { shirt: 0x3a6b8a, hat: 0x2a3a4a });
 export const vex = spawnDuelist('vex', -88, 66, { shirt: 0xa03a3a, hat: 0x2a2a2a });
 
+// Kestrel Twinstrike (DESIGN.md) — a second Red-Sash duelist, stationed at a
+// quiet corner of Vex's own camp (away from her tents/banner/crates, still
+// well within the "Red-Sash Camp" CAMPS radius) rather than a new landmark.
+// Drills the crew's Frenzy half of the Red-Sash tagline while Vex runs the
+// Ambush side.
+export const kestrel = spawnDuelist('kestrel', -100, 58, { shirt: 0x8a3030, hat: 0x402020 });
+
 // Maren the Shrinekeeper (DESIGN.md) — stands watch at the village shrine
 // (shrine(-30, 5, -.4) above, built during the town-expansion pass and
 // purely decorative until now). Deliberately minimal footprint: no new

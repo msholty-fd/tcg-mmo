@@ -65,6 +65,17 @@ const marenDeck = swap(
   ['wild_boar', 'wild_boar', 'darkwood_wolf', 'darkwood_wolf', 'camp_torcher', 'camp_torcher', 'kindled_fury', 'sudden_spark'],
   ['warding_litany', 'bastion_oath', 'blessed_icon', 'shrines_grace', 'pilgrims_vow', 'shrine_elder', 'warded_acolyte', 'sanctum_guardian'],
 );
+// Kestrel Twinstrike (DESIGN.md) — Red-Sash-based. Guardian/Ambush/Ward each
+// already had a duelist owner (Rowan/Vex/Maren); Frenzy — the other half of
+// Red-Sash's own tagline ("Ambush and Frenzy tempo") — had none, and no
+// relic/spell in the whole set granted it. Folds in all 7 new Frenzy cards,
+// replacing off-theme/generic filler (wolf_howl, hearth_meal, pack_alpha,
+// controlled_burn, two kindled_fury, one sudden_spark).
+const kestrelDeck = swap(
+  STARTER_DECKS.redsash,
+  ['controlled_burn', 'wolf_howl', 'hearth_meal', 'pack_alpha', 'kindled_fury', 'kindled_fury', 'sudden_spark'],
+  ['hotblood_recruit', 'twinblade_mercenary', 'twin_fangs', 'reckless_charge', 'bandit_creed', 'kestrel', 'warband_champion'],
+);
 
 export const DUELISTS = {
   rowan: {
@@ -102,5 +113,9 @@ export const DUELISTS = {
   maren: {
     name: 'Maren the Shrinekeeper', deck: marenDeck,
     rewards: [...marenDeck, 'ashen_vigil'],
+  },
+  kestrel: {
+    name: 'Kestrel Twinstrike', deck: kestrelDeck,
+    rewards: [...kestrelDeck, 'tuskblade_berserker'],
   },
 };
