@@ -900,6 +900,55 @@ considered and rejected.
   builds a starter deck — the client no longer sends one on join, and
   `newProfile` ignores any client-supplied deck (server authority preserved).
 
+- **Old Hessa — kindle+graveyard hybrid as a deck-wide identity (2026-07-08,
+  worldbuilding loop iteration 12)**: deepens an *existing* duelist. Checked
+  the 8 named landmarks for an open (b) spot first (per the task's lean
+  toward a new NPC): all are claimed except Waystones (deliberately
+  card-light, its own flavor NPC The Wayfarer, "no new duelist/cards" by
+  design) and the Emberpeaks basin (explicitly reserved for Phase 3's
+  fire-elemental duelists in their own `shared/sets/emberpeaks/` folder — and
+  a concurrent worktree was actively building exactly that). Neither is a
+  legitimate opening, so (a) was correct despite two (b)-leaning iterations
+  in a row. Precisely computed the thinnest deck (multiset-diff of each
+  duelist's deck against its base `STARTER_DECKS` archetype): Hessa had only
+  2 (`warding_bell`/`ashen_shambler`), the strict minimum in the roster.
+  Kindle-matters (Tarn) and graveyard-matters (Marrow) each already have a
+  solo owner, but nobody had combined them — a bog witch is a natural fit for
+  both at once (will-o'-the-wisps / marsh-fire read as folklore's own
+  kindle-in-a-graveyard).
+  - **7 new cards** (`shared/sets/core/cards.js`), all existing effect
+    primitives (`graveBuff`/`exhume`/`resetKindle`/`buff` — no engine
+    changes): `willow_wisp` (1c) and `bog_kindler` (2c) are onKindle curve
+    fillers; `mire_toll` (enchantment) is the hybrid's core piece —
+    `onAllyDeath -> resetKindle`, letting a creature's death refund a second
+    kindle that turn, a trigger/effect combo no card had used before;
+    `rekindle_the_dead` (spell) fuses `resetKindle` + `exhume` directly;
+    `pyre_caller` (4c) is a repeatable onKindle `exhume` engine (same power
+    tier as `ledger_keeper`'s onKindle draw); `hessa` (5c) is her first-ever
+    signature card — the last long-standing duelist without one — onKindle
+    self +1/+1 and `exhume`; `bogfire_colossus` (6c Guardian finisher) does
+    onKindle `graveBuff`, matching the `tollroad_colossus`/`charnel_colossus`
+    top-end pattern.
+  - **Deck**: `hessaDeck` chains a second `swap()` onto the original
+    `warding_bell`/`ashen_shambler` one, replacing `camp_torcher`×2/
+    `ember_bolt`×2/`kindled_fury`×2/`sudden_spark` (generic burn filler with
+    no thematic tie to her). Verified at exactly 30 cards.
+  - **CARD_ART**: all 7 reuse existing sprites (`emberling`/`hooded`/`bell`/
+    `rite`/`wraith`/`colossus`) with a new sickly-green bog-fire palette,
+    distinct from Tarn's orange kindle palette and Marrow's purple grave
+    palette — no new grids.
+  - Headless sim: 20 `createDuel`+`ai.takeTurn` games vs the other 12
+    duelists, 0 crashes/0 stuck (200-turn cap); Hessa went 6-14 (weaker side,
+    consistent with the existing "card-only iterations aren't rebalanced
+    further" posture — see Cobb's 3-5 note above). A separate 30-40 game pass
+    confirmed the new triggers actually fire in play (`resetKindle` 35x,
+    `exhume` 41x, `mire_toll` cast 13/40 games).
+  - Not done / untested live: visual placement at Hollowmere and the
+    challenge-prompt flow weren't browser-verified (worktrees have no dev
+    server) — no world.js change was needed since her placement already
+    exists, so risk is judged low; `mire_toll`'s `onAllyDeath` trigger wasn't
+    isolated in its own test, only inferred from aggregate counts.
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase
