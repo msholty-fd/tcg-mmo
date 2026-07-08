@@ -539,6 +539,47 @@ registerCards([
     triggers: { onPlay: [{ effect: 'damage', target: 'randomEnemy', amount: 3 }] },
     name: 'The Uninvited Guest', text: 'When played, deal 3 damage to a random enemy creature.',
     flavor: "Old Bram never got a name for the one who robbed him. Nobody who's crossed that road at night has." },
+
+  // ---- Old Hessa of the Mire: kindle+graveyard as a deck-wide identity —
+  // a hybrid no other duelist has claimed (Tarn owns kindle-matters solo,
+  // Marrow owns graveyard-matters solo). Hessa was the roster's thinnest
+  // deck by far (only 2 cards ever swapped in, warding_bell/ashen_shambler)
+  // and the only original-or-early duelist with no self-named signature
+  // card. The bog setting makes the hybrid a natural fit rather than a
+  // forced mashup: will-o'-the-wisps and marsh-gas fires are folklore's own
+  // "kindle in a graveyard," and the deck plays that literally — cheap
+  // bodies die, `mire_toll` lets their deaths refund a second kindle, and
+  // her onKindle payoffs (graveBuff/exhume) turn that into card advantage
+  // and a growing threat. All existing effect primitives (graveBuff/exhume/
+  // resetKindle/buff/heal) — no engine changes needed.
+  { id: 'willow_wisp', set: 'core', rarity: 'common', type: 'creature', cost: 1, atk: 1, hp: 2,
+    triggers: { onKindle: [{ effect: 'buff', target: 'self', atk: 1, hp: 0 }] },
+    name: 'Willow Wisp', text: 'When you kindle, this gains +1 attack.',
+    flavor: 'The lights that wander the mire, drawn to any spark.' },
+  { id: 'bog_kindler', set: 'core', rarity: 'common', type: 'creature', cost: 2, atk: 1, hp: 3,
+    triggers: { onKindle: [{ effect: 'graveBuff', target: 'self', filter: 'creature', atk: 1, hp: 0, cap: 2 }] },
+    name: 'Bog Kindler', text: 'When you kindle, gains +1 attack for each creature in your graveyard (up to +2).',
+    flavor: 'She feeds the marsh-fire whatever the bog gives back.' },
+  { id: 'mire_toll', set: 'core', rarity: 'uncommon', type: 'enchantment', cost: 3,
+    triggers: { onAllyDeath: [{ effect: 'resetKindle' }] },
+    name: 'Mire Toll', text: 'Whenever one of your creatures dies, you may kindle again this turn.',
+    flavor: 'The mire always collects. What it takes, it lets you spend again.' },
+  { id: 'rekindle_the_dead', set: 'core', rarity: 'uncommon', type: 'spell', cost: 3,
+    triggers: { onPlay: [{ effect: 'resetKindle' }, { effect: 'exhume', amount: 1 }] },
+    name: 'Rekindle the Dead', text: 'You may kindle again this turn. Return a random creature from your graveyard to your hand.',
+    flavor: 'Old rites for old bones: light the pyre, and something answers.' },
+  { id: 'pyre_caller', set: 'core', rarity: 'uncommon', type: 'creature', cost: 4, atk: 2, hp: 4,
+    triggers: { onKindle: [{ effect: 'exhume', amount: 1 }] },
+    name: 'Pyre Caller', text: 'When you kindle, return a random creature from your graveyard to your hand.',
+    flavor: "He doesn't call the living. He never needs to." },
+  { id: 'hessa', set: 'core', rarity: 'rare', type: 'creature', cost: 5, atk: 3, hp: 5,
+    triggers: { onKindle: [{ effect: 'buff', target: 'self', atk: 1, hp: 1 }, { effect: 'exhume', amount: 1 }] },
+    name: 'Old Hessa of the Mire', text: 'When you kindle, this gains +1/+1 and you return a random creature from your graveyard to your hand.',
+    flavor: "She's been dealing cards to the dead so long, the living just call it luck." },
+  { id: 'bogfire_colossus', set: 'core', rarity: 'rare', type: 'creature', cost: 6, atk: 5, hp: 6, keywords: ['guardian'],
+    triggers: { onKindle: [{ effect: 'graveBuff', target: 'self', filter: 'creature', atk: 1, hp: 1, cap: 3 }] },
+    name: 'Bogfire Colossus', text: 'Guardian. When you kindle, gains +1/+1 for each creature in your graveyard (up to +3).',
+    flavor: 'Six feet of bog-fire and bone, and it hasn\'t finished rising.' },
 ]);
 
 // Starter decks (30 cards) — what a new character begins with,

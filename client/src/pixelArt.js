@@ -611,6 +611,17 @@ const CARD_ART = {
   red_sash_watchman:   { sprite: 'hooded', pal: { h: '#5e3a3a', H: '#452a2a', m: '#3a4438' } },
   uninvited_guest:     { sprite: 'wraith', pal: { a: '#3a4438', A: '#283020', e: '#c8c090', s: '#1c2416' } },
 
+  // ---- Old Hessa: kindle+graveyard hybrid — bog-fire (sickly green ember
+  // instead of orange) distinguishes her from Tarn's orange kindle palette
+  // and Marrow's purple grave palette, reusing existing sprites throughout.
+  willow_wisp:         { sprite: 'emberling', pal: { f: '#5adf8a', F: '#c8ffb0', r: '#1e6a38', e: '#eafff0' } },
+  bog_kindler:         { sprite: 'hooded', pal: { h: '#4a6a4a', H: '#344c34', e: '#7aff9a' } },
+  mire_toll:           { sprite: 'bell', pal: { b: '#5a6a48', B: '#3c4a30', w: '#d8e8c0', r: '#2a3320' } },
+  rekindle_the_dead:   { sprite: 'rite', pal: { b: '#c8d0b8', B: '#9aa888', e: '#5adf8a', f: '#c8ffb0' } },
+  pyre_caller:         { sprite: 'wraith', pal: { a: '#4a6a52', A: '#324a3a', e: '#5adf8a', s: '#243830' } },
+  hessa:               { sprite: 'hooded', pal: { h: '#3a5a3e', H: '#243c28', e: '#7aff9a' } },
+  bogfire_colossus:    { sprite: 'colossus', pal: { l: '#3a5a3e', L: '#243c28', t: '#5a4a30', T: '#3c3020', e: '#7aff9a' } },
+
   // ---- Emberpeaks set (fire zone) — all reuse existing sprites with fiery
   // palettes; the ember/burn/bolt/fury/spark sprites are already orange so
   // they need little override. No new grids authored.
