@@ -577,6 +577,16 @@ const CARD_ART = {
   ashfall_recall:      { sprite: 'rite', pal: { b: '#8a8a92', B: '#64646e', e: '#5a6e88', f: '#aebedc' } },
   sentrys_cloak:       { sprite: 'talisman', pal: { c: '#4a525c', w: '#c8d0da', W: '#8a94a0' } },
   halvard:             { sprite: 'hooded', pal: { h: '#4a525c', H: '#333a42', e: '#ff8a3a' } },
+
+  // ---- Tarn the Tollkeeper: kindle-matters as a deck-wide identity ----
+  // warm brass/amber accent — new to the roster (distinct from the Ashen
+  // Sentinel's ember-orange, Gruk's bronze, Rowan's steel-blue).
+  toll_urchin:         { sprite: 'hooded', pal: { h: '#8a6a2a', H: '#6a501e', e: '#ffd050' } },
+  ledger_keeper:       { sprite: 'hooded', pal: { h: '#7a5a3a', H: '#5c4229', e: '#c8a24a' } },
+  tollgate_ram:        { sprite: 'boar', pal: { d: '#9a7a42', D: '#785e30', e: '#ffcf70' } },
+  open_the_gate:       { sprite: 'rite', pal: { b: '#e8d8a0', B: '#c0a868', e: '#ffb040', f: '#ffe080' } },
+  tarn:                { sprite: 'hooded', pal: { h: '#6a4e1e', H: '#4c3814', e: '#ffcf40' } },
+  tollroad_colossus:   { sprite: 'colossus', pal: { l: '#8a6a3a', L: '#6a4e26', t: '#5a4020', e: '#ffcf40' } },
 };
 
 const cache = new Map();

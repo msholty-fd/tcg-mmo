@@ -59,7 +59,22 @@ const verityDeck = swap(
   ['kindled_fury', 'kindled_fury', 'sudden_spark', 'sudden_spark', 'camp_torcher', 'camp_torcher', 'ember_bolt', 'hearth_meal'],
   ['sworn_medic', 'hearthguard_veteran', 'crimson_vow', 'verities_oath', 'verity', 'hearthbound_champion', 'bloodmoon_wolf', 'widows_kiss'],
 );
-const tarnDeck = swap(STARTER_DECKS.boarherd, ['young_boar', 'young_boar'], ['dire_wolf', 'second_harvest']);
+// Tarn the Tollkeeper — kindle-matters as a deck-wide identity (DESIGN.md).
+// Tied with the Footpad as the roster's thinnest deck (only 2 cards ever
+// swapped in); picked Tarn because dire_wolf/second_harvest share no theme
+// with each other, while the Footpad's pair is at least ambush-flavored.
+// Kindle-matters was the one build-around axis still open beyond the Ashen
+// Sentinel's existing lean (ash_sprite/flame_tender, costs 2-3): pyre_keeper
+// (4c) had never been in an actual deck (only the Sentinel's reward pool),
+// and cinder_warden (5c) plus the ember_communion enchantment sat completely
+// unclaimed. The second swap folds in 6 new kindle cards (rounding out the
+// curve at 1c/6c, where no kindle body existed) plus those 3 previously-
+// unclaimed cards, replacing generic filler.
+const tarnDeck = swap(
+  swap(STARTER_DECKS.boarherd, ['young_boar', 'young_boar'], ['dire_wolf', 'second_harvest']),
+  ['ember_bolt', 'ember_bolt', 'kindled_fury', 'kindled_fury', 'sudden_spark', 'sudden_spark', 'hearth_meal', 'wolf_howl', 'quartermaster'],
+  ['toll_urchin', 'ledger_keeper', 'tollgate_ram', 'open_the_gate', 'tarn', 'tollroad_colossus', 'cinder_warden', 'ember_communion', 'pyre_keeper'],
+);
 // The Ashen Sentinel — night-only guardian of Emberwatch Ruins (DESIGN.md).
 // Boarherd-based, swapped toward ash/ember-flavored cards no other duelist uses.
 const sentinelDeck = swap(STARTER_DECKS.boarherd, ['wild_boar', 'wild_boar', 'tusker'], ['ash_sprite', 'flame_tender', 'ashen_shambler']);
