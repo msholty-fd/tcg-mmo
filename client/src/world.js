@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { scene } from './scene.js';
 import { groundH } from './terrain.js';
-import { humanoid, boarMesh, wolfMesh, deerMesh, rabbitMesh, makeLabel } from './entities.js';
+import { humanoid, boarMesh, wolfMesh, deerMesh, rabbitMesh, emberElementalMesh, makeLabel } from './entities.js';
 import { critters, npcs } from './state.js';
 import { rand } from './utils.js';
 import { addCircle, addRect } from './colliders.js';
@@ -49,6 +49,11 @@ const M = {
   // grey rock, plus a rusted-iron for the cart/rails.
   mineDark: new THREE.MeshLambertMaterial({ color: 0x0a0a0c }),
   rust:     new THREE.MeshLambertMaterial({ color: 0x6a4a30 }),
+  // Emberpeaks dressing — obsidian ridge/spires, glowing lava, ashen scree.
+  obsidian:  new THREE.MeshLambertMaterial({ color: 0x201c22 }),
+  emberRock: new THREE.MeshLambertMaterial({ color: 0x35291f, emissive: 0x300a00 }),
+  lava:      new THREE.MeshLambertMaterial({ color: 0xff5a1e, emissive: 0xdd3300, side: THREE.DoubleSide }),
+  ash:       new THREE.MeshLambertMaterial({ color: 0x4a4038 }),
 };
 
 function tree(x, z, dark) {
@@ -977,3 +982,98 @@ function boulder(x, z, s) {
 // boulders/rails/spoil heaps above, off to the east of the mine mouth, still
 // well within the existing "Cinderhollow Mine" CAMPS radius (no new zone).
 export const marrow = spawnDuelist('marrow', MINE.x + 12, MINE.z - 2, { shirt: 0x4a4438, hat: 0x2a2620 });
+
+// ==================================================================
+// THE EMBERPEAKS — the first zone beyond the grassland (DESIGN.md)
+// ------------------------------------------------------------------
+// A volcanic biome walled off to the far north. The terrain ridge + basin +
+// volcanic recolor live in terrain.js; the world boundary was grown to 300
+// (main.js) to make the basin reachable. This section builds the *physical
+// barrier* (a boulder wall along the ridge crest with a single pass gap —
+// the raised terrain alone wouldn't stop anyone, since movement has no slope
+// limit) and the basin's props + ambient ember elementals. Phase 1 of the
+// full-zone build: duelists, the emberpeaks card set, a quest chain, and a
+// zone pack come in later branches.
+// ==================================================================
+
+function obsidianRock(x, z, s, emissive) {
+  const r = new THREE.Mesh(new THREE.DodecahedronGeometry(s), emissive ? M.emberRock : M.obsidian);
+  r.position.set(x, groundH(x, z) + s * .35, z);
+  r.rotation.set(rand(0, 6), rand(0, 6), rand(0, 6)); r.castShadow = true; r.receiveShadow = true;
+  scene.add(r);
+  addCircle(x, z, s * .8);
+  return r;
+}
+
+// The ridge wall: a dense line of big obsidian boulders along the crest
+// (z~158), spanning the reachable width, with a gap at x∈[-13,13] for
+// Cinderpass. This is what actually stops the player short of walking over
+// the mountain anywhere they like — the pass is the one way through.
+for (let x = -300; x <= 300; x += 15) {
+  if (Math.abs(x) < 13) continue;                 // the pass gap
+  const z = 158 + rand(-3, 3);
+  obsidianRock(x, z, rand(4.5, 7));
+  if (rand(0, 1) > .5) obsidianRock(x + rand(-5, 5), z + rand(-8, -3), rand(3, 5)); // a second rank, thicker wall
+}
+// gate pillars flanking Cinderpass
+obsidianRock(-15, 158, 6); obsidianRock(15, 158, 6);
+signpost(-3, 150, 0);       // marker on the south (approach) side of the pass
+
+// ---- The basin: lava pools, obsidian spires, smoking vents ----
+const EP = { x: 0, z: 235 };   // basin centre
+
+function lavaPool(x, z, r) {
+  const p = new THREE.Mesh(new THREE.CircleGeometry(r, 14), M.lava);
+  p.rotation.x = -Math.PI / 2; p.position.set(x, groundH(x, z) + .12, z); scene.add(p);
+  const light = new THREE.PointLight(0xff5a1e, 1.1, r * 4); light.position.set(x, groundH(x, z) + 1.5, z); scene.add(light);
+  // molten — no collider; stepping into lava is a cosmetic risk we accept
+  // (no damage system exists), same walkable-decal call as the bog pools.
+}
+
+function obsidianSpire(x, z, h) {
+  const g = new THREE.Group();
+  const s = new THREE.Mesh(new THREE.ConeGeometry(h * .22, h, 5), M.obsidian);
+  s.position.y = h / 2; s.castShadow = true; g.add(s);
+  // ember veins glowing up the spire
+  for (let i = 0; i < 3; i++) {
+    const v = new THREE.Mesh(new THREE.BoxGeometry(.14, h * .4, .14), M.emberRock);
+    v.position.set(Math.cos(i * 2) * h * .1, h * (.25 + i * .2), Math.sin(i * 2) * h * .1); g.add(v);
+  }
+  g.position.set(x, groundH(x, z), z); g.rotation.y = rand(0, 6); scene.add(g);
+  addCircle(x, z, h * .2);
+}
+
+function fumarole(x, z) {   // a smoking vent — a low ashen cone with an ember glow
+  const g = new THREE.Group();
+  const cone = new THREE.Mesh(new THREE.ConeGeometry(1.1, 1.3, 7), M.ash);
+  cone.position.y = .65; cone.castShadow = true; g.add(cone);
+  const glow = new THREE.Mesh(new THREE.CylinderGeometry(.3, .4, .3, 7), M.lava);
+  glow.position.y = 1.25; g.add(glow);
+  const light = new THREE.PointLight(0xff7a20, .6, 8); light.position.y = 1.6; g.add(light);
+  g.position.set(x, groundH(x, z), z); scene.add(g);
+  addCircle(x, z, 1);
+}
+
+lavaPool(EP.x - 20, EP.z - 15, 7); lavaPool(EP.x + 24, EP.z + 6, 9);
+lavaPool(EP.x - 6, EP.z + 30, 6); lavaPool(EP.x + 40, EP.z - 20, 5);
+lavaPool(EP.x - 44, EP.z + 18, 6);
+obsidianSpire(EP.x + 12, EP.z - 4, 11); obsidianSpire(EP.x - 30, EP.z + 2, 14);
+obsidianSpire(EP.x + 34, EP.z + 24, 9); obsidianSpire(EP.x - 14, EP.z + 40, 12);
+obsidianSpire(EP.x + 55, EP.z + 4, 10);
+fumarole(EP.x - 12, EP.z + 12); fumarole(EP.x + 18, EP.z - 26); fumarole(EP.x + 6, EP.z + 46);
+// scattered obsidian scree + a few ember-glowing rocks
+for (let i = 0; i < 14; i++) {
+  const a = rand(0, Math.PI * 2), d = rand(10, 70);
+  const rx = EP.x + Math.cos(a) * d, rz = EP.z + Math.sin(a) * d;
+  if (rz < 180) continue;   // keep scree inside the basin, north of the ridge
+  obsidianRock(rx, rz, rand(1.2, 3), rand(0, 1) > .7);
+}
+signpost(EP.x + 2, 180, Math.PI);   // "The Emberpeaks" marker just inside the basin
+
+// Ambient ember elementals drifting the basin (reuse the critter system)
+for (let i = 0; i < 6; i++) {
+  const a = rand(0, Math.PI * 2), d = rand(12, 62);
+  const ex = EP.x + Math.cos(a) * d, ez = EP.z + Math.sin(a) * d;
+  if (ez < 182) continue;
+  spawnCritter(() => emberElementalMesh(1), ex, ez);
+}
