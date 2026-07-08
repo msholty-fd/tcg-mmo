@@ -3,6 +3,7 @@ import { $, rand, clamp } from './utils.js';
 import { camera } from './scene.js';
 import { player, npcs, bots } from './state.js';
 import { xpNeed } from '../../shared/progression.js';
+import { drawFullMap } from './fullmap.js';
 
 export function toScreen(x, y, z) {
   const v = new THREE.Vector3(x, y, z).project(camera);
@@ -54,4 +55,5 @@ export function updateHUD() {
   $('p-coins').textContent = '🪙 ' + player.coins;
   $('xpfill').style.width = clamp(player.xp / xpNeed(player.lvl), 0, 1) * 100 + '%';
   drawMinimap();
+  drawFullMap();
 }
