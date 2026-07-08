@@ -490,6 +490,26 @@ considered and rejected.
     server) — same code path as every other duelist, so risk is judged low
     but it's a real gap, not a formality.
 
+- **Cinderhollow Mine — abandoned delving (2026-07-08)**: eighth
+  worldbuilding-loop iteration, and a deliberate break from the pattern —
+  the first landmark with **no NPC and no duel**, purely a scenic discovery
+  due north in the Darkwood (-15,115). A new archetype (industrial/
+  abandoned) to widen the world's visual vocabulary beyond wild/martial/
+  mercantile/agricultural: a timbered mine mouth (near-black recessed plane
+  framed by heavy posts + lintel), a rocky rise, rail tracks + ties, a
+  tipped minecart, dark spoil heaps, a warning signpost.
+  - *Self-contained hill*: the rise is built from stacked `M.rock` boulders
+    rather than assuming the terrain has a real hill at that spot, so the
+    mouth reads correctly regardless of `groundH` there. The `mineDark`
+    plane is backed by collidered boulders + threshold rects so the player
+    stops at the mouth — it is NOT enterable (no interior).
+  - *Named but empty, on purpose*: registered as a `CAMPS` entry so finding
+    it is a real "discovered a place" moment on the map/HUD, but it holds no
+    content yet. This is an intentional **seed** for future underground
+    content (a mine-themed duelist, a cave interior à la the inline-interior
+    pattern, or a quest) — a hook placed in the world before the content
+    exists, so the world hints at more than it currently holds.
+
 ## Open questions
 
 - Renown pacing: thresholds 20/60/150 are untested against real play.
