@@ -49,7 +49,7 @@
   #xpwrap{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);width:min(560px,80vw);height:8px;background:#17151f;border:1px solid var(--gold-dim);border-radius:3px;overflow:hidden}
   #xpfill{height:100%;width:0;background:var(--xp)}
 
-  #chat{position:fixed;bottom:16px;left:14px;width:330px;max-height:150px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;font-size:12.5px;line-height:1.5;text-shadow:0 1px 2px #000}
+  #chat{position:fixed;bottom:16px;left:14px;width:440px;max-height:200px;overflow-y:auto;overflow-x:hidden;pointer-events:auto;display:flex;flex-direction:column;font-size:12.5px;line-height:1.5;text-shadow:0 1px 2px #000}
   #chat .l{opacity:.95}
   #chat .sys{color:#f0d060}
   #chat .cmb{color:#d6d2c8}
@@ -104,7 +104,8 @@
   #death button{margin-top:24px;pointer-events:auto}
 
   button.wow{background:linear-gradient(#3a2f18,#241d10);border:1px solid var(--gold);color:var(--ink);font-family:Georgia,serif;font-size:15px;padding:9px 26px;border-radius:4px;cursor:pointer;letter-spacing:.08em;font-variant:small-caps}
-  button.wow:hover{background:linear-gradient(#4a3d20,#2e2514);box-shadow:0 0 12px rgba(200,162,74,.35)}
+  button.wow:not(:disabled):hover{background:linear-gradient(#4a3d20,#2e2514);box-shadow:0 0 12px rgba(200,162,74,.35)}
+  button.wow:disabled{opacity:.4;cursor:default}
 
   #charselect{position:fixed;inset:0;z-index:10;background:radial-gradient(ellipse at 50% 25%,#141020 0%,#050509 75%);display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto}
   #charselect h1{font-size:clamp(30px,5vw,50px);color:var(--gold);letter-spacing:.1em;font-variant:small-caps;text-shadow:0 0 40px rgba(200,162,74,.3)}
@@ -190,7 +191,7 @@
   .db-row .ct{color:var(--gold);font-family:monospace}
 
   /* ---- chat input & challenge banner ---- */
-  #chatinput{position:fixed;bottom:170px;left:14px;width:330px;pointer-events:auto;background:var(--panel);border:1px solid var(--gold);color:var(--ink);font-family:Georgia,serif;font-size:13px;padding:7px 10px;border-radius:4px}
+  #chatinput{position:fixed;bottom:170px;left:14px;width:440px;pointer-events:auto;background:var(--panel);border:1px solid var(--gold);color:var(--ink);font-family:Georgia,serif;font-size:13px;padding:7px 10px;border-radius:4px}
   #chatinput:focus{outline:none}
   #challenge{position:fixed;top:130px;left:50%;transform:translateX(-50%);display:none;align-items:center;gap:14px;padding:12px 18px;font-size:14px;pointer-events:auto;z-index:7}
   #challenge b{color:var(--gold)}
@@ -255,7 +256,7 @@
   .db-row .lv{color:#d8b860;font-size:11px;letter-spacing:.05em}
 
   /* ---- duel event log ---- */
-  #d-log{position:absolute;right:-15vw;top:0;bottom:0;width:14vw;min-width:150px;overflow-y:auto;font-size:10.5px;line-height:1.55;color:var(--ink-dim);padding:6px 8px;background:rgba(8,8,14,.5);border-left:1px solid var(--gold-dim)}
+  #d-log{position:absolute;right:-9vw;top:0;bottom:0;width:18vw;min-width:200px;max-width:280px;overflow-y:auto;pointer-events:auto;font-size:10.5px;line-height:1.55;color:var(--ink-dim);padding:6px 8px;background:rgba(8,8,14,.5);border-left:1px solid var(--gold-dim)}
   #d-log div:last-child{color:var(--ink)}
 
   /* ---- duel help ---- */

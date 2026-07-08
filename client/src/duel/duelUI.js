@@ -101,10 +101,13 @@ export function render() {
     mh.appendChild(el);
   });
 
-  // event log
+  // event log — keep recent history and let the player scroll back through it;
+  // only auto-follow to the newest line when they're already at the bottom.
   const lg = $('d-log');
-  lg.innerHTML = (duel.chatter || []).slice(-12).map(l => `<div>${l}</div>`).join('');
-  lg.scrollTop = lg.scrollHeight;
+  const prevTop = lg.scrollTop;
+  const atBottom = lg.scrollHeight - prevTop - lg.clientHeight < 30;
+  lg.innerHTML = (duel.chatter || []).slice(-60).map(l => `<div>${l}</div>`).join('');
+  lg.scrollTop = atBottom ? lg.scrollHeight : prevTop;
 
   $('d-endturn').disabled = !myTurn;
 }

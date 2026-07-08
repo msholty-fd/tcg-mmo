@@ -11,9 +11,12 @@ export function toScreen(x, y, z) {
 }
 
 export function log(text, cls = 'cmb') {
+  const c = $('chat');
+  const atBottom = c.scrollHeight - c.scrollTop - c.clientHeight < 30;
   const e = document.createElement('div'); e.className = 'l ' + cls; e.textContent = text;
-  $('chat').appendChild(e);
-  while ($('chat').children.length > 9) $('chat').firstChild.remove();
+  c.appendChild(e);
+  while (c.children.length > 50) c.firstChild.remove();
+  if (atBottom) c.scrollTop = c.scrollHeight;
 }
 
 export function fct(x, y, z, text, cls = '') {
