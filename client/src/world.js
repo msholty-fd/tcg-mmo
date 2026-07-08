@@ -894,6 +894,13 @@ harrow.flavor = [
   "You want a quiet life? Grow turnips. You want a story? Well — that's what the roads are for.",
 ];
 
+// Cobb the Farmhand (DESIGN.md) — a new duelist, minimal footprint: no new
+// structure, no CAMPS entry, just a reason for the existing farmstead to
+// hold one more person. Stands east of the paddock's fenced field, clear of
+// the barn/hayBale/crate/barrel cluster around Harrow and of the fence/crop
+// colliders, still visibly "at the farm" without crowding it.
+export const cobb = spawnDuelist('cobb', -35, -28, { shirt: 0x6a7a4a, hat: 0x8a6a3a });
+
 // ---------- Cinderhollow Mine: an abandoned delving (x=-15 z=115) ----------
 // A new archetype: industrial/abandoned, and the first landmark with NO NPC
 // and NO duel — purely a scenic discovery due north in the Darkwood, seeding

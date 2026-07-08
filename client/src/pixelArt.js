@@ -587,6 +587,16 @@ const CARD_ART = {
   open_the_gate:       { sprite: 'rite', pal: { b: '#e8d8a0', B: '#c0a868', e: '#ffb040', f: '#ffe080' } },
   tarn:                { sprite: 'hooded', pal: { h: '#6a4e1e', H: '#4c3814', e: '#ffcf40' } },
   tollroad_colossus:   { sprite: 'colossus', pal: { l: '#8a6a3a', L: '#6a4e26', t: '#5a4020', e: '#ffcf40' } },
+
+  // ---- Cobb the Farmhand: vanilla curve, no gimmick — earthy
+  // green/homespun-brown accent, new to the roster (distinct from every
+  // prior duelist's palette).
+  farmhands_boy:       { sprite: 'hooded', pal: { h: '#6a7a4a', H: '#4e5c36', m: '#7a5a3a' } },
+  stout_plowman:       { sprite: 'hooded', pal: { h: '#7a8a4a', H: '#5c6936', m: '#8a6a3a' } },
+  yoke_ox:             { sprite: 'boar', pal: { d: '#8a7862', D: '#6e5e4a', n: '#c8b8a0' } },
+  old_drover:          { sprite: 'hooded', pal: { h: '#8a9a5a', H: '#697544', m: '#9a7a4a', e: '#c8a24a' } },
+  cobb:                { sprite: 'hooded', pal: { h: '#5a6a3a', H: '#43502a', m: '#8a6a3a', e: '#c8a24a' } },
+  harrows_plow_ox:     { sprite: 'colossus', pal: { l: '#7a6a4a', L: '#5e5038', t: '#8a7862', T: '#6e5e4a', e: '#e0d0a0' } },
 };
 
 const cache = new Map();

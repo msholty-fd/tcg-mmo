@@ -141,6 +141,21 @@ const halvardDeck = swap(
   ['camp_torcher', 'camp_torcher', 'camp_torcher', 'ember_bolt', 'ember_bolt', 'ember_bolt', 'controlled_burn', 'wolf_howl', 'hearth_meal'],
   ['patient_sentry', 'ridgewatch_warden', 'cinderpass_snare', 'backdraft', 'ashfall_recall', 'sentrys_cloak', 'halvard', 'boar_pit', 'alarm_bell'],
 );
+// Cobb the Farmhand (DESIGN.md) — Boarherd-based (fits the Boarlands/rural
+// flavor of Harrow's Field, and every starter base was tied at 4 duelists
+// already, so no tiebreak was available on usage alone). Every build-around
+// axis surveyed (Guardian/Ambush/Ward/Frenzy/Piercing/kindle-matters/
+// graveyard-matters/lifesteal/reaction control) already has a deck-wide
+// owner; "vanilla curve" — plain, keyword-free bodies with the best raw
+// stats in the set — was the one identity nobody had claimed. Swaps in the
+// full 1-6 cost curve of new vanilla bodies (plus his own signature at 5,
+// the only signature in the roster with zero rules text) for one copy each
+// of the boarherd starter's redundant/off-theme cards.
+const cobbDeck = swap(
+  STARTER_DECKS.boarherd,
+  ['young_boar', 'wild_boar', 'tusker', 'boar_matron', 'pack_alpha', 'kindled_fury'],
+  ['farmhands_boy', 'stout_plowman', 'yoke_ox', 'old_drover', 'cobb', 'harrows_plow_ox'],
+);
 
 export const DUELISTS = {
   rowan: {
@@ -190,5 +205,9 @@ export const DUELISTS = {
   halvard: {
     name: 'Halvard Stillwatch', deck: halvardDeck,
     rewards: [...halvardDeck, 'warding_bell', 'hidden_snare'],
+  },
+  cobb: {
+    name: 'Cobb the Farmhand', deck: cobbDeck,
+    rewards: [...cobbDeck, 'quartermaster', 'hearth_meal'],
   },
 };
