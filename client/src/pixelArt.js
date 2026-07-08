@@ -543,6 +543,13 @@ const CARD_ART = {
   bandit_creed:        { sprite: 'plate', pal: { p: '#6a2a2a', P: '#481c1c', g: '#e0b050' } },
   kestrel:             { sprite: 'hooded', pal: { h: '#7a1f3a', H: '#591530', m: '#3a0e20', e: '#ffcf40' } },
   warband_champion:    { sprite: 'hooded', pal: { h: '#8a4a2a', H: '#66351c', m: '#4a2814', e: '#ffb040' } },
+
+  // ---- Gruk the Boar King: deepening Piercing ----
+  boar_lancer:         { sprite: 'boar', pal: { d: '#8a6a3a', D: '#6a4e26' } },
+  tusked_reaver:       { sprite: 'boar', pal: { d: '#5a3a2a', D: '#432a1e', e: '#ffb040' } },
+  honed_tusks:         { sprite: 'fury', pal: { f: '#d8c8a0', F: '#fff0d0', r: '#8a7040', d: '#5a4a2a' } },
+  tusks_of_the_hollow: { sprite: 'fang', pal: { w: '#e0d0a0', W: '#b8a878', f: '#ff8a20', F: '#ffd060' } },
+  boarlords_fury:      { sprite: 'plate', pal: { p: '#8a6a3a', P: '#6a4e26', g: '#ffcf40' } },
 };
 
 const cache = new Map();

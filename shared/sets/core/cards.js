@@ -322,6 +322,32 @@ registerCards([
     flavor: "You hear the first cut. You're still flinching from it when the second one lands." },
   { id: 'warband_champion', set: 'core', rarity: 'uncommon', type: 'creature', cost: 5, atk: 4, hp: 4, keywords: ['frenzy'], storiedKeyword: 'lifesteal',
     name: 'Warband Champion', text: 'Frenzy.', flavor: 'Every scar is a fight the other guy lost twice.' },
+
+  // ---- Gruk the Boar King: deepening Piercing. His deck was the roster's
+  // thinnest (only 2 cards ever swapped in, ironhide_boar/emberwood_colossus
+  // — both Piercing) despite Piercing being the exact keyword his existing
+  // swap already leans on. Guardian/Ambush/Ward/Frenzy each picked up a
+  // deck-wide owner in earlier iterations; Piercing was the one keyword left
+  // with no spell that grants it (compare stand_and_hold/reckless_charge/
+  // pilgrims_vow) and its keyword-gap relic (piercing_barb) sat unclaimed by
+  // any roster entry.
+  { id: 'boar_lancer', set: 'core', rarity: 'common', type: 'creature', cost: 2, atk: 2, hp: 2, keywords: ['piercing'],
+    name: 'Boar Lancer', text: 'Piercing.', flavor: 'Rides low, tusks first.' },
+  { id: 'tusked_reaver', set: 'core', rarity: 'uncommon', type: 'creature', cost: 3, atk: 3, hp: 3, keywords: ['piercing'], storiedKeyword: 'lifesteal',
+    name: 'Tusked Reaver', text: 'Piercing.', flavor: 'The Hollow keeps its own tally of what got through.' },
+  { id: 'honed_tusks', set: 'core', rarity: 'common', type: 'spell', cost: 2,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 1, hp: 0 }, { effect: 'grantKeyword', target: 'chosen', keyword: 'piercing' }] }, needsTarget: 'ownUnit',
+    name: 'Honed Tusks', text: 'Give a creature +1 attack and Piercing.', flavor: 'Sharpened on the same stone every winter.' },
+  { id: 'tusks_of_the_hollow', set: 'core', rarity: 'rare', type: 'relic', cost: 3,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 2, hp: 0 }, { effect: 'grantKeyword', target: 'chosen', keyword: 'piercing' }] }, needsTarget: 'ownUnit',
+    name: 'Tusks of the Hollow', text: "Attach: your creature gets +2 attack and Piercing.", flavor: "Gruk's own, before Gruk was king of anything." },
+  { id: 'boarlords_fury', set: 'core', rarity: 'rare', type: 'enchantment', cost: 4,
+    triggers: {
+      onPlay: [{ effect: 'grantKeyword', target: 'allAllies', keyword: 'piercing' }],
+      onAllySummon: [{ effect: 'grantKeyword', target: 'self', keyword: 'piercing' }],
+    },
+    name: "Boarlord's Fury", text: 'When cast, your creatures gain Piercing. Creatures you play afterward enter with Piercing too.',
+    flavor: 'The herd charges as one, and one is all it takes.' },
 ]);
 
 // Starter decks (30 cards) — what a new character begins with,
