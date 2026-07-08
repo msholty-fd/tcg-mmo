@@ -8,6 +8,7 @@ import { $ } from './utils.js';
 import { player, bots } from './state.js';
 import { ZONES, CAMPS } from './constants.js';
 import { isExplored, saveFog, CELL, HALF } from './fogOfWar.js';
+import { activeQuestMarkers } from './quests.js';
 
 export let fullmapOpen = false;
 
@@ -39,6 +40,25 @@ function label(ctx, mx, mz, text) {
   ctx.shadowColor = '#000'; ctx.shadowBlur = 3;
   ctx.fillText(text, mx, mz);
   ctx.shadowBlur = 0;
+}
+
+// A quest marker: a diamond over its destination plus the quest title. Gold =
+// go do the objective here; green = objective met, return to the giver here
+// (mirrors the tracker's colors and the in-world !/? head markers).
+function questMarker(ctx, mx, mz, title, done) {
+  const col = done ? '#7ac96a' : '#f0d060';
+  ctx.save();
+  ctx.translate(mx, mz);
+  ctx.shadowColor = '#000'; ctx.shadowBlur = 4;
+  ctx.beginPath();
+  ctx.moveTo(0, -7); ctx.lineTo(6, 0); ctx.lineTo(0, 7); ctx.lineTo(-6, 0); ctx.closePath();
+  ctx.fillStyle = col; ctx.fill();
+  ctx.lineWidth = 1.5; ctx.strokeStyle = '#2a1a0a'; ctx.stroke();
+  ctx.font = 'bold 11px Georgia, serif';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = col;
+  ctx.fillText(title, 0, -11);
+  ctx.restore();
 }
 
 export function drawFullMap() {
@@ -105,6 +125,13 @@ export function drawFullMap() {
       const wx = -HALF + cx * CELL + CELL / 2;
       if (!isExplored(wx, wz)) ctx.fillRect(cx * cellPx, cz * cellPx, cellPx + 1, cellPx + 1);
     }
+  }
+
+  // quest markers ON TOP of fog — the point is to show where to go, including
+  // places you haven't reached yet. Drawn last so nothing occludes them.
+  for (const m of activeQuestMarkers()) {
+    const { mx, mz } = w2m(m.x, m.z);
+    questMarker(ctx, mx, mz, m.title, m.done);
   }
 }
 

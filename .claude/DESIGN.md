@@ -1087,6 +1087,29 @@ considered and rejected.
     challenge-prompt flow with the new cards wasn't browser-verified
     (worktrees have no dev server).
 
+- **Quest markers on the full map (2026-07-08, `feat/quest-map-markers`)** —
+  the M map now draws a marker per active quest at the place you go to advance
+  it: a gold diamond + the quest title, or green ("return to giver") once the
+  objective is met — mirroring the tracker colors and the in-world `!`/`?` head
+  markers. Design choices:
+  - *Locations are derived, never hardcoded.* Duel quests point at the target
+    duelist's spawn (`npcs` lookup by `duelist.id`); collect quests point at the
+    duelist whose reward pool drops the card (`duelist.rewards.includes(cardId)`,
+    first match in spawn order). This means new quests/duelists get correct
+    markers for free — no second coordinate table to keep in sync. Lives in
+    `client/src/quests.js` (`activeQuestMarkers()`), rendered by `fullmap.js`.
+  - *"Win N anywhere" quests (`target:'any'`, e.g. Table Stakes) get no marker*
+    — there's no single place, and inventing one would mislead.
+  - *Markers draw ON TOP of the fog-of-war*, unlike everything else on the map.
+    The whole point is to show where to head, including zones you haven't
+    reached yet — the quest text already hints the region, so this isn't a
+    fog-reveal exploit, just a "you're looking for a spot over there" arrow.
+  - Verified: `npm run build` clean; a headless pass confirmed all 18 quests
+    resolve to a sensible destination (duel→target duelist, collect→a duelist
+    that actually drops the card). Not browser-verified live — worktrees have no
+    dev server, and the map/marker render is a faithful copy of the existing
+    `fullmap.js` canvas drawing.
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase

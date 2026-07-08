@@ -42,6 +42,39 @@ export function questHave(id) {
   return qs[id]?.have || 0;
 }
 
+// Where on the map does an active quest point? Fully derived, no hardcoded
+// coords: duel quests point at the target duelist's spawn; collect quests
+// point at the duelist whose reward pool drops the card (n.duelist.rewards);
+// a finished objective points back at the giver ("return to X"). 'any'-target
+// duel quests (win N anywhere) have no single spot, so they get no marker.
+// Returns null when no location applies — fullmap.js just skips it.
+function questLocation(q, done) {
+  if (done) return giverNpc(q.giver);
+  if (q.duels) {
+    if (q.duels.target === 'any') return null;
+    return npcs.find(n => n.duelist?.id === q.duels.target) || null;
+  }
+  if (q.collect) {
+    return npcs.find(n => n.duelist?.rewards?.includes(q.collect.cardId))
+      || giverNpc(q.giver);
+  }
+  return null;
+}
+
+// Marker data for the full map (fullmap.js). One entry per active quest that
+// has a resolvable location: { x, z, title, done }. `done` (objective met,
+// ready to turn in) points at the giver and is styled differently.
+export function activeQuestMarkers() {
+  const out = [];
+  for (const q of QUESTS) {
+    if (stateOf(profileView(), q.id) !== 'active') continue;
+    const done = questHave(q.id) >= objNeed(q);
+    const loc = questLocation(q, done);
+    if (loc) out.push({ x: loc.x, z: loc.z, title: q.title, done });
+  }
+  return out;
+}
+
 export function updateMark(n) {
   const done = npcTurnin(n), avail = npcQuest(n);
   n.mark.visible = !!(done || avail);
