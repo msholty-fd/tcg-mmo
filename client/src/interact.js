@@ -2,6 +2,7 @@ import { $, dist2 } from './utils.js';
 import { player, npcs } from './state.js';
 import { say } from './ui.js';
 import { npcQuest, npcTurnin, npcActiveQuest, questHave } from './quests.js';
+import { objNeed } from '../../shared/quests.js';
 import { marla } from './world.js';
 import { startDuel } from './duel/duelManager.js';
 import { openShop } from './shop.js';
@@ -61,7 +62,7 @@ export function handleInteract() {
 
   const active = npcActiveQuest(n);
   if (active) {
-    const done = questHave(active.id) >= active.duels.need;
+    const done = questHave(active.id) >= objNeed(active);
     say(n.name, done ? 'Well?' : '(' + active.obj(questHave(active.id)) + ') Off you go — the cards won\'t play themselves.');
     dialogueT = 7;
     return;

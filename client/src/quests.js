@@ -4,8 +4,9 @@
 
 import { $ } from './utils.js';
 import { player, npcs } from './state.js';
-import { QUESTS, stateOf, canAccept, canTurnin } from '../../shared/quests.js';
+import { QUESTS, questById, stateOf, canAccept, canTurnin, collectHave, objNeed } from '../../shared/quests.js';
 import { marla, aldric } from './world.js';
+import { getCards } from './collection.js';
 
 let qs = {};   // { [id]: {state, have} } — server mirror
 
@@ -15,7 +16,9 @@ export function setQuests(quests) {
   renderTracker();
 }
 
-const profileView = () => ({ lvl: player.lvl, quests: qs });
+// cards are included so canTurnin/collectHave can check collect objectives
+// against the client's mirrored collection (kept in sync via profileUpdate).
+const profileView = () => ({ lvl: player.lvl, quests: qs, cards: getCards() });
 const giverNpc = key => (key === 'marla' ? marla : aldric);
 
 export function npcQuest(n) {
@@ -30,7 +33,11 @@ export function npcActiveQuest(n) {
   return QUESTS.find(q => giverNpc(q.giver) === n && stateOf(profileView(), q.id) === 'active');
 }
 
-export function questHave(id) { return qs[id]?.have || 0; }
+export function questHave(id) {
+  const q = questById(id);
+  if (q?.collect) return Math.min(collectHave(profileView(), q), q.collect.need);
+  return qs[id]?.have || 0;
+}
 
 export function updateMark(n) {
   const done = npcTurnin(n), avail = npcQuest(n);
@@ -47,7 +54,7 @@ export function renderTracker() {
   $('tracker-list').innerHTML = act.length
     ? act.map(q => {
         const have = questHave(q.id);
-        const d = have >= q.duels.need;
+        const d = have >= objNeed(q);
         const giver = giverNpc(q.giver).name.split(' ').pop();
         return `<div class="q"><div class="t">${q.title}</div><div class="o ${d ? 'done' : ''}">${d ? '✓ Return to ' + giver : q.obj(have)}</div></div>`;
       }).join('')
