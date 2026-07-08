@@ -79,6 +79,10 @@ export function render() {
   renderReactions($('d-foe-reacts'), foe.reactions || [], false);
   renderReactions($('d-my-reacts'), me.reactions || [], true);
 
+  // enchantments: face-up and persistent, so both sides' are always shown
+  renderEnchantments($('d-foe-ench'), foe.enchantments || []);
+  renderEnchantments($('d-my-ench'), me.enchantments || []);
+
   const foeHearthEl = $('d-foe-hearth');
   foeHearthEl.classList.toggle('targetable', targeting && canTargetHearth());
   foeHearthEl.onclick = () => {
@@ -116,6 +120,21 @@ function renderReactions(el, arr, mine) {
       d.dataset.level = r.level || 0;
       d.title = getCard(r.card).name;
     }
+    el.appendChild(d);
+  }
+}
+
+function renderEnchantments(el, arr) {
+  el.innerHTML = '';
+  for (const e of arr) {
+    const def = getCard(e.card);
+    const d = document.createElement('div');
+    d.className = 'dench';
+    d.dataset.card = e.card;
+    d.dataset.level = e.level || 0;
+    d.title = def.name;
+    const art = artFor(e.card);
+    d.innerHTML = art ? `<img src="${art}" alt="">` : def.name[0];
     el.appendChild(d);
   }
 }

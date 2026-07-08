@@ -15,6 +15,16 @@
 // spell's effects (counterable), 'enemyCreature' after the creature's onPlay,
 // 'enemyAttack' on declaration before damage. Revealed → resolved → graveyard.
 // No priority windows, by design — see DESIGN.md "Reactions, not a stack".
+//
+// Enchantments: type 'enchantment' cards resolve onPlay like a relic, but
+// then stay face-up in a persistent per-player zone (p.enchantments, max 4)
+// instead of going to the graveyard. They fire again on player-wide events —
+// 'startOfTurn'/'endOfTurn'/'onKindle' (same hooks creatures use, via
+// fireEnchantmentTriggers), 'onAllySummon' (after you play a creature — lets
+// an enchantment buff-on-cast-plus-buff-future-plays to read as a static
+// aura) and 'onAllyDeath' (after one of your creatures dies). Unlike a
+// reaction they are never consumed by firing — see DESIGN.md "Enchantments,
+// a persistent axis".
 
 import { getCard } from './cards.js';
 import { drawCard, damageUnit, damageHearth, healHearth, findUnit, unitFromCard, say } from './state.js';
@@ -32,6 +42,14 @@ export function fireTriggers(duel, side, unitOrCard, when, ctx = {}) {
     runEffect(duel, side, e, { ...ctx, card: unitOrCard.card, srcIid, unit: unitOrCard.uid ? unitOrCard : ctx.unit });
   }
   sweepDead(duel);
+}
+
+// fire `side`'s persistent face-up enchantments for a player-wide event —
+// the enchantment card instance stands in for `unitOrCard` in fireTriggers,
+// so its def.triggers[when] effects run with ctx (e.g. ctx.unit for
+// 'onAllySummon') exactly like a creature's own triggers would.
+export function fireEnchantmentTriggers(duel, side, when, ctx = {}) {
+  for (const e of [...duel.players[side].enchantments]) fireTriggers(duel, side, e, when, ctx);
 }
 
 // reveal + resolve `ownerSide`'s face-down reactions matching `on`, in the
@@ -73,6 +91,7 @@ export function sweepDead(duel) {
           duel.log.push({ type: 'death', side: s, unit: u.uid, card: u.card });
           say(duel, `${uname(u)} is destroyed.`);
           fireTriggers(duel, s, u, 'onDeath');
+          fireEnchantmentTriggers(duel, s, 'onAllyDeath', { unit: u });
         }
       }
     }
@@ -92,6 +111,7 @@ export function startTurn(duel) {
     u.attacksLeft = u.keywords.includes('frenzy') ? 2 : 1;
     fireTriggers(duel, side, u, 'startOfTurn');
   }
+  fireEnchantmentTriggers(duel, side, 'startOfTurn');
   drawCard(duel, side);
   duel.log.push({ type: 'turnStart', side, turn: duel.turn });
 }
@@ -99,6 +119,7 @@ export function startTurn(duel) {
 export function endTurn(duel) {
   const side = duel.active;
   for (const u of duel.players[side].field) fireTriggers(duel, side, u, 'endOfTurn');
+  fireEnchantmentTriggers(duel, side, 'endOfTurn');
   duel.active = 1 - side;
   duel.log.push({ type: 'turnEnd', side });
   startTurn(duel);
@@ -122,6 +143,7 @@ export function kindle(duel, side, handIndex) {
   duel.log.push({ type: 'kindle', side, card: c.card, emberMax: p.emberMax });
   say(duel, `${duel.names[side]} kindles a card (${p.emberMax} Ember).`);
   for (const u of [...p.field]) fireTriggers(duel, side, u, 'onKindle');
+  fireEnchantmentTriggers(duel, side, 'onKindle');
   return true;
 }
 
@@ -134,6 +156,7 @@ export function canPlay(duel, side, handIndex) {
   if (def.cost > p.ember) return false;
   if (def.type === 'creature' && p.field.length >= 6) return false;
   if (def.type === 'reaction' && p.reactions.length >= 2) return false;
+  if (def.type === 'enchantment' && p.enchantments.length >= 4) return false;
   return true;
 }
 
@@ -163,10 +186,17 @@ export function playCard(duel, side, handIndex, target = null) {
     duel.log.push({ type: 'summon', side, unit: u.uid, card: c.card });
     fireTriggers(duel, side, u, 'onPlay', { target });
     fireReactions(duel, 1 - side, 'enemyCreature', { trigger: { unit: u } });
+    fireEnchantmentTriggers(duel, side, 'onAllySummon', { unit: u });
   } else if (def.type === 'spell') {
     const rctx = fireReactions(duel, 1 - side, 'enemySpell', { trigger: { card: c.card } });
     if (!rctx.countered) fireTriggers(duel, side, c, 'onPlay', { target });
     p.graveyard.push(c);
+  } else if (def.type === 'enchantment') {
+    // face-up and persistent — resolves onPlay like a relic, but joins its
+    // own zone instead of the graveyard so it can fire again later
+    p.enchantments.push(c);
+    duel.log.push({ type: 'enchant', side, card: c.card });
+    fireTriggers(duel, side, c, 'onPlay', { target });
   } else {
     // relic — resolve onPlay effects, then to the graveyard
     fireTriggers(duel, side, c, 'onPlay', { target });

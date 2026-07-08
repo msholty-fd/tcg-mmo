@@ -55,6 +55,7 @@ export class DuelRoom {
         kindledThisTurn: p.kindledThisTurn,
         hand: i === side ? p.hand : p.hand.map(() => null),
         reactions: i === side ? p.reactions : p.reactions.map(() => null),
+        enchantments: p.enchantments,   // face-up and persistent — visible to both sides
         field: p.field,
         deckCount: p.deck.length, graveCount: p.graveyard.length,
       })),
