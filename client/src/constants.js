@@ -49,6 +49,10 @@ export const CAMPS = [
   // A sunken swamp in the unclaimed southwest quadrant — every other named
   // place sits NW/SE/S/NE of origin. See DESIGN.md "Hollowmere".
   { x: -100, z: -90, r: 22, name: 'Hollowmere' },
+  // An abandoned mine dug into a rocky rise due north, in the Darkwood — a
+  // scenic discovery, not enterable (seeds future underground content). See
+  // DESIGN.md "Cinderhollow Mine".
+  { x: -15, z: 115, r: 18, name: 'Cinderhollow Mine' },
 ];
 
 export const BOTCHAT = [
