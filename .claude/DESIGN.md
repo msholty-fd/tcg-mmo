@@ -343,6 +343,39 @@ considered and rejected.
   Bram's Rest iteration, and this pass's new cards are folded into Vex's
   deck/rewards specifically, not shared.
 
+- **Maren the Shrinekeeper — new duelist, Ward as a persistent axis
+  (2026-07-08)**: this iteration adds a genuinely *new* duelist (the
+  loop's other case, alternating with the Vex deepening above). Checked
+  `duelists.js` for gaps first: the `enchantment` card type — shipped as
+  a whole new mechanic — had **zero duelist owners**; none of
+  `herd_instinct`/`bastion_oath`/`ember_communion`/`ashen_vigil` appeared
+  in any roster deck or reward pool. The Ward keyword's two keyword-gap
+  fillers (`warded_acolyte`, `sanctum_guardian`) were likewise completely
+  unclaimed. Both gaps, one duelist: Ward as a deck-wide persistent theme,
+  which an enchantment (persistent, player-wide by construction) is the
+  natural home for.
+  - *Placement*: deliberately the smallest possible footprint per this
+    iteration's scope (a duelist with a place to stand, not a landmark
+    push). Stationed at the village shrine `client/src/world.js`'s
+    `shrine(-30, 5, -.4)` — built during the town-expansion pass and
+    purely decorative until now. No new structure, no CAMPS entry: the
+    win is giving an existing building a reason to matter.
+  - *Cards*: 5 new (`warding_litany`, `blessed_icon`, `shrines_grace`,
+    `pilgrims_vow`, `shrine_elder`), all built from existing effect
+    primitives — no engine changes needed. `warding_litany` (rare
+    enchantment) mirrors Herd Instinct's onPlay+onAllySummon shape
+    exactly, but grants the Ward keyword instead of a stat buff — the
+    first enchantment to grant a keyword rather than a number.
+  - *Deck*: Wardens-based via the standard `swap()` pattern — the 5 new
+    cards plus `bastion_oath` (its first duelist owner) and the two
+    unclaimed Ward bodies, replacing 8 generic filler cards. Reward pool
+    also includes `ashen_vigil`, the one enchantment left unclaimed after
+    this pass — flagged for whichever future duelist wants it.
+  - Not done / untested live: visual placement at the shrine and the
+    challenge-prompt flow weren't browser-verified (worktrees have no dev
+    server) — same `spawnDuelist`/`interact.js` code path as every other
+    duelist, so risk is judged low but it's a real gap, not a formality.
+
 - **Waystones — the realm's road network (2026-07-08)**: after four
   iterations of *adding places*, the world was a set of scattered points
   with no connective tissue. This adds the tissue instead of another point:
