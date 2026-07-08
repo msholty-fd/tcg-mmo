@@ -36,6 +36,10 @@ const M = {
   deadwood: new THREE.MeshLambertMaterial({ color: 0x5a5248 }),
   bogWater: new THREE.MeshLambertMaterial({ color: 0x1a2e28 }),
   reed:     new THREE.MeshLambertMaterial({ color: 0x5a6e3a }),
+  // Waystone dressing — a weathered pale stone plus a gilded painted band/
+  // arrow (same gold as Highgate's finial) that marks these as official
+  // realm roadmarkers rather than the grey rubble scattered elsewhere.
+  waystone: new THREE.MeshLambertMaterial({ color: 0xb8b0a2 }),
 };
 
 function tree(x, z, dark) {
@@ -686,3 +690,81 @@ for (const [dx, dz] of [[-1, 4, ], [9, -4], [-9, -7]]) reedCluster(-100 + dx, -9
 fires.push(campfire(-100, -90));
 
 export const hessa = spawnDuelist('hessa', -100, -87, { shirt: 0x3a4a3e, hat: 0x2a2a24 });
+
+// ---------- Waystones: the realm's road markers (DESIGN.md) ----------
+// The world had grown into scattered points (village, camps, Highgate,
+// ruins, swamp) with nothing tying them together — this is the connective
+// tissue. Carved standing stones along the routes outward from the village,
+// each with a gilded arrow pointing toward the place it marks the way to, so
+// following the stones reads as travelling a connected realm rather than
+// wandering between islands. Directly targets DESIGN.md's open question on
+// whether the long walks feel like a slog: waymarkers give a walk direction
+// and progress-legibility. Deliberately card-light — pure cosmetic props
+// (like signposts/rocks) plus one flavour NPC, no new duelist/cards.
+//
+// A waystone sits at its own groundH (each is an independent 3D object, not a
+// terrain-hugging decal), so there's no floating/z-fighting on slopes. The
+// arrow's facing is computed from the stone's position toward its target:
+// with THREE's rotation.y convention here, local +Z maps to world direction
+// (sin rot, cos rot), so rot = atan2(dx-x, dz-z) aims local +Z at the target.
+
+function waystone(x, z, tx, tz, scale = 1) {
+  const g = new THREE.Group();
+  const rot = Math.atan2(tx - x, tz - z);   // face local +Z toward (tx,tz)
+  const shaft = new THREE.Mesh(new THREE.CylinderGeometry(.32 * scale, .5 * scale, 2.2 * scale, 5), M.waystone);
+  shaft.position.y = 1.1 * scale; shaft.castShadow = true; g.add(shaft);
+  const cap = new THREE.Mesh(new THREE.CylinderGeometry(.44 * scale, .38 * scale, .28 * scale, 5), M.waystone);
+  cap.position.y = 2.3 * scale; cap.castShadow = true; g.add(cap);
+  // gilded band + arrow — marks it as an official roadmarker, not rubble
+  const band = new THREE.Mesh(new THREE.TorusGeometry(.4 * scale, .05 * scale, 5, 12), M.gold);
+  band.rotation.x = Math.PI / 2; band.position.y = 1.7 * scale; g.add(band);
+  const arrow = new THREE.Mesh(new THREE.ConeGeometry(.2 * scale, .45 * scale, 4), M.gold);
+  arrow.rotation.x = Math.PI / 2;   // tip toward local +Z
+  arrow.position.set(0, 1.7 * scale, .55 * scale); g.add(arrow);
+  g.position.set(x, groundH(x, z), z); g.rotation.y = rot; scene.add(g);
+  addCircle(x, z, .5 * scale);
+}
+
+// Coordinates of the places the roads lead (kept local — these mirror the
+// spawn positions above and the CAMPS entries in constants.js).
+const DEST = {
+  highgate:  [40, -145],
+  hollowmere:[-100, -90],
+  emberwatch:[100, 100],
+  gruk:      [107, -60],
+  redsash:   [-90, 64],
+  village:   [0, 0],
+};
+
+// A hub crossroads just south of the village where the roads diverge, then
+// stepping-stones stepping outward along each route toward its destination.
+const CROSSROADS = [7, -30];
+waystone(CROSSROADS[0], CROSSROADS[1], ...DEST.highgate, 1.35);   // tall central marker
+// toward Highgate (south) — reinforces the Bram's Rest road
+waystone(14, -52, ...DEST.highgate);
+waystone(30, -112, ...DEST.highgate);
+// toward Hollowmere (southwest)
+waystone(-24, -44, ...DEST.hollowmere);
+waystone(-62, -72, ...DEST.hollowmere);
+// toward Emberwatch Ruins (northeast)
+waystone(40, 42, ...DEST.emberwatch);
+waystone(74, 78, ...DEST.emberwatch);
+// toward Gruk's Hollow (east)
+waystone(56, -36, ...DEST.gruk);
+// toward the Red-Sash Camp (northwest)
+waystone(-46, 38, ...DEST.redsash);
+
+// The Wayfarer — a roaming teller who keeps the roads' stories, stationed at
+// the crossroads hub. First flavour NPC placed out in the Boarlands rather
+// than inside a settlement; its lines name each waystone's destination so a
+// new player reads the crossroads as "roads go HERE, and HERE" instead of
+// just decoration. Reuses the n.flavor system (interact.js), no quest/duel.
+export const wayfarer = spawnNPC('The Wayfarer', CROSSROADS[0] + 2, CROSSROADS[1] + 1, { shirt: 0x4a5a7a, hat: 0x6a5a3a });
+wayfarer.flavor = [
+  "Every stone's an arrow, friend. Follow the gilded marks and no road in the realm stays a stranger.",
+  "South road's the long one — Bram's fire first, then Highgate's walls past the tree line. Mind Tarn at the gate.",
+  "West-and-south the ground goes soft: Hollowmere, where Old Hessa deals cards to the dead. Bring dry boots.",
+  "Northeast the markers thin out. There's a ruin that lights itself after dark — I don't follow that road at night, and neither should you.",
+  "East for Gruk's bones, northwest for the Red-Sash. Both roads end in a duel; that's the realm for you.",
+  "I don't duel, I don't trade. I just walk the roads and remember who's on them. Someone has to.",
+];
