@@ -21,6 +21,14 @@ export const ZONES = [
   { r: 1e9, name: 'Darkwood' },
 ];
 
+// Named camps, checked before the ZONES rings in main.js's zoneAt() — shared
+// here so the full map (fullmap.js) can draw the same circles without a
+// second hardcoded copy.
+export const CAMPS = [
+  { x: 107, z: -60, r: 26, name: "Gruk's Hollow" },
+  { x: -90, z: 64,  r: 24, name: 'Red-Sash Camp' },
+];
+
 export const BOTCHAT = [
   'Legolaz: anyone beaten Gruk at the table yet? his deck is unfair',
   'Bonkstick: WTS Pack Alpha, cheap',

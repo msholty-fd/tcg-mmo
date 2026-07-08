@@ -64,9 +64,16 @@
   #tracker .q .o{color:var(--ink-dim)}
   #tracker .q .o.done{color:#7ac96a}
 
-  #mmwrap{position:fixed;top:14px;right:14px;width:150px}
+  #mmwrap{position:fixed;top:14px;right:14px;width:150px;cursor:pointer}
   #minimap{border-radius:50%;border:2px solid var(--gold-dim);box-shadow:0 0 0 1px #000,0 4px 12px rgba(0,0,0,.6);display:block}
   #zone-mm{text-align:center;font-size:11px;color:var(--gold);margin-top:3px;font-variant:small-caps;letter-spacing:.1em;text-shadow:0 1px 2px #000}
+
+  /* ---- full map overlay (M) ---- */
+  #fullmap{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9;display:none;flex-direction:column;gap:10px;padding:16px;pointer-events:auto}
+  #fullmap.open{display:flex}
+  #fm-head{display:flex;align-items:center;justify-content:space-between;gap:18px}
+  #fm-head h2{color:var(--gold);font-variant:small-caps;letter-spacing:.14em;font-weight:normal;font-size:20px}
+  #fullmap-canvas{border:1px solid var(--gold-dim);border-radius:4px;background:#0a0a0e;display:block;max-width:80vw;max-height:80vh}
 
   #zonebanner{position:fixed;top:16%;left:0;right:0;text-align:center;font-size:clamp(26px,4.5vw,44px);color:var(--gold);letter-spacing:.12em;font-variant:small-caps;text-shadow:0 2px 12px #000,0 0 30px rgba(200,162,74,.3);opacity:0;transition:opacity 1.2s;pointer-events:none}
 
@@ -301,7 +308,7 @@
   <div id="xpwrap"><div id="xpfill"></div></div>
   <div id="prompt" class="panel"><span id="prompt-text"></span></div>
   <div id="dialogue" class="panel"><div class="name" id="d-name"></div><div class="text" id="d-text"></div><div class="reward" id="d-reward"></div></div>
-  <div id="hints" class="panel"><b>WASD</b> move · <b>Space</b> jump · <b>drag</b> camera<br><b>E</b> talk/challenge · <b>B</b> deck builder · <b>Enter</b> chat<br><b>Q</b> quests · <b>H</b> controls · <b>P</b> prompt · drag windows to move</div>
+  <div id="hints" class="panel"><b>WASD</b> move · <b>Space</b> jump · <b>drag</b> camera<br><b>E</b> talk/challenge · <b>B</b> deck builder · <b>M</b> map · <b>Enter</b> chat<br><b>Q</b> quests · <b>H</b> controls · <b>P</b> prompt · drag windows to move</div>
   <div id="dingflash"></div>
   <input id="chatinput" maxlength="200" placeholder="Say something… (Enter to send, Esc to close)" style="display:none">
   <div id="escmenu">
@@ -422,6 +429,14 @@
 <div id="chronicle" class="panel">
   <h3><span id="ch-title"></span><span id="ch-close">✕</span></h3>
   <div id="ch-list"></div>
+</div>
+
+<div id="fullmap" class="panel">
+  <div id="fm-head">
+    <h2>Map of Emberwood</h2>
+    <button class="wow" id="fm-close">Close</button>
+  </div>
+  <canvas id="fullmap-canvas" width="640" height="640"></canvas>
 </div>
 
 <div id="cardzoom"></div>

@@ -3,7 +3,7 @@ import { $, lerp, smoothstep, rand, ri } from './utils.js';
 import { scene, renderer, camera, sun, hemi, starMat, sunDisc, moonDisc } from './scene.js';
 import { groundH } from './terrain.js';
 import { humanoid, makeLabel } from './entities.js';
-import { STARTERS, ZONES } from './constants.js';
+import { STARTERS, ZONES, CAMPS } from './constants.js';
 import { player, critters } from './state.js';
 import { fires, torches, marla, aldric, camCollidables } from './world.js';
 import { log, updateHUD } from './ui.js';
@@ -15,11 +15,14 @@ import { initCollection } from './collection.js';
 import { startNet, initNet, netTick, nearestRemote, challengePlayer, requestTrade } from './net.js';
 import { initDuels, duelActive } from './duel/duelManager.js';
 import { initDeckbuilder, deckbuilderOpen } from './deckbuilder.js';
+import { initFullmap } from './fullmap.js';
+import { markExplored } from './fogOfWar.js';
 
 import { initCardZoom } from './cardZoom.js';
 import { initHudWindows, isOpen as hudOpen } from './hudWindows.js';
 initDuels();
 initDeckbuilder();
+initFullmap();
 initNet();
 initCardZoom();
 initHudWindows();
@@ -93,8 +96,7 @@ try {
 // ---------- zones ----------
 let curZone = '', zoneT = 0;
 function zoneAt(x, z) {
-  if (Math.hypot(x - 107, z + 60) < 26) return "Gruk's Hollow";
-  if (Math.hypot(x + 90, z - 64) < 24) return 'Red-Sash Camp';
+  for (const c of CAMPS) if (Math.hypot(x - c.x, z - c.z) < c.r) return c.name;
   const d = Math.hypot(x, z);
   for (const zn of ZONES) if (d < zn.r) return zn.name;
 }
@@ -163,6 +165,7 @@ function update(dt) {
     const c = resolveCollision(player.x, player.z, .5);
     player.x = c.x; player.z = c.z;
     player.yaw = a; player.mesh.rotation.y = a;
+    markExplored(player.x, player.z);
   }
   player.vy -= 22 * dt;
   let y = player.mesh.position.y + player.vy * dt;
