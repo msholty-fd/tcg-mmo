@@ -1028,6 +1028,65 @@ considered and rejected.
     Michael should press B in-world after deploying to confirm the section
     headers, tabs, and chips actually look right.
 
+- **The Ashen Sentinel — "ashfall" (onDeath payoffs) as a deck-wide identity
+  (2026-07-08, worldbuilding loop iteration 13)**: deepens an *existing*
+  duelist. Checked every named landmark for an open new-NPC spot first, per
+  the task's lean toward (b): Highgate (Verity/Tarn), Bram's Rest (Footpad),
+  Hollowmere (Hessa), Cinderhollow Mine (Marrow), and Cinderpass (Halvard) are
+  all claimed; Waystones is deliberately card-light by design; the Emberpeaks
+  basin is Phase 3's own fire-elemental duelist roster, which had just merged
+  from a concurrent worktree (`feat/emberpeaks-duelists`, `shared/sets/
+  emberpeaks/duelists.js` — a separate roster, not core). None was legitimate,
+  so this falls back to (a). Precisely counted swapped-in cards per duelist
+  (multiset-diff against each `STARTER_DECKS` base): the Sentinel had only 3
+  (`ash_sprite`/`flame_tender`/`ashen_shambler`), the roster's thinnest by a
+  wide margin (next was Vex at 5), and the only long-standing duelist with no
+  self-named signature card. Her existing 3 cards dabble in kindle-matters and
+  graveyard-matters, but both are now fully owned elsewhere (Tarn; Marrow;
+  Hessa's hybrid of the two) — onDeath/onAllyDeath triggers as an *immediate*
+  battlefield payoff (distinct from graveyard-matters' graveyard-count/exhume
+  focus) was the one axis still open: `boar_matron`/`camp_torcher` use onDeath
+  only as generic, unthemed starter filler, and `ashen_vigil` (the onAllyDeath
+  enchantment hook) had sat in Maren's reward pool but never in an actual deck.
+  - **7 new cards** (`shared/sets/core/cards.js`), all existing effect
+    primitives (`emberGain`/`draw`/`buff`/`damage` — no engine changes
+    needed): `ember_husk` (1c, onDeath gain 1 Ember) and `watchfire_whelp` (2c,
+    onDeath draw 1) are cheap curve-filling death-fodder; `ashbound_warden`
+    (3c Guardian, onDeath buff the board +1 attack) makes trading a wall away
+    a real upside; `feed_the_fire` (2c spell, `needsTarget: 'ownUnit'` —
+    damage your own creature + draw) is a sacrifice enabler that lets the
+    payoff fire on your terms, a new-to-the-set combo of existing primitives;
+    `cinderfall_rite` (4c rare enchantment) pairs an onPlay AOE with an
+    onAllyDeath damage trigger — the deck's aggregate payoff across every
+    creature that falls; `sentinel` (her first-ever signature card, 5c
+    Guardian, onPlay AOE + onDeath draw 2) is the "boss plays themself"
+    pattern already used by every other long-standing duelist; `ashfall_
+    colossus` (6c Guardian finisher, onDeath buff the board +1/+1) rounds out
+    the curve.
+  - **Deck**: `sentinelDeck` chains a second `swap()` onto the original
+    single-swap one, folding in the 7 new cards plus `ashen_vigil` (previously
+    unclaimed by any deck), replacing 8 generic burn-filler cards
+    (`ember_bolt`×3/`kindled_fury`×2/`sudden_spark`/`hearth_meal`/
+    `wolf_howl`) that shared no theme with her. Verified at exactly 30 cards.
+  - **CARD_ART**: all 7 reuse existing sprites (`emberling`/`wraith`/`hooded`/
+    `burn`/`rite`/`colossus`) with a new charcoal-ash + dying-ember-red accent
+    palette — distinct from her own existing ember-orange, Halvard's
+    slate-blue-grey + ember-orange, Tarn's warm brass/amber, and Emberpeaks'
+    brighter orange/red. No new grids authored.
+  - Headless sim: 56 `createDuel`+`ai.takeTurn` games total across all 12
+    other core duelists (varied seeds, alternating who goes first), 0
+    crashes/0 stuck; Sentinel went a combined 34-22 (~61%) — stronger than the
+    card-only-pass norm (compare Hessa 6-14, Cobb 3-5) but not alarming, and
+    consistent with the "no rebalance beyond adding cards" posture used for
+    every prior card-only iteration. The new `ember_husk` onDeath→emberGain
+    trigger fired 9 times in a 20-game sample, confirming the mechanic
+    actually engages in real play (not just registers).
+  - Not done / untested live: no `world.js` change was needed this
+    iteration (her Emberwatch Ruins placement and night-only visibility
+    toggle already exist, untouched), so risk there is judged very low; the
+    challenge-prompt flow with the new cards wasn't browser-verified
+    (worktrees have no dev server).
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase
