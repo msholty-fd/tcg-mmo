@@ -402,6 +402,22 @@ considered and rejected.
     reads as "roads lead HERE and HERE," not just decoration. First flavour
     NPC placed out in the open Boarlands rather than inside a settlement.
 
+- **Ambient wildlife variety — deer & rabbits (2026-07-08)**: sixth
+  worldbuilding-loop iteration, and the first that adds *life* rather than
+  *places or paths*. Before this the only ambient creatures were boars and
+  wolves (both duel-themed — they mirror the boarherd/darkwood cards). Deer
+  (grazing the mid-ring meadows, 40-68 from origin) and rabbits (hopping
+  around the village, 16-34) are purely atmospheric — no card, no duel, no
+  quest hook — to make the space *between* landmarks feel inhabited, a
+  natural complement to the Waystones connecting them. New `deerMesh()` /
+  `rabbitMesh()` builders in `entities.js` follow the exact box-group idiom
+  of `boarMesh`/`wolfMesh`; both ride the existing `spawnCritter`
+  wander/collide system, so zero new movement code. Chosen as a card-light,
+  `entities.js`+`world.js`-only change specifically because a concurrent
+  session was editing `cards.js`/`duelists.js`/`pixelArt.js` (the
+  Shrinekeeper work) — same "pick a safe lane when the repo is busy"
+  reasoning as the Waystones iteration.
+
 ## Open questions
 
 - Renown pacing: thresholds 20/60/150 are untested against real play.
