@@ -510,6 +510,14 @@ const CARD_ART = {
   widows_kiss:         { sprite: 'talisman', pal: { c: '#5a2a4a', w: '#f0c8d8', W: '#c890a8' } },
   scout_ahead:         { sprite: 'rite', pal: { b: '#c8d8f0', B: '#9ab0d0', e: '#4a7ac0', f: '#8ff0f0' } },
   rally_the_line:      { sprite: 'fury', pal: { f: '#4a7ac0', F: '#ffd050', r: '#2a4e8a', d: '#c8a24a' } },
+
+  // ---- Vex's Red-Sash: deepening ambush/bandit identity ----
+  red_sash_picklock:   { sprite: 'hooded', pal: { h: '#8a3a5a', H: '#6a2c46', m: '#4a1e34' } },
+  masked_raider:       { sprite: 'hooded', pal: { h: '#5a3a8a', H: '#432c6a', m: '#2e1e4a' } },
+  vex:                 { sprite: 'hooded', pal: { h: '#8a1a2a', H: '#661420', m: '#3a0e14', e: '#ffd050' } },
+  stolen_blade:        { sprite: 'fang', pal: { w: '#c8b8a0', W: '#9a8a70', f: '#8a3a3a', F: '#a85050' } },
+  ambush_horn:         { sprite: 'bell', pal: { b: '#8a3a3a', B: '#661f1f', w: '#f0d8c8', r: '#4a1414' } },
+  shakedown:           { sprite: 'bolt', pal: { f: '#8a3a3a', F: '#c85a4a', r: '#5a1e1e' } },
 };
 
 const cache = new Map();
