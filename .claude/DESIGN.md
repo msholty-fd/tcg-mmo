@@ -45,7 +45,8 @@ considered and rejected.
   special-cased rules.
 - Card types: creature, spell, relic (attach = buff+grantKeyword effects),
   reaction (set face-down, max 2, auto-fires on the named enemy event — see
-  "Reactions, not a stack" below). Enchantment type reserved but unimplemented.
+  "Reactions, not a stack" below), enchantment (face-up, persistent,
+  player-wide — see "Enchantments, a persistent axis" below).
 - Rules text and flavor are separate fields (`text` vs `flavor`); the hover
   inspector shows keyword glossary + rules + italic flavor.
 
@@ -167,6 +168,38 @@ considered and rejected.
   sprite families we already have art for. New engine primitives: `counter`,
   `exhume`, `graveBuff`, `resetKindle`; new trigger hook `onKindle`; new
   target selector `trigger` (the unit that tripped a reaction).
+
+- **Enchantments, a persistent axis (2026-07-08)**: implemented the
+  `enchantment` type this doc had marked "reserved but unimplemented." Picked
+  to be a genuinely new axis rather than a reskin of an existing type: a
+  relic attaches to *one creature* and dies with it; a reaction is face-down,
+  one-shot, and consumed on trigger. An enchantment is **face-up, persistent,
+  and player-wide** — it resolves its `onPlay` trigger like a relic, but then
+  joins a new zone (`p.enchantments`, max 4) instead of the graveyard, so it
+  keeps firing for the rest of the duel. Fits the existing trigger
+  architecture instead of bolting on parallel logic: a new
+  `fireEnchantmentTriggers()` in engine.js just calls the existing
+  `fireTriggers()` for each card in the zone, wired into the turn-structure
+  hooks creatures already use (`startOfTurn`, `endOfTurn`, `onKindle`) plus
+  two new hooks — `onAllySummon` (after you play a creature; combined with an
+  `onPlay` effect targeting `allAllies`, this lets one card buff your current
+  board on cast AND buff future creatures as they're summoned, which reads
+  as a static aura without needing a continuous-recompute system) and
+  `onAllyDeath` (fired from `sweepDead` when your own creature dies — the
+  graveyard-matters payoff hook). Cards are still instances (iid/level) like
+  relics, but — also like relics — level doesn't mechanically scale an
+  enchantment's effect magnitude; that's an existing pattern, not a new gap.
+  Shipped 4 to start (Herd Instinct/boar aura, Bastion Oath/wardens
+  compounding defense, Ember Communion/kindle-matters, Ashen Vigil/
+  graveyard-matters) plus 13 more cards filling keyword gaps (ward, frenzy,
+  lifesteal, piercing) and the thin cost-5/6 end of the curve — core set
+  46 → 63 cards. Starter decks deliberately left untouched (existing decks
+  are curated; no enchantment felt like a mandatory showcase). In the same
+  pass, found and separately flagged (not fixed — out of scope for a feature
+  branch) a pre-existing `sweepDead()` reentrancy bug: an AOE effect that
+  kills 2+ creatures in one trigger can desync the recursive sweep's loop
+  indices and throw; reproduced on unmodified `main` too, so it predates this
+  work.
 
 - **Buildings must be inline, never instanced (2026-07-08)**: a first pilot
   let players "enter" a house by teleporting them to a small room built far
