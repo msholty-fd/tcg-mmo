@@ -9,6 +9,10 @@ Deeper notes live in `.claude/`:
 - `.claude/WORKFLOW.md` — **required working style**: worktree per task →
   verify → merge to main → deploy to Fly.io
 - `.claude/STATUS.md` — session handoff: env state, test account, next steps
+- `.claude/MODEL_GUIDE.md` — task routing by model capability: which work is
+  safe pattern-copying for cheaper/smaller models (green), which needs care
+  (yellow), and which is frontier-model-only (red). Smaller models: read it
+  first and stay in your tier.
 
 ## Working style (see .claude/WORKFLOW.md for the full procedure)
 
