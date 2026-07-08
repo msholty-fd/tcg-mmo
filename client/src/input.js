@@ -13,6 +13,10 @@ const HUD_KEYS = { KeyQ: 'tracker', KeyH: 'hints', KeyP: 'prompt' };
 export const keys = {};
 export const cam = { yaw: 0.5, pitch: 0.42 };
 
+// Auto-walk (WoW-style): R toggles continuous forward movement. main.js treats
+// it as a held W; pressing S (backward) cancels it, as in WoW.
+export let autoWalk = false;
+
 let dragging = false, lastX = 0, lastY = 0;
 
 export let started = false;
@@ -40,11 +44,13 @@ addEventListener('keydown', e => {
   if (escMenuOpen) return;   // menu captures all other input
   if (e.code === 'Enter') { chat.style.display = 'block'; chat.focus(); e.preventDefault(); return; }
 
+  if (e.code === 'KeyR') { autoWalk = !autoWalk; return; }
   if (e.code === 'KeyB' && !tradeOpen && !shopOpen && !fullmapOpen) { toggleDeckbuilder(); return; }
   if (e.code === 'KeyM' && !tradeOpen && !shopOpen && !deckbuilderOpen) { toggleFullmap(); return; }
   if (HUD_KEYS[e.code]) { toggleWindow(HUD_KEYS[e.code]); return; }
   if (deckbuilderOpen || tradeOpen || shopOpen || fullmapOpen) return;
   if (e.code === 'Space') e.preventDefault();
+  if (e.code === 'KeyS') autoWalk = false;   // pressing back cancels auto-walk (WoW behavior)
   keys[e.code] = true;
 });
 addEventListener('keyup', e => { keys[e.code] = false; });
