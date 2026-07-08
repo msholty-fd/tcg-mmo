@@ -15,6 +15,13 @@ const M = {
   wall:     new THREE.MeshLambertMaterial({ color: 0xcbb598 }),
   wood:     new THREE.MeshLambertMaterial({ color: 0x7a5a38 }),
   roof:     new THREE.MeshLambertMaterial({ color: 0x9c4a3c }),
+  // Camp dressing — deliberately grimier/darker than the village palette so
+  // Vex's and Gruk's camps read as distinct places at a glance.
+  hide:     new THREE.MeshLambertMaterial({ color: 0x5c4a38 }), // tent canvas/hide
+  redSash:  new THREE.MeshLambertMaterial({ color: 0xa03030, side: THREE.DoubleSide }), // banner cloth
+  ironBand: new THREE.MeshLambertMaterial({ color: 0x2e2a24 }),
+  bone:     new THREE.MeshLambertMaterial({ color: 0xcfc2a0 }),
+  charred:  new THREE.MeshLambertMaterial({ color: 0x2a241f }),
 };
 
 function tree(x, z, dark) {
@@ -114,6 +121,98 @@ export const torches = [
     new THREE.MeshLambertMaterial({ color: 0xe0d8c4 }));
   skull.position.set(104, groundH(104, -58) + .9, -58); skull.scale.z = 1.2; scene.add(skull);
 }
+
+// ---------- Vex's Red-Sash camp (western woods, x=-88 z=66) ----------
+// A crude bandit camp: lean-to tents, a red-sash banner, scattered
+// crates/barrels. Reuses the campfires already placed at (-92,62)/(-86,70).
+
+function tent(x, z, rot, scale = 1) {
+  const g = new THREE.Group();
+  // A stretched 4-sided pyramid reads as a peaked ridge-tent silhouette.
+  const body = new THREE.Mesh(new THREE.ConeGeometry(1.5 * scale, 2.1 * scale, 4), M.hide);
+  body.scale.z = 1.6; body.position.y = 1.05 * scale; body.castShadow = true; g.add(body);
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(.06, .06, 2.3 * scale, 5), M.wood);
+  pole.position.y = 1.1 * scale; g.add(pole);
+  g.position.set(x, groundH(x, z), z); g.rotation.y = rot; scene.add(g);
+  addRect(x, z, 3 * scale, 3 * scale * 1.6, rot);
+}
+
+function banner(x, z, rot) {
+  const g = new THREE.Group();
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(.07, .09, 3.4, 5), M.wood);
+  pole.position.y = 1.7; pole.castShadow = true; g.add(pole);
+  const cloth = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 1.6), M.redSash);
+  cloth.position.set(.56, 2.25, 0); g.add(cloth);
+  g.position.set(x, groundH(x, z), z); g.rotation.y = rot; scene.add(g);
+  // Thin pole, like torches — no collider.
+}
+
+function crate(x, z, rot) {
+  const g = new THREE.Group();
+  const b = new THREE.Mesh(new THREE.BoxGeometry(.9, .9, .9), M.wood);
+  b.position.y = .45; b.castShadow = true; g.add(b);
+  g.position.set(x, groundH(x, z), z); g.rotation.y = rot; scene.add(g);
+  addRect(x, z, .9, .9, rot);
+}
+
+function barrel(x, z) {
+  const g = new THREE.Group();
+  const b = new THREE.Mesh(new THREE.CylinderGeometry(.5, .55, 1.1, 8), M.wood);
+  b.position.y = .55; b.castShadow = true; g.add(b);
+  for (const dy of [.25, .85]) {
+    const band = new THREE.Mesh(new THREE.TorusGeometry(.52, .04, 5, 10), M.ironBand);
+    band.rotation.x = Math.PI / 2; band.position.y = dy; g.add(band);
+  }
+  g.position.set(x, groundH(x, z), z); scene.add(g);
+  addCircle(x, z, .5);
+}
+
+tent(-97, 63, .6);
+tent(-80, 72, -1.1, 1.15);
+banner(-85, 61, .3);
+crate(-90, 58, .4); crate(-83, 68, -.5); crate(-95, 70, .2);
+barrel(-79, 62); barrel(-93, 75);
+
+// ---------- Gruk's hollow of bones (east past the ridge, x=107 z=-60) ----------
+// Grim and sparse: bone piles and rough stakes topped with skulls, built
+// around the existing boss skull (104,-58) and campfire (108,-62) rather
+// than duplicating them.
+
+function bone(len) {
+  const g = new THREE.Group();
+  const shaft = new THREE.Mesh(new THREE.CylinderGeometry(.07, .07, len, 5), M.bone);
+  shaft.rotation.z = Math.PI / 2; shaft.castShadow = true; g.add(shaft);
+  for (const s of [-1, 1]) {
+    const knob = new THREE.Mesh(new THREE.SphereGeometry(.13, 6, 5), M.bone);
+    knob.position.x = s * len / 2; g.add(knob);
+  }
+  return g;
+}
+
+function bonePile(x, z, count = 5) {
+  const g = new THREE.Group();
+  for (let i = 0; i < count; i++) {
+    const b = bone(rand(.5, 1.1));
+    b.position.set(rand(-.6, .6), rand(.06, .22), rand(-.6, .6));
+    b.rotation.y = rand(0, Math.PI * 2); b.rotation.z = rand(-.3, .3);
+    g.add(b);
+  }
+  g.position.set(x, groundH(x, z), z); scene.add(g);
+  // Flat clutter, like small pebbles/canopy — no collider.
+}
+
+function totem(x, z, rot) {
+  const g = new THREE.Group();
+  const stake = new THREE.Mesh(new THREE.CylinderGeometry(.08, .12, 2.6, 5), M.charred);
+  stake.position.y = 1.3; stake.castShadow = true; g.add(stake);
+  const skull = new THREE.Mesh(new THREE.SphereGeometry(.32, 7, 6), M.bone);
+  skull.position.y = 2.5; skull.scale.z = 1.15; g.add(skull);
+  g.position.set(x, groundH(x, z), z); g.rotation.y = rot; scene.add(g);
+  // Thin stake, like torches — no collider.
+}
+
+bonePile(110, -55, 6); bonePile(98, -63, 5); bonePile(104, -68, 4); bonePile(115, -66, 5);
+totem(94, -57, .4); totem(119, -55, -.6); totem(108, -74, 1.2);
 
 // Critter / NPC spawn helpers
 export function spawnCritter(meshFactory, x, z) {
