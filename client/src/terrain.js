@@ -11,10 +11,15 @@ export function groundH(x, z) {
   // volcanic basin. Gated on z so the ENTIRE existing world (everything at
   // z <= ~130, including the Cinderhollow Mine at z=115) is unchanged — the
   // ridge Gaussian and the basin factor are both ~0 there. See DESIGN.md
-  // "Emberpeaks". The ridge is only a *visual* wall; the actual barrier is a
-  // line of collidered boulders along the crest (world.js) with a pass gap.
+  // "Emberpeaks". The ridge is a tall visual wall; the actual barrier is a
+  // solid collider wall along the crest (world.js) with ONE gap — Cinderpass
+  // at x≈0. To make that pass a real *low corridor through* the mountains
+  // (not "climb over the peak where the rocks are missing" — original
+  // playtest miss), the ridge height is notched down near x=0.
   const north = smoothstep(135, 185, z);                 // 0 south of ridge → 1 in the basin
-  const ridge = Math.exp(-((z - 160) ** 2) / 170) * 34;  // the ridge crest (~z 160)
+  let ridge = Math.exp(-((z - 160) ** 2) / 170) * 34;    // the ridge crest (~z 160)
+  const passNotch = 1 - 0.86 * Math.exp(-(x * x) / 240); // dip the crest to ~14% within ~±16 of x=0
+  ridge *= passNotch;
   const basin = north * (16 + Math.sin(x * .05) * 5 + Math.sin(z * .05 + x * .018) * 4);
   return h + ridge + basin;
 }
@@ -40,13 +45,19 @@ export function groundH(x, z) {
     if (d > 85) c.lerp(cDark, smoothstep(85, 130, d) * .7);
     if (h > 6.5) c.lerp(cR, smoothstep(6.5, 10, h));
     if (d < 24 && Math.abs(Math.sin(x * .4) * Math.cos(z * .4)) < .14) c.lerp(cP, .5);
-    // volcanic recolor beyond the ridge
-    const north = smoothstep(140, 188, z);
-    if (north > 0) {
+    // volcanic recolor from the ridge northward. Two blend drivers, whichever
+    // is stronger: `north` (how far into the basin) AND `rocky` (how high the
+    // terrain is) — so the RIDGE itself reads as dark rock even though it's
+    // only partway north (fixes the "looks like a green hill" playtest miss),
+    // while the basin floor reads as ember-lit basalt.
+    const north = smoothstep(132, 172, z);
+    const rocky = smoothstep(14, 30, h) * smoothstep(128, 150, z);   // high ground north of the seam
+    const vol = Math.max(north, rocky);
+    if (vol > 0) {
       let v = vBasalt.clone().lerp(vAsh, (Math.sin(x * .15) * Math.cos(z * .13) + 1) / 2 * .7);
-      if (h > 26) v.lerp(vRock, smoothstep(26, 40, h));         // bare rock on the high ridge
-      else v.lerp(vEmber, smoothstep(14, 7, h) * .55);          // ember glow in the low basin
-      c.lerp(v, north);
+      if (h > 16) v.lerp(vRock, smoothstep(16, 40, h));        // bare dark rock up the peaks
+      else v.lerp(vEmber, smoothstep(14, 7, h) * .55);         // ember glow in the low basin
+      c.lerp(v, vol);
     }
     cols.push(c.r, c.g, c.b);
   }

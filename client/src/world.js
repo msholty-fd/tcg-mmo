@@ -767,6 +767,7 @@ const DEST = {
   emberwatch:[100, 100],
   gruk:      [107, -60],
   redsash:   [-90, 64],
+  cinderpass:[0, 158],
   village:   [0, 0],
 };
 
@@ -787,6 +788,11 @@ waystone(74, 78, ...DEST.emberwatch);
 waystone(56, -36, ...DEST.gruk);
 // toward the Red-Sash Camp (northwest)
 waystone(-46, 38, ...DEST.redsash);
+// toward Cinderpass & the Emberpeaks (far north) — a marked route so the
+// zone is findable, not a hill you stumble over (playtest feedback)
+waystone(2, 34, ...DEST.cinderpass);
+waystone(-8, 96, ...DEST.cinderpass);
+waystone(-4, 134, ...DEST.cinderpass);   // last marker before the pass, near the mine
 
 // The Wayfarer — a roaming teller who keeps the roads' stories, stationed at
 // the crossroads hub. First flavour NPC placed out in the Boarlands rather
@@ -1012,19 +1018,32 @@ function obsidianRock(x, z, s, emissive) {
   return r;
 }
 
-// The ridge wall: a dense line of big obsidian boulders along the crest
-// (z~158), spanning the reachable width, with a gap at x∈[-13,13] for
-// Cinderpass. This is what actually stops the player short of walking over
-// the mountain anywhere they like — the pass is the one way through.
-for (let x = -300; x <= 300; x += 15) {
-  if (Math.abs(x) < 13) continue;                 // the pass gap
-  const z = 158 + rand(-3, 3);
-  obsidianRock(x, z, rand(4.5, 7));
-  if (rand(0, 1) > .5) obsidianRock(x + rand(-5, 5), z + rand(-8, -3), rand(3, 5)); // a second rank, thicker wall
+// The ridge wall. TWO things make it a real barrier with one gap:
+//  1) a SOLID collider — two long rects flanking the pass (originally this
+//     was only per-boulder circles spaced 15 apart, which left ~6-unit
+//     walk-through gaps all along the "wall", so the ridge was climbable
+//     almost anywhere — the playtest miss this fix addresses).
+//  2) dense visual boulders on top so it reads as an impassable mountain
+//     spine. The pass gap is x∈[-14,14] (Cinderpass), matching the terrain
+//     notch in terrain.js (groundH) that lowers the crest there.
+const PASS_HALF = 14;   // half-width of the Cinderpass gap
+// solid collision wall: left segment (x −300..−PASS_HALF) and right segment.
+for (const seg of [[-300, -PASS_HALF], [PASS_HALF, 300]]) {
+  const cx = (seg[0] + seg[1]) / 2, w = seg[1] - seg[0];
+  addRect(cx, 158, w, 5, 0);            // one wide, thin, unbroken collider — no gaps to slip through
 }
-// gate pillars flanking Cinderpass
-obsidianRock(-15, 158, 6); obsidianRock(15, 158, 6);
-signpost(-3, 150, 0);       // marker on the south (approach) side of the pass
+// dense visual boulders (every ~7 units, two staggered ranks) — purely
+// cosmetic now that the rects do the blocking, so overlap/spacing is free.
+for (let x = -300; x <= 300; x += 7) {
+  if (Math.abs(x) < PASS_HALF) continue;          // leave the pass mouth clear
+  obsidianRock(x, 158 + rand(-3, 3), rand(5, 7.5));
+  obsidianRock(x + rand(-3, 3), 152 + rand(-3, 3), rand(3.5, 5.5));   // back rank, staggered
+}
+// gate pillars framing Cinderpass, so the opening reads as a deliberate gateway
+obsidianRock(-PASS_HALF - 1, 158, 6.5); obsidianRock(PASS_HALF + 1, 158, 6.5);
+// braziers flanking the pass mouth (light + a clear "this is the way through")
+fires.push(campfire(-PASS_HALF + 2, 150), campfire(PASS_HALF - 2, 150));
+signpost(-3, 146, 0);       // marker on the south (approach) side of the pass
 
 // Halvard Stillwatch (DESIGN.md) — stationed on the grassland side of the
 // pass gap itself (x=8, z=148, inside the x∈[-13,13] gap column, ~10 south

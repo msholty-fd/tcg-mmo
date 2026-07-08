@@ -811,17 +811,31 @@ considered and rejected.
 
 ## Open questions
 
-- **Emberpeaks needs a real in-game look (never eyeballed — preview gotcha).**
-  Phase 1 is headless-verified (terrain heights, zone labels, 68 ridge
-  colliders, 6 elementals, zero console errors) but nobody has SEEN it. Live
-  checks wanted: (a) does the ridge read as mountains and the basin as a
-  volcanic caldera, or does the elevation look wrong; (b) does Cinderpass
-  actually let you through while the boulder wall blocks the rest — the pass
-  gap is x∈[-13,13], worth confirming it's wide enough to walk but not so
-  wide the wall looks broken; (c) does the volcanic recolor + lava glow look
-  right, especially at night; (d) does the grown 300 boundary feel right and
-  not strand you on empty terrain on the non-north edges. If the ridge is
-  climbable-over anywhere but the pass, thicken the boulder line in world.js.
+- **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase
+  1 and hit the predicted problem: "walked over a big hill that wasn't very
+  clear I could climb." Two real flaws, both fixed:
+  1. *The pass climbed over the peak.* The ridge Gaussian raised the ground
+     ~39 even at the gap, so "the pass" was climbing the crest where boulders
+     happened to be missing. Fixed by notching `groundH` near x=0 (a
+     `passNotch` factor) so Cinderpass is a genuine LOW corridor (~10 units)
+     between tall (~42) peaks — verified live.
+  2. *The boulder wall was porous.* Boulders every 15 units with ~4-5-radius
+     colliders left ~6-unit walk-through gaps all along it, so the ridge was
+     climbable almost anywhere. Fixed by replacing the per-boulder colliders
+     as the barrier with TWO solid `addRect` wall segments flanking the pass
+     (boulders are now just visual dressing) — verified live via direct
+     `resolveCollision` tests: crossing is blocked at x=50/120 and open at
+     x=0/10 (the pass).
+  Also: (a) the ridge recolor was fixed — it read as a green hill because the
+  volcanic blend started too far north; now high terrain (h>16) north of the
+  seam reads as dark rock regardless of northness, so the peaks look like
+  rock (confirmed in a live basin screenshot — dark ridge, ember-red basalt
+  ground, glowing fumarole, "THE EMBERPEAKS" zone label). (b) Added a marked
+  route: `cinderpass` waystones from the crossroads north past the mine, so
+  the zone is findable, not stumbled-over. **This zone is now genuinely
+  eyeballed live** (the preview loop happened to run this session). Remaining
+  polish: the third-person camera gets "lifted" awkwardly when you stand on
+  the steep ridge (terrain-clamp → upward gaze) — noted, not yet addressed.
 - Renown pacing: thresholds 20/60/150 are untested against real play.
 - Starter balance: boarherd ~75% vs redsash (AI-vs-AI); needs a card pass.
 - Highgate placement/scale is untested in real play — verify the walk feels
