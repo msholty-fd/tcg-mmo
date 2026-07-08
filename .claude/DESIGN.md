@@ -768,6 +768,47 @@ considered and rejected.
     (worktrees have no dev server) — no world.js change was made this
     iteration since his placement already exists, so risk is judged very low.
 
+- **Cobb the Farmhand — vanilla stat-stick curve as a deck-wide identity
+  (2026-07-08)**: this iteration adds a genuinely *new* duelist (alternating
+  with Tarn's existing-NPC deepening above). Every build-around axis in the
+  roster (Guardian/Ambush/Ward/Frenzy/Piercing/kindle-matters/graveyard-
+  matters/lifesteal/reaction-heavy control) already had a deck-wide owner.
+  What was still open: plain, keyword-free bodies with the best raw
+  stats-per-cost in the set — a legitimate archetype ("just efficient
+  bodies") that teaches new players the fundamentals rather than a gimmick,
+  and something no duelist had ever built a deck around, even though scraps
+  of it already existed as generic filler (`young_boar`/`wild_boar`/
+  `dire_wolf`/`thicket_beast` — vanilla bodies with no ability text at all).
+  - **6 new cards** (`shared/sets/core/cards.js`), all bare `atk`/`hp` with
+    zero keywords or triggers — no engine changes needed: `farmhands_boy` (1c
+    2/2), `stout_plowman` (2c 3/3), `yoke_ox` (3c 4/4), `old_drover` (4c
+    5/5), `cobb` (5c 6/6, his signature — the *only* signature card in the
+    whole roster with zero rules text, which is the point), `harrows_plow_ox`
+    (6c 7/7). Stats sit a clean notch above the pre-existing vanilla-filler
+    baseline (~2×cost+1) since a plain body's only upside is its stat line.
+  - *Placement*: claims a gap nobody had closed — Harrow's Field (the
+    farmstead from an earlier iteration) had a flavour NPC (Farmer Harrow)
+    but no duelist, the one landmark with no duel attached. Cobb stands at
+    `(-35, -28)` in `client/src/world.js`, east of the paddock's fenced
+    field, clear of the barn/hayBale/crate/fence colliders. No new
+    structure, no `CAMPS` entry — matching Harrow's Field's own precedent of
+    never being a named zone.
+  - *Deck*: `cobbDeck` swaps `STARTER_DECKS.boarherd` (Boarlands/rural flavor
+    fits the farmstead; all three starter bases were tied at 4 duelists each
+    by this point, so no usage tiebreak was available) — the 6 new cards
+    replace one copy each of `young_boar`/`wild_boar`/`tusker`/`boar_matron`/
+    `pack_alpha`/`kindled_fury`. Reward pool adds `quartermaster` and
+    `hearth_meal`.
+  - Headless sim note: Cobb went 3-5 against the raw boarherd starter he was
+    built from (vs. favorable results mirror/wardens/redsash) — plausible for
+    a deliberately no-upside archetype diluting an already-strong starter,
+    not investigated further (no keyword-mechanic change, same posture as
+    prior card-only iterations).
+  - Not done / untested live: visual placement at Harrow's Field and the
+    challenge-prompt flow weren't browser-verified (worktrees have no dev
+    server) — same `spawnDuelist`/`interact.js` code path as every other
+    duelist, so risk is judged low, but it's a real gap, not a formality.
+
 ## Open questions
 
 - **Emberpeaks needs a real in-game look (never eyeballed — preview gotcha).**
