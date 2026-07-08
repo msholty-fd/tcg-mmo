@@ -212,6 +212,27 @@ registerCards([
   { id: 'rally_the_line', set: 'core', rarity: 'uncommon', type: 'spell', cost: 3,
     triggers: { onPlay: [{ effect: 'buff', target: 'allAllies', atk: 1, hp: 0 }] },
     name: 'Rally the Line', text: 'Your creatures get +1 attack.', flavor: 'One voice, and the whole line leans forward.' },
+
+  // ---- Vex's Red-Sash: deepening ambush/bandit identity ----
+  { id: 'red_sash_picklock', set: 'core', rarity: 'common', type: 'creature', cost: 2, atk: 1, hp: 2, keywords: ['ambush'],
+    triggers: { onPlay: [{ effect: 'draw', amount: 1 }] },
+    name: 'Red-Sash Picklock', text: 'Ambush. When played, draw a card.', flavor: 'Lighter fingers, lighter purse.' },
+  { id: 'masked_raider', set: 'core', rarity: 'uncommon', type: 'creature', cost: 3, atk: 3, hp: 2, keywords: ['ambush'], storiedKeyword: 'lifesteal',
+    name: 'Masked Raider', text: 'Ambush.', flavor: 'Never the same face twice.' },
+  { id: 'vex', set: 'core', rarity: 'rare', type: 'creature', cost: 5, atk: 4, hp: 3, keywords: ['ambush', 'lifesteal'],
+    triggers: { onPlay: [{ effect: 'damage', target: 'randomEnemy', amount: 2 }] },
+    name: 'Vex, the Red-Sash', text: 'Ambush, Lifesteal. When played, deal 2 damage to a random enemy.',
+    flavor: 'She takes what she wants, then takes the rest.' },
+  { id: 'stolen_blade', set: 'core', rarity: 'uncommon', type: 'relic', cost: 2,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 1, hp: 0 }, { effect: 'grantKeyword', target: 'chosen', keyword: 'ambush' }] }, needsTarget: 'ownUnit',
+    name: 'Stolen Blade', text: 'Attach: your creature gets +1 attack and Ambush.', flavor: 'Traded hands more times than owners.' },
+  { id: 'ambush_horn', set: 'core', rarity: 'uncommon', type: 'reaction', cost: 2,
+    reaction: { on: 'enemyAttack', effects: [{ effect: 'summon', token: 'red_sash_cutpurse', count: 1 }] },
+    name: 'Ambush Horn', text: 'Reaction: when an enemy creature attacks, summon a Red-Sash Cutpurse.',
+    flavor: 'One horn blast, and the road empties of everything but blades.' },
+  { id: 'shakedown', set: 'core', rarity: 'common', type: 'spell', cost: 2,
+    triggers: { onPlay: [{ effect: 'damage', target: 'chosen', amount: 1 }, { effect: 'draw', amount: 1 }] }, needsTarget: 'enemyUnit',
+    name: 'Shakedown', text: 'Deal 1 damage to an enemy creature. Draw a card.', flavor: 'Pay the toll or pay in blood.' },
 ]);
 
 // Starter decks (30 cards) — what a new character begins with,

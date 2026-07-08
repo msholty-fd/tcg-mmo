@@ -14,7 +14,15 @@ const swap = (deck, out, ins) => {
 };
 
 const rowanDeck = swap(STARTER_DECKS.wardens, ['wild_boar', 'wild_boar'], ['wardenplate', 'second_wind']);
-const vexDeck = swap(STARTER_DECKS.redsash, ['young_boar', 'young_boar'], ['nightstalker', 'tusk_talisman']);
+// Vex's Red-Sash roster deepened (worldbuilding loop iteration, DESIGN.md):
+// the original swap gave her ambush+lifesteal (nightstalker) and a tempo
+// relic; the second swap folds in her own signature card plus two more
+// ambush bandits, replacing generic beast/support filler.
+const vexDeck = swap(
+  swap(STARTER_DECKS.redsash, ['young_boar', 'young_boar'], ['nightstalker', 'tusk_talisman']),
+  ['wild_boar', 'wild_boar', 'quartermaster'],
+  ['red_sash_picklock', 'masked_raider', 'vex'],
+);
 const grukDeck = [
   ...swap(STARTER_DECKS.boarherd.filter(c => c !== 'gruk'), ['young_boar', 'militia_recruit'], ['ironhide_boar', 'emberwood_colossus']),
   'gruk', 'gruk', 'gruk',
@@ -45,7 +53,7 @@ export const DUELISTS = {
   },
   vex: {
     name: 'Vex the Red-Sash', deck: vexDeck,
-    rewards: [...vexDeck, 'nightstalker', 'tusk_talisman', 'ashen_rite'],
+    rewards: [...vexDeck, 'nightstalker', 'tusk_talisman', 'ashen_rite', 'stolen_blade', 'ambush_horn', 'shakedown'],
   },
   gruk: {
     name: 'Gruk the Boar King', deck: grukDeck,
