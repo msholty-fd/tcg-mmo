@@ -478,6 +478,31 @@ registerCards([
   { id: 'tollroad_colossus', set: 'core', rarity: 'rare', type: 'creature', cost: 6, atk: 5, hp: 7, storiedKeyword: 'guardian',
     triggers: { onKindle: [{ effect: 'buff', target: 'self', atk: 1, hp: 1 }] },
     name: 'Tollroad Colossus', text: 'When you kindle, this gains +1/+1.', flavor: 'Every toll ever paid on this road, standing in one shape.' },
+
+  // ---- Cobb the Farmhand: vanilla "curve" as a deck-wide identity. Every
+  // build-around axis checked in the roster gap survey (Guardian/Ambush/Ward
+  // /Frenzy/Piercing/kindle-matters/graveyard-matters/lifesteal/reaction
+  // control) already has an owner. What's never been claimed as anyone's
+  // *signature* is the opposite of a build-around: honest, keyword-free
+  // bodies with the best raw stats-per-cost in the set — no triggers, no
+  // targets, nothing to read before you play them. Existing "vanilla" filler
+  // (young_boar/wild_boar/dire_wolf/thicket_beast) already sits near a
+  // stat-total baseline of ~2×cost+1 with zero ability text; these six push
+  // a full notch above that baseline at every cost (roughly 2×cost+2, split
+  // evenly) since a plain body's only "upside" is its stat line. No engine
+  // changes — every card below is `atk`/`hp` and nothing else.
+  { id: 'farmhands_boy', set: 'core', rarity: 'common', type: 'creature', cost: 1, atk: 2, hp: 2,
+    name: "Farmhand's Boy", text: '', flavor: 'Small hands, big rows to weed.' },
+  { id: 'stout_plowman', set: 'core', rarity: 'common', type: 'creature', cost: 2, atk: 3, hp: 3,
+    name: 'Stout Plowman', text: '', flavor: 'No tricks. Just a strong back and a longer day.' },
+  { id: 'yoke_ox', set: 'core', rarity: 'common', type: 'creature', cost: 3, atk: 4, hp: 4,
+    name: 'Yoke Ox', text: '', flavor: 'Pulls the plow, pulls the cart, pulls its weight.' },
+  { id: 'old_drover', set: 'core', rarity: 'uncommon', type: 'creature', cost: 4, atk: 5, hp: 5,
+    name: 'Old Drover', text: '', flavor: "Been driving stock to market since before Harrow's father worked this land." },
+  { id: 'cobb', set: 'core', rarity: 'rare', type: 'creature', cost: 5, atk: 6, hp: 6,
+    name: 'Cobb, the Farmhand', text: '', flavor: "Cobb doesn't have a trick. Cobb has never needed one." },
+  { id: 'harrows_plow_ox', set: 'core', rarity: 'rare', type: 'creature', cost: 6, atk: 7, hp: 7,
+    name: "Harrow's Plow Ox", text: '', flavor: 'Turned more soil than anyone can count, and never once hurried about it.' },
 ]);
 
 // Starter decks (30 cards) — what a new character begins with,
