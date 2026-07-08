@@ -18,7 +18,9 @@ Deeper notes live in `.claude/`:
   branch = one agent, so parallel agents can't conflict.
 - The primary checkout (`~/dev/emberwood-online`) stays on `main`: it alone
   runs the dev servers (ports 8081/5175) and performs merges and deploys.
-  Worktree agents verify headlessly (build + sims), not with live servers.
+  Gates are light while the realm has no real players (tight-loop posture):
+  `npm run build` + `node --check` on changed server/shared files. Revisit
+  in WORKFLOW.md §2 when real users arrive.
 - **Merging to main = deploying.** After verification gates pass, merge
   (`--no-ff`, serially if multiple branches are ready), then `fly deploy`
   (app `tcg-mmo`) and confirm `https://tcg-mmo.fly.dev/health` returns 200.

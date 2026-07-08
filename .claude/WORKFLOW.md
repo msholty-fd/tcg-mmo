@@ -36,18 +36,28 @@ Worktree limitations (by design — plan around them):
 
 ## 2. Verify before merging (required gates)
 
-All of these must pass in the worktree before a merge:
+> **Release posture (decided 2026-07-08): tight loop.** While the realm has
+> no real player base, gates are deliberately light — build + syntax checks
+> only — so features ship fast. Once real users arrive, revisit this section:
+> release more intentionally (batched deploy windows, boot-test the server,
+> run balance sims as blocking gates, consider a staging app).
+
+Required, in the worktree:
 
 1. `npm run build` — the client must build clean (a broken build would take
    the realm down on deploy, since the server serves `client/dist`).
-2. `node server/index.js` starts without error on a spare port
-   (`PORT=8090 DATA_FILE=/tmp/wt-profiles.json node server/index.js`, check
-   `/health` returns 200, then kill it) — required if you touched `server/`
-   or `shared/`.
-3. **Headless balance sim** if you touched `shared/engine/` or
-   `shared/sets/`: run createDuel + `ai.takeTurn` loops (~20 games), check
-   winner spread and that no game hangs.
-4. Commit everything on the branch; `git status` clean.
+2. `node --check` on any changed `server/` or `shared/` files — the Vite
+   build never loads `server/`, so this is the only pre-deploy catch for a
+   syntax error that would crash the realm on boot:
+   ```bash
+   git diff main --name-only -- 'server/*.js' 'shared/**/*.js' \
+     | xargs -r -n1 node --check
+   ```
+3. Commit everything on the branch; `git status` clean.
+
+Recommended but not blocking: a quick headless balance sim (createDuel +
+`ai.takeTurn`, ~20 games) when you touched `shared/engine/` or
+`shared/sets/`; note the result in your handoff either way.
 
 If a gate fails, fix it in the worktree. Do not merge red.
 
