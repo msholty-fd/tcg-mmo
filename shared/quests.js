@@ -129,6 +129,16 @@ export const QUESTS = [
     obj: have => `Defeat the Ashen Sentinel: ${have}/1`,
     thanks: "So it does still watch. Whatever's up in that tower, you've earned its respect — or at least its notice.",
   },
+  // Bram's Rest — a wayside stop on the Meadowbrook->Highgate road
+  // (DESIGN.md). Early/low-level, on purpose: it's the first thing a player
+  // heading toward Highgate runs into, well before Highgate's own chain.
+  {
+    id: 'road_toll', giver: 'aldric', title: 'The Toll Nobody Asked For', minLvl: 2, prereq: 'practice',
+    duels: { target: 'footpad', need: 1 }, xp: 180, coins: 15,
+    offer: "There's a rest stop east of here, past the tree line — travelers call it Bram's Rest. Lately someone's been working the fire-light, robbing anyone who stops to warm their hands. Old Bram won't say it outright, but he'd sleep easier with that road clear.",
+    obj: have => `Defeat the footpad: ${have}/1`,
+    thanks: "Bram's fire burns easier tonight. That road was never going to clear itself.",
+  },
 ];
 
 export const questById = id => QUESTS.find(q => q.id === id);

@@ -42,6 +42,10 @@ export const CAMPS = [
   // extension of Meadowbrook. r=50 covers the walls plus the road just
   // outside the gate (Tarn the Tollkeeper). See DESIGN.md "Highgate".
   { x: 40,  z: -145, r: 50, name: 'Highgate' },
+  // A wayside rest stop on the Meadowbrook->Highgate road, right at the
+  // Boarlands/Darkwood seam (~73 from origin) — the last safe fire before
+  // the road gets dangerous. See DESIGN.md "Bram's Rest".
+  { x: 20,  z: -70, r: 14, name: "Bram's Rest" },
 ];
 
 export const BOTCHAT = [
