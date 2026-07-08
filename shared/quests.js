@@ -149,6 +149,24 @@ export const QUESTS = [
     obj: have => `Defeat Old Hessa of the Mire: ${have}/1`,
     thanks: "You've met Hessa and lived to talk about it. Most people just hear the stories and stay well clear.",
   },
+  // The Emberpeaks chain — Aldric sends the player north through Cinderpass
+  // into the volcanic basin. End-game gated; the two fire duelists live at
+  // z~210+ past the ridge. Beating them is how the emberpeaks set enters
+  // circulation (their reward pools). See DESIGN.md "Emberpeaks Phase 3".
+  {
+    id: 'ep_ashfall', giver: 'aldric', title: 'Through Cinderpass', minLvl: 5, prereq: 'gruk',
+    duels: { target: 'ashmonger', need: 1 }, xp: 450, coins: 40,
+    offer: "Far north, past the mine, the mountains wall off a valley that smokes without a fire. There's a way through — Cinderpass — and a fellow named Ashmonger Cael who dares travelers to duel among the lava. Cross the pass and put him in his place.",
+    obj: have => `Defeat Ashmonger Cael: ${have}/1`,
+    thanks: "You crossed into the Emberpeaks and walked back out. Few do. But Ashmonger only guards the door — something older holds the deep basin.",
+  },
+  {
+    id: 'ep_pyrelord', giver: 'aldric', title: 'The Pyrelord', minLvl: 6, prereq: 'ep_ashfall',
+    duels: { target: 'pyrelord', need: 1 }, xp: 700, coins: 70,
+    offer: "The thing at the heart of the basin has a name the old maps only whisper: Ignarok, the Pyrelord. They say his deck burns as hot as the mountain and never runs cold. Go north, past Ashmonger, all the way in. Beat him, and the Emberpeaks are yours to walk.",
+    obj: have => `Defeat Ignarok, the Pyrelord: ${have}/1`,
+    thanks: "The Pyrelord, beaten at cards in his own caldera. The mountain still smokes — but it smokes for you now.",
+  },
 ];
 
 export const questById = id => QUESTS.find(q => q.id === id);
