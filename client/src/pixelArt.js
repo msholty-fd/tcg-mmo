@@ -610,6 +610,26 @@ const CARD_ART = {
   turned_tables:       { sprite: 'snare', pal: { r: '#2e3a26', R: '#1e2818', g: '#c8c090' } },
   red_sash_watchman:   { sprite: 'hooded', pal: { h: '#5e3a3a', H: '#452a2a', m: '#3a4438' } },
   uninvited_guest:     { sprite: 'wraith', pal: { a: '#3a4438', A: '#283020', e: '#c8c090', s: '#1c2416' } },
+
+  // ---- Emberpeaks set (fire zone) — all reuse existing sprites with fiery
+  // palettes; the ember/burn/bolt/fury/spark sprites are already orange so
+  // they need little override. No new grids authored.
+  ep_cinder_imp:       { sprite: 'emberling', pal: { f: '#ff8a30', r: '#cc3300' } },
+  ep_ashling:          { sprite: 'emberling', pal: { f: '#9a8a7a', F: '#c8b8a0', r: '#5a4a3a', e: '#e8e0d0' } },
+  ep_magma_pup:        { sprite: 'wolf', pal: { g: '#a83a1e', G: '#7e2a14', e: '#ffd050', n: '#3a1a10', w: '#ff9a40' } },
+  ep_ember_drake:      { sprite: 'wraith', pal: { a: '#a83a1e', A: '#7e2a14', e: '#ffd050', s: '#4a1a10' } },
+  ep_cinder_acolyte:   { sprite: 'hooded', pal: { h: '#a83a2a', H: '#7e2a1c', m: '#c85a3a', e: '#ff7a20' } },
+  ep_lavaback:         { sprite: 'colossus', pal: { l: '#3a2a24', L: '#241a16', t: '#5a3020', T: '#3e2014', e: '#ff6a1a' } },
+  ep_flame_revenant:   { sprite: 'wraith', pal: { a: '#5a2a1e', A: '#3e1c14', e: '#ffb040', s: '#2a1410' } },
+  ep_obsidian_golem:   { sprite: 'colossus', pal: { l: '#2a2630', L: '#1a1620', t: '#3a3440', T: '#26222c', e: '#ff6a1a' } },
+  ep_cinderwyrm:       { sprite: 'colossus', pal: { l: '#7a2a18', L: '#561c10', t: '#9a3a1e', T: '#6e2814', e: '#ffd050' } },
+  ep_ember_lash:       { sprite: 'bolt', pal: { f: '#ff8a30', r: '#cc3300' } },
+  ep_fan_the_flames:   { sprite: 'fury' },
+  ep_immolate:         { sprite: 'burn', pal: { f: '#ff6a1a', r: '#aa2200' } },
+  ep_wildfire:         { sprite: 'burn', pal: { f: '#ffaa30', F: '#fff0a0', r: '#dd3300' } },
+  ep_brand_of_embers:  { sprite: 'talisman', pal: { c: '#7a2a14', w: '#ff9a40', W: '#dd5a20' } },
+  ep_eternal_pyre:     { sprite: 'rite', pal: { b: '#ffb050', B: '#cc7a20', e: '#ff5a1a', f: '#ffd050' } },
+  ep_flare_trap:       { sprite: 'snare', pal: { r: '#c85a2a', R: '#8e3a18', g: '#ff7a20' } },
 };
 
 const cache = new Map();

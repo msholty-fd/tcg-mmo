@@ -4,6 +4,7 @@
 // combat stats credit back to the exact card instance.
 
 import '../shared/sets/core/cards.js';
+import '../shared/sets/emberpeaks/cards.js';
 import { createDuel, findUnit } from '../shared/engine/state.js';
 import { startTurn, endTurn, playCard, kindle, attack } from '../shared/engine/engine.js';
 import { takeTurn } from '../shared/engine/ai.js';
