@@ -229,7 +229,7 @@ function update(dt) {
   if ((n || rp) && hudOpen('prompt')) {
     pr.style.display = 'block';
     $('prompt-text').innerHTML = n
-      ? (n.duelist ? `<b>E</b> — challenge ${n.name}`
+      ? ((n.duelist && !npcQuest(n) && !npcTurnin(n)) ? `<b>E</b> — challenge ${n.name}`
         : n === marla && !npcQuest(n) && !npcTurnin(n) ? `<b>E</b> — browse ${n.name}'s wares`
         : `<b>E</b> — speak with ${n.name}`)
       : `<b>E</b> — challenge · <b>T</b> — trade with ${rp.name} <span style="color:#8fd0f0">(player)</span>`;

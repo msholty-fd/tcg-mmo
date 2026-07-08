@@ -2,6 +2,12 @@
 // accepts/turn-ins and award progress, while the client renders text and
 // markers from the same data.
 //
+// `giver` is purely a client-side dialogue/NPC-matching field — the server
+// never reads it, so any NPC can be a giver (see client/src/quests.js's
+// GIVERS map). Marla and Aldric are the original givers; Vex and Gruk also
+// offer follow-up quests once the player has beaten them (via the Aldric
+// quest that requires it as a prereq).
+//
 // Quest state lives in profile.quests: { [id]: { state: 'active'|'completed', have } }
 // (absent = hidden). Two objective shapes today:
 //   - duels: { target, need }   — win N duels vs a duelist id (or 'any').
@@ -57,6 +63,36 @@ export const QUESTS = [
     offer: "Gruk's hollow didn't empty out just because he lost. Something's still moving bone in there — ironhide boars, thick-skinned things that shrugged off militia steel. Bring me two, and we'll know the hollow's finally quiet.",
     obj: have => `Ironhide Boars owned: ${have}/2`,
     thanks: "Two ironhides, accounted for. The hollow's bones can rest.",
+  },
+  {
+    id: 'twice_counted', giver: 'marla', title: 'Twice Counted', minLvl: 3, prereq: 'practice',
+    collect: { cardId: 'quartermaster', need: 2 }, xp: 180, coins: 18,
+    offer: "You know what keeps a shop running? Someone who counts twice. Bring me two Quartermasters for the counter — the card, not gossip about my life choices.",
+    obj: have => `Quartermasters owned: ${have}/2`,
+    thanks: "Two counted, twice each. That's how you keep a shop — and a village — standing.",
+  },
+  // Vex and Gruk become quest-givers here: after losing to the player once
+  // (the prereq quest, given by Aldric), each offers a follow-up of their own.
+  {
+    id: 'vex_rematch', giver: 'vex', title: 'Best Two of Three', minLvl: 3, prereq: 'vex',
+    duels: { target: 'vex', need: 2 }, xp: 240, coins: 25,
+    offer: "You beat me once. Everyone gets a lucky night. Beat me twice more and I'll believe it wasn't the cards' doing.",
+    obj: have => `Defeat Vex again: ${have}/2`,
+    thanks: "Fine. FINE. You're better than the sash. Don't let it go to your head — I still run these woods.",
+  },
+  {
+    id: 'kings_portrait', giver: 'gruk', title: 'A Card for a King', minLvl: 4, prereq: 'gruk',
+    collect: { cardId: 'gruk', need: 1 }, xp: 260, coins: 25,
+    offer: "You want to call yourself a boar king someday? Carry a piece of me into battle first. I hear I hit like one.",
+    obj: have => `Gruk (the card) owned: ${have}/1`,
+    thanks: "There. Now when you lose a duel, you'll have someone appropriately embarrassing to blame.",
+  },
+  {
+    id: 'forest_standing', giver: 'aldric', title: 'The Forest, Standing', minLvl: 5, prereq: 'hollow_bones',
+    collect: { cardId: 'emberwood_colossus', need: 1 }, xp: 450, coins: 40,
+    offer: "Gruk's hollow is quiet, the cutpurses have thinned out — but something bigger moved through those woods once, and it left more than bones. Bring me proof the forest itself can still stand up and fight. One will do; I don't expect a forest to spare more.",
+    obj: have => `Emberwood Colossus owned: ${have}/1`,
+    thanks: "The forest, standing, and you're the one who found it. Aldric doesn't say this often: well done.",
   },
 ];
 
