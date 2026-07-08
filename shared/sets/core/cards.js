@@ -7,7 +7,7 @@
 //   piercing  — excess damage from kills carries to the enemy Hearth
 //
 // storiedKeyword: the keyword this card gains at Storied renown (Chronicle L3).
-import { registerCards } from '../../engine/cards.js';
+import { registerCards, getCard } from '../../engine/cards.js';
 
 registerCards([
   // ---- creatures: boars & beasts ----
@@ -568,3 +568,37 @@ export const STARTER_DECKS = {
     'controlled_burn','wolf_howl','hearth_meal','pack_alpha',
   ],
 };
+
+// The preselected pool a fresh character's starter deck is rolled from: every
+// card that appears in any hand-built STARTER_DECK (dedup). Vetted,
+// village-tier cards only — nothing here is a surprise.
+export const STARTER_POOL = [...new Set(Object.values(STARTER_DECKS).flat())];
+
+// Roll a randomized-but-playable 30-card starter deck from STARTER_POOL,
+// honoring the ≤3-copies rule. Creature-heavy (8–10 spells, the rest
+// creatures) so a new player always has a board to play; the exact list
+// varies per character. All fresh cards are level 1 (renown 0), so this costs
+// 0 Legend Budget at creation. Server-side authority: only the server rolls a
+// starter (see server/index.js newProfile).
+export function rollStarterDeck() {
+  const DECK_SIZE = 30, MAX_COPIES = 3;
+  const creatures = STARTER_POOL.filter(id => getCard(id)?.type === 'creature');
+  const spells = STARTER_POOL.filter(id => getCard(id)?.type !== 'creature');
+  const counts = {};
+  const deck = [];
+  // pick a random id from `from` that still has copies left; false if none
+  const draw = from => {
+    const avail = from.filter(id => (counts[id] || 0) < MAX_COPIES);
+    if (!avail.length) return false;
+    const id = avail[Math.floor(Math.random() * avail.length)];
+    counts[id] = (counts[id] || 0) + 1;
+    deck.push(id);
+    return true;
+  };
+  const spellTarget = 8 + Math.floor(Math.random() * 3); // 8–10 spells
+  while (deck.length < spellTarget && draw(spells)) {}
+  while (deck.length < DECK_SIZE && draw(creatures)) {}
+  // safety net if a category ran dry (won't with the current pool sizes)
+  while (deck.length < DECK_SIZE && draw(STARTER_POOL)) {}
+  return deck;
+}

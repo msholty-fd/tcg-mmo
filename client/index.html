@@ -110,13 +110,6 @@
   #charselect{position:fixed;inset:0;z-index:10;background:radial-gradient(ellipse at 50% 25%,#141020 0%,#050509 75%);display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto}
   #charselect h1{font-size:clamp(30px,5vw,50px);color:var(--gold);letter-spacing:.1em;font-variant:small-caps;text-shadow:0 0 40px rgba(200,162,74,.3)}
   #charselect .sub{color:var(--ink-dim);font-style:italic;margin:6px 0 30px;font-size:14px}
-  #classes{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
-  .ccard{width:180px;padding:16px 14px;background:var(--panel);border:1px solid var(--gold-dim);border-radius:6px;cursor:pointer;text-align:center;transition:all .15s}
-  .ccard:hover{border-color:var(--gold);transform:translateY(-3px)}
-  .ccard.sel{border-color:var(--gold);box-shadow:0 0 16px rgba(200,162,74,.4)}
-  .ccard .ic{font-size:34px}
-  .ccard h3{color:var(--gold);font-variant:small-caps;letter-spacing:.12em;font-weight:normal;margin:6px 0 4px}
-  .ccard p{font-size:11.5px;color:var(--ink-dim);line-height:1.5}
   #namerow{margin-top:26px;display:flex;gap:10px;align-items:center}
   #charname,#charpass{background:#15131e;border:1px solid var(--gold-dim);color:var(--ink);font-family:Georgia,serif;font-size:15px;padding:8px 12px;border-radius:4px;width:170px;text-align:center}
   #charname:focus,#charpass:focus{outline:none;border-color:var(--gold)}
@@ -448,12 +441,7 @@
 
 <div id="charselect">
   <h1>Emberwood Online</h1>
-  <div class="sub">An open-world card game · choose your starter deck</div>
-  <div id="classes">
-    <div class="ccard" data-starter="boarherd"><div class="ic">🐗</div><h3>Boarherd</h3><p>Aggressive creatures that hit hard and fast. Overwhelm before they can answer.</p></div>
-    <div class="ccard" data-starter="wardens"><div class="ic">🛡️</div><h3>Wardens</h3><p>Guardians, healing, and card draw. Outlast everything, then win at leisure.</p></div>
-    <div class="ccard" data-starter="redsash"><div class="ic">🗡️</div><h3>Red-Sash</h3><p>Ambush and Frenzy tempo. Strike from nowhere and never stop swinging.</p></div>
-  </div>
+  <div class="sub">An open-world card game · your first deck is dealt to you</div>
   <div id="namerow">
     <input id="charname" maxlength="14" placeholder="Character name" value="">
     <input id="charpass" type="password" maxlength="64" placeholder="Password">
