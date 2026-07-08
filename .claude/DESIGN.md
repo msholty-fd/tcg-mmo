@@ -418,6 +418,27 @@ considered and rejected.
   Shrinekeeper work) — same "pick a safe lane when the repo is busy"
   reasoning as the Waystones iteration.
 
+- Duelist Rowan: Guardian as a deepened wall identity (2026-07-08). This
+  iteration of the worldbuilding loop deepens an existing duelist (the
+  loop's other case, alternating with the Maren new-duelist entry above).
+  Checked every roster deck for how many cards had ever been swapped in past
+  generic starter filler: Rowan had only 2 (wardenplate/second_wind), the
+  least of any duelist, despite his Wardens deck leaning harder on the
+  Guardian keyword than any other duelist leans on its own theme. Guardian
+  was also the one keyword in the set with zero build-around/payoff cards -
+  every other keyword (ambush, lifesteal, piercing, frenzy) had at least
+  one - and Rowan had no self-named signature card the way Gruk/Vex do.
+  7 new cards, all reusing existing effect primitives: two curve-filling
+  Guardian bodies (line_holder, shieldwall_sergeant), a spell and a relic
+  that grant Guardian (stand_and_hold, watchers_oath), bulwark_doctrine
+  (an uncommon enchantment granting Guardian board-wide on cast and to
+  creatures played afterward - the third card to use the Herd Instinct/
+  Warding Litany onPlay+onAllySummon shape), his signature rowan (boss
+  plays themself, like Gruk/Vex), and bastion_keep (a 6-drop wall
+  finisher - Wardens had no top-end card before this). Folded into
+  rowanDeck via a second chained swap(), replacing generic removal/tempo
+  filler (camp_torcher x2, ember_bolt, kindled_fury x2, sudden_spark x2).
+
 ## Open questions
 
 - Renown pacing: thresholds 20/60/150 are untested against real play.
