@@ -446,6 +446,38 @@ registerCards([
     triggers: { onPlay: [{ effect: 'graveBuff', filter: 'reaction', atk: 1, hp: 1, cap: 3 }] },
     name: 'Halvard Stillwatch', text: 'Ward. Gains +1/+1 for each reaction card in your graveyard (up to +3/+3).',
     flavor: "He set two snares and lit no fire. He didn't need to." },
+
+  // ---- Tarn the Tollkeeper: kindle-matters as a deck-wide identity. Tarn's
+  // deck was tied with the Footpad as the roster's thinnest (only 2 cards
+  // ever swapped in, dire_wolf/second_harvest — neither thematically tied to
+  // anything, unlike the Footpad's ambush-flavored pair). Kindle-matters
+  // (onKindle triggers) was the one build-around axis flagged as still open
+  // beyond the Ashen Sentinel's existing lean: ash_sprite/flame_tender cover
+  // costs 2-3 in sentinelDeck, but pyre_keeper (4c) sat in the Sentinel's
+  // reward pool without ever being in an actual deck, and cinder_warden (5c)
+  // and the ember_communion enchantment sat completely unclaimed by any
+  // roster deck since they shipped. New cards round out the curve (1c and
+  // 6c, where no kindle body existed) and diversify the onKindle payoff
+  // beyond buff/heal/damage (draw, summon), all existing effect primitives.
+  { id: 'toll_urchin', set: 'core', rarity: 'common', type: 'creature', cost: 1, atk: 1, hp: 2,
+    triggers: { onKindle: [{ effect: 'buff', target: 'self', atk: 1, hp: 0 }] },
+    name: 'Toll Urchin', text: 'When you kindle, this gains +1 attack.', flavor: 'Counts coins faster than the ledger can write them down.' },
+  { id: 'ledger_keeper', set: 'core', rarity: 'uncommon', type: 'creature', cost: 3, atk: 2, hp: 3,
+    triggers: { onKindle: [{ effect: 'draw', amount: 1 }] },
+    name: 'Ledger Keeper', text: 'When you kindle, draw a card.', flavor: 'Every toll paid gets a line. Every line gets remembered.' },
+  { id: 'tollgate_ram', set: 'core', rarity: 'uncommon', type: 'creature', cost: 4, atk: 3, hp: 5, storiedKeyword: 'guardian',
+    triggers: { onKindle: [{ effect: 'summon', token: 'young_boar', count: 1 }] },
+    name: 'Tollgate Ram', text: 'When you kindle, summon a Young Boar.', flavor: 'One horn-blast, and the herd remembers whose road this is.' },
+  { id: 'open_the_gate', set: 'core', rarity: 'common', type: 'spell', cost: 2,
+    triggers: { onPlay: [{ effect: 'resetKindle' }, { effect: 'buff', target: 'chosen', atk: 1, hp: 1 }] }, needsTarget: 'ownUnit',
+    name: 'Open the Gate', text: 'You may kindle again this turn. Give a creature +1/+1.', flavor: 'Pay double, pass twice as fast.' },
+  { id: 'tarn', set: 'core', rarity: 'rare', type: 'creature', cost: 5, atk: 3, hp: 6,
+    triggers: { onKindle: [{ effect: 'buff', target: 'self', atk: 1, hp: 1 }, { effect: 'heal', target: 'ownHearth', amount: 1 }] },
+    name: 'Tarn, the Tollkeeper', text: 'When you kindle, this gains +1/+1 and you restore 1 to your Hearth.',
+    flavor: 'He has never once let anyone cross for free. He has never once turned anyone away, either.' },
+  { id: 'tollroad_colossus', set: 'core', rarity: 'rare', type: 'creature', cost: 6, atk: 5, hp: 7, storiedKeyword: 'guardian',
+    triggers: { onKindle: [{ effect: 'buff', target: 'self', atk: 1, hp: 1 }] },
+    name: 'Tollroad Colossus', text: 'When you kindle, this gains +1/+1.', flavor: 'Every toll ever paid on this road, standing in one shape.' },
 ]);
 
 // Starter decks (30 cards) — what a new character begins with,
