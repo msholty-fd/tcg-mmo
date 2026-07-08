@@ -461,6 +461,35 @@ considered and rejected.
     dressing. Third flavour NPC (after Bram, the Wayfarer), all on the same
     n.flavor system.
 
+- **Kestrel Twinstrike — new duelist, Frenzy as a deck-wide identity
+  (2026-07-08)**: this iteration of the worldbuilding loop adds a genuinely
+  *new* duelist (alternating with the Rowan-deepening entry above). Checked
+  `duelists.js` for gaps: Guardian (Rowan), Ambush (Vex), and Ward (Maren)
+  each already had an owner; Frenzy — the other half of Red-Sash's own
+  tagline ("Ambush and Frenzy tempo", `STARTERS.redsash`) — had none, and was
+  the only keyword in the set with zero relic/spell that grants it. 7 new
+  cards, all reusing existing effect primitives: two curve-filling Frenzy
+  bodies (`hotblood_recruit`, `twinblade_mercenary`), a relic and a spell
+  that grant Frenzy (`twin_fangs`, `reckless_charge`), `bandit_creed` (a rare
+  enchantment granting Frenzy board-wide on cast and to creatures played
+  afterward — the fourth card to use the Herd Instinct/Warding Litany/
+  Bulwark Doctrine onPlay+onAllySummon shape), her signature `kestrel`
+  (boss plays themself, like Gruk/Vex/Rowan), and `warband_champion` (a
+  5-drop Frenzy+lifesteal finisher). Folded into `kestrelDeck` via `swap()`
+  on `STARTER_DECKS.redsash`, replacing generic/off-theme filler
+  (`controlled_burn`/`wolf_howl`/`hearth_meal`/`pack_alpha`/2x
+  `kindled_fury`/1x `sudden_spark`).
+  - *Placement*: deliberately the smallest possible footprint — stationed at
+    a quiet corner of Vex's own Red-Sash Camp (-100, 58), clear of her
+    tents/banner/crates but inside the existing `CAMPS` radius. No new
+    structure, no new `CAMPS` entry: Kestrel drills the crew's Frenzy half
+    while Vex runs Ambush, same camp, same `spawnDuelist` pattern as every
+    other duelist.
+  - Not done / untested live: visual placement at the camp and the
+    challenge-prompt flow weren't browser-verified (worktrees have no dev
+    server) — same code path as every other duelist, so risk is judged low
+    but it's a real gap, not a formality.
+
 ## Open questions
 
 - Renown pacing: thresholds 20/60/150 are untested against real play.
