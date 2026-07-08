@@ -550,6 +550,13 @@ const CARD_ART = {
   honed_tusks:         { sprite: 'fury', pal: { f: '#d8c8a0', F: '#fff0d0', r: '#8a7040', d: '#5a4a2a' } },
   tusks_of_the_hollow: { sprite: 'fang', pal: { w: '#e0d0a0', W: '#b8a878', f: '#ff8a20', F: '#ffd060' } },
   boarlords_fury:      { sprite: 'plate', pal: { p: '#8a6a3a', P: '#6a4e26', g: '#ffcf40' } },
+
+  // ---- Marrow the Delver: graveyard-matters as a deck-wide identity ----
+  bone_delver:         { sprite: 'wraith', pal: { a: '#c8bc98', A: '#a89870', e: '#5a6e4a', s: '#3a3424' } },
+  charnel_colossus:    { sprite: 'colossus', pal: { l: '#c8c0b0', L: '#a89c88', t: '#8a7a5a', T: '#6a5c40', e: '#d8f0c8' } },
+  unquiet_grave:       { sprite: 'rite', pal: { b: '#c8c0a8', B: '#9a9078', e: '#8a70b0', f: '#b090d8' } },
+  delvers_pick:        { sprite: 'fang', pal: { w: '#8a7050', W: '#6a5638', f: '#b8a060', F: '#d8c080' } },
+  marrow:              { sprite: 'wraith', pal: { a: '#4a3a5a', A: '#342846', e: '#b070ff', s: '#1e1828' } },
 };
 
 const cache = new Map();

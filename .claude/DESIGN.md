@@ -537,6 +537,48 @@ considered and rejected.
   Piercing fillers (`piercing_barb`, `warthog_battering_ram`); reward pool
   adds `rootbound_titan`, the last unclaimed Piercing finisher.
 
+- **Marrow the Delver — new duelist, graveyard-matters as a deck-wide
+  identity (2026-07-08)**: this iteration adds a genuinely *new* duelist
+  (the loop's other case, alternating with the Gruk-deepening entry above).
+  Checked `duelists.js`/`cards.js` for the thinnest remaining axis per the
+  assigned candidate list (lifesteal, kindle-matters, graveyard-matters,
+  reaction-heavy control): Guardian/Ambush/Ward/Frenzy/Piercing already had
+  deck-wide owners (Rowan/Vex/Maren/Kestrel/Gruk); kindle-matters already
+  leans on the Ashen Sentinel; but graveyard-matters (`exhume`/`graveBuff`)
+  had never been claimed as a deck identity — `ashen_shambler`/`last_rites`/
+  `second_harvest` are scattered as shared filler across sentinel/hessa/tarn,
+  and `charnel_hound`, `grave_caller`, and the `ashen_vigil` enchantment
+  (shipped with the enchantment mechanic) sat completely unclaimed by any
+  roster deck — `ashen_vigil` was explicitly flagged in this file's Maren
+  entry as "for whichever future duelist wants it."
+  - *Placement*: claims a hook `DESIGN.md` planted on purpose — Cinderhollow
+    Mine was built as "an intentional seed for future underground content (a
+    mine-themed duelist...)" with no NPC of its own. Marrow stands at
+    `MINE.x+12, MINE.z-2` (`client/src/world.js`), east of the mine mouth,
+    clear of the boulders/rail/spoil-heap colliders but still inside the
+    existing "Cinderhollow Mine" `CAMPS` radius — no new structure, no new
+    zone, same `spawnDuelist`/`interact.js` code path as every other duelist.
+  - *Cards*: 5 new (`shared/sets/core/cards.js`), all built from existing
+    effect primitives (`exhume`/`graveBuff`/`buff`/`draw` — no engine
+    changes needed): `bone_delver` (2c, curve-filling graveBuff body) and
+    `charnel_colossus` (6c Guardian finisher, higher-cap graveBuff) round out
+    the curve above/below the existing `ashen_shambler`(3c)/`charnel_hound`
+    (4c); `unquiet_grave` (spell) and `delvers_pick` (relic) both pair
+    `exhume`+`buff` at different costs/slots — the same relic-mirrors-spell
+    shape as `blessed_icon`/`pilgrims_vow` for Ward; `marrow` (her signature
+    card, 5c, draws a card then scales off the graveyard — the "boss plays
+    themself" pattern already used for Gruk/Vex/Rowan/Kestrel).
+  - *Deck*: Boarherd-based via the standard `swap()` pattern (tied with
+    Red-Sash as the roster's least-used starter base, keeping Wardens from
+    stacking a 5th duelist) — the 5 new cards plus the 3 previously-unclaimed
+    graveyard cards (`charnel_hound`, `grave_caller`, `ashen_vigil`),
+    replacing 8 generic filler cards. Reward pool adds `last_rites` and
+    `second_harvest` on top of the deck.
+  - Not done / untested live: visual placement at the mine and the
+    challenge-prompt flow weren't browser-verified (worktrees have no dev
+    server) — same `spawnDuelist`/`interact.js` code path as every other
+    duelist, so risk is judged low but it's a real gap, not a formality.
+
 ## Open questions
 
 - Renown pacing: thresholds 20/60/150 are untested against real play.
