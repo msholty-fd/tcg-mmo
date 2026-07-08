@@ -503,6 +503,42 @@ registerCards([
     name: 'Cobb, the Farmhand', text: '', flavor: "Cobb doesn't have a trick. Cobb has never needed one." },
   { id: 'harrows_plow_ox', set: 'core', rarity: 'rare', type: 'creature', cost: 6, atk: 7, hp: 7,
     name: "Harrow's Plow Ox", text: '', flavor: 'Turned more soil than anyone can count, and never once hurried about it.' },
+
+  // ---- A Footpad: "ambush the ambusher" as a deck-wide identity. The last
+  // of the original 7 duelists left un-deepened by this loop; every other
+  // open axis (Guardian/Ambush/Ward/Frenzy/Piercing/graveyard-matters/
+  // lifesteal/reaction-control/kindle-matters/vanilla-curve) already has an
+  // owner, and Ambush/Frenzy specifically both already belong to fellow
+  // Red-Sash members Vex and Kestrel — so a third Red-Sash duelist needed an
+  // angle that isn't "attacks first" or "attacks twice." A footpad preys on
+  // travelers who move first: the deck leans entirely on `enemyAttack`
+  // reactions (unlike Halvard, whose control shell spans all three reaction
+  // events plus Ward walls), rewarding patience over tempo. All new effects
+  // are existing primitives (damage/emberGain/summon/buff) — no engine
+  // changes.
+  { id: 'wayside_watcher', set: 'core', rarity: 'common', type: 'creature', cost: 1, atk: 1, hp: 3,
+    name: 'Wayside Watcher', text: '', flavor: 'Watches the road better than she walks it.' },
+  { id: 'quick_fingers', set: 'core', rarity: 'common', type: 'reaction', cost: 1,
+    reaction: { on: 'enemyAttack', effects: [{ effect: 'damage', target: 'trigger', amount: 1 }, { effect: 'emberGain', amount: 1 }] },
+    name: 'Quick Fingers', text: 'Reaction: when an enemy creature attacks, deal 1 damage to it and gain 1 Ember this turn.',
+    flavor: "Empty your pockets before you notice they're light." },
+  { id: 'false_camp', set: 'core', rarity: 'uncommon', type: 'relic', cost: 2,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 0, hp: 3 }] }, needsTarget: 'ownUnit',
+    name: 'False Camp', text: 'Attach: your creature gets +0/+3.', flavor: "Looks abandoned. Isn't." },
+  { id: 'roadblock', set: 'core', rarity: 'uncommon', type: 'reaction', cost: 2,
+    reaction: { on: 'enemyAttack', effects: [{ effect: 'damage', target: 'trigger', amount: 1 }, { effect: 'summon', token: 'young_boar', count: 1 }] },
+    name: 'Roadblock', text: 'Reaction: when an enemy creature attacks, deal 1 damage to it and summon a Young Boar.',
+    flavor: 'The road was never as clear as it looked.' },
+  { id: 'turned_tables', set: 'core', rarity: 'rare', type: 'reaction', cost: 3,
+    reaction: { on: 'enemyAttack', effects: [{ effect: 'damage', target: 'trigger', amount: 3 }, { effect: 'buff', target: 'allAllies', atk: 1, hp: 0 }] },
+    name: 'Turned Tables', text: 'Reaction: when an enemy creature attacks, deal 3 damage to it and your creatures gain +1 attack.',
+    flavor: 'Every ambush works twice, if you wait for the second one.' },
+  { id: 'red_sash_watchman', set: 'core', rarity: 'common', type: 'creature', cost: 4, atk: 4, hp: 4, keywords: ['guardian'],
+    name: 'Red-Sash Watchman', text: 'Guardian.', flavor: 'Makes sure nobody leaves before the trap springs.' },
+  { id: 'uninvited_guest', set: 'core', rarity: 'rare', type: 'creature', cost: 5, atk: 4, hp: 5,
+    triggers: { onPlay: [{ effect: 'damage', target: 'randomEnemy', amount: 3 }] },
+    name: 'The Uninvited Guest', text: 'When played, deal 3 damage to a random enemy creature.',
+    flavor: "Old Bram never got a name for the one who robbed him. Nobody who's crossed that road at night has." },
 ]);
 
 // Starter decks (30 cards) — what a new character begins with,
