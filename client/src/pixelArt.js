@@ -565,6 +565,18 @@ const CARD_ART = {
   verities_oath:       { sprite: 'plate', pal: { p: '#6e2530', P: '#4f1a22', g: '#ff6a6a' } },
   verity:              { sprite: 'hooded', pal: { h: '#5a1f2c', H: '#40151f', e: '#c8a24a' } },
   hearthbound_champion:{ sprite: 'hooded', pal: { h: '#6e2530', H: '#4f1a22', e: '#ffd050' } },
+
+  // ---- Halvard Stillwatch: reaction-heavy control, Cinderpass Warden ----
+  // slate-grey + ember-orange accent — new to the roster (distinct from
+  // Rowan's steel-blue, Maren's pale-icy, Verity's crimson, Vex/Kestrel's
+  // bandit red, Gruk's bronze, Marrow's purple).
+  patient_sentry:      { sprite: 'plate', pal: { p: '#5a6068', P: '#3c4046', g: '#8fa8c0' } },
+  ridgewatch_warden:   { sprite: 'plate', pal: { p: '#4a5058', P: '#2e3238', g: '#ff8a3a' } },
+  cinderpass_snare:    { sprite: 'snare', pal: { r: '#6a6a72', R: '#4e4e56', g: '#ff7a2a' } },
+  backdraft:           { sprite: 'spark', pal: { F: '#ff8a3a', f: '#c8401a', w: '#fff0d8' } },
+  ashfall_recall:      { sprite: 'rite', pal: { b: '#8a8a92', B: '#64646e', e: '#5a6e88', f: '#aebedc' } },
+  sentrys_cloak:       { sprite: 'talisman', pal: { c: '#4a525c', w: '#c8d0da', W: '#8a94a0' } },
+  halvard:             { sprite: 'hooded', pal: { h: '#4a525c', H: '#333a42', e: '#ff8a3a' } },
 };
 
 const cache = new Map();

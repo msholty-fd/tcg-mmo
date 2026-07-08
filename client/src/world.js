@@ -1019,6 +1019,16 @@ for (let x = -300; x <= 300; x += 15) {
 obsidianRock(-15, 158, 6); obsidianRock(15, 158, 6);
 signpost(-3, 150, 0);       // marker on the south (approach) side of the pass
 
+// Halvard Stillwatch (DESIGN.md) — stationed on the grassland side of the
+// pass gap itself (x=8, z=148, inside the x∈[-13,13] gap column, ~10 south
+// of the boulder line), clear of the gate-pillar colliders (±15,158) and the
+// signpost (-3,150). Deliberately the near/south approach, not the basin —
+// the Emberpeaks basin is reserved for Phase 3's planned fire-elemental
+// duelists (DESIGN.md "Emberpeaks" phase plan); a control-deck warden
+// watching who tries to cross is a minimal-footprint fit for the edge of a
+// landmark someone else just built, with zero overlap with that future work.
+export const halvard = spawnDuelist('halvard', 8, 148, { shirt: 0x565f6a, hat: 0x333a42 });
+
 // ---- The basin: lava pools, obsidian spires, smoking vents ----
 const EP = { x: 0, z: 235 };   // basin centre
 

@@ -109,6 +109,23 @@ const marrowDeck = swap(
   ['quartermaster', 'quartermaster', 'kindled_fury', 'kindled_fury', 'sudden_spark', 'sudden_spark', 'wolf_howl', 'ember_bolt'],
   ['bone_delver', 'grave_caller', 'charnel_hound', 'ashen_vigil', 'marrow', 'charnel_colossus', 'unquiet_grave', 'delvers_pick'],
 );
+// Halvard Stillwatch (DESIGN.md) — Red-Sash-based (the roster's least-used
+// base at 3 duelists vs Wardens'/Boarherd's 4, keeping any one base from
+// stacking a 5th). "A deck that builds primarily around reaction cards" was
+// the one thing on the assigned candidate list with zero owner — every
+// existing reaction card is a single-copy splash in someone else's deck.
+// Swaps out Red-Sash's aggressive burn/tempo filler (camp_torcher x3,
+// ember_bolt x3, controlled_burn, wolf_howl, hearth_meal) for a genuinely
+// reactive control shell: two Ward walls to stall behind, three new
+// reactions spanning all three trigger events, a cheap Ward-granting relic,
+// his own signature card, and the two previously-unclaimed reactions
+// (boar_pit, alarm_bell — both sat only in the Footpad's reward pool, never
+// a deck).
+const halvardDeck = swap(
+  STARTER_DECKS.redsash,
+  ['camp_torcher', 'camp_torcher', 'camp_torcher', 'ember_bolt', 'ember_bolt', 'ember_bolt', 'controlled_burn', 'wolf_howl', 'hearth_meal'],
+  ['patient_sentry', 'ridgewatch_warden', 'cinderpass_snare', 'backdraft', 'ashfall_recall', 'sentrys_cloak', 'halvard', 'boar_pit', 'alarm_bell'],
+);
 
 export const DUELISTS = {
   rowan: {
@@ -154,5 +171,9 @@ export const DUELISTS = {
   marrow: {
     name: 'Marrow the Delver', deck: marrowDeck,
     rewards: [...marrowDeck, 'last_rites', 'second_harvest'],
+  },
+  halvard: {
+    name: 'Halvard Stillwatch', deck: halvardDeck,
+    rewards: [...halvardDeck, 'warding_bell', 'hidden_snare'],
   },
 };
