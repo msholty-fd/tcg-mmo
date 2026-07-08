@@ -809,6 +809,44 @@ considered and rejected.
     server) — same `spawnDuelist`/`interact.js` code path as every other
     duelist, so risk is judged low, but it's a real gap, not a formality.
 
+- **A Footpad — "ambush the ambusher" as a deck-wide identity (2026-07-08)**:
+  the last of the original 7 duelists (Rowan/Vex/Gruk/Verity/Tarn/Sentinel/
+  Footpad) left un-deepened by this loop; every other axis already has an
+  owner (Guardian=Rowan, Ambush=Vex, Ward=Maren, Frenzy=Kestrel,
+  Piercing=Gruk, graveyard-matters=Marrow, Lifesteal=Verity,
+  reaction-control=Halvard, kindle-matters=Tarn, vanilla-curve=Cobb).
+  Ambush/bandit and Frenzy both already belong to fellow Red-Sash duelists
+  (Vex/Kestrel), so a third Red-Sash duelist needed a genuinely different
+  angle: punishing `enemyAttack` specifically — a footpad preys on whoever
+  moves first — narrower than Halvard's reaction-control (which spans all
+  three trigger events plus Ward walls). `hidden_snare` was always the
+  footpad's one build-around hint but sat alone in a 2-card deck.
+  - **7 new cards** (`shared/sets/core/cards.js`): `wayside_watcher` (1c 1/3
+    bait body), `quick_fingers` (1c reaction, enemyAttack → 1 dmg + 1 Ember),
+    `false_camp` (2c relic, +0/+3), `roadblock` (2c reaction, enemyAttack → 1
+    dmg + summon Young Boar), `turned_tables` (3c reaction, enemyAttack → 3
+    dmg + team +1 attack), `red_sash_watchman` (4c 4/4 Guardian),
+    `uninvited_guest` (5c 4/5 signature, onPlay deals 3 to a random enemy).
+    All existing effect primitives (damage/emberGain/summon/buff) — no
+    engine changes.
+  - **Deck**: `footpadDeck` chains a second `swap()` onto the original
+    `red_sash_ambusher`/`hidden_snare` one (kept, matching the Rowan/Verity/
+    Gruk/Tarn precedent), replacing `camp_torcher`/`ember_bolt`×2/
+    `controlled_burn`/`wolf_howl`/`hearth_meal`/`pack_alpha`. Verified at
+    exactly 30 cards.
+  - **Naming**: kept "A Footpad" anonymous — the `road_toll` quest flavor
+    text ("Old Bram won't say it outright") deliberately frames them as
+    unidentified, so the signature card (`uninvited_guest`) plays on that
+    instead of giving them a proper name. Grepped the repo for other
+    references first; all (quests.js, world.js spawn key, duelists.js
+    comments) already use the lowercase/generic "footpad" consistently.
+  - Headless sim: 20 `createDuel`+`ai.takeTurn` games vs the other 12
+    duelists, no crashes/hangs (200-turn cap), Footpad went 12-8.
+  - Not done / untested live: visual placement at Bram's Rest (pre-existing,
+    unchanged this iteration) and the challenge-prompt flow weren't
+    browser-verified (worktrees have no dev server) — same code path as
+    every other duelist, risk judged low.
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase
