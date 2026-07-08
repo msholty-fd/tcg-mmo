@@ -27,15 +27,12 @@ initNet();
 initCardZoom();
 initHudWindows();
 
-// ---------- intro: starter deck select ----------
-let pickedStarter = 'boarherd';
-document.querySelectorAll('.ccard').forEach(c => {
-  c.addEventListener('click', () => {
-    document.querySelectorAll('.ccard').forEach(x => x.classList.remove('sel'));
-    c.classList.add('sel'); pickedStarter = c.dataset.starter;
-  });
-});
-document.querySelector('.ccard').classList.add('sel');
+// ---------- intro ----------
+// Players no longer pick a deck — the server rolls a starter deck for new
+// characters. Outfit is purely cosmetic now, so new characters get a random
+// look (returning players keep theirs via the saved session below).
+const OUTFIT_KEYS = Object.keys(STARTERS);
+const randomOutfit = () => OUTFIT_KEYS[ri(0, OUTFIT_KEYS.length - 1)];
 
 const SESSION_KEY = 'emberwood.session';
 
@@ -68,7 +65,7 @@ $('enterworld').addEventListener('click', () => {
   localStorage.removeItem('emberwood.collection.v2');
   enterWorld(
     $('charname').value.trim() || ('Fable' + ri(10, 99)),
-    pickedStarter,
+    randomOutfit(),
     null,
     $('charpass').value
   );

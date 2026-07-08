@@ -10,7 +10,7 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { openProfileStore } from './db.js';
 import { DuelRoom } from './duelRoom.js';
-import { STARTER_DECKS } from '../shared/sets/core/cards.js';
+import { rollStarterDeck } from '../shared/sets/core/cards.js';
 import { DUELISTS } from '../shared/sets/core/duelists.js';
 import { applyXP } from '../shared/progression.js';
 import { questById, canAccept, canTurnin, progressDuelWin } from '../shared/quests.js';
@@ -94,14 +94,9 @@ function verifyPw(profile, pw) {
 const findByName = name =>
   Object.entries(profiles).find(([, p]) => p.name.toLowerCase() === name.toLowerCase());
 
-function isStarterDeck(deck) {
-  const key = [...deck].sort().join(',');
-  return Object.values(STARTER_DECKS).some(d => [...d].sort().join(',') === key);
-}
-
-function newProfile(name, outfit, deckIds) {
-  const starter = Array.isArray(deckIds) && deckIds.length === 30 && isStarterDeck(deckIds)
-    ? deckIds : [...STARTER_DECKS.boarherd];
+function newProfile(name, outfit) {
+  // Roll a fresh starter deck server-side (players no longer pick one).
+  const starter = rollStarterDeck();
   const cards = starter.map(id => mintCard(id, 'Starter deck', name));
   return { name, outfit, cards, deck: cards.map(c => c.iid), xp: 0, lvl: 1, coins: 0, quests: {} };
 }
@@ -402,7 +397,7 @@ wss.on('connection', (ws, req) => {
           // new character
           if (password.length < 3) return fail('Choose a password (3+ characters) so you can recover this character later.');
           token = crypto.randomUUID();
-          profile = newProfile(name, outfit, msg.deck);
+          profile = newProfile(name, outfit);
           registerProfile(token, profile);
           setPassword(profile, password);   // marks the (registered) profile dirty
         }

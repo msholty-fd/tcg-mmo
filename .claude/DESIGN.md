@@ -883,6 +883,22 @@ considered and rejected.
     errors. The raw emberpeaks pile won only 5/30 vs the boarherd starter, but
     that's an untuned pile vs the strongest starter — irrelevant, since these
     cards ship inside curated Phase-3 duelist decks, not as a deck.
+- **Starter deck: rolled, not chosen (2026-07-08, `feat/no-deck-select`)** —
+  Michael's steer: the intro screen shouldn't ask a brand-new player to pick a
+  deck archetype (a meaningful choice they have no information to make yet).
+  The login screen is now just name + password. A fresh character's 30-card
+  deck is **rolled server-side** from `STARTER_POOL` (the dedup union of the
+  three hand-built `STARTER_DECKS`, i.e. the vetted village-tier cards) via
+  `rollStarterDeck()` in `shared/sets/core/cards.js`: creature-heavy (8–10
+  spells, rest creatures), ≤3 copies, so it's random-per-character but always
+  playable. All fresh cards are level 1 → renown 0 → 0 Legend points, so no
+  Legend Budget concern at creation. The three `STARTER_DECKS` lists live on
+  (village duelists still play them). Outfit (cosmetic shirt/hat/icon, once
+  tied to the archetype pick) is now chosen at random by the client on new
+  character creation and stored in the session; server profile.outfit stays
+  authoritative for what other players see. The server is the only place that
+  builds a starter deck — the client no longer sends one on join, and
+  `newProfile` ignores any client-supplied deck (server authority preserved).
 
 ## Open questions
 
