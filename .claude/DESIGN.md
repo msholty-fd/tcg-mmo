@@ -735,6 +735,39 @@ considered and rejected.
     does (8,148) actually read as "standing in the pass mouth," or does it
     look off-center against the boulder wall.
 
+- **Tarn the Tollkeeper — kindle-matters as a deck-wide identity (2026-07-08)**:
+  this iteration completes the first full pass through every original
+  duelist — Vex, Maren, Rowan, Kestrel, Gruk, Marrow, Verity, and Halvard
+  were already deepened, leaving only Tarn and the Footpad. Both were tied
+  at only 2 cards ever swapped in, but Tarn's pair (`dire_wolf`/
+  `second_harvest`) shares no theme with each other, while the Footpad's
+  pair (`red_sash_ambusher`/`hidden_snare`) is at least ambush-flavored —
+  Tarn was the more generic of the two, so he got the pass. Kindle-matters
+  (`onKindle` triggers) was the one build-around axis still open beyond the
+  Ashen Sentinel's existing lean: `pyre_keeper` (4c) had never actually been
+  in a deck (only the Sentinel's reward pool), and `cinder_warden` (5c) plus
+  the `ember_communion` enchantment sat completely unclaimed since they
+  shipped.
+  - **6 new cards** (`shared/sets/core/cards.js`), all reusing existing
+    effect primitives (buff/draw/summon/heal/resetKindle — no engine changes
+    needed): `toll_urchin` (1c) and `tollroad_colossus` (6c finisher) round
+    out the curve at costs no kindle body had covered before; `ledger_keeper`
+    (3c, onKindle draw) and `tollgate_ram` (4c, onKindle summon a Young Boar)
+    diversify the onKindle payoff beyond buff/heal/damage; `open_the_gate`
+    (spell) is a second kindle-enabler alongside `stoke_the_flames`; `tarn`
+    (his signature card, 5c 3/6, onKindle +1/+1 and heals 1 Hearth) is the
+    "boss plays themself" pattern already used for
+    Gruk/Vex/Rowan/Kestrel/Marrow/Verity/Halvard — Tarn had no signature
+    card before this.
+  - **Deck**: `tarnDeck` chains a second `swap()` onto the original
+    `dire_wolf`/`second_harvest` one (kept, matching the precedent of Rowan/
+    Verity/Gruk preserving their original swap), folding in the 6 new cards
+    plus the 3 previously-unclaimed kindle cards, replacing generic filler.
+  - Not done / untested live: visual placement at Tarn's existing
+    Highgate-road spot and the challenge-prompt flow weren't browser-verified
+    (worktrees have no dev server) — no world.js change was made this
+    iteration since his placement already exists, so risk is judged very low.
+
 ## Open questions
 
 - **Emberpeaks needs a real in-game look (never eyeballed — preview gotcha).**
