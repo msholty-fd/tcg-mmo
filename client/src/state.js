@@ -3,6 +3,6 @@ export const player = {
   x: 0, z: 9, vy: 0, yaw: 0, speed: 7, mesh: null,
 };
 
-export const critters = [];   // ambient wildlife — scenery, not combatants
+export const critters = [];   // ambient wildlife + flavor villagers — scenery, not combatants
 export const npcs = [];
 export const bots = [];

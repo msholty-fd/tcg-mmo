@@ -16,7 +16,13 @@ export const STARTERS = {
 };
 
 export const ZONES = [
-  { r: 26,  name: 'Meadowbrook Village' },
+  // Bumped 26 -> 38 (town-expansion): new village structures (tavern, smithy,
+  // market stall, stable, shrine) sit out to ~radius 30-32; 38 keeps their
+  // outer edges reading as "Meadowbrook Village" on the HUD/map instead of
+  // "The Boarlands". Nowhere near CAMPS (Gruk's Hollow/Red-Sash, both
+  // ~110-120 from origin), so no overlap with zoneAt()'s camp check, which
+  // runs first anyway.
+  { r: 38,  name: 'Meadowbrook Village' },
   { r: 78,  name: 'The Boarlands' },
   { r: 1e9, name: 'Darkwood' },
 ];

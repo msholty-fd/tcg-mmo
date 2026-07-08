@@ -22,6 +22,12 @@ const M = {
   ironBand: new THREE.MeshLambertMaterial({ color: 0x2e2a24 }),
   bone:     new THREE.MeshLambertMaterial({ color: 0xcfc2a0 }),
   charred:  new THREE.MeshLambertMaterial({ color: 0x2a241f }),
+  // Village-expansion dressing — same clean palette family as houses, one
+  // accent material per new structure type.
+  awning:   new THREE.MeshLambertMaterial({ color: 0x3a7a6a, side: THREE.DoubleSide }), // market stall canvas
+  metal:    new THREE.MeshLambertMaterial({ color: 0x585d64 }), // anvil / tools
+  hay:      new THREE.MeshLambertMaterial({ color: 0xcf9a3a }), // straw bales
+  gold:     new THREE.MeshLambertMaterial({ color: 0xd4af37 }), // shrine finial
 };
 
 function tree(x, z, dark) {
@@ -223,6 +229,118 @@ function totem(x, z, rot) {
 bonePile(110, -55, 6); bonePile(98, -63, 5); bonePile(104, -68, 4); bonePile(115, -66, 5);
 totem(94, -57, .4); totem(119, -55, -.6); totem(108, -74, 1.2);
 
+// ---------- Meadowbrook Village expansion ----------
+// The original 4 houses + well cluster at radius ~15-17 from origin. These
+// add a tavern, smithy, market stall, stable, and shrine at radius ~24-32 so
+// the village reads as a small town rather than a handful of houses, without
+// crowding Marla (3.5,4), Aldric (-4,-6), or Rowan (8,-3). Same
+// primitive-geometry/groundH/addRect-addCircle conventions as house() and
+// the camp props above. ZONES[0].r was bumped to 38 (constants.js) so these
+// still read as "Meadowbrook Village" on the HUD/map.
+
+function tavern(x, z, rot) {
+  const g = new THREE.Group();
+  const b = new THREE.Mesh(new THREE.BoxGeometry(9, 4.4, 6.5), M.wall);
+  b.position.y = 2.2; b.castShadow = true; b.receiveShadow = true; g.add(b);
+  const r = new THREE.Mesh(new THREE.ConeGeometry(6.2, 3, 4), M.roof);
+  r.position.y = 5.9; r.rotation.y = Math.PI / 4; r.castShadow = true; g.add(r);
+  const post = new THREE.Mesh(new THREE.CylinderGeometry(.1, .1, 2.6, 5), M.wood);
+  post.position.set(0, 1.3, 4); g.add(post);
+  const sign = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1, .15), M.roof);
+  sign.position.set(0, 2.5, 4); g.add(sign);
+  g.position.set(x, groundH(x, z), z); g.rotation.y = rot; scene.add(g);
+  addRect(x, z, 9, 6.5, rot);
+  camCollidables.push(g);
+}
+
+function smithy(x, z, rot) {
+  const g = new THREE.Group();
+  const b = new THREE.Mesh(new THREE.BoxGeometry(5, 3, 4.5), M.wall);
+  b.position.y = 1.5; b.castShadow = true; b.receiveShadow = true; g.add(b);
+  const r = new THREE.Mesh(new THREE.ConeGeometry(3.6, 2, 4), M.roof);
+  r.position.y = 4; r.rotation.y = Math.PI / 4; r.castShadow = true; g.add(r);
+  const chim = new THREE.Mesh(new THREE.CylinderGeometry(.3, .35, 2, 6), M.rock);
+  chim.position.set(1.6, 4.2, -1); g.add(chim);
+  // anvil out front
+  const anvilBase = new THREE.Mesh(new THREE.CylinderGeometry(.3, .4, .5, 6), M.wood);
+  anvilBase.position.set(0, .25, 3); g.add(anvilBase);
+  const anvilBody = new THREE.Mesh(new THREE.BoxGeometry(.9, .35, .35), M.metal);
+  anvilBody.position.set(0, .68, 3); g.add(anvilBody);
+  const anvilHorn = new THREE.Mesh(new THREE.ConeGeometry(.15, .6, 6), M.metal);
+  anvilHorn.rotation.z = Math.PI / 2; anvilHorn.position.set(.6, .68, 3); g.add(anvilHorn);
+  g.position.set(x, groundH(x, z), z); g.rotation.y = rot; scene.add(g);
+  addRect(x, z, 5, 4.5, rot);
+  camCollidables.push(g);
+}
+
+function marketStall(x, z, rot) {
+  const g = new THREE.Group();
+  const counter = new THREE.Mesh(new THREE.BoxGeometry(2.6, .9, 1), M.wood);
+  counter.position.y = .45; counter.castShadow = true; g.add(counter);
+  for (const [px, pz] of [[-1.2, -.4], [1.2, -.4], [-1.2, .4], [1.2, .4]]) {
+    const p = new THREE.Mesh(new THREE.CylinderGeometry(.06, .06, 2.2, 5), M.wood);
+    p.position.set(px, 1.1, pz); g.add(p);
+  }
+  const canopy = new THREE.Mesh(new THREE.BoxGeometry(3, .15, 1.6), M.awning);
+  canopy.position.y = 2.2; g.add(canopy);
+  g.position.set(x, groundH(x, z), z); g.rotation.y = rot; scene.add(g);
+  addRect(x, z, 3, 1.6, rot);
+  // Open-air stall, like tents — left off camCollidables (thin posts, no roofline to hide behind).
+}
+
+function hayBale(x, z) {
+  const b = new THREE.Mesh(new THREE.CylinderGeometry(.6, .6, 1, 10), M.hay);
+  b.rotation.z = Math.PI / 2; b.castShadow = true;
+  b.position.set(x, groundH(x, z) + .6, z); scene.add(b);
+  addCircle(x, z, .6);
+}
+
+function stable(x, z, rot) {
+  const g = new THREE.Group();
+  const b = new THREE.Mesh(new THREE.BoxGeometry(7, 3, 4), M.wood);
+  b.position.y = 1.5; b.castShadow = true; b.receiveShadow = true; g.add(b);
+  const r = new THREE.Mesh(new THREE.ConeGeometry(4.5, 1.8, 4), M.roof);
+  r.position.y = 3.9; r.rotation.y = Math.PI / 4; r.castShadow = true; g.add(r);
+  g.position.set(x, groundH(x, z), z); g.rotation.y = rot; scene.add(g);
+  addRect(x, z, 7, 4, rot);
+  camCollidables.push(g);
+}
+
+function shrine(x, z, rot) {
+  const g = new THREE.Group();
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(2.2, 2.4, .6, 8), M.rock);
+  base.position.y = .3; base.castShadow = true; g.add(base);
+  for (let i = 0; i < 4; i++) {
+    const a = i / 4 * Math.PI * 2;
+    const col = new THREE.Mesh(new THREE.CylinderGeometry(.18, .18, 2.6, 6), M.wall);
+    col.position.set(Math.cos(a) * 1.6, 1.9, Math.sin(a) * 1.6); g.add(col);
+  }
+  const roof = new THREE.Mesh(new THREE.ConeGeometry(2.4, 1.4, 4), M.roof);
+  roof.position.y = 3.6; roof.rotation.y = Math.PI / 4; roof.castShadow = true; g.add(roof);
+  const finial = new THREE.Mesh(new THREE.SphereGeometry(.22, 8, 6), M.gold);
+  finial.position.y = 4.5; g.add(finial);
+  g.position.set(x, groundH(x, z), z); g.rotation.y = rot; scene.add(g);
+  addCircle(x, z, 2.4);
+  camCollidables.push(g);
+}
+
+function signpost(x, z, rot) {
+  const g = new THREE.Group();
+  const post = new THREE.Mesh(new THREE.CylinderGeometry(.08, .1, 2.4, 5), M.wood);
+  post.position.y = 1.2; post.castShadow = true; g.add(post);
+  const board = new THREE.Mesh(new THREE.BoxGeometry(1.4, .5, .1), M.wood);
+  board.position.set(0, 2, 0); g.add(board);
+  g.position.set(x, groundH(x, z), z); g.rotation.y = rot; scene.add(g);
+  // Thin post, like torches/banners — no collider.
+}
+
+tavern(28, 2, -.3);
+smithy(-26, -7, .5);
+marketStall(0, 24, 0);
+stable(4, -25, .2); hayBale(10, -23); hayBale(11, -28);
+shrine(-30, 5, -.4);
+signpost(-6, 3, .2); // town-square marker near the original well
+
 // Critter / NPC spawn helpers
 export function spawnCritter(meshFactory, x, z) {
   const mesh = meshFactory();
@@ -244,6 +362,21 @@ export function spawnNPC(name, x, z, opts) {
 for (let i = 0; i < 9; i++) { const a = rand(0, Math.PI * 2), d = rand(30, 55); spawnCritter(() => boarMesh(0x8a6242, .8), Math.cos(a) * d, Math.sin(a) * d); }
 for (let i = 0; i < 7; i++) { const a = rand(0, Math.PI * 2), d = rand(48, 75); spawnCritter(() => boarMesh(0x6e4a30, 1), Math.cos(a) * d, Math.sin(a) * d); }
 for (let i = 0; i < 7; i++) { const a = rand(0, Math.PI * 2), d = rand(80, 120); spawnCritter(wolfMesh, Math.cos(a) * d, Math.sin(a) * d); }
+
+// Ambient flavor villagers — purely cosmetic wandering townsfolk, distinct
+// from the two quest-givers and the duelist roster. There's no existing
+// "flavor NPC" concept in the codebase (only npcs[] for interactable
+// quest-givers/duelists, checked by interact.js, and critters[] for
+// wandering wildlife). Rather than invent a third system, these reuse
+// spawnCritter + the existing humanoid() builder (same one Marla/Aldric/
+// duelists use, just no hat): they land in critters[], get the same
+// wander-and-collide behavior as boars/wolves in main.js, and — because
+// interact.js only ever looks at npcs[] — are guaranteed to never produce
+// an "E to speak" prompt, no dialogue/quest code needed.
+const VILLAGER_SHIRTS = [0x8a6a4a, 0x5a7a5a, 0x7a5a6a, 0x4a6a8a, 0x9a8a4a, 0x6a4a4a];
+const VILLAGER_SPOTS = [[6, -8], [-9, -2], [18, 20], [-20, -16], [10, -18], [-24, 10]];
+VILLAGER_SPOTS.forEach(([x, z], i) =>
+  spawnCritter(() => humanoid({ shirt: VILLAGER_SHIRTS[i % VILLAGER_SHIRTS.length] }), x, z));
 
 export const marla = spawnNPC('Quartermaster Marla', 3.5, 4, { shirt: 0x7a5aa8 });
 export const aldric = spawnNPC('Warden Aldric', -4, -6, { shirt: 0x55636e, hat: 0x3a444c });
