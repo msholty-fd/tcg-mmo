@@ -510,6 +510,33 @@ considered and rejected.
     pattern, or a quest) — a hook placed in the world before the content
     exists, so the world hints at more than it currently holds.
 
+- **Gruk the Boar King — Piercing as his signature keyword (2026-07-08)**:
+  this iteration of the worldbuilding loop deepens an *existing* duelist
+  (alternating with the new-NPC case). Assigned candidate list was Gruk,
+  Captain Verity, Tarn the Tollkeeper, the Ashen Sentinel, and the Footpad
+  (Rowan/Vex/Maren/Kestrel already deepened). Gruk, Verity, Tarn, and the
+  Footpad were all tied at only 2 cards ever swapped into their decks — the
+  thinnest in the roster — while the Ashen Sentinel had 3 and already leans
+  hard on kindle-matters. Of that tied group, Gruk's own 2 swapped cards
+  (`ironhide_boar`, `emberwood_colossus`) are both Piercing — an axis he was
+  already leaning on but had never deepened. Checked keyword ownership:
+  Guardian/Ambush/Ward/Frenzy each already had a deck-wide owner from earlier
+  iterations (Rowan/Vex/Maren/Kestrel); Piercing was the one keyword left
+  with no spell that grants it, and its keyword-gap relic (`piercing_barb`)
+  sat unclaimed by any duelist. 5 new cards, all reusing existing effect
+  primitives: two curve-filling Piercing bodies (`boar_lancer`,
+  `tusked_reaver`), a spell and a relic that grant Piercing (`honed_tusks`,
+  `tusks_of_the_hollow`), and `boarlords_fury` (a rare enchantment granting
+  Piercing board-wide on cast and to creatures played afterward — the fifth
+  card to use the Herd Instinct/Warding Litany/Bulwark Doctrine/Bandit Creed
+  onPlay+onAllySummon shape). Gruk already had a self-named signature card
+  (`gruk`, present since the original starter deck), so no new one was
+  added. Folded into `grukDeck` via a second chained `swap()`, replacing
+  generic filler (`quartermaster` x2, `kindled_fury` x2, `wolf_howl`,
+  `wild_boar` x2) with the 5 new cards plus two previously-unclaimed
+  Piercing fillers (`piercing_barb`, `warthog_battering_ram`); reward pool
+  adds `rootbound_titan`, the last unclaimed Piercing finisher.
+
 ## Open questions
 
 - Renown pacing: thresholds 20/60/150 are untested against real play.
