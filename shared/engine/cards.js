@@ -2,12 +2,17 @@
 // A card definition:
 // {
 //   id, name, set, rarity: 'common'|'uncommon'|'rare',
-//   type: 'creature'|'spell'|'enchantment'|'relic',
+//   type: 'creature'|'spell'|'enchantment'|'relic'|'reaction',
 //   cost, atk?, hp?, text,
 //   keywords?: ['ambush','ward','frenzy',...],
-//   triggers?: { onPlay: [effects], onDeath: [effects], startOfTurn: [effects], onAttack: [effects] },
+//   triggers?: { onPlay: [effects], onDeath: [effects], startOfTurn: [effects],
+//                endOfTurn: [effects], onAttack: [effects], onKindle: [effects],
+//                onAllySummon: [effects], onAllyDeath: [effects] },
 //   needsTarget?: 'enemyUnit'|'anyUnit'|'any'   (for chosen-target spells)
 // }
+// enchantment cards resolve their onPlay trigger then join a persistent
+// face-up per-player zone (never the graveyard); their other triggers keep
+// firing on player-wide events for the rest of the duel — see engine.js.
 
 const registry = new Map();
 

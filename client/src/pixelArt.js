@@ -489,6 +489,27 @@ const CARD_ART = {
   red_sash_ambusher: { sprite: 'hooded', pal: { h: '#b04848', H: '#883434', m: '#661f1f' } },
   warden_captain:    { sprite: 'hooded', pal: { h: '#4a6a8a', H: '#33506a', e: '#c8a24a' } },
   thicket_beast:     { sprite: 'colossus', pal: { l: '#4a7a3a', L: '#375c2c', t: '#7a5a38' } },
+
+  // ---- enchantments (face-up, persistent) ----
+  herd_instinct:     { sprite: 'boar', pal: { d: '#c8a24a', D: '#9a7a30', n: '#f0e0b0', e: '#ffe080' } },
+  bastion_oath:      { sprite: 'plate', pal: { p: '#c8a24a', P: '#9a7a30', g: '#f0e8d0' } },
+  ember_communion:   { sprite: 'spark', pal: { F: '#ff9a40', f: '#dd4400', w: '#ffe0c0' } },
+  ashen_vigil:       { sprite: 'bell', pal: { b: '#8a8a92', B: '#64646e', w: '#d8d8e0', r: '#5a5a64' } },
+
+  // ---- keyword-gap and curve-filler new blood ----
+  warded_acolyte:      { sprite: 'hooded', pal: { h: '#3a6a7a', H: '#2a4e5c', e: '#8ff0f0' } },
+  sanctum_guardian:    { sprite: 'hooded', pal: { h: '#9aa8b8', H: '#727e8c', e: '#f0f4ff' } },
+  tuskblade_berserker: { sprite: 'boar', pal: { d: '#8a3a2a', D: '#6e2c1e', e: '#ffb040' } },
+  bloodmoon_wolf:      { sprite: 'wolf', pal: { g: '#5a2a2a', G: '#441f1f', e: '#ff8a70' } },
+  warthog_battering_ram:{ sprite: 'boar', pal: { d: '#5e5a54', D: '#46433e', n: '#a8a49c', m: '#46433e' } },
+  rootbound_titan:     { sprite: 'colossus', pal: { l: '#2e4a24', L: '#22381b', t: '#5a3f22', T: '#43301a', e: '#c8f07a' } },
+  cinder_warden:       { sprite: 'hooded', pal: { h: '#8a4a2a', H: '#6a381e', e: '#ffb040' } },
+  charnel_hound:       { sprite: 'wolf', pal: { g: '#4a5a4a', G: '#384438', e: '#aef07a', n: '#2a332a' } },
+  grave_caller:        { sprite: 'hooded', pal: { h: '#3a2a4a', H: '#2a1e38', e: '#b070ff' } },
+  piercing_barb:       { sprite: 'fang', pal: { w: '#c8ccd0', W: '#9aa0a8', f: '#ff7a20', F: '#ffd050' } },
+  widows_kiss:         { sprite: 'talisman', pal: { c: '#5a2a4a', w: '#f0c8d8', W: '#c890a8' } },
+  scout_ahead:         { sprite: 'rite', pal: { b: '#c8d8f0', B: '#9ab0d0', e: '#4a7ac0', f: '#8ff0f0' } },
+  rally_the_line:      { sprite: 'fury', pal: { f: '#4a7ac0', F: '#ffd050', r: '#2a4e8a', d: '#c8a24a' } },
 };
 
 const cache = new Map();

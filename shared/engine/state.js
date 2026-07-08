@@ -47,7 +47,8 @@ function makePlayer(deckItems, rng) {
     deck,
     hand: [],
     field: [],
-    reactions: [],   // face-down reaction cards ({card, iid, level}), max 2
+    reactions: [],     // face-down reaction cards ({card, iid, level}), max 2
+    enchantments: [],  // face-up persistent cards ({card, iid, level}), max 4 — see engine.js
     graveyard: [],
     fatigue: 0,
   };
