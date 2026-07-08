@@ -99,11 +99,21 @@ const footpadDeck = swap(
 // Old Hessa of Hollowmere (DESIGN.md) — Wardens-based, warding_bell is the
 // last fully-untouched signature card in the core set; ashen_shambler is
 // reused here (its "walks the way grief does" graveyard flavor fits a bog
-// hermit better than anywhere it's been used so far). The exclusive-card
-// budget from the 2026-07-08 set-expansion decision is now fully allocated
-// across 7 duelists — see DESIGN.md, a real second set is the next unlock
-// for fresh duelist-signature cards.
-const hessaDeck = swap(STARTER_DECKS.wardens, ['wild_boar', 'wild_boar'], ['warding_bell', 'ashen_shambler']);
+// hermit better than anywhere it's been used so far).
+// Second swap (worldbuilding loop, deepening pass): Hessa was by far the
+// roster's thinnest deck (only 2 cards ever swapped in, tied for lowest
+// with the Ashen Sentinel's 3) and the only long-standing duelist with no
+// self-named signature card. Kindle-matters (Tarn) and graveyard-matters
+// (Marrow) each already have a solo owner, but nobody had combined them —
+// a bog witch dealing "cards to the dead" is a natural fit for both at
+// once (will-o'-the-wisps / marsh-fire are folklore's own kindle-in-a-
+// graveyard). Folds in 7 new cards leaning on that hybrid, replacing
+// generic burn/tempo filler that shares no theme with her.
+const hessaDeck = swap(
+  swap(STARTER_DECKS.wardens, ['wild_boar', 'wild_boar'], ['warding_bell', 'ashen_shambler']),
+  ['camp_torcher', 'camp_torcher', 'ember_bolt', 'ember_bolt', 'kindled_fury', 'kindled_fury', 'sudden_spark'],
+  ['willow_wisp', 'bog_kindler', 'mire_toll', 'rekindle_the_dead', 'pyre_caller', 'hessa', 'bogfire_colossus'],
+);
 // Maren the Shrinekeeper (DESIGN.md) — Wardens-based. The enchantment type
 // (herd_instinct/bastion_oath/ember_communion/ashen_vigil) had zero duelist
 // owners since it shipped, and the Ward keyword's two keyword-gap fillers
