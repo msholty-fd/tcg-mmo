@@ -343,6 +343,32 @@ considered and rejected.
   Bram's Rest iteration, and this pass's new cards are folded into Vex's
   deck/rewards specifically, not shared.
 
+- **Waystones — the realm's road network (2026-07-08)**: after four
+  iterations of *adding places*, the world was a set of scattered points
+  with no connective tissue. This adds the tissue instead of another point:
+  carved standing stones along the routes out of the village, each with a
+  gilded arrow aimed at the place it marks the way to (Highgate, Hollowmere,
+  Emberwatch, Gruk's Hollow, Red-Sash Camp), radiating from a central
+  crossroads just south of the village at (7,-30). Following the stones is
+  meant to make the realm read as *connected roads* rather than islands —
+  a direct attempt at the standing "does the long walk feel like a slog"
+  open question (a marked road with visible progress beats trackless field).
+  - *Card-light by design, and by circumstance*: chosen partly because a
+    concurrent session was actively editing `duelists.js`/`cards.js`/
+    `pixelArt.js` (the Vex-bandits work) — staying entirely in `world.js`
+    with no new duelist/cards meant zero collision risk. Good reminder that
+    "what's a safe lane right now" is a legitimate input to picking the next
+    iteration, not just "what's most exciting."
+  - *Arrow-facing math*: a waystone is an independent 3D object at its own
+    `groundH` (no terrain-hugging decal → no float/z-fight on slopes). The
+    arrow's `rot = atan2(tx-x, tz-z)` because THREE's `rotation.y` here maps
+    local +Z to world (sin rot, cos rot) — documented inline in world.js for
+    the next person who adds a directional prop.
+  - *The Wayfarer*: a flavour NPC (n.flavor system from Bram's Rest) at the
+    crossroads whose lines name each road's destination, so the crossroads
+    reads as "roads lead HERE and HERE," not just decoration. First flavour
+    NPC placed out in the open Boarlands rather than inside a settlement.
+
 ## Open questions
 
 - Renown pacing: thresholds 20/60/150 are untested against real play.
@@ -362,3 +388,10 @@ considered and rejected.
   minimap/full-map against the ring boundary right behind it, or whether
   the zone label flickers between "Bram's Rest" and "The Boarlands" right
   at the edge.
+- Waystones are placed by dead reckoning (never live-verified — the preview
+  gotcha again). Two things want an in-game look: (a) whether each gilded
+  arrow actually points at its destination (the atan2 facing is reasoned,
+  not seen), and (b) whether the ~10 stones sit at sensible spacing/height
+  along the routes or land awkwardly on hills / inside tree clusters. All
+  are cosmetic with a small collider, so worst case is visual, not blocking.
+  If arrows point wrong, the fix is the sign/axis in `waystone()`'s `rot`.
