@@ -168,7 +168,44 @@ considered and rejected.
   `exhume`, `graveBuff`, `resetKindle`; new trigger hook `onKindle`; new
   target selector `trigger` (the unit that tripped a reaction).
 
+- **Highgate — southern trade capital (2026-07-08)**: the "second zone"
+  worldbuilding push flagged as deferred in the set-expansion decision above.
+  Michael asked for a bigger city separate from the starting zone; scoped as
+  a **trade hub/capital**, full-hub tier (worldbuilding + NPCs + duelists).
+  Decisions:
+  - *Reachable, not adjacent*: centered at (40,-145), ~187 units from spawn
+    (near the 210 world-boundary clamp) — walking there is a real trip, not
+    a village extension. Placed south, clear of both existing camps (Gruk's
+    Hollow, Red-Sash Camp). Tagged via the existing CAMPS proximity mechanism
+    (constants.js) rather than a new zone system — Highgate isn't a "camp"
+    but the {x,z,r,name} shape and zoneAt()/full-map wiring already fit.
+  - *Walled, not open*: a 76×76 wall square with corner watchtowers and a
+    single north gate (facing back toward the village) — reads as a real
+    capital rather than a bigger village, and gives the two new duelists a
+    reason to exist (someone has to guard the gate and the road).
+  - *No new cards or pack*: deliberately reuses existing core-set cards for
+    both new duelists' decks/rewards (`warden_captain`, `counterspark`,
+    `pyre_keeper`, `dire_wolf`, `second_harvest`, `thicket_beast` — all
+    previously unused by any duelist). Consistent with the set-expansion
+    decision above (grow core in place); a Highgate-specific pack/set is a
+    plausible future step, not done here. No new vendor either — the
+    Boarlands pack stays Marla's thing.
+  - *Roster*: Captain Verity (Wardens-based, guards the gate) and Tarn the
+    Tollkeeper (Boarherd-based, guards the road just outside it — reachable
+    before you even enter). Guildmaster Yara is a non-duelist quest-giver in
+    the Merchant Hall, gating a 3-quest chain (`highgate_gate` →
+    `highgate_road` → `highgate_ledger`) independent of the Aldric/Vex/Gruk
+    chain, so Highgate is its own destination rather than a reward for
+    finishing the first one.
+  - Not done, flagged for later: a Highgate-specific supply pack/vendor, a
+    second card set themed around the capital, fast travel (the walk is
+    part of the design intent, but revisit if it feels punishing once played
+    live).
+
 ## Open questions
 
 - Renown pacing: thresholds 20/60/150 are untested against real play.
 - Starter balance: boarherd ~75% vs redsash (AI-vs-AI); needs a card pass.
+- Highgate placement/scale is untested in real play — verify the walk feels
+  like a destination, not a slog, and that the wall gate doesn't create a
+  collision pinch point.

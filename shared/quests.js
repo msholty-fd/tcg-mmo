@@ -94,6 +94,30 @@ export const QUESTS = [
     obj: have => `Emberwood Colossus owned: ${have}/1`,
     thanks: "The forest, standing, and you're the one who found it. Aldric doesn't say this often: well done.",
   },
+  // Highgate's chain — Guildmaster Yara, gating on the two Highgate duelists
+  // rather than on the Aldric chain, so the capital is reachable independent
+  // of the Vex/Gruk storyline (it's a separate destination, see DESIGN.md).
+  {
+    id: 'highgate_gate', giver: 'yara', title: 'Papers, or a Duel', minLvl: 3, prereq: null,
+    duels: { target: 'verity', need: 1 }, xp: 300, coins: 25,
+    offer: "Highgate doesn't let strangers in on a smile. Captain Verity holds the gate — beat her at the table and she'll vouch for you. It's cheaper than the toll, if you're any good.",
+    obj: have => `Defeat Captain Verity: ${have}/1`,
+    thanks: "Verity vouched for you herself — that's rarer than it should be. Welcome to Highgate.",
+  },
+  {
+    id: 'highgate_road', giver: 'yara', title: "The Tollkeeper's Due", minLvl: 3, prereq: 'highgate_gate',
+    duels: { target: 'tarn', need: 1 }, xp: 320, coins: 30,
+    offer: "Every caravan that reaches these walls paid Tarn's toll first — cards, not coin. Beat him on the road and I'll waive it for every trader who says your name.",
+    obj: have => `Defeat Tarn the Tollkeeper: ${have}/1`,
+    thanks: "Word travels faster than a caravan. The road to Highgate is a little safer with you on it.",
+  },
+  {
+    id: 'highgate_ledger', giver: 'yara', title: 'Good for the Ledger', minLvl: 4, prereq: 'highgate_road',
+    collect: { cardId: 'warden_captain', need: 1 }, xp: 220, coins: 20,
+    offer: "A trade capital runs on guarantees. Bring me a Warden Captain for the ledger — proof this city's escorts are worth what we charge for them.",
+    obj: have => `Warden Captain owned: ${have}/1`,
+    thanks: "Filed and countersigned. Highgate's word is good again, and that's worth more than the card.",
+  },
 ];
 
 export const questById = id => QUESTS.find(q => q.id === id);
