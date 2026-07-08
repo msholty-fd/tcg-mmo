@@ -31,6 +31,11 @@ const M = {
   // Highgate dressing — a cool blue/gold "capital" banner, distinct from the
   // Red-Sash camp's red, on the same cloth-plane shape as banner().
   capitalBanner: new THREE.MeshLambertMaterial({ color: 0x2f4d8a, side: THREE.DoubleSide }),
+  // Hollowmere dressing — desaturated/dark palette so the swamp reads as
+  // visually distinct from every green-forest camp so far.
+  deadwood: new THREE.MeshLambertMaterial({ color: 0x5a5248 }),
+  bogWater: new THREE.MeshLambertMaterial({ color: 0x1a2e28 }),
+  reed:     new THREE.MeshLambertMaterial({ color: 0x5a6e3a }),
 };
 
 function tree(x, z, dark) {
@@ -628,3 +633,56 @@ bram.flavor = [
 ];
 
 export const footpad = spawnDuelist('footpad', 25, -74, { shirt: 0x7a2a2a, hat: 0x2a2a2a });
+
+// ---------- Hollowmere: sunken swamp (x=-100 z=-90) ----------
+// A sparse, wild place in the unclaimed southwest — deliberately no
+// buildings (see DESIGN.md), just dead trees, bog pools, and reeds around
+// Old Hessa's fire. First use of a genuinely new visual family (everything
+// so far reused the green pine tree() or hand-built structures); the
+// desaturated M.deadwood/bogWater/reed palette is what makes this camp read
+// as a swamp rather than "more forest."
+
+function deadTree(x, z, rot, scale = 1) {
+  const g = new THREE.Group();
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(.22 * scale, .4 * scale, 3.2 * scale, 6), M.deadwood);
+  trunk.position.y = 1.6 * scale; trunk.castShadow = true; g.add(trunk);
+  for (const [dy, a, len] of [[2.4, .6, 1.6], [2.0, -1.1, 1.3], [2.8, 2.4, 1.1]]) {
+    const branch = new THREE.Mesh(new THREE.CylinderGeometry(.05 * scale, .1 * scale, len * scale, 5), M.deadwood);
+    branch.position.set(Math.cos(a) * len * scale * .4, dy * scale, Math.sin(a) * len * scale * .4);
+    branch.rotation.z = Math.PI / 2 - a; branch.rotation.y = a; branch.castShadow = true; g.add(branch);
+  }
+  g.position.set(x, groundH(x, z), z); g.rotation.y = rot; scene.add(g);
+  addCircle(x, z, .3 * scale);
+}
+
+function bogPool(x, z, r) {
+  const p = new THREE.Mesh(new THREE.CircleGeometry(r, 10), M.bogWater);
+  p.rotation.x = -Math.PI / 2; p.position.set(x, groundH(x, z) + .03, z); scene.add(p);
+  // Shallow and walkable, like the village well's surrounding puddle would
+  // be — no collider, purely a visual read.
+}
+
+function reedCluster(x, z) {
+  const g = new THREE.Group();
+  for (let i = 0; i < 5; i++) {
+    const h = rand(.9, 1.6);
+    const r = new THREE.Mesh(new THREE.CylinderGeometry(.03, .05, h, 4), M.reed);
+    r.position.set(rand(-.5, .5), h / 2, rand(-.5, .5)); r.rotation.z = rand(-.15, .15); g.add(r);
+  }
+  g.position.set(x, groundH(x, z), z); scene.add(g);
+  // Thin stalks, like torches/banners — no collider.
+}
+
+for (const [dx, dz, rot, s] of [
+  [-8, 6, .3, 1.1], [6, -10, 1.4, .9], [-14, -12, 2.1, 1.2], [10, 8, -.7, 1],
+  [-4, -18, .5, .8], [15, -4, -1.8, 1.1],
+]) deadTree(-100 + dx, -90 + dz, rot, s);
+
+for (const [dx, dz, r] of [[-3, 3, 2.4], [8, -6, 1.8], [-10, -8, 2.1], [3, -14, 1.6]])
+  bogPool(-100 + dx, -90 + dz, r);
+
+for (const [dx, dz] of [[-1, 4, ], [9, -4], [-9, -7]]) reedCluster(-100 + dx, -90 + dz);
+
+fires.push(campfire(-100, -90));
+
+export const hessa = spawnDuelist('hessa', -100, -87, { shirt: 0x3a4a3e, hat: 0x2a2a24 });
