@@ -409,6 +409,43 @@ registerCards([
     flavor: 'She takes their strength to hold her ground.' },
   { id: 'hearthbound_champion', set: 'core', rarity: 'rare', type: 'creature', cost: 6, atk: 5, hp: 7, keywords: ['lifesteal'], storiedKeyword: 'guardian',
     name: 'Hearthbound Champion', text: 'Lifesteal.', flavor: 'The gate has fallen before. She has not.' },
+
+  // ---- Halvard Stillwatch: reaction-heavy control as a deck-wide identity.
+  // Checked the assigned candidate axes: kindle-matters already leans on the
+  // Ashen Sentinel (ash_sprite/flame_tender in sentinelDeck), but "a deck
+  // that builds primarily around reaction cards" was genuinely unclaimed —
+  // every one of the 7 existing reaction cards (hidden_snare/boar_pit/
+  // alarm_bell/warding_bell/counterspark/ambush_horn/shrines_grace) sits as
+  // at most a single-copy splash in whichever deck carries it, never the
+  // deck's own identity. New cards diversify the reaction toolkit across all
+  // three trigger events (enemyAttack/enemySpell/enemyCreature) and add a
+  // payoff for holding them: `graveBuff` already keys off `getCard(c.card)
+  // .type`, so `filter: 'reaction'` counts *fired* reactions sitting in the
+  // graveyard (fireReactions pushes them there on trigger) — a genuine
+  // "reactions matter" payoff with no engine change.
+  { id: 'patient_sentry', set: 'core', rarity: 'common', type: 'creature', cost: 2, atk: 1, hp: 4, keywords: ['ward'], storiedKeyword: 'guardian',
+    name: 'Patient Sentry', text: 'Ward.', flavor: "He has stood so long the moss doesn't know the difference." },
+  { id: 'ridgewatch_warden', set: 'core', rarity: 'uncommon', type: 'creature', cost: 4, atk: 3, hp: 6, keywords: ['ward'],
+    name: 'Ridgewatch Warden', text: 'Ward.', flavor: 'Every traveler gets counted. Not all get through.' },
+  { id: 'cinderpass_snare', set: 'core', rarity: 'common', type: 'reaction', cost: 1,
+    reaction: { on: 'enemyAttack', effects: [{ effect: 'damage', target: 'trigger', amount: 1 }, { effect: 'draw', amount: 1 }] },
+    name: 'Cinderpass Snare', text: 'Reaction: when an enemy creature attacks, deal 1 damage to it and draw a card.',
+    flavor: 'The path narrows. So do your options.' },
+  { id: 'backdraft', set: 'core', rarity: 'common', type: 'reaction', cost: 1,
+    reaction: { on: 'enemySpell', effects: [{ effect: 'damage', target: 'enemyHearth', amount: 2 }] },
+    name: 'Backdraft', text: "Reaction: when your opponent plays a spell, deal 2 damage to their Hearth.",
+    flavor: "The wind through the pass doesn't forgive haste." },
+  { id: 'ashfall_recall', set: 'core', rarity: 'uncommon', type: 'reaction', cost: 2,
+    reaction: { on: 'enemyCreature', effects: [{ effect: 'exhume', amount: 1 }] },
+    name: 'Ashfall Recall', text: 'Reaction: when your opponent plays a creature, return a random creature from your graveyard to your hand.',
+    flavor: 'What the mountain buries, the watch remembers.' },
+  { id: 'sentrys_cloak', set: 'core', rarity: 'common', type: 'relic', cost: 1,
+    triggers: { onPlay: [{ effect: 'grantKeyword', target: 'chosen', keyword: 'ward' }] }, needsTarget: 'ownUnit',
+    name: "Sentry's Cloak", text: 'Attach: your creature gains Ward.', flavor: 'Grey wool, the color of standing still.' },
+  { id: 'halvard', set: 'core', rarity: 'rare', type: 'creature', cost: 5, atk: 3, hp: 5, keywords: ['ward'],
+    triggers: { onPlay: [{ effect: 'graveBuff', filter: 'reaction', atk: 1, hp: 1, cap: 3 }] },
+    name: 'Halvard Stillwatch', text: 'Ward. Gains +1/+1 for each reaction card in your graveyard (up to +3/+3).',
+    flavor: "He set two snares and lit no fire. He didn't need to." },
 ]);
 
 // Starter decks (30 cards) — what a new character begins with,

@@ -680,6 +680,61 @@ considered and rejected.
     server) — same `spawnDuelist`/`interact.js` code path as every other
     duelist, so risk is judged low but it's a real gap, not a formality.
 
+- **Halvard Stillwatch — new duelist, reaction-heavy control as a deck-wide
+  identity (2026-07-08)**: this iteration adds a genuinely *new* duelist (the
+  loop's other case, alternating with the Verity-deepening entry above).
+  Checked the assigned candidate axes: kindle-matters already leans on the
+  Ashen Sentinel (`ash_sprite`/`flame_tender` in `sentinelDeck`), but "a deck
+  that builds primarily around reaction cards" was genuinely unclaimed — all
+  7 existing reaction cards (`hidden_snare`/`boar_pit`/`alarm_bell`/
+  `warding_bell`/`counterspark`/`ambush_horn`/`shrines_grace`) sit as at most
+  a single-copy splash in whichever deck happens to carry them, never a
+  deck's own identity.
+  - *Placement*: per the task's steer toward The Emberpeaks' edge if it
+    doesn't collide — checked DESIGN.md's Emberpeaks phase plan first: Phase
+    3 (not yet built) explicitly reserves the *basin* for fire-elemental
+    duelists in their own `shared/sets/emberpeaks/` folder. Placing a
+    core-set duelist there would preempt that. Instead, Halvard stands on the
+    grassland (south) side of Cinderpass itself — `client/src/world.js`,
+    (8, 148), inside the boulder wall's x∈[-13,13] gap column, clear of the
+    gate-pillar colliders and the approach signpost, still inside the
+    existing "Cinderpass" `CAMPS` radius. A warden watching who tries to
+    cross is a minimal-footprint fit for the edge of a landmark someone else
+    just built, with zero overlap with the planned Phase 3 basin roster.
+  - *Cards*: 7 new (`shared/sets/core/cards.js`), all built from existing
+    effect primitives — no engine changes needed: `patient_sentry` (2c 1/4
+    Ward) and `ridgewatch_warden` (4c 3/6 Ward) are curve-filling walls to
+    stall behind; three new reactions spread across all three trigger events
+    (`cinderpass_snare` on enemyAttack: damage+draw; `backdraft` on
+    enemySpell: punish the caster's Hearth directly, distinct from
+    `counterspark`'s pure counter; `ashfall_recall` on enemyCreature: exhume
+    a creature back — first reaction to use `exhume`); `sentrys_cloak` (a
+    bare 1-cost Ward-only relic, cheaper than `blessed_icon`'s stat+keyword
+    combo); `halvard` (his signature card, 5c 3/5 Ward, gains +1/+1 per
+    reaction card in his graveyard up to +3/+3 — `graveBuff`'s `filter`
+    already keys off `getCard(c.card).type`, and `fireReactions` pushes spent
+    reactions into the graveyard, so `filter: 'reaction'` is a genuine
+    "reactions matter" payoff using an existing primitive with no engine
+    change — the "boss plays themself" pattern already used for
+    Gruk/Vex/Rowan/Kestrel/Marrow/Verity).
+  - *Deck*: `halvardDeck` swaps `STARTER_DECKS.redsash` (the roster's
+    least-used base at 3 duelists vs Wardens'/Boarherd's 4) — cutting the
+    aggressive burn/tempo filler (`camp_torcher` x3, `ember_bolt` x3,
+    `controlled_burn`, `wolf_howl`, `hearth_meal`) for the 7 new cards plus
+    the two previously-unclaimed reactions (`boar_pit`, `alarm_bell` — both
+    sat only in the Footpad's reward pool, never in an actual deck).
+  - **CARD_ART**: all 7 new cards get a slate-grey + ember-orange accent
+    palette (new to the roster, distinct from every existing duelist's
+    scheme) on existing sprites (`plate`/`snare`/`spark`/`rite`/`talisman`/
+    `hooded`) — no new grids authored.
+  - Not done / untested live: visual placement at Cinderpass and the
+    challenge-prompt flow weren't browser-verified (worktrees have no dev
+    server) — same `spawnDuelist`/`interact.js` code path as every other
+    duelist, so risk is judged low but it's a real gap, not a formality. Also
+    worth a live look alongside the existing open Emberpeaks question below:
+    does (8,148) actually read as "standing in the pass mouth," or does it
+    look off-center against the boulder wall.
+
 ## Open questions
 
 - **Emberpeaks needs a real in-game look (never eyeballed — preview gotcha).**
