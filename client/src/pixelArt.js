@@ -622,6 +622,19 @@ const CARD_ART = {
   hessa:               { sprite: 'hooded', pal: { h: '#3a5a3e', H: '#243c28', e: '#7aff9a' } },
   bogfire_colossus:    { sprite: 'colossus', pal: { l: '#3a5a3e', L: '#243c28', t: '#5a4a30', T: '#3c3020', e: '#7aff9a' } },
 
+  // ---- The Ashen Sentinel: deepening pass, "ashfall" (onDeath payoffs) —
+  // charcoal-ash + dying-ember-red accent, new to the roster (distinct from
+  // her own existing ember-orange, Halvard's slate-blue-grey + ember-orange,
+  // Tarn's warm brass/amber, and Emberpeaks' brighter orange/red). No new
+  // grids authored.
+  ember_husk:          { sprite: 'emberling', pal: { f: '#5c4a3e', F: '#9a7a5a', r: '#7a2010', e: '#d8b888' } },
+  watchfire_whelp:     { sprite: 'wraith', pal: { a: '#5c564e', A: '#403a34', e: '#d8b888', s: '#2a2620' } },
+  ashbound_warden:     { sprite: 'hooded', pal: { h: '#5c564e', H: '#3f3a34', e: '#c8a888' } },
+  feed_the_fire:       { sprite: 'burn', pal: { f: '#7a5c48', F: '#c8a888', r: '#5c1810' } },
+  cinderfall_rite:     { sprite: 'rite', pal: { b: '#5c564e', B: '#3f3a34', e: '#7a2010', f: '#c8503a' } },
+  sentinel:            { sprite: 'hooded', pal: { h: '#3a3632', H: '#242220', e: '#c8503a' } },
+  ashfall_colossus:    { sprite: 'colossus', pal: { l: '#4a443e', L: '#332e2a', t: '#6a5648', T: '#4a3c30', e: '#992e14' } },
+
   // ---- Emberpeaks set (fire zone) — all reuse existing sprites with fiery
   // palettes; the ember/burn/bolt/fury/spark sprites are already orange so
   // they need little override. No new grids authored.
