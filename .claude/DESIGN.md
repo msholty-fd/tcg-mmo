@@ -625,6 +625,61 @@ considered and rejected.
     vendor (the pillar: beating the zone's duelists / buying its pack is how
     its cards enter circulation).
 
+- **Captain Verity — Lifesteal as a deck-wide identity (2026-07-08)**: this
+  iteration of the worldbuilding loop deepens an *existing* duelist
+  (alternating with the new-NPC case). Assigned candidate list was Captain
+  Verity, Tarn the Tollkeeper, the Ashen Sentinel, and the Footpad
+  (Rowan/Vex/Maren/Kestrel/Gruk/Marrow already deepened). Verity, Tarn, and
+  the Footpad were tied at only 2 cards ever swapped into their decks — the
+  thinnest in the roster — while the Ashen Sentinel had 3 and already leans
+  hard on kindle-matters. Verity's Wardens deck naturally suggested Guardian
+  or Ward as her next axis, but both already have deck-wide owners (Rowan,
+  Maren); Tarn is Boarherd-flavored and the Footpad is Red-Sash/ambush
+  territory Vex and Kestrel already share, so neither fit Verity's own
+  "Wardens captain" identity better than she did. Picked **Lifesteal**
+  instead — sustain-through-battle reads as "the line that doesn't fall," a
+  defensive flavor distinct from Guardian's redirect-tanking and Ward's
+  spell-immunity. Checked keyword ownership: Lifesteal was the one keyword
+  in the set with no spell or enchantment that granted it (compare
+  stand_and_hold/pilgrims_vow/reckless_charge/honed_tusks for spells,
+  herd_instinct/warding_litany/bulwark_doctrine/bandit_creed/boarlords_fury
+  for enchantments), and its two keyword-gap fillers (`bloodmoon_wolf`,
+  `widows_kiss`) sat completely unclaimed by any roster deck since they
+  shipped.
+  - **6 new cards** (`shared/sets/core/cards.js`), all reusing existing
+    effect primitives (buff/grantKeyword/damage/heal — no engine changes
+    needed): `sworn_medic` (2c 1/3 Lifesteal) and `hearthguard_veteran` (4c
+    3/4 Lifesteal) are curve-filling Lifesteal bodies; `crimson_vow` (spell)
+    grants Lifesteal, filling the keyword-grant gap (Lifesteal had no
+    keyword-granting spell before this — its only two grant sources were
+    relics, `ember_fang`/`widows_kiss`); `verities_oath` (rare enchantment)
+    grants Lifesteal board-wide on cast and to creatures played afterward —
+    the sixth card to use the Herd Instinct/Warding Litany/Bulwark
+    Doctrine/Bandit Creed/Boarlord's Fury onPlay+onAllySummon shape, and the
+    first enchantment for Lifesteal; `verity` (her signature card, 5c 4/4
+    Guardian+Lifesteal, deals 2 to a random enemy and restores 2 Hearth on
+    play — same "boss plays themself" pattern as Gruk/Vex/Rowan/Kestrel/
+    Marrow — she's the one card in this pass that pairs Lifesteal with
+    Guardian, since a captain reads as both); `hearthbound_champion` (6c 5/7
+    Lifesteal, storiedKeyword guardian — Verity's deck had no top-end finisher
+    before this).
+  - **Deck**: `verityDeck` in `shared/sets/core/duelists.js` chains a second
+    `swap()` onto the original `warden_captain`/`counterspark` one, folding in
+    the 6 new cards plus the two previously-unclaimed Lifesteal keyword-gap
+    fillers (`bloodmoon_wolf`, `widows_kiss`), replacing generic filler
+    (`kindled_fury` x2, `sudden_spark` x2, `camp_torcher` x2, `ember_bolt`,
+    `hearth_meal`). Reward pool unchanged (`[...verityDeck, 'warden_captain',
+    'counterspark', 'pyre_keeper']`) — the spread already carries all 6 new
+    cards plus the two reused fillers.
+  - **CARD_ART**: all 6 new cards reuse existing sprites (`hooded`/`rite`/
+    `plate`) with new crimson/maroon palettes (distinct from Rowan's
+    steel-blue Guardian, Maren's pale-icy Ward, and Vex/Kestrel's brighter
+    bandit reds) — no new grids authored.
+  - Not done / untested live: visual placement at Highgate's gate and the
+    challenge-prompt flow weren't browser-verified (worktrees have no dev
+    server) — same `spawnDuelist`/`interact.js` code path as every other
+    duelist, so risk is judged low but it's a real gap, not a formality.
+
 ## Open questions
 
 - **Emberpeaks needs a real in-game look (never eyeballed — preview gotcha).**

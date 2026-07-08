@@ -48,7 +48,17 @@ const grukDeck = swap(
 );
 // Highgate's roster (see DESIGN.md) — a Wardens-based gate captain and a
 // Boarherd-based road warden, swapped with cards no earlier duelist uses.
-const verityDeck = swap(STARTER_DECKS.wardens, ['wild_boar', 'wild_boar'], ['warden_captain', 'counterspark']);
+// Captain Verity was the roster's thinnest deck alongside Tarn/Footpad (only
+// these 2 cards ever swapped in). Guardian (Rowan) and Ward (Maren) already
+// own the set's other defensive axes, so the second swap leans Verity into
+// Lifesteal instead — "the line that doesn't fall" without duplicating
+// either: Lifesteal had no spell/enchantment that granted it before this,
+// and its keyword-gap fillers (bloodmoon_wolf, widows_kiss) sat unclaimed.
+const verityDeck = swap(
+  swap(STARTER_DECKS.wardens, ['wild_boar', 'wild_boar'], ['warden_captain', 'counterspark']),
+  ['kindled_fury', 'kindled_fury', 'sudden_spark', 'sudden_spark', 'camp_torcher', 'camp_torcher', 'ember_bolt', 'hearth_meal'],
+  ['sworn_medic', 'hearthguard_veteran', 'crimson_vow', 'verities_oath', 'verity', 'hearthbound_champion', 'bloodmoon_wolf', 'widows_kiss'],
+);
 const tarnDeck = swap(STARTER_DECKS.boarherd, ['young_boar', 'young_boar'], ['dire_wolf', 'second_harvest']);
 // The Ashen Sentinel — night-only guardian of Emberwatch Ruins (DESIGN.md).
 // Boarherd-based, swapped toward ash/ember-flavored cards no other duelist uses.

@@ -557,6 +557,14 @@ const CARD_ART = {
   unquiet_grave:       { sprite: 'rite', pal: { b: '#c8c0a8', B: '#9a9078', e: '#8a70b0', f: '#b090d8' } },
   delvers_pick:        { sprite: 'fang', pal: { w: '#8a7050', W: '#6a5638', f: '#b8a060', F: '#d8c080' } },
   marrow:              { sprite: 'wraith', pal: { a: '#4a3a5a', A: '#342846', e: '#b070ff', s: '#1e1828' } },
+
+  // ---- Captain Verity: Lifesteal as a deck-wide identity ----
+  sworn_medic:         { sprite: 'hooded', pal: { h: '#7a2e3a', H: '#5c2129', e: '#ff6a6a' } },
+  hearthguard_veteran: { sprite: 'hooded', pal: { h: '#8a3244', H: '#661f2c', e: '#ffb0b0' } },
+  crimson_vow:         { sprite: 'rite', pal: { b: '#e8c8c8', B: '#c09090', e: '#c81a1a', f: '#ff6a6a' } },
+  verities_oath:       { sprite: 'plate', pal: { p: '#6e2530', P: '#4f1a22', g: '#ff6a6a' } },
+  verity:              { sprite: 'hooded', pal: { h: '#5a1f2c', H: '#40151f', e: '#c8a24a' } },
+  hearthbound_champion:{ sprite: 'hooded', pal: { h: '#6e2530', H: '#4f1a22', e: '#ffd050' } },
 };
 
 const cache = new Map();
