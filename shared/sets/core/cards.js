@@ -233,6 +233,34 @@ registerCards([
   { id: 'shakedown', set: 'core', rarity: 'common', type: 'spell', cost: 2,
     triggers: { onPlay: [{ effect: 'damage', target: 'chosen', amount: 1 }, { effect: 'draw', amount: 1 }] }, needsTarget: 'enemyUnit',
     name: 'Shakedown', text: 'Deal 1 damage to an enemy creature. Draw a card.', flavor: 'Pay the toll or pay in blood.' },
+
+  // ---- Maren the Shrinekeeper: the enchantment axis had zero duelist owners
+  // (herd_instinct/bastion_oath/ember_communion/ashen_vigil, shipped with the
+  // enchantment mechanic, sat unclaimed by any roster entry) — same for the
+  // Ward keyword (warded_acolyte/sanctum_guardian, also unclaimed). New cards
+  // lean into Ward-as-persistent-axis specifically, reusing only existing
+  // effect primitives (grantKeyword/buff/heal) — no engine changes needed.
+  { id: 'warding_litany', set: 'core', rarity: 'rare', type: 'enchantment', cost: 4,
+    triggers: {
+      onPlay: [{ effect: 'grantKeyword', target: 'allAllies', keyword: 'ward' }],
+      onAllySummon: [{ effect: 'grantKeyword', target: 'self', keyword: 'ward' }],
+    },
+    name: 'Warding Litany', text: 'When cast, your creatures gain Ward. Creatures you play afterward enter with Ward too.',
+    flavor: 'The shrine remembers every promise it was asked to keep.' },
+  { id: 'blessed_icon', set: 'core', rarity: 'uncommon', type: 'relic', cost: 2,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 0, hp: 2 }, { effect: 'grantKeyword', target: 'chosen', keyword: 'ward' }] }, needsTarget: 'ownUnit',
+    name: 'Blessed Icon', text: 'Attach: your creature gets +0/+2 and Ward.', flavor: 'Carried from the shrine, still warm from the candles.' },
+  { id: 'shrines_grace', set: 'core', rarity: 'common', type: 'reaction', cost: 1,
+    reaction: { on: 'enemyAttack', effects: [{ effect: 'heal', target: 'ownHearth', amount: 2 }] },
+    name: "Shrine's Grace", text: 'Reaction: when an enemy creature attacks, restore 2 to your Hearth.',
+    flavor: "A ward doesn't stop the blow. It just outlasts it." },
+  { id: 'pilgrims_vow', set: 'core', rarity: 'common', type: 'spell', cost: 2,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 0, hp: 1 }, { effect: 'grantKeyword', target: 'chosen', keyword: 'ward' }] }, needsTarget: 'ownUnit',
+    name: "Pilgrim's Vow", text: 'Give a creature +0/+1 and Ward.', flavor: "Say the shrine's words. Mean them." },
+  { id: 'shrine_elder', set: 'core', rarity: 'uncommon', type: 'creature', cost: 5, atk: 3, hp: 6, keywords: ['ward'],
+    triggers: { onPlay: [{ effect: 'heal', target: 'ownHearth', amount: 3 }] },
+    name: 'Shrine Elder', text: 'Ward. When played, restore 3 to your Hearth.',
+    flavor: 'She has buried more wards than she can count, and outlived them all.' },
 ]);
 
 // Starter decks (30 cards) — what a new character begins with,

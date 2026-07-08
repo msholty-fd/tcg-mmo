@@ -44,6 +44,17 @@ const footpadDeck = swap(STARTER_DECKS.redsash, ['tusker', 'tusker'], ['red_sash
 // across 7 duelists — see DESIGN.md, a real second set is the next unlock
 // for fresh duelist-signature cards.
 const hessaDeck = swap(STARTER_DECKS.wardens, ['wild_boar', 'wild_boar'], ['warding_bell', 'ashen_shambler']);
+// Maren the Shrinekeeper (DESIGN.md) — Wardens-based. The enchantment type
+// (herd_instinct/bastion_oath/ember_communion/ashen_vigil) had zero duelist
+// owners since it shipped, and the Ward keyword's two keyword-gap fillers
+// (warded_acolyte/sanctum_guardian) were likewise unclaimed — Maren leans
+// into Ward as a persistent, deck-wide axis: 5 new cards plus bastion_oath
+// (the enchantment mechanic's first duelist owner) and the two Ward bodies.
+const marenDeck = swap(
+  STARTER_DECKS.wardens,
+  ['wild_boar', 'wild_boar', 'darkwood_wolf', 'darkwood_wolf', 'camp_torcher', 'camp_torcher', 'kindled_fury', 'sudden_spark'],
+  ['warding_litany', 'bastion_oath', 'blessed_icon', 'shrines_grace', 'pilgrims_vow', 'shrine_elder', 'warded_acolyte', 'sanctum_guardian'],
+);
 
 export const DUELISTS = {
   rowan: {
@@ -77,5 +88,9 @@ export const DUELISTS = {
   hessa: {
     name: 'Old Hessa of the Mire', deck: hessaDeck,
     rewards: [...hessaDeck, 'warding_bell', 'last_rites', 'second_harvest'],
+  },
+  maren: {
+    name: 'Maren the Shrinekeeper', deck: marenDeck,
+    rewards: [...marenDeck, 'ashen_vigil'],
   },
 };
