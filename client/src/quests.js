@@ -5,7 +5,7 @@
 import { $ } from './utils.js';
 import { player, npcs } from './state.js';
 import { QUESTS, questById, stateOf, canAccept, canTurnin, collectHave, objNeed } from '../../shared/quests.js';
-import { marla, aldric, vex, grukNpc } from './world.js';
+import { marla, aldric, vex, grukNpc, yara } from './world.js';
 import { getCards } from './collection.js';
 
 let qs = {};   // { [id]: {state, have} } — server mirror
@@ -21,7 +21,7 @@ export function setQuests(quests) {
 const profileView = () => ({ lvl: player.lvl, quests: qs, cards: getCards() });
 // giver id -> NPC object; any NPC can be a quest giver (server doesn't care —
 // see shared/quests.js). Vex and Gruk are duelists who also give quests.
-const GIVERS = { marla, aldric, vex, gruk: grukNpc };
+const GIVERS = { marla, aldric, vex, gruk: grukNpc, yara };
 const giverNpc = key => GIVERS[key];
 
 export function npcQuest(n) {

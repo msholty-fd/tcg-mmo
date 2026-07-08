@@ -19,6 +19,10 @@ const grukDeck = [
   ...swap(STARTER_DECKS.boarherd.filter(c => c !== 'gruk'), ['young_boar', 'militia_recruit'], ['ironhide_boar', 'emberwood_colossus']),
   'gruk', 'gruk', 'gruk',
 ];
+// Highgate's roster (see DESIGN.md) — a Wardens-based gate captain and a
+// Boarherd-based road warden, swapped with cards no earlier duelist uses.
+const verityDeck = swap(STARTER_DECKS.wardens, ['wild_boar', 'wild_boar'], ['warden_captain', 'counterspark']);
+const tarnDeck = swap(STARTER_DECKS.boarherd, ['young_boar', 'young_boar'], ['dire_wolf', 'second_harvest']);
 
 export const DUELISTS = {
   rowan: {
@@ -32,5 +36,13 @@ export const DUELISTS = {
   gruk: {
     name: 'Gruk the Boar King', deck: grukDeck,
     rewards: [...grukDeck, 'ironhide_boar', 'emberwood_colossus', 'ember_fang'],
+  },
+  verity: {
+    name: 'Captain Verity', deck: verityDeck,
+    rewards: [...verityDeck, 'warden_captain', 'counterspark', 'pyre_keeper'],
+  },
+  tarn: {
+    name: 'Tarn the Tollkeeper', deck: tarnDeck,
+    rewards: [...tarnDeck, 'dire_wolf', 'second_harvest', 'thicket_beast'],
   },
 };

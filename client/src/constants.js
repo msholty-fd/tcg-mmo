@@ -30,9 +30,18 @@ export const ZONES = [
 // Named camps, checked before the ZONES rings in main.js's zoneAt() — shared
 // here so the full map (fullmap.js) can draw the same circles without a
 // second hardcoded copy.
+// Also doubles as the list of any other named, proximity-defined place that
+// should out-rank the concentric ZONES rings above (see zoneAt() in
+// main.js — camps are checked first). Highgate isn't a "camp" but reuses the
+// exact same {x,z,r,name} shape rather than inventing a second mechanism.
 export const CAMPS = [
   { x: 107, z: -60, r: 26, name: "Gruk's Hollow" },
   { x: -90, z: 64,  r: 24, name: 'Red-Sash Camp' },
+  // Southern trade capital — deliberately far from spawn (~187 units, near
+  // the 210 world-boundary clamp) so it reads as its own destination, not an
+  // extension of Meadowbrook. r=50 covers the walls plus the road just
+  // outside the gate (Tarn the Tollkeeper). See DESIGN.md "Highgate".
+  { x: 40,  z: -145, r: 50, name: 'Highgate' },
 ];
 
 export const BOTCHAT = [
@@ -44,4 +53,6 @@ export const BOTCHAT = [
   'xXfrostgirlXx: someone pulled GRUK from a reward?? grats',
   'Bonkstick: DING!',
   'Legolaz: nice',
+  "Bonkstick: anyone made it to Highgate yet? that walk is LONG",
+  'xXfrostgirlXx: Tarn wrecked me right outside the gate lol',
 ];
