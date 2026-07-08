@@ -5,7 +5,7 @@
 import { $ } from './utils.js';
 import { player, npcs } from './state.js';
 import { QUESTS, questById, stateOf, canAccept, canTurnin, collectHave, objNeed } from '../../shared/quests.js';
-import { marla, aldric } from './world.js';
+import { marla, aldric, vex, grukNpc } from './world.js';
 import { getCards } from './collection.js';
 
 let qs = {};   // { [id]: {state, have} } — server mirror
@@ -19,7 +19,10 @@ export function setQuests(quests) {
 // cards are included so canTurnin/collectHave can check collect objectives
 // against the client's mirrored collection (kept in sync via profileUpdate).
 const profileView = () => ({ lvl: player.lvl, quests: qs, cards: getCards() });
-const giverNpc = key => (key === 'marla' ? marla : aldric);
+// giver id -> NPC object; any NPC can be a quest giver (server doesn't care —
+// see shared/quests.js). Vex and Gruk are duelists who also give quests.
+const GIVERS = { marla, aldric, vex, gruk: grukNpc };
+const giverNpc = key => GIVERS[key];
 
 export function npcQuest(n) {
   return QUESTS.find(q => giverNpc(q.giver) === n && canAccept(profileView(), q.id));

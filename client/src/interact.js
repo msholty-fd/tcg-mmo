@@ -23,15 +23,13 @@ export function nearestInteract() {
 export function handleInteract() {
   const n = nearestInteract(); if (!n) return;
 
-  if (n.duelist) {
-    // online: server runs the duel (authoritative rewards); offline: local engine
-    if (isConnected()) requestNpcDuel(n.duelist.id);
-    else startDuel(n.duelist);
-    return;
-  }
-
   // quests are server-managed — the dialogue is optimistic, the server
-  // validates and the profileUpdate/questEvent messages confirm
+  // validates and the profileUpdate/questEvent messages confirm. This runs
+  // BEFORE the duel check so a duelist who is also a quest giver (Vex, Gruk)
+  // hands out turn-ins/offers instead of always launching a duel — but an
+  // active, not-yet-completable quest does NOT block dueling them (see the
+  // duel check just below), since some of their own quests require beating
+  // them again.
   const turnin = npcTurnin(n);
   if (turnin && isConnected()) {
     sendQuestTurnin(turnin.id);
@@ -51,6 +49,13 @@ export function handleInteract() {
   if ((turnin || offer) && !isConnected()) {
     say(n.name, 'The realm is quiet right now — reconnect to take on quests.');
     dialogueT = 5;
+    return;
+  }
+
+  if (n.duelist) {
+    // online: server runs the duel (authoritative rewards); offline: local engine
+    if (isConnected()) requestNpcDuel(n.duelist.id);
+    else startDuel(n.duelist);
     return;
   }
 
