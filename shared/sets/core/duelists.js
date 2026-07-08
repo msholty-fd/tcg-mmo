@@ -26,6 +26,9 @@ const tarnDeck = swap(STARTER_DECKS.boarherd, ['young_boar', 'young_boar'], ['di
 // The Ashen Sentinel — night-only guardian of Emberwatch Ruins (DESIGN.md).
 // Boarherd-based, swapped toward ash/ember-flavored cards no other duelist uses.
 const sentinelDeck = swap(STARTER_DECKS.boarherd, ['wild_boar', 'wild_boar', 'tusker'], ['ash_sprite', 'flame_tender', 'ashen_shambler']);
+// The footpad who works Bram's Rest (DESIGN.md) — Red-Sash-based, swapped
+// toward the two remaining ambush/road-themed cards no other duelist uses.
+const footpadDeck = swap(STARTER_DECKS.redsash, ['tusker', 'tusker'], ['red_sash_ambusher', 'hidden_snare']);
 
 export const DUELISTS = {
   rowan: {
@@ -51,5 +54,9 @@ export const DUELISTS = {
   sentinel: {
     name: 'The Ashen Sentinel', deck: sentinelDeck,
     rewards: [...sentinelDeck, 'stoke_the_flames', 'last_rites', 'pyre_keeper'],
+  },
+  footpad: {
+    name: 'A Footpad', deck: footpadDeck,
+    rewards: [...footpadDeck, 'boar_pit', 'forest_sow', 'alarm_bell'],
   },
 };

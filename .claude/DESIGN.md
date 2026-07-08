@@ -248,15 +248,44 @@ considered and rejected.
     late-game chain) points at the rumor; finding the guardian itself means
     being out there at the right hour, no map marker.
 
+- **Bram's Rest — wayside stop on the Highgate road (2026-07-08)**: second
+  standing-loop iteration. Directly targets the open question below about
+  whether the Meadowbrook->Highgate walk reads as a destination or a slog:
+  a small, unglamorous rest stop at the Boarlands/Darkwood seam (20,-70),
+  roughly a third of the way there — not another settlement, just a fire,
+  a lean-to, and a reason to stop.
+  - *Old Bram*: the first NPC using a new, generic `n.flavor` dialogue
+    system added to `interact.js` (string or string[], picks randomly if an
+    array; falls back to the original hardcoded line for every NPC without
+    `.flavor`, so nothing earlier changes behavior). Bram is deliberately
+    non-mechanical — no quest, no duel, no shop — his only job is rotating
+    flavor lines that reference Vex, Gruk, Highgate/Tarn, and the Emberwatch
+    rumor, so a player who's found several landmarks hears them tied
+    together instead of experienced as isolated content drops.
+  - *A Footpad*: a minor Red-Sash-based duelist working the rest stop,
+    swapped toward the two remaining ambush/road-flavored cards
+    (`red_sash_ambusher`'s flavor text — "The toll is whatever you
+    carry" — was too on-the-nose not to use). Gated early (`road_toll`,
+    minLvl 2, prereq `practice`) and deliberately independent of the
+    Highgate/Aldric-late-game chains — this is content for a player who
+    hasn't gotten far yet, on the same road Highgate sits at the end of.
+
 ## Open questions
 
 - Renown pacing: thresholds 20/60/150 are untested against real play.
 - Starter balance: boarherd ~75% vs redsash (AI-vs-AI); needs a card pass.
 - Highgate placement/scale is untested in real play — verify the walk feels
   like a destination, not a slog, and that the wall gate doesn't create a
-  collision pinch point.
+  collision pinch point. Bram's Rest (below) is a first attempt at breaking
+  up that walk — worth checking in the same live pass whether one waypoint
+  is enough or the middle third still drags.
 - Emberwatch Ruins' 20:00-6:00 window is a first guess (~1/2.4 of a 20-min
   day, ~8 real minutes) — untested whether that's a fair amount of time to
   stumble onto it. The visibility toggle itself (mesh.visible via gameHour)
   is also a new pattern — worth a live check that it flips cleanly at both
   boundaries with no flicker.
+- Bram's Rest sits at r≈73 from origin, just inside the Boarlands ring
+  (r<78) — untested whether the CAMPS r=14 override reads cleanly on the
+  minimap/full-map against the ring boundary right behind it, or whether
+  the zone label flickers between "Bram's Rest" and "The Boarlands" right
+  at the edge.

@@ -137,7 +137,14 @@ progression) when the server is down; it auto-reconnects every 4s.
   import('/src/world.js')).fires[0].userData.fire.scale.y`) twice with a
   ~1s gap — if it hasn't changed, it's this, not a code bug. A full
   `preview_stop` + `preview_start` did NOT fix it in the observed case; no
-  reliable workaround found yet.
+  reliable workaround found yet. Recurred 2026-07-08 (Bram's Rest session):
+  a brand-new preview server + brand-new tab (never previously used this
+  session) still came up with `document.hidden === true` from the start —
+  so it isn't only a degrade-over-a-long-session thing, and clicking the
+  page/canvas doesn't clear it either. When this happens, fall back to
+  build + `node --check` + headless logic tests and say so honestly in
+  STATUS.md rather than blocking the merge on a live check that isn't
+  currently possible.
 
 ## Current state / known issues
 

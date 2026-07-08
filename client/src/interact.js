@@ -76,6 +76,18 @@ export function handleInteract() {
     return;
   }
 
+  // Optional per-NPC flavor lines (n.flavor: string | string[]) for NPCs with
+  // nothing mechanical to offer — Old Bram at Bram's Rest is the first user
+  // (see DESIGN.md). A single string always shows the same line, an array
+  // picks one at random each time; anything without .flavor keeps the
+  // original generic line so every earlier NPC is unaffected.
+  if (n.flavor) {
+    const line = Array.isArray(n.flavor) ? n.flavor[Math.floor(Math.random() * n.flavor.length)] : n.flavor;
+    say(n.name, line);
+    dialogueT = 6;
+    return;
+  }
+
   say(n.name, 'Keep to the roads after dark, adventurer.');
   dialogueT = 5;
 }
