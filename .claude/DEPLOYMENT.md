@@ -140,6 +140,38 @@ Gaps not covered by the original checklist; all live in `server/index.js` /
       (`fly volumes snapshots list`). Manual `fly ssh sftp get
       /data/profiles.db` before risky changes. Revisit (off-provider copy)
       if the realm's population starts to matter.
+- [ ] **Postgres migration (eventually, decided 2026-07-08)** — SQLite on
+      the volume is the right call today; move to Fly Postgres when we hit a
+      breaking point, not before. The schema (one table, token PK + JSON
+      data) ports almost verbatim to Postgres JSONB, so this stays cheap to
+      do later. The breakpoints to watch for, in likely order:
+      1. **A second machine.** The hard wall. SQLite is a local file with
+         one writer; any multi-machine future — a second region, blue/green
+         zero-downtime deploys (today every deploy disconnects everyone),
+         splitting duel workers from the world server — needs a network DB.
+         If it's only read scaling, LiteFS is an interim; for shared writes
+         it's Postgres time.
+      2. **All-profiles-in-RAM stops fitting.** The server loads every
+         profile into memory at boot (~6 KB/profile now; card instances grow
+         it). At ~10k+ accounts on the 512 MB VM, boot slows and memory
+         tightens. First response is on-demand row reads (still SQLite);
+         that refactor is also most of the work of going async for Postgres,
+         so consider jumping straight there.
+      3. **Write contention.** Single-writer lock: sustained hundreds of
+         profile upserts/sec (thousands of concurrent players despite the 1s
+         debounce) or a long transaction blocking saves. WAL mode buys
+         headroom before this bites.
+      4. **Query pressure on JSON blobs.** Leaderboards, an auction house,
+         cross-player trade/economy analytics, admin search. SQLite JSON1 +
+         generated-column indexes can carry this a while; if we're adding
+         several such indexes, JSONB + GIN in Postgres is the better home.
+      5. **Backup/recovery requirements.** When daily volume snapshots +
+         manual sftp copies stop being acceptable (real players, real
+         money-hours), Postgres brings PITR/replicas — though Litestream on
+         SQLite is a lighter interim if this breakpoint arrives alone.
+      Rough heuristic: hundreds of players / one machine → stay put; the
+      moment the roadmap needs machine #2 or ~10k accounts, schedule the
+      migration ahead of the wall instead of at it.
 - [ ] **Server-side session expiry** — tokens never expire. Decide on a policy
       (probably fine to leave for now).
 
