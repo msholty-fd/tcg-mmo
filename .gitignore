@@ -15,3 +15,6 @@ server/profiles.db-shm
 
 *.log
 .DS_Store
+
+# local prod-data backups (fly ssh sftp get) — never commit, repo is public
+profiles.backup.*
