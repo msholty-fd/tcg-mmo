@@ -525,6 +525,15 @@ const CARD_ART = {
   shrines_grace:       { sprite: 'bell', pal: { b: '#eaf6ff', B: '#bcd8f0', w: '#ffffff', r: '#8fa8c0' } },
   pilgrims_vow:        { sprite: 'rite', pal: { b: '#eaf6ff', B: '#bcd8f0', e: '#8fd0ff', f: '#ffffff' } },
   shrine_elder:        { sprite: 'hooded', pal: { h: '#d8d0c0', H: '#b0a890', e: '#8fd0ff' } },
+
+  // ---- Duelist Rowan: deepening the Guardian/wall identity ----
+  line_holder:         { sprite: 'hooded', pal: { h: '#4a5866', H: '#333e48' } },
+  shieldwall_sergeant: { sprite: 'hooded', pal: { h: '#5e6b78', H: '#44505c', e: '#c8a24a' } },
+  stand_and_hold:      { sprite: 'rite', pal: { b: '#c8d0d8', B: '#98a4b0', e: '#c8a24a' } },
+  watchers_oath:       { sprite: 'plate', pal: { p: '#4a5c68', P: '#333f48', g: '#c8a24a' } },
+  bulwark_doctrine:    { sprite: 'plate', pal: { p: '#7a8896', P: '#566068', g: '#ffe080' } },
+  rowan:               { sprite: 'hooded', pal: { h: '#3a4a5e', H: '#293643', e: '#c8a24a' } },
+  bastion_keep:        { sprite: 'colossus', pal: { l: '#6a7078', L: '#4e545c', t: '#8a94a0', T: '#5a636e', e: '#c8a24a' } },
 };
 
 const cache = new Map();
