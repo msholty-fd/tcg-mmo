@@ -8,7 +8,7 @@ import { humanoid, makeLabel } from './entities.js';
 import { STARTERS } from './constants.js';
 import { player, bots } from './state.js';
 import { log, fct, updateHUD } from './ui.js';
-import { getDeck, getDeckCardIds, adoptProfile } from './collection.js';
+import { getDeck, getLeaders, getDeckCardIds, adoptProfile } from './collection.js';
 import { setQuests } from './quests.js';
 import { questById } from '../../shared/quests.js';
 import { getCard } from '../../shared/engine/cards.js';
@@ -237,7 +237,7 @@ export function sendChat(text) {
 }
 
 export function sendDeckUpdate() {
-  if (connected) ws.send(JSON.stringify({ t: 'deck', deck: getDeck() }));
+  if (connected) ws.send(JSON.stringify({ t: 'deck', deck: getDeck(), leaders: getLeaders() }));
 }
 
 export function sendQuestAccept(id) {

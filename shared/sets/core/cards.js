@@ -8,6 +8,9 @@
 //
 // storiedKeyword: the keyword this card gains at Storied renown (Chronicle L3).
 import { registerCards, getCard } from '../../engine/cards.js';
+import { FAMILIES } from './families.js';
+import { LEADERS } from './leaders.js';
+import { matchesBanner } from './banners.js';
 
 registerCards([
   // ---- creatures: boars & beasts ----
@@ -694,4 +697,60 @@ export function rollStarterDeck() {
   // safety net if a category ran dry (won't with the current pool sizes)
   while (deck.length < DECK_SIZE && draw(STARTER_POOL)) {}
   return deck;
+}
+
+// The banner-coherent starters a fresh character is handed (Leader system).
+// Kept separate from STARTER_DECKS — those are curated duelist bases that
+// duelists.js swap()s on, and must not shift. Each archetype is a modest
+// starter-tier Leader (see leaders.js) flying one banner; buildBannerStarter
+// assembles a deck that PASSES evaluateDeck by construction: leader + enough
+// of its banner to meet minBanner, then neutral (ungated) filler to 30. New
+// players thus never spawn with an invalid deck. Verified in test-leaders.mjs.
+const STARTER_ARCHETYPES = [
+  { leader: 'pack_alpha',          banner: 'boars_beasts' },
+  { leader: 'shieldwall_sergeant', banner: 'wardens_of_the_line' },
+  { leader: 'red_sash_ambusher',   banner: 'redsash_bandits' },
+];
+
+// families that are playable in any deck (mirror of banners.js NEUTRAL set) —
+// used as coherent filler that never trips the gate.
+const NEUTRAL_FILL_FAMILY = 'village_hearth';
+
+function buildBannerStarter(arch) {
+  const DECK_SIZE = 30, MAX_COPIES = 3;
+  const counts = {};
+  const deck = [];
+  const add = id => {
+    if (deck.length >= DECK_SIZE || (counts[id] || 0) >= MAX_COPIES) return false;
+    counts[id] = (counts[id] || 0) + 1;
+    deck.push(id);
+    return true;
+  };
+
+  const bannerFam = FAMILIES.find(f => f.id === arch.banner);
+  const bannerCards = bannerFam ? bannerFam.cardIds.filter(id => { try { return !!getCard(id); } catch { return false; } }) : [];
+  const neutralFam = FAMILIES.find(f => f.id === NEUTRAL_FILL_FAMILY);
+  const neutral = neutralFam ? neutralFam.cardIds.filter(id => { try { return !!getCard(id); } catch { return false; } }) : [];
+
+  add(arch.leader);   // the Leader is one of the 30
+  // fill the banner to a couple past its demand so minBanner is comfortably met
+  const demand = (LEADERS[arch.leader].constraints.find(c => c.kind === 'minBanner')?.n || 8) + 2;
+  const onBanner = () => deck.filter(id => matchesBanner(getCard(id), arch.banner)).length;
+  outer: for (let pass = 0; pass < MAX_COPIES; pass++) {
+    for (const id of bannerCards) {
+      if (onBanner() >= demand) break outer;
+      add(id);
+    }
+  }
+  // fill the rest with neutral support (≤3 each, round-robin for variety)
+  for (let pass = 0; pass < MAX_COPIES && deck.length < DECK_SIZE; pass++) {
+    for (const id of neutral) { if (deck.length >= DECK_SIZE) break; add(id); }
+  }
+  return { deck, leaders: [arch.leader] };
+}
+
+// A fresh character's deck + designated Leaders (random archetype).
+export function newPlayerStarter() {
+  const arch = STARTER_ARCHETYPES[Math.floor(Math.random() * STARTER_ARCHETYPES.length)];
+  return buildBannerStarter(arch);
 }
