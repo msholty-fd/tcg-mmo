@@ -151,5 +151,23 @@ function serverValidDeck(profile, iids, leaderIids) {
     'leader instance not in the deck → rejected');
 }
 
+// ---- 7. every Leader is starter-granted OR collectible from a duelist ------
+console.log('7. champions are collectible (or starter-granted)');
+import { DUELISTS } from '../shared/sets/core/duelists.js';
+import { STARTER_LEADERS } from '../shared/sets/core/leaders.js';
+{
+  for (const id of Object.keys(LEADERS)) {
+    const starter = STARTER_LEADERS.includes(id);
+    const droppedBy = Object.entries(DUELISTS).filter(([, d]) => d.rewards.includes(id)).map(([k]) => k);
+    ok(starter || droppedBy.length > 0,
+      `Leader "${id}" is starter-tier or in a duelist reward pool (dropped by: ${droppedBy.join(',') || 'none'})`);
+  }
+  // and every starter Leader is ALSO collectible (so any player can win it)
+  for (const id of STARTER_LEADERS) {
+    const droppedBy = Object.entries(DUELISTS).filter(([, d]) => d.rewards.includes(id)).map(([k]) => k);
+    ok(droppedBy.length > 0, `starter Leader "${id}" is also collectible (dropped by: ${droppedBy.join(',') || 'NONE'})`);
+  }
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

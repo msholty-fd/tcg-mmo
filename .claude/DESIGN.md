@@ -1169,6 +1169,44 @@ considered and rejected.
     minted instances. Build passes. Live browser check of the deckbuilder UI:
     see STATUS.md (the worktree/preview mismatch — done post-merge on `main`).
 
+- **Leaders — regional champions & the collectible rule (2026-07-09,
+  `feat/champions`)**: Michael's follow-up — "a few champions per region to give
+  the player choices," and champions are collectible, NOT granted by default
+  (with the clarification that the *starter* deck ships with ONE champion so it
+  works out of the box; everything else is earned).
+  - **No new mechanics** — the reward system already makes champions collectible:
+    beating an NPC grants 2 random cards from that duelist's pool, and every
+    boss's signature card is baked into its own deck (the "boss plays themself"
+    pattern), so it's in the pool at ~1-in-15 per drop. So this was purely a
+    ROSTER expansion in `leaders.js`; `duelists.js`, `banners.js`, the server,
+    the client, and the starter were all left untouched.
+  - **Two tiers**: three starter-tier champions (`pack_alpha`/`shieldwall_sergeant`/
+    `red_sash_ambusher`, exported as `STARTER_LEADERS`) are handed with the
+    coherent starter deck AND are also collectible elsewhere. The rest are
+    collect-only. `newPlayerStarter` was already correct (grants one) — the
+    earlier worry about "granted by default" was resolved by Michael: starter
+    champion yes, rest earned.
+  - **Choice per region** — added a SECOND champion to each thin banner with a
+    distinct constraint (splashable vs all-in / bespoke), each dropped by its
+    region's duelist: `warband_champion` (Frenzy, Red-Sash Camp/Kestrel),
+    `hearthbound_champion` (Lifesteal, Highgate/Verity), `hessa` (Kindle,
+    Hollowmere — its first champion), `boar_lancer` (Piercing, Gruk's Hollow),
+    `grave_caller` (Graveyard, Cinderhollow Mine), `sanctum_guardian` (Ward,
+    Meadowbrook/Maren — Maren previously dropped no champion). Every one was
+    already in the right family AND the right reward pool, so zero content risk.
+  - **New invariant, tested**: `test-leaders.mjs` now asserts every Leader is
+    either starter-tier or reachable from some `DUELISTS` reward pool (so no
+    champion is ever un-winnable), and starter champions are ALSO collectible.
+    184 assertions pass. `npm run build` + `node --check` clean.
+  - **Deliberately deferred (need a design call, flagged for Michael)**: the
+    Ashen Sentinel (Emberwatch Ruins) and the two Emberpeaks bosses have no
+    champion. Sentinel's "ashfall/onDeath" identity has no `families.js` family,
+    so making her a champion means either shoehorning her into an existing
+    banner (muddy) or minting a NEW "Ashfall" banner from her ash-card cluster.
+    Emberpeaks champions need cross-set banner support (families.js/banners.js
+    are core-only today). Both are real scope, not one-liners — left for a
+    follow-up rather than guessed at.
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase
