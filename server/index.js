@@ -10,7 +10,10 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { openProfileStore } from './db.js';
 import { DuelRoom } from './duelRoom.js';
-import { rollStarterDeck } from '../shared/sets/core/cards.js';
+import { newPlayerStarter } from '../shared/sets/core/cards.js';
+import { getCard } from '../shared/engine/cards.js';
+import { evaluateDeck } from '../shared/deckConstraints.js';
+import { isLeaderCard } from '../shared/sets/core/leaders.js';
 import { DUELISTS as CORE_DUELISTS } from '../shared/sets/core/duelists.js';
 import { EMBERPEAKS_DUELISTS } from '../shared/sets/emberpeaks/duelists.js';
 const DUELISTS = { ...CORE_DUELISTS, ...EMBERPEAKS_DUELISTS };
@@ -28,7 +31,8 @@ const MAX_COPIES = 3;
 const WORLD_RADIUS = 220;   // playable disc is r=210 (client/src/main.js); slack for lag
 
 // ---- profiles (persistent, SQLite — see db.js) ----
-// profile: {name, outfit, cards: [instance], deck: [iid], xp, lvl, coins, quests}
+// profile: {name, outfit, cards: [instance], deck: [iid], leaders: [iid], xp, lvl, coins, quests}
+//   leaders: designated Leader instances (subset of deck) — the banner system
 // The in-memory map stays the runtime source of truth (game code mutates
 // profiles in place); the DB is the durable copy, written per-profile.
 const store = openProfileStore(DB_FILE, LEGACY_DATA_FILE);
@@ -97,13 +101,19 @@ const findByName = name =>
   Object.entries(profiles).find(([, p]) => p.name.toLowerCase() === name.toLowerCase());
 
 function newProfile(name, outfit) {
-  // Roll a fresh starter deck server-side (players no longer pick one).
-  const starter = rollStarterDeck();
-  const cards = starter.map(id => mintCard(id, 'Starter deck', name));
-  return { name, outfit, cards, deck: cards.map(c => c.iid), xp: 0, lvl: 1, coins: 0, quests: {} };
+  // Roll a fresh, banner-coherent starter deck + its Leader server-side.
+  const starter = newPlayerStarter();
+  const cards = starter.deck.map(id => mintCard(id, 'Starter deck', name));
+  // designate the leader instance(s): the first minted copy of each leader card
+  const leaders = starter.leaders.map(cid => cards.find(c => c.cardId === cid)?.iid).filter(Boolean);
+  return { name, outfit, cards, deck: cards.map(c => c.iid), leaders, xp: 0, lvl: 1, coins: 0, quests: {} };
 }
 
-function validDeck(profile, iids) {
+// Validate a deck + its designated Leaders. Base rules (30 / ≤3 / Legend
+// Budget) then the Leader system (gate + per-Leader constraints via the shared
+// engine). leaderIids must be owned instances that are in the deck and whose
+// card is a registered Leader.
+function validDeck(profile, iids, leaderIids = []) {
   if (!Array.isArray(iids) || iids.length !== 30 || new Set(iids).size !== 30) return false;
   const byId = new Map(profile.cards.map(c => [c.iid, c]));
   const copies = {};
@@ -115,7 +125,20 @@ function validDeck(profile, iids) {
     if (copies[inst.cardId] > MAX_COPIES) return false;
     legend += levelPoints(levelOf(inst.renown));
   }
-  return legend <= LEGEND_BUDGET;
+  if (legend > LEGEND_BUDGET) return false;
+
+  // Leaders: each must be owned, in the deck, distinct, and a real Leader card.
+  if (!Array.isArray(leaderIids)) return false;
+  const deckSet = new Set(iids);
+  if (new Set(leaderIids).size !== leaderIids.length) return false;
+  const leaderCardIds = [];
+  for (const iid of leaderIids) {
+    const inst = byId.get(iid);
+    if (!inst || !deckSet.has(iid) || !isLeaderCard(inst.cardId)) return false;
+    leaderCardIds.push(inst.cardId);
+  }
+  const defs = iids.map(iid => getCard(byId.get(iid).cardId));
+  return evaluateDeck(defs, leaderCardIds).valid;
 }
 
 // mint a won card into a profile; returns the instance
@@ -214,8 +237,8 @@ function broadcast(msg, except = null) {
 }
 
 function sendProfile(p) {
-  const { xp, lvl, coins, quests, cards, deck } = p.profile;
-  send(p, { t: 'profileUpdate', xp, lvl, coins, quests, cards, deck });
+  const { xp, lvl, coins, quests, cards, deck, leaders = [] } = p.profile;
+  send(p, { t: 'profileUpdate', xp, lvl, coins, quests, cards, deck, leaders });
 }
 
 // ---- trading ----
@@ -454,10 +477,17 @@ wss.on('connection', (ws, req) => {
         if (text) { chatTimes.push(now); broadcast({ t: 'chat', from: me.name, text }); }
         break;
       }
-      case 'deck':
-        if (validDeck(me.profile, msg.deck)) { me.profile.deck = [...msg.deck]; markDirty(me.profile); }
-        else send(me, { t: 'chat', from: '[Server]', text: 'Deck rejected — invalid cards or Legend Budget exceeded.' });
+      case 'deck': {
+        const leaders = Array.isArray(msg.leaders) ? msg.leaders : [];
+        if (validDeck(me.profile, msg.deck, leaders)) {
+          me.profile.deck = [...msg.deck];
+          me.profile.leaders = [...leaders];
+          markDirty(me.profile);
+        } else {
+          send(me, { t: 'chat', from: '[Server]', text: 'Deck rejected — invalid cards, Legend Budget, or Leader rules not met.' });
+        }
         break;
+      }
       case 'questAccept': {
         if (canAccept(me.profile, msg.id)) {
           me.profile.quests[msg.id] = { state: 'active', have: 0 };

@@ -1110,6 +1110,65 @@ considered and rejected.
     dev server, and the map/marker render is a faithful copy of the existing
     `fullmap.js` canvas drawing.
 
+- **Leaders & banners — deck-building constraints (2026-07-09, `feat/leaders`)**:
+  the first real answer to "you can mix-and-match anything, so there are no hard
+  deckbuilding decisions." Design converged with Michael over several rounds
+  (see the shape of the questions asked). The system:
+  - A **Leader** is an ordinary card you own that you *designate* to fly a
+    **banner** (a gated card-identity). It stays one of the 30 and pays Legend
+    Budget like any card — Q decided "in the deck, budget as normal," NOT a
+    separate command zone (that fantasy was considered and declined for v1 to
+    avoid new engine/zone work).
+  - **Two-way lock** (the keystone, Michael's idea — it's what actually kills
+    mix-and-match): (1) the GATE — a card whose family is a gated banner can't
+    be in a deck without that banner's Leader; (2) per-Leader CONSTRAINTS run
+    against the 30. Zero Leaders = a *neutral-only* deck, so the "30 best cards"
+    pile is genuinely dead, not merely discouraged.
+  - Constraints are a **primitive registry** (`shared/deckConstraints.js`), not
+    special-cased rules — same posture as engine effects/keywords. `minBanner{n}`
+    (field the Leader, owe ≥N of its banner) is the reciprocal of the gate and
+    the common case, but it's one primitive among many: `costParity`, `singleton`,
+    `requireType`/`banType`/`maxType`, `minKeyword`/`banKeyword`, `maxCost`. This
+    is the Companion/Highlander design family (MTG Ikoria, HS even/odd), adapted.
+    Michael's instinct that "constraints should be unique, not just counts" is
+    what pushed it from a demand-number to a registry.
+  - **Vocabulary decision (important)**: constraints reference only Emberwood's
+    EXISTING axes — cost, type, rarity, keyword, and the `families.js` family.
+    The game deliberately has **no tribe/element** field; Michael chose "existing
+    axes now, tribe later," so the registry dispatches on `constraint.kind` and a
+    future tribe/element axis is new kinds + a card attribute with zero rework.
+    Don't add a tribe field casually — it was explicitly deferred.
+  - **Gate on family, count demand on family-OR-keyword**: `banners.js` gates by
+    the clean 1:1 `families.js` map (no overlap), but `matchesBanner` also counts
+    same-keyword cards from other families so small banners (piercing has 5 family
+    cards) can still reach a Leader's demand.
+  - **Which families are banners**: the 9 mechanical/creature-identity families
+    are gated; `village_hearth` + the three card-TYPE families (relics/reactions/
+    enchantments) stay neutral (~55 neutral cards to build around a banner).
+    This split lives in `banners.js`, not on card defs — same low-diff rationale
+    as `families.js` itself.
+  - **Roster is content/tuning, not architecture** (`shared/sets/core/leaders.js`):
+    Leaders are the existing duelist legend cards (vex/rowan/kestrel/marrow/verity/
+    tarn/halvard/gruk…) plus starter-tier non-boss leaders (pack_alpha/
+    shieldwall_sergeant/red_sash_ambusher) so a fresh character meets the system on
+    card one. Demand numbers and bespoke constraints are meant to be tuned freely.
+    Showcase bespoke rules shipped: tarn = odd-cost only (his card is cost 5 — the
+    test caught an earlier even-cost typo that his own card couldn't satisfy),
+    marrow = singleton, halvard = ≥4 reactions, gruk = no reactions.
+  - **STARTER_DECKS left untouched** — those are duelist swap() bases and shifting
+    them would ripple through every NPC deck's balance. Player starters are a
+    separate `newPlayerStarter()` that builds a banner-coherent deck by
+    construction (leader + banner cards to demand + neutral filler) so no fresh
+    character ever spawns invalid.
+  - Leaders are **purely a deckbuilding constraint** — they do nothing mechanical
+    in a duel (the Leader card just plays normally). Kept scope tight; a
+    board/passive payoff was considered and left for later.
+  - Verified: 144 headless assertions (`scripts/test-leaders.mjs`) — roster
+    consistency, every banner has a Leader, every Leader can build a legal 30,
+    the gate, negative cases, and a faithful mirror of server `validDeck` over
+    minted instances. Build passes. Live browser check of the deckbuilder UI:
+    see STATUS.md (the worktree/preview mismatch — done post-merge on `main`).
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase

@@ -5,17 +5,28 @@
 import { $ } from './utils.js';
 import { allCards, getCard } from '../../shared/engine/cards.js';
 import { levelOf, levelPoints, LEVEL_NAMES, LEGEND_BUDGET, RENOWN_THRESHOLDS } from '../../shared/chronicle.js';
-import { getCards, getDeck, getInstance, setDeck } from './collection.js';
+import { getCards, getDeck, getLeaders, getInstance, setDeck } from './collection.js';
 import { log } from './ui.js';
 import { artFor } from './pixelArt.js';
 import { FAMILIES } from '../../shared/sets/core/families.js';
+import { LEADERS, isLeaderCard } from '../../shared/sets/core/leaders.js';
+import { evaluateDeck, leaderRules } from '../../shared/deckConstraints.js';
+import { bannerOf, bannerName } from '../../shared/sets/core/banners.js';
 
 export const DECK_SIZE = 30;
 export const MAX_COPIES = 3;
 
 export let deckbuilderOpen = false;
 
-let working = [];   // selected instance iids
+let working = [];         // selected instance iids
+let workingLeaders = [];  // designated Leader iids (a subset of working)
+
+// --- Leader system helpers (banner gating + constraints) ------------------
+const leaderCardIds = () => workingLeaders.map(iid => getInstance(iid)?.cardId).filter(Boolean);
+const activeBanners = () => new Set(leaderCardIds().map(cid => LEADERS[cid]?.banner).filter(Boolean));
+// deck as card defs for the shared constraint engine
+const deckDefs = () => working.map(iid => getCard(getInstance(iid).cardId));
+const evalDeck = () => evaluateDeck(deckDefs(), leaderCardIds());
 
 // ---- collection organization: family grouping (core set) + set tabs ----
 // families.js is a curated cardId -> family mapping kept OUT of cards.js on
@@ -122,6 +133,7 @@ export function toggleDeckbuilder() {
 function open() {
   deckbuilderOpen = true;
   working = getDeck().filter(iid => getInstance(iid));
+  workingLeaders = getLeaders().filter(iid => getInstance(iid) && working.includes(iid));
   $('deckbuilder').classList.add('open');
   renderFilters();
   render();
@@ -139,14 +151,16 @@ const budgetUsed = () => working.reduce((s, iid) => s + levelPoints(instLevel(ge
 function render() {
   const total = working.length;
   const legend = budgetUsed();
+  const rules = evalDeck();
 
   const count = $('db-count');
   count.textContent = total + ' / ' + DECK_SIZE;
   count.className = total === DECK_SIZE ? 'good' : 'bad';
   $('db-legend').textContent = `Legend ${legend}/${LEGEND_BUDGET}`;
   $('db-legend').className = legend > LEGEND_BUDGET ? 'bad' : '';
-  $('db-save').disabled = total !== DECK_SIZE || legend > LEGEND_BUDGET;
+  $('db-save').disabled = total !== DECK_SIZE || legend > LEGEND_BUDGET || !rules.valid;
 
+  renderLeaders(rules);
   renderGrid();
 
   // deck list, grouped
@@ -172,23 +186,92 @@ function render() {
     row.onclick = () => {
       const lowest = insts.reduce((a, b) => a.renown <= b.renown ? a : b);
       working.splice(working.indexOf(lowest.iid), 1);
+      // a removed Leader loses its designation (it must be in the deck)
+      workingLeaders = workingLeaders.filter(iid => iid !== lowest.iid);
       render();
     };
     list.appendChild(row);
   }
 }
 
-// Rebuilds just the collection grid (card slots grouped into family/set
-// sections) — split out from render() so clicking a filter tab/chip doesn't
-// need to touch the deck count/legend/deck-list.
-function renderGrid() {
-  // group owned instances by cardId
+// owned instances grouped by cardId, best (highest-renown) copy first
+function buildOwnedGroups() {
   const groups = new Map();
   for (const inst of getCards()) {
     if (!groups.has(inst.cardId)) groups.set(inst.cardId, []);
     groups.get(inst.cardId).push(inst);
   }
   for (const g of groups.values()) g.sort((a, b) => b.renown - a.renown);
+  return groups;
+}
+
+// ---- Leaders panel: banner toggles + live rule/gate readout --------------
+function renderLeaders(rules) {
+  const chosen = leaderCardIds();
+  const ownedLeaders = [...new Set(getCards().map(c => c.cardId).filter(isLeaderCard))]
+    .sort((a, b) => getCard(a).name.localeCompare(getCard(b).name));
+
+  const wrap = $('db-leaders');
+  wrap.innerHTML = '';
+  if (!ownedLeaders.length) {
+    wrap.innerHTML = '<span class="db-hint">No Leaders yet — win a duelist’s signature card to fly their banner.</span>';
+  }
+  for (const cid of ownedLeaders) {
+    const def = getCard(cid);
+    const on = chosen.includes(cid);
+    const chip = document.createElement('button');
+    chip.className = 'db-leader' + (on ? ' on' : '');
+    chip.dataset.card = cid;
+    chip.innerHTML = `<span class="ln">${def.name}</span><span class="lb">${bannerName(LEADERS[cid].banner)}</span>`;
+    chip.title = leaderRules(cid).join(' · ');
+    chip.onclick = () => toggleLeader(cid);
+    wrap.appendChild(chip);
+  }
+
+  const box = $('db-rules');
+  box.innerHTML = '';
+  for (const cid of chosen) {
+    const head = document.createElement('div');
+    head.className = 'db-rule-lead';
+    head.textContent = `${getCard(cid).name} — ${bannerName(LEADERS[cid].banner)}`;
+    box.appendChild(head);
+    for (const r of leaderRules(cid)) {
+      const met = !rules.failures.some(f => f.leader === cid && f.text.endsWith(r));
+      const line = document.createElement('div');
+      line.className = 'db-rule ' + (met ? 'ok' : 'bad');
+      line.textContent = (met ? '✓ ' : '✗ ') + r;
+      box.appendChild(line);
+    }
+  }
+  for (const f of rules.failures.filter(x => x.banner)) {   // gate failures
+    const line = document.createElement('div');
+    line.className = 'db-rule bad';
+    line.textContent = '✗ ' + f.text;
+    box.appendChild(line);
+  }
+}
+
+function toggleLeader(cid) {
+  if (leaderCardIds().includes(cid)) {
+    workingLeaders = workingLeaders.filter(iid => getInstance(iid).cardId !== cid);
+  } else {
+    let iid = working.find(x => getInstance(x).cardId === cid);
+    if (!iid) {                       // pull the Leader into the deck (it unlocks its own banner)
+      addCopy(cid, buildOwnedGroups(), true);
+      iid = working.find(x => getInstance(x).cardId === cid);
+    }
+    if (iid) workingLeaders.push(iid);
+    else { log('Deck is full — remove a card before adding this Leader.', 'bad'); return; }
+  }
+  render();
+}
+
+// Rebuilds just the collection grid (card slots grouped into family/set
+// sections) — split out from render() so clicking a filter tab/chip doesn't
+// need to touch the deck count/legend/deck-list.
+function renderGrid() {
+  const groups = buildOwnedGroups();
+  const active = activeBanners();
 
   const grid = $('db-grid');
   grid.innerHTML = '';
@@ -208,22 +291,35 @@ function renderGrid() {
       const owned = groups.get(def.id) || [];
       const inDeck = working.filter(iid => getInstance(iid).cardId === def.id).length;
       const best = owned[0];
+      const banner = bannerOf(def.id);
+      const locked = banner && !active.has(banner);   // gated: needs its Leader
       const slot = document.createElement('div');
       slot.className = 'db-slot';
       const el = cardEl(def, best ? instLevel(best) : 0);
       if (!owned.length) el.classList.add('none');
+      if (locked) el.classList.add('locked');
       const badge = document.createElement('div');
-      badge.className = 'owned' + (inDeck ? ' indeck' : '');
-      badge.textContent = inDeck ? `${inDeck} in deck · own ${owned.length}` : `own ${owned.length}`;
+      badge.className = 'owned' + (inDeck ? ' indeck' : '') + (locked ? ' locked' : '');
+      badge.textContent = locked ? `🔒 needs ${bannerName(banner)} Leader`
+        : inDeck ? `${inDeck} in deck · own ${owned.length}` : `own ${owned.length}`;
       slot.appendChild(el); slot.appendChild(badge);
-      el.onclick = () => addCopy(def.id, groups);
+      el.onclick = locked
+        ? () => log(`${def.name} needs a ${bannerName(banner)} Leader — fly that banner to run it.`, 'bad')
+        : () => addCopy(def.id, groups);
       el.oncontextmenu = ev => { ev.preventDefault(); if (owned.length) showChronicle(def, owned); };
       grid.appendChild(slot);
     }
   }
 }
 
-function addCopy(cardId, groups) {
+function addCopy(cardId, groups, force = false) {
+  // gate: a banner card can't be added unless its Leader is flown (force skips
+  // this — used when the Leader card itself is being pulled into the deck)
+  const banner = bannerOf(cardId);
+  if (!force && banner && !activeBanners().has(banner)) {
+    log(`${getCard(cardId).name} needs a ${bannerName(banner)} Leader.`, 'bad');
+    return;
+  }
   const owned = groups.get(cardId) || [];
   const inDeck = working.filter(iid => getInstance(iid).cardId === cardId).length;
   if (!owned.length || inDeck >= Math.min(owned.length, MAX_COPIES) || working.length >= DECK_SIZE) return;
@@ -277,9 +373,10 @@ export function initDeckbuilder() {
   $('db-close').addEventListener('click', close);
   $('ch-close').addEventListener('click', () => $('chronicle').style.display = 'none');
   $('db-save').addEventListener('click', () => {
-    setDeck(working);
+    setDeck(working, workingLeaders);
     import('./net.js').then(m => m.sendDeckUpdate());
-    log('Deck saved (' + working.length + ' cards).', 'sys');
+    const banners = leaderCardIds().map(cid => bannerName(LEADERS[cid].banner));
+    log(`Deck saved (${working.length} cards${banners.length ? ', flying ' + banners.join(' + ') : ''}).`, 'sys');
     close();
   });
 }
