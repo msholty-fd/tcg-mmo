@@ -83,6 +83,14 @@ export const FAMILIES = [
     ],
   },
   {
+    id: 'ashfall', name: 'Ashfall',
+    // The Ashen Sentinel's onDeath/onAllyDeath payoffs — previously
+    // uncategorized; promoted to a gated banner so she can lead it (leaders.js).
+    // cinderfall_rite (enchantment) is left neutral, mirroring the set-wide rule
+    // that card-TYPE families stay neutral.
+    cardIds: ['ember_husk', 'watchfire_whelp', 'ashbound_warden', 'feed_the_fire', 'sentinel', 'ashfall_colossus'],
+  },
+  {
     id: 'relics', name: 'Relics',
     cardIds: [
       'tusk_talisman', 'wardenplate', 'ember_fang', 'piercing_barb', 'widows_kiss', 'stolen_blade',

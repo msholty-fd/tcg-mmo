@@ -1207,6 +1207,37 @@ considered and rejected.
     are core-only today). Both are real scope, not one-liners — left for a
     follow-up rather than guessed at.
 
+- **Leaders — Ashfall banner + cross-set (Emberpeaks) champions (2026-07-09,
+  `feat/champion-coverage`)**: closed both gaps flagged above.
+  - **Ashfall banner (core)**: the Sentinel's 7 onDeath cards were all
+    uncategorized, so a new `ashfall` family in `families.js` (6 of them —
+    `cinderfall_rite` left neutral, mirroring the enchantments-are-neutral rule)
+    became a gated banner with zero theft from other families. Champion
+    `sentinel` (already in her own reward pool → collectible at Emberwatch
+    Ruins): `minBanner 6 + requireType creature 16` ("ashfall needs bodies to
+    burn").
+  - **Cross-set banners (Emberpeaks)**: made the banner + Leader registries
+    GLOBAL rather than core-only. `banners.js` now merges
+    `emberpeaks/families.js` (new file, one `emberpeaks_fire` banner = the 13
+    fire creatures/spells; the relic/reaction/enchantment stay neutral);
+    `leaders.js` merges `emberpeaks/leaders.js` (new file) into `LEADERS`. The
+    Emberpeaks set has no self-named boss card, so champions are marquee cards
+    already in the bosses' pools: `ep_obsidian_golem` (minBanner 8) from
+    Ashmonger, `ep_cinderwyrm` (minBanner 12, all-in) from Ignarok. **No
+    deckbuilder change needed** — the grid computes `bannerOf` per card, so the
+    fire cards lock correctly inside the existing ungrouped "The Emberpeaks"
+    set-section.
+  - **Architecture note**: the merges are hand-written in `banners.js`/
+    `leaders.js`, which live in `core/` but are de facto the global registry.
+    Documented tradeoff — if a THIRD set lands, promote to a real per-set
+    registry rather than growing the hand-merge.
+  - 11 gated banners now. `test-leaders.mjs` registers both sets, builds
+    champion decks from the full pool, and merges both duelist rosters for the
+    collectible check — **198 assertions pass**. Build + `node --check` clean.
+    Not live-checked in-browser (the cross-set gating is pure `bannerOf` logic
+    covered headlessly, and the bundle compiles with the new cross-set imports;
+    the `document.hidden` preview bug persists).
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase

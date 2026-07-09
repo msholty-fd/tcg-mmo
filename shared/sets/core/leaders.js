@@ -27,10 +27,12 @@
 //     playstyle: a splashable one and an all-in / bespoke-rule one. The comments
 //     name the region + duelist whose pool drops each collectible champion.
 
+import { EMBERPEAKS_LEADERS } from '../emberpeaks/leaders.js';
+
 // The starter-granted champions (also collectible elsewhere, see below).
 export const STARTER_LEADERS = ['pack_alpha', 'shieldwall_sergeant', 'red_sash_ambusher'];
 
-export const LEADERS = {
+const CORE_LEADERS = {
   // ============ STARTER-TIER (granted with a fresh deck) ============
   // Modest demand, no exotic rules — the training champions.
   pack_alpha:         { banner: 'boars_beasts',        constraints: [{ kind: 'minBanner', n: 8 }] },
@@ -80,7 +82,15 @@ export const LEADERS = {
   // ============ CINDERPASS (Halvard) ============
   // Halvard holds the shrine through counterplay: at least four reactions set.
   halvard:            { banner: 'ward_and_shrine',     constraints: [{ kind: 'minBanner', n: 6 }, { kind: 'requireType', type: 'reaction', n: 4 }] },
+
+  // ============ EMBERWATCH RUINS (The Ashen Sentinel — night only) ============
+  // Ashfall (onDeath payoffs) needs bodies to burn: a creature-dense wall.
+  sentinel:           { banner: 'ashfall',             constraints: [{ kind: 'minBanner', n: 6 }, { kind: 'requireType', type: 'creature', n: 16 }] },
 };
+
+// The global roster merges every set's Leaders (parallels the family merge in
+// banners.js). Emberpeaks champions live in emberpeaks/leaders.js.
+export const LEADERS = { ...CORE_LEADERS, ...EMBERPEAKS_LEADERS };
 
 // cardIds that can be designated as Leaders (for quick membership checks).
 export const isLeaderCard = cardId => Object.prototype.hasOwnProperty.call(LEADERS, cardId);

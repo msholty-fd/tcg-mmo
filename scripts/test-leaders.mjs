@@ -3,7 +3,8 @@
 // Registers the core set, then checks the constraint engine, the roster's
 // internal consistency, starter validity, and a battery of pos/neg cases.
 
-import '../shared/sets/core/cards.js';           // registers the core set
+import '../shared/sets/core/cards.js';            // registers the core set
+import '../shared/sets/emberpeaks/cards.js';      // registers the emberpeaks set (cross-set banners)
 import { getCard, allCards } from '../shared/engine/cards.js';
 import { newPlayerStarter } from '../shared/sets/core/cards.js';
 import { LEADERS } from '../shared/sets/core/leaders.js';
@@ -72,7 +73,7 @@ function buildFor(leaderId) {
     if (deck.length >= 30 || (counts[id] || 0) >= cap || !allow(def)) return false;
     counts[id] = (counts[id] || 0) + 1; deck.push(id); return true;
   };
-  const pool = allCards().filter(c => c.set === 'core');
+  const pool = allCards();   // all registered sets (core + emberpeaks)
   const bannerPool = pool.filter(c => matchesBanner(c, L.banner) && bannerOf(c.id) === L.banner);
   const neutralPool = pool.filter(c => bannerOf(c.id) === null);
 
@@ -153,8 +154,10 @@ function serverValidDeck(profile, iids, leaderIids) {
 
 // ---- 7. every Leader is starter-granted OR collectible from a duelist ------
 console.log('7. champions are collectible (or starter-granted)');
-import { DUELISTS } from '../shared/sets/core/duelists.js';
+import { DUELISTS as CORE_DUELISTS } from '../shared/sets/core/duelists.js';
+import { EMBERPEAKS_DUELISTS } from '../shared/sets/emberpeaks/duelists.js';
 import { STARTER_LEADERS } from '../shared/sets/core/leaders.js';
+const DUELISTS = { ...CORE_DUELISTS, ...EMBERPEAKS_DUELISTS };
 {
   for (const id of Object.keys(LEADERS)) {
     const starter = STARTER_LEADERS.includes(id);

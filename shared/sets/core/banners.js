@@ -16,6 +16,13 @@
 // reason families.js does: low-diff, no collision with card-authoring sessions.
 
 import { FAMILIES } from './families.js';
+import { EMBERPEAKS_FAMILIES } from '../emberpeaks/families.js';
+
+// The banner registry is GLOBAL across sets. It lives in core/ for historical
+// reasons, but aggregates every set's families here — a new set adds its
+// families to this merge (and its Leaders to leaders.js). If a third set lands,
+// consider promoting this to a per-set registry instead of a hand-merge.
+const ALL_FAMILIES = [...FAMILIES, ...EMBERPEAKS_FAMILIES];
 
 // Families that are NOT banners: generic support + the three card-TYPE
 // families. Everything else (a creature/keyword identity) is gated.
@@ -33,12 +40,12 @@ export const BANNER_KEYWORD = {
   piercing_vanguard: 'piercing',
 };
 
-// cardId -> family id (1:1, mirrors deckbuilder's FAMILY_BY_CARD)
+// cardId -> family id (1:1, across all sets)
 const FAMILY_BY_CARD = new Map();
-for (const fam of FAMILIES) for (const id of fam.cardIds) FAMILY_BY_CARD.set(id, fam.id);
+for (const fam of ALL_FAMILIES) for (const id of fam.cardIds) FAMILY_BY_CARD.set(id, fam.id);
 
-// The gated banners, in families.js order, with display names.
-export const BANNERS = FAMILIES
+// The gated banners, in family order, with display names.
+export const BANNERS = ALL_FAMILIES
   .filter(f => !NEUTRAL_FAMILIES.has(f.id))
   .map(f => ({ id: f.id, name: f.name, keyword: BANNER_KEYWORD[f.id] || null }));
 
