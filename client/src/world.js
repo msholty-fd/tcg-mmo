@@ -812,6 +812,20 @@ wayfarer.flavor = [
   "I don't duel, I don't trade. I just walk the roads and remember who's on them. Someone has to.",
 ];
 
+// ---------- Road duelists: route trainers (DESIGN.md, 2026-07-13) ----------
+// Every duel so far lives at a destination (village, camps, Highgate, ruins);
+// the roads between them are legible (waystones) but inert. These three are
+// the Pokémon-route-trainer answer: minor duelists standing ON the routes
+// that had nobody — Gruk road E, Emberwatch road NE, Hollowmere road SW.
+// (South/Highgate has the footpad at Bram's Rest; north/Cinderpass passes
+// Marrow's mine — those routes already have someone.) Player-initiated like
+// every duelist; they never approach or auto-challenge. Positions sit near
+// waystones by dead reckoning (same caveat as the stones themselves — the
+// preview gotcha; worst case is cosmetic, an NPC standing in a tree).
+export const sorrel = spawnDuelist('sorrel', 62, -40, { shirt: 0x7a5a34, hat: 0x4a3620 });
+export const finch = spawnDuelist('finch', 58, 60, { shirt: 0x9a4030, hat: 0x30302a });
+export const brenna = spawnDuelist('brenna', -44, -58, { shirt: 0x4a5a6a, hat: 0x3a3228 });
+
 // ---------- Harrow's Field: a working farmstead (x=-55 z=-28) ----------
 // The first *cultivated* place — every location so far is wild, martial, or
 // mercantile; nothing showed where Meadowbrook's food actually comes from.
