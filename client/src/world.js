@@ -839,7 +839,10 @@ export const brenna = spawnDuelist('brenna', -44, -58, { shirt: 0x4a5a6a, hat: 0
 // resolveCollision safety push-out is deterministic over the static
 // collider registry, so it can't diverge between clients either.
 const PATROLS = [
-  { npc: sorrel, path: [[40, -26], [56, -36], [76, -46]] },     // Gruk road, through its waystone
+  // paths must stay CLEAR of colliders (incl. the waystones' own r=.5
+  // circles) — a path through one makes the push-out flip sides as the
+  // sweep crosses it: a teleport, twice per loop (caught live on sorrel)
+  { npc: sorrel, path: [[40, -26], [57, -33], [76, -46]] },     // Gruk road, past its waystone
   { npc: finch, path: [[44, 46], [58, 60], [72, 74]] },         // Emberwatch road, between its waystones
   { npc: brenna, path: [[-30, -48], [-44, -58], [-58, -68]] },  // Hollowmere road, between its waystones
 ];
