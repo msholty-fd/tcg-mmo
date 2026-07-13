@@ -37,7 +37,9 @@ const randomOutfit = () => OUTFIT_KEYS[ri(0, OUTFIT_KEYS.length - 1)];
 
 const SESSION_KEY = 'emberwood.session';
 
-function enterWorld(name, starter, pos = null, password = '', mode = 'login') {
+// mode: 'create' | 'login' from the title form; 'resume' (default) rides the
+// saved device token — the only mode that sends it (see net.js)
+function enterWorld(name, starter, pos = null, password = '', mode = 'resume') {
   const s = STARTERS[starter];
   player.outfit = s;
   player.name = name;

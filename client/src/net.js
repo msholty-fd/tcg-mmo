@@ -40,7 +40,7 @@ let pendingChallenge = null;
 
 export function isConnected() { return connected; }
 
-export function startNet(name, outfit, password = '', mode = 'login') {
+export function startNet(name, outfit, password = '', mode = 'resume') {
   joinInfo = { name, outfit, password, mode };
   connect();
 }
@@ -50,7 +50,9 @@ function connect() {
   ws.onopen = () => {
     connected = true;
     ws.send(JSON.stringify({
-      t: 'join', token: getToken(),
+      // the device token only rides along on the token path — an explicit
+      // create/login must act on what was typed, never on a lingering token
+      t: 'join', token: joinInfo.mode === 'resume' ? getToken() : undefined,
       name: joinInfo.name, password: joinInfo.password, mode: joinInfo.mode, outfit: joinInfo.outfit,
       deck: getDeckCardIds(),
     }));
@@ -82,7 +84,7 @@ function handle(msg) {
       myId = msg.id;
       if (msg.token) localStorage.setItem(TOKEN_KEY, msg.token);
       joinInfo.password = '';   // token covers future reconnects
-      joinInfo.mode = 'login';  // never re-create on a reconnect
+      joinInfo.mode = 'resume'; // reconnects ride the fresh token, never re-auth
       log(`[Server] Claudemoon realm — ${msg.online} player${msg.online === 1 ? '' : 's'} online`, 'sys');
       if (msg.hour !== undefined) setGameHour(msg.hour);   // shared world clock
       if (msg.x !== undefined) {

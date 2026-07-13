@@ -404,14 +404,21 @@ wss.on('connection', (ws, req) => {
       const outfit = ['boarherd', 'wardens', 'redsash'].includes(msg.outfit) ? msg.outfit : 'boarherd';
       const fail = reason => { ws.send(JSON.stringify({ t: 'joinError', reason })); ws.close(); };
 
+      // 'create' | 'login' come from the title-screen form; 'resume' is the
+      // token path (saved session, reconnects). Legacy clients send no mode
+      // and keep the old token-then-guess-from-name-existence behavior.
+      const mode = ['create', 'login', 'resume'].includes(msg.mode) ? msg.mode : null;
       let token = typeof msg.token === 'string' && msg.token.length <= 64 ? msg.token : null;
+      // Explicit intent outranks any stored device token — otherwise a
+      // lingering token logs the form into whatever character it holds, no
+      // matter what name/password was typed (create looked like it skipped
+      // the taken-name check and accepted any password).
+      if (mode === 'create' || mode === 'login') token = null;
       let profile = token ? profiles[token] : null;
 
       if (!profile) {
+        if (mode === 'resume') return fail('Your session has expired — log in again.');
         if (!name) return fail('Choose a character name.');
-        // explicit intent from the client ('create' | 'login'); legacy clients
-        // send neither and keep the old guess-from-name-existence behavior
-        const mode = msg.mode === 'create' || msg.mode === 'login' ? msg.mode : null;
         const existing = findByName(name);
         if (mode === 'create' && existing) {
           return fail(`That name is taken — return to the realm if ${existing[1].name} is yours, or choose another.`);
