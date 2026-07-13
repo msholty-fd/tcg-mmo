@@ -1303,6 +1303,51 @@ considered and rejected.
     sharding. Acceptable — this game's ceiling is "a realm of friends," not
     thousands per shard, per the vision.
 
+- **Graphical fidelity path (2026-07-13, Michael): polish over time is the
+  plan — and it still doesn't justify zone isolation.** Michael kept the look
+  simple to build fast and wants to raise fidelity gradually. This
+  ACCELERATES the scale plan's timeline but doesn't change its shape: modern
+  seamless worlds at any fidelity are built on streaming + LOD + instancing
+  *within one scene*; zones are a design choice, never a graphics necessity.
+  Staged path, ordered by fidelity-per-effort and by how little architecture
+  each stage risks:
+  - **Stage 0 — atmosphere (start anytime, zero memory/architecture cost):**
+    lighting, fog, and post-processing are per-pixel, not per-world. Bloom on
+    embers/lava, per-zone fog color + color grading (volcanic haze in the
+    basin, cold blue night — this also reinforces per-zone identity, same
+    instinct as Field Effects), better shadow tuning. The renderer already
+    runs PCFSoft shadows + antialias; there's headroom here.
+  - **Stage 1 — motion:** procedural animation (walk bob, idle sway, cloth),
+    particles (drifting ash, chimney smoke, fireflies at night). Small CPU
+    cost, transforms perceived quality — a world that *moves* reads as
+    higher-fidelity than a static one with better meshes.
+  - **Stage 2 — geometry/material density, gated on instancing:** today
+    every prop is an individual `THREE.Mesh` (~hundreds of draw calls,
+    zero `InstancedMesh`). BEFORE any 10× prop-count pass, migrate repeated
+    props (trees, boulders, scree, grass tufts) to `InstancedMesh` — one
+    draw call per prop *type*. This is the first real perf-engineering move
+    and it works entirely within the one scene. Texture atlases if/when
+    materials go beyond flat colors.
+  - **Stage 3 — real assets:** if the game moves from programmatic
+    primitives to authored models (glTF), loading cost appears for the first
+    time — and THAT is when the scale plan's "client prop streaming" item
+    (build regions on approach, dispose behind) moves from deferred to
+    active. Fidelity pulls that trigger earlier; it was always the plan's
+    answer, not zones.
+  - **Invariants that survive every stage:** `groundH()` stays the single
+    source of truth for height/placement/collision (fidelity comes from
+    materials, detail meshes, and lighting on top of the same heightfield);
+    colliders stay the simple 2D registry (visual complexity must never leak
+    into collision complexity); the budget metric is **draw calls + frame
+    time, never memory** — add a perf overlay when the art pass starts.
+  - **Open art-direction question (decide before Stage 2):** "low-poly but
+    exquisitely lit" is a legitimate destination (strong lighting + motion on
+    simple geometry reads as intentional style), and the pixel-art card faces
+    are a deliberate aesthetic anchor. Decide whether the world levels up
+    while cards stay pixel (contrast can be a signature — it works for
+    Inscryption) or both move together — before investing in Stage 2/3
+    assets, not after.
+
 - **Card-game direction: familiar spine, novel edges — and the world itself
   is the design space (2026-07-13, Michael).** Steer: stop treating the duel
   engine as an MTG clone; ground it in enough shared TCG vocabulary to feel

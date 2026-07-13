@@ -51,7 +51,11 @@ progression) when the server is down; it auto-reconnects every 4s.
   "World architecture"): never instanced/portal zones. Scale via per-region
   authoring modules (world.js split — pending), then server-side interest
   management (~50 concurrent players), then client prop streaming — each has
-  an explicit trigger in DESIGN.md; don't build them early.
+  an explicit trigger in DESIGN.md; don't build them early. Rising graphical
+  fidelity accelerates those triggers but doesn't change the shape (DESIGN.md
+  "Graphical fidelity path": atmosphere → motion → InstancedMesh-gated
+  geometry density → glTF+streaming; budget metric is draw calls + frame
+  time, never memory).
 - **Duel innovation direction (2026-07-13, DESIGN.md "Card-game direction"):**
   familiar TCG spine stays fixed; new design space comes from what MTG can't
   do — per-zone **Field Effects** (a region's standing rule applies to both
