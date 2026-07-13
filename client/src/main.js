@@ -240,6 +240,23 @@ function update(dt) {
     if (hits.length) camDist = Math.max(hits[0].distance - CAM_COLLISION_MARGIN, CAM_MIN_DIST);
   }
 
+  // terrain occlusion: on a steep slope (Emberpeaks ridge) the ground behind
+  // the player rises ABOVE them, and the height clamp below used to hoist the
+  // camera over the hill — an awkward crane-shot lift (playtest feedback).
+  // Instead, march the camera ray and treat UPHILL terrain as an occluder,
+  // pulling the camera in like the house raycast does. Level/downhill ground
+  // is deliberately not an occluder: dipping the camera low on flat ground
+  // still converts to upward gaze via the clamp+lift below (sky-gazing —
+  // that behavior is intentional, see CLAUDE.md).
+  const pg = groundH(player.x, player.z);
+  for (let t = CAM_MIN_DIST; t < camDist; t += .75) {
+    const g = groundH(player.x + dirX * t, player.z + dirZ * t);
+    if (g > pg + 1.5 && originY + dirY * t < g + 1.3) {
+      camDist = Math.max(t - .75, CAM_MIN_DIST);
+      break;
+    }
+  }
+
   const desiredY = originY + dirY * camDist;
   camera.position.set(
     player.x + dirX * camDist,
@@ -248,7 +265,10 @@ function update(dt) {
   );
   camera.position.y = Math.max(camera.position.y, groundH(camera.position.x, camera.position.z) + 1.3);
   const lift = camera.position.y - desiredY;
-  camera.lookAt(player.x, player.mesh.position.y + 2 + lift * 2.2, player.z);
+  // the 2.2 gaze factor was tuned for the full 12u camera; when terrain
+  // occlusion has pulled the camera in, the same lift needs less gaze
+  // compensation — scale by distance so flat ground (full dist) is unchanged
+  camera.lookAt(player.x, player.mesh.position.y + 2 + lift * 2.2 * (camDist / cd), player.z);
 
   // ambient critters wander
   for (const c of critters) {
