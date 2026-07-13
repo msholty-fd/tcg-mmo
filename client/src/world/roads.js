@@ -49,6 +49,7 @@ const DEST = {
   gruk:      [107, -60],
   redsash:   [-90, 64],
   cinderpass:[0, 158],
+  darkwood:  [118, -115],
   village:   [0, 0],
 };
 
@@ -74,6 +75,15 @@ waystone(-46, 38, ...DEST.redsash);
 waystone(2, 34, ...DEST.cinderpass);
 waystone(-8, 96, ...DEST.cinderpass);
 waystone(-4, 134, ...DEST.cinderpass);   // last marker before the pass, near the mine
+// the Darkwood road: the first route that connects two OUTER places rather
+// than radiating from the village — Gruk's Hollow south through the Deep
+// Darkwood heart, then on west to Highgate's gate (world/darkwood.js keeps
+// its flora out of this corridor; keep the two in sync via ROAD there)
+waystone(111, -80, ...DEST.darkwood);
+waystone(115, -98, ...DEST.darkwood);
+waystone(118, -115, ...DEST.highgate, 1.2);   // heart marker, by the stone circle
+waystone(95, -113, ...DEST.highgate);
+waystone(68, -110, ...DEST.highgate);
 
 // The Wayfarer — a roaming teller who keeps the roads' stories, stationed at
 // the crossroads hub. First flavour NPC placed out in the Boarlands rather

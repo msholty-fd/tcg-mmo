@@ -49,6 +49,12 @@ export const CAMPS = [
   // A sunken swamp in the unclaimed southwest quadrant — every other named
   // place sits NW/SE/S/NE of origin. See DESIGN.md "Hollowmere".
   { x: -100, z: -90, r: 22, name: 'Hollowmere' },
+  // The heart of the forest the outer ZONES ring has always labeled
+  // "Darkwood" — a real destination in the southeast quadrant, between
+  // Gruk's Hollow and Highgate. Listed AFTER both so their entries win the
+  // small circle overlaps on the roads between them. See DESIGN.md
+  // "Deep Darkwood".
+  { x: 118, z: -115, r: 45, name: 'The Deep Darkwood' },
   // An abandoned mine dug into a rocky rise due north, in the Darkwood — a
   // scenic discovery, not enterable (seeds future underground content). See
   // DESIGN.md "Cinderhollow Mine".
