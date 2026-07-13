@@ -10,7 +10,7 @@ import { player, bots } from './state.js';
 import { log, fct, updateHUD } from './ui.js';
 import { getDeck, getLeaders, getDeckCardIds, adoptProfile } from './collection.js';
 import { setQuests } from './quests.js';
-import { questById } from '../../shared/quests.js';
+import { questById, objNeed } from '../../shared/quests.js';
 import { getCard } from '../../shared/engine/cards.js';
 import { LEVEL_NAMES } from '../../shared/chronicle.js';
 import { startRemoteDuel, applyRemoteView, endRemoteDuel, duelActive } from './duel/duelManager.js';
@@ -120,8 +120,8 @@ function handle(msg) {
       if (msg.kind === 'accepted') log('Quest accepted: ' + q.title, 'sys');
       else if (msg.kind === 'completed') log('Quest completed: ' + q.title, 'sys');
       else if (msg.kind === 'progress') {
-        log(`${q.title}: ${msg.have}/${q.duels.need}`, 'sys');
-        if (msg.have >= q.duels.need) log(q.title + ' complete! Return to the quest giver.', 'sys');
+        log(`${q.title}: ${msg.have}/${objNeed(q)}`, 'sys');
+        if (msg.have >= objNeed(q)) log(q.title + ' complete! Return to the quest giver.', 'sys');
       }
       break;
     }

@@ -5,6 +5,9 @@ to card duels, collect card *instances* that accrue history and power.
 
 Deeper notes live in `.claude/`:
 - `.claude/DESIGN.md` — vision, design pillars, decisions and their reasoning
+- `.claude/LORE.md` — narrative canon: the founding myth (the Going-Out),
+  who-knows-what, voice rules, main-quest acts. **Read before writing any
+  quest text, NPC dialogue, or card flavor.**
 - `.claude/DEPLOYMENT.md` — deployment checklist (TLS, hashing, hosting…)
 - `.claude/WORKFLOW.md` — **required working style**: worktree per task →
   verify → merge to main → deploy to Fly.io

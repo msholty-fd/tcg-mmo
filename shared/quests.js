@@ -9,7 +9,7 @@
 // quest that requires it as a prereq).
 //
 // Quest state lives in profile.quests: { [id]: { state: 'active'|'completed', have } }
-// (absent = hidden). Two objective shapes today:
+// (absent = hidden). Three objective shapes today:
 //   - duels: { target, need }   — win N duels vs a duelist id (or 'any').
 //     Progress is event-driven (progressDuelWin increments st.have on wins).
 //   - collect: { cardId, need } — own >= N copies of a card id. There's no
@@ -20,6 +20,11 @@
 //     an unusually punishing design for a card game, and nothing else in
 //     the codebase consumes cards as a cost (trading is the only cards-out
 //     path, and it's opt-in/two-sided).
+//   - visit: { x, z, r }        — stand within r of a world spot, once.
+//     Progressed server-side from the pos messages the server already
+//     receives (progressVisit). Position is client-authoritative by
+//     standing decision, so this gate is about discovery, not fairness —
+//     the same call as the Emberwatch night gate (see DESIGN.md).
 
 export const QUESTS = [
   {
@@ -167,6 +172,41 @@ export const QUESTS = [
     obj: have => `Defeat Ignarok, the Pyrelord: ${have}/1`,
     thanks: "The Pyrelord, beaten at cards in his own caldera. The mountain still smokes — but it smokes for you now.",
   },
+  // ── The main quest, Act I: "The Long Ash" (see .claude/LORE.md) ──────────
+  // The realm's overarching story: the fires are going cold. Its own spine,
+  // independent of the Vex/Gruk chain; threads existing landmarks only.
+  // Bram gives his first quest here, and the Ashen Sentinel becomes a
+  // quest-giver after being defeated (the Vex/Gruk precedent). The Sentinel
+  // only manifests at night, so his offers/turn-ins are night-gated for free
+  // (invisible NPCs can't be interacted with).
+  {
+    id: 'cold_hearth', giver: 'bram', title: 'The Fire That Won\'t', minLvl: 3, prereq: null,
+    visit: { x: 112, z: -88, r: 10 }, xp: 250, coins: 20,
+    offer: "You know I don't spook easy. But a fellow I shared this fire with for twenty years — Weir, a hunter, deep-wood sort — set a camp out past Gruk's road and never came back for his gear. Travelers say his firepit's gone cold. Say it won't take flame — not from flint, not from a carried coal. A fire that won't light isn't weather, friend. Go and look. I'd rather know.",
+    obj: () => "Find Weir's camp in the Deep Darkwood",
+    thanks: "Cold, then. Truly cold. Forty years I've sat this road and fed this fire every night of it, and I never once asked what it'd mean if one went out. Aldric needs to hear this — not from me. From you, who saw it.",
+  },
+  {
+    id: 'ask_the_ash', giver: 'aldric', title: 'Ask the Ash', minLvl: 4, prereq: 'cold_hearth',
+    duels: { target: 'sentinel', need: 1 }, xp: 400, coins: 35,
+    offer: "A fire that won't take flame. Then it's starting — or ending, depending which version your grandmother told. The old story goes like this: the world's heart was a burning wood that never burned down, and everything it shone on, it remembered. When it went out, the memories didn't die — they banked. Every card you've ever played is one of them, still dreaming. And every hearth in this realm is a coal of that first fire, kept alive hand to hand since before there were kings. A hearth that dies, forgets — and the land around it forgets with it. You've walked the deep wood; that gloom isn't shade. There's one thing old enough to say whether the story's true, and it only walks after dark. The tower, northeast. Go at night. If it judges you worth answering, it answers with cards.",
+    obj: have => `Defeat the Ashen Sentinel: ${have}/1`,
+    thanks: "It spoke to you. Then the story's true enough to be worried about. Go back to it — whatever the watch was for, it's yours to hear now.",
+  },
+  {
+    id: 'what_the_watch_keeps', giver: 'sentinel', title: 'What the Watch Keeps', minLvl: 4, prereq: 'ask_the_ash',
+    collect: { cardId: 'ash_sprite', need: 2 }, xp: 300, coins: 25,
+    offer: "The watch was never for the wood's return. We watched for the Going-Out to finish what it began. A cold hearth in the deep wood is how it starts. Bring me two embers that still dream — the small ones, the sprites of ash. Not to keep. To listen. I have not held a dreaming ember in four hundred years.",
+    obj: have => `Ash Sprites owned: ${have}/2`,
+    thanks: "…They still dream of the wood. Green, and burning, and glad. Then it is not finished — not yet. One older than my order would know how long we have: the fire that never banked, in the peaks where the heart fell. It does not answer questions. It answers duels.",
+  },
+  {
+    id: 'where_the_heart_fell', giver: 'sentinel', title: 'Where the Heart Fell', minLvl: 6, prereq: 'what_the_watch_keeps',
+    duels: { target: 'pyrelord', need: 1 }, xp: 750, coins: 75,
+    offer: "North, past the pass, the first fire still burns unbound. The one who wears it calls himself a lord — Ignarok. He was old when my order raised its first stone. Beat him, and while his pride is smarting, ask him what a fire that cannot be relit means. Then come and tell me. I will be here. I am always here.",
+    obj: have => `Defeat Ignarok, the Pyrelord: ${have}/1`,
+    thanks: "So the Pyrelord is afraid. A thing of the first fire — afraid. He is right about one thing: what is coming is not cold. Cold is only what it leaves behind. Seven stones stand in the deep wood where an eighth has already fallen, and under the mountain the delvers dug too close to something buried on purpose. When you are ready to know more, one of those doors will open. I will keep the watch until then. I have gotten rather good at it.",
+  },
 ];
 
 export const questById = id => QUESTS.find(q => q.id === id);
@@ -186,13 +226,32 @@ export function collectHave(profile, q) {
   return (profile.cards || []).filter(c => c.cardId === q.collect.cardId).length;
 }
 
-export const objNeed = q => (q.duels || q.collect).need;
+export const objNeed = q => q.visit ? 1 : (q.duels || q.collect).need;
 
 export function canTurnin(profile, id) {
   const q = questById(id);
   const st = profile.quests?.[id];
   if (!q || st?.state !== 'active') return false;
-  return q.collect ? collectHave(profile, q) >= q.collect.need : st.have >= q.duels.need;
+  return q.collect ? collectHave(profile, q) >= q.collect.need : st.have >= objNeed(q);
+}
+
+// visit progress: called from the server's pos handler with the player's
+// (server-clamped) position; mutates profile.quests, returns [{id, have}]
+// increments. Runs at pos-message rate (~10 Hz per client), so it's a plain
+// scan with cheap early-outs — no allocation unless something progresses.
+export function progressVisit(profile, x, z) {
+  const events = [];
+  for (const q of QUESTS) {
+    if (!q.visit) continue;
+    const st = profile.quests?.[q.id];
+    if (st?.state !== 'active' || st.have >= 1) continue;
+    const dx = x - q.visit.x, dz = z - q.visit.z;
+    if (dx * dx + dz * dz <= q.visit.r * q.visit.r) {
+      st.have = 1;
+      events.push({ id: q.id, have: 1 });
+    }
+  }
+  return events;
 }
 
 // duel-win progress: mutates profile.quests, returns [{id, have}] increments.

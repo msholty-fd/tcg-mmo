@@ -98,6 +98,7 @@ wayfarer.flavor = [
   "Northeast the markers thin out. There's a ruin that lights itself after dark — I don't follow that road at night, and neither should you.",
   "East for Gruk's bones, northwest for the Red-Sash. Both roads end in a duel; that's the realm for you.",
   "I don't duel, I don't trade. I just walk the roads and remember who's on them. Someone has to.",
+  "Roads remember feet the way fires remember faces — that's what my mother said. I keep walking so something remembers me.",
 ];
 
 // ---------- Road duelists: route trainers (DESIGN.md, 2026-07-13) ----------
