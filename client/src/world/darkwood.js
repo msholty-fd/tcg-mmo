@@ -13,9 +13,9 @@ import * as THREE from 'three';
 import { scene } from '../scene.js';
 import { groundH } from '../terrain.js';
 import { wolfMesh } from '../entities.js';
-import { rand } from '../utils.js';
+import { rand, smoothstep } from '../utils.js';
 import { addCircle } from '../colliders.js';
-import { M, tree, tent, crate, signpost, spawnCritter } from './lib.js';
+import { M, tree, tent, crate, signpost, deadTree, spawnCritter } from './lib.js';
 
 const DW = { x: 118, z: -115 };   // zone heart (constants.js CAMPS r=45)
 
@@ -23,6 +23,10 @@ const DW = { x: 118, z: -115 };   // zone heart (constants.js CAMPS r=45)
 // for the ring. Kept module-local (single-region) per the lib.js rule.
 const M_GLOW = new THREE.MeshLambertMaterial({ color: 0xb8e6c0, emissive: 0x3a7a50 });
 const M_MOSSTONE = new THREE.MeshLambertMaterial({ color: 0x5a6656 });
+const M_MOSS = new THREE.MeshLambertMaterial({ color: 0x2f4630 });                       // hanging moss
+const M_SHADE = new THREE.MeshLambertMaterial({ color: 0x0c100c });                       // shade bodies
+const M_EYE_PALE = new THREE.MeshLambertMaterial({ color: 0xbfe8c8, emissive: 0x7ab890 }); // shade/wisp glow
+const M_EYE_AMBER = new THREE.MeshLambertMaterial({ color: 0xd89a30, emissive: 0xb86a10 });// wolf eyeshine
 
 // The road corridor must stay walkable: two segments, Gruk's Hollow → heart
 // and heart → Highgate's gate. Flora scatter skips anything near them.
@@ -49,6 +53,14 @@ function gnarltree(x, z, scale = 1) {
   for (const [dx, dy, dz, s] of [[0, 4.6, 0, 2.1], [1.2, 3.8, .6, 1.4], [-1.1, 4.1, -.5, 1.5], [.3, 5.4, -.8, 1.2]]) {
     const c = new THREE.Mesh(new THREE.SphereGeometry(s * scale, 7, 6), M.leafDark);
     c.position.set(dx * scale, dy * scale, dz * scale); c.castShadow = true; g.add(c);
+  }
+  // hanging moss — drooping strands under the canopy, the "something brushes
+  // your shoulder" layer that makes the wood read overgrown, not planted
+  for (let i = 0; i < 3; i++) {
+    const strand = new THREE.Mesh(new THREE.ConeGeometry(.13 * scale, rand(.9, 1.7) * scale, 4), M_MOSS);
+    strand.rotation.x = Math.PI;   // tip down
+    strand.position.set(rand(-1.4, 1.4) * scale, rand(2.9, 3.8) * scale, rand(-1.2, 1.2) * scale);
+    g.add(strand);
   }
   g.position.set(x, groundH(x, z), z); g.rotation.y = rand(0, Math.PI * 2); scene.add(g);
   addCircle(x, z, .6 * scale);
@@ -134,10 +146,82 @@ for (let i = 0; i < 9; i++) {
 }
 
 // The wood has its own pack — denser than the thin wolf band the wilds
-// scatter at d 80-120 from origin.
+// scatter at d 80-120 from origin, darker-coated, and with amber eyeshine
+// that reads through the gloom before the wolf itself does.
+function darkwolf() {
+  const m = wolfMesh();
+  m.traverse(o => { if (o.isMesh) o.material.color.multiplyScalar(.6); });   // wolfMesh mints fresh materials per call — safe to darken in place
+  for (const dx of [-.1, .1]) {
+    const eye = new THREE.Mesh(new THREE.SphereGeometry(.045, 5, 4), M_EYE_AMBER);
+    eye.position.set(dx, .92, 1.06); m.add(eye);
+  }
+  return m;
+}
 for (let i = 0; i < 6; i++) {
   const a = rand(0, Math.PI * 2), d = rand(12, 38);
   const x = DW.x + Math.cos(a) * d, z = DW.z + Math.sin(a) * d;
   if (nearRoad(x, z, 4)) continue;
-  spawnCritter(wolfMesh, x, z);
+  spawnCritter(darkwolf, x, z);
+}
+
+// Shades — hooded silhouettes that drift between the trees, pale eyes and
+// no face. Pure ambience via the critter wander system (interact.js never
+// looks at critters, so they can't be spoken to — deliberately: whatever
+// they are is a Phase-3 question). The zone's "did that just move?" layer.
+function shadeMesh() {
+  const g = new THREE.Group();
+  const body = new THREE.Mesh(new THREE.ConeGeometry(.5, 1.7, 7), M_SHADE);
+  body.position.y = .95; body.castShadow = true; g.add(body);
+  for (const dx of [-.12, .12]) {
+    const eye = new THREE.Mesh(new THREE.SphereGeometry(.05, 5, 4), M_EYE_PALE);
+    eye.position.set(dx, 1.3, .38); g.add(eye);
+  }
+  return g;
+}
+for (let i = 0; i < 4; i++) {
+  const a = rand(0, Math.PI * 2), d = rand(16, 40);
+  const x = DW.x + Math.cos(a) * d, z = DW.z + Math.sin(a) * d;
+  if (nearRoad(x, z, 5)) continue;
+  spawnCritter(shadeMesh, x, z);
+}
+
+// Bare snags among the living trees (deadTree, promoted to lib from
+// Hollowmere) — a wood where some of the trees have died reads older and
+// wronger than uniform green.
+for (let i = 0; i < 8; i++) {
+  const a = rand(0, Math.PI * 2), d = rand(12, 42);
+  const x = DW.x + Math.cos(a) * d, z = DW.z + Math.sin(a) * d;
+  if (nearRoad(x, z)) continue;
+  deadTree(x, z, rand(0, Math.PI * 2), rand(.9, 1.3));
+}
+
+// ---- The living gloom (immersion pass, 2026-07-13) ----
+// Michael's playtest note: "nothing that makes me feel like I'm entering a
+// scary dark wood." The zone's atmosphere is driven from main.js's update():
+// updateDarkwood() returns a 0..1 gloom factor from the player's distance
+// to the heart, and main.js uses it to close the fog in, kill the sun/sky,
+// and hide the sun/moon discs (you can't see the sky through this canopy).
+// Zone-scoped application of DESIGN.md's Stage-0 atmosphere idea — the
+// GLOBAL Stage 0 (bloom/post/per-zone grading everywhere) stays deferred.
+// Also animates the circle wisps: pale lights over the Circle of Sighs,
+// night hours only (20:00-6:00, the Sentinel's window) — the stone circle
+// is lit by something, and it isn't fire. Phase-3 night-duelist bait.
+const WISPS = [];
+for (let i = 0; i < 3; i++) {
+  const a = i / 3 * Math.PI * 2 + .5, d = rand(3, 5.5);
+  const x = DW.x + Math.cos(a) * d, z = DW.z + Math.sin(a) * d;
+  const w = new THREE.Mesh(new THREE.SphereGeometry(.2, 7, 6), M_EYE_PALE);
+  const baseY = groundH(x, z) + rand(1.8, 2.6);
+  w.position.set(x, baseY, z); w.visible = false; scene.add(w);
+  WISPS.push({ mesh: w, baseY, phase: rand(0, Math.PI * 2) });
+}
+
+export function updateDarkwood(hour, px, pz) {
+  const night = hour >= 20 || hour < 6;
+  const t = performance.now() * .001;
+  for (const w of WISPS) {
+    w.mesh.visible = night;
+    if (night) w.mesh.position.y = w.baseY + Math.sin(t * .8 + w.phase) * .5;
+  }
+  return smoothstep(56, 24, Math.hypot(px - DW.x, pz - DW.z));
 }

@@ -5,7 +5,7 @@ import { groundH } from './terrain.js';
 import { humanoid, makeLabel } from './entities.js';
 import { STARTERS, ZONES, CAMPS } from './constants.js';
 import { player, critters } from './state.js';
-import { fires, torches, marla, aldric, camCollidables, sentinel, updatePatrols } from './world.js';
+import { fires, torches, marla, aldric, camCollidables, sentinel, updatePatrols, updateDarkwood } from './world.js';
 import { log, updateHUD } from './ui.js';
 import { keys, cam, started, setStarted, autoWalk, touchMove, isTouch, initTouchControls, tickTouchUI } from './input.js';
 import { resolveCollision } from './colliders.js';
@@ -188,6 +188,25 @@ function update(dt) {
   // night-only landmark, see DESIGN.md. Hard hour gate (not the smooth
   // dayF/night blend above) so it's a discrete "it's here or it isn't."
   sentinel.mesh.visible = gameHour >= 20 || gameHour < 6;
+
+  // Deep Darkwood gloom (world/darkwood.js): the wood closes in around the
+  // player — fog pulls from (70,300) to (16,60), the light dies under the
+  // canopy, and the sun/moon/stars vanish (you can't see the sky through
+  // it). gloom is 0 outside the zone, so every line below is an exact
+  // no-op there — the realm's weather is untouched.
+  const gloom = updateDarkwood(gameHour, player.x, player.z);
+  scene.fog.near = lerp(70, 16, gloom);
+  scene.fog.far = lerp(300, 60, gloom);
+  if (gloom > 0) {
+    const murk = new THREE.Color(0x11170f).lerp(new THREE.Color(0x2c3a28), dayF);
+    scene.fog.color.lerp(murk, gloom);
+    scene.background.lerp(murk, gloom);
+    sun.intensity *= 1 - gloom * .6;
+    hemi.intensity *= 1 - gloom * .5;
+    sunDisc.material.opacity *= 1 - gloom;
+    moonDisc.material.opacity *= 1 - gloom * .85;
+    starMat.opacity *= 1 - gloom * .8;
+  }
 
   // player movement (keyboard + virtual joystick — atan2 below only keeps
   // the direction, so joystick magnitude doesn't change speed, same as WASD)
