@@ -409,13 +409,24 @@ wss.on('connection', (ws, req) => {
 
       if (!profile) {
         if (!name) return fail('Choose a character name.');
+        // explicit intent from the client ('create' | 'login'); legacy clients
+        // send neither and keep the old guess-from-name-existence behavior
+        const mode = msg.mode === 'create' || msg.mode === 'login' ? msg.mode : null;
         const existing = findByName(name);
+        if (mode === 'create' && existing) {
+          return fail(`That name is taken — return to the realm if ${existing[1].name} is yours, or choose another.`);
+        }
+        if (mode === 'login' && !existing) {
+          return fail(`No character named ${name} — check the spelling, or create them anew.`);
+        }
         if (existing) {
           // recover an existing character by name + password
           if (!passwordAttemptsLeft(ip)) return fail('Too many password attempts — try again later.');
           if (!verifyPw(existing[1], password)) {
             notePasswordFail(ip);
-            return fail('Wrong password for ' + existing[1].name + ' — or the name is taken.');
+            return fail(mode
+              ? 'Wrong password for ' + existing[1].name + '.'
+              : 'Wrong password for ' + existing[1].name + ' — or the name is taken.');
           }
           [token, profile] = existing;
         } else {
