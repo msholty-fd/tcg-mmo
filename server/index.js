@@ -18,7 +18,7 @@ import { DUELISTS as CORE_DUELISTS } from '../shared/sets/core/duelists.js';
 import { EMBERPEAKS_DUELISTS } from '../shared/sets/emberpeaks/duelists.js';
 const DUELISTS = { ...CORE_DUELISTS, ...EMBERPEAKS_DUELISTS };
 import { applyXP } from '../shared/progression.js';
-import { questById, canAccept, canTurnin, progressDuelWin } from '../shared/quests.js';
+import { questById, canAccept, canTurnin, progressDuelWin, progressVisit } from '../shared/quests.js';
 import { PACKS, rollPack } from '../shared/sets/core/packs.js';
 import { mintCard, levelOf, levelPoints, LEGEND_BUDGET, LEVEL_NAMES, renownFromDuel } from '../shared/chronicle.js';
 
@@ -482,6 +482,16 @@ wss.on('connection', (ws, req) => {
         // in-memory only at 10Hz; persisted by the disconnect markDirty and
         // whatever other saves happen along the way
         me.profile.x = me.x; me.profile.z = me.z; me.profile.yaw = me.yaw;
+        // visit-quest progress rides the position stream (shared/quests.js
+        // progressVisit — cheap scan, early-outs unless a visit quest is
+        // active and newly satisfied). sendProfile syncs the client's quest
+        // mirror; the questEvent is the chat-log ping, same as duel wins.
+        const events = progressVisit(me.profile, me.x, me.z);
+        if (events.length) {
+          markDirty(me.profile);
+          for (const ev of events) send(me, { t: 'questEvent', kind: 'progress', ...ev });
+          sendProfile(me);
+        }
         break;
       }
       case 'chat': {

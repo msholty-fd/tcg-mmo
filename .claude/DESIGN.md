@@ -1587,6 +1587,68 @@ considered and rejected.
     0-at-noon/3-at-night, gloom-0 restoration exact, zero console errors,
     build clean.
 
+- **Narrative direction — the founding myth & the main quest (2026-07-13,
+  Michael)**: Michael's ask — "no compelling overarching story or goal, no
+  factions at war, no real engagement for MMO users." Three layers were
+  proposed: (1) a founding myth + main quest chain, (2) the Chronicle made
+  social (a Hall of Legends in Highgate — the realm's most storied card
+  instances as visible, chase-able status), (3) faction *allegiance* (a
+  Wardens/Red-Sash/Guild cold conflict over the roads, rep + writs paying out
+  through the existing banners/leaders systems, later feeding Field Effects
+  via contested roads). Michael picked **(1) to develop first**; (2) and (3)
+  are recorded candidates, not commitments — (2) is the cheap high-leverage
+  next step, (3) is a real epic touching server state.
+  - **The myth (canon lives in `.claude/LORE.md` — read it before writing any
+    quest/dialogue/flavor text)**: the world's heart was the Emberwood, a fire
+    that *remembered* everything in its light; it went out (the Going-Out —
+    cause never explained, by rule); **cards are embers** — bound memories —
+    which retro-explains instances (an ember is one memory, singular), Kindle
+    (feeding a memory back to the fire), renown (an ember burns brighter the
+    more it's witnessed; Storied = half-woken), and the Chronicle (the record
+    the fire keeps). Every hearth is a banked coal of the old wood; a fire
+    that dies *forgets*, and the land around it forgets too — which
+    retro-explains the Deep Darkwood's gloom. The hook: **the fires are going
+    cold** — Hunter's Rest's cold firepit (already built as an unexplained
+    seed) is the first fire in living memory that won't take flame. The
+    player is a *witness*, not a chosen one: dueling/trading/leveling cards
+    literally keeps memories burning. Chosen precisely because it explains
+    what's already built (Ember* names, Kindle, Chronicle, the Sentinel, the
+    cold firepit) instead of bolting a plot onto the side.
+  - **Act I chain — "The Long Ash"** (4 quests, full draft text in LORE.md):
+    `cold_hearth` (Bram's first quest — visit Hunter's Rest) →
+    `ask_the_ash` (Aldric tells the myth once, in full — defeat the Ashen
+    Sentinel at night) → `what_the_watch_keeps` (the Sentinel becomes a
+    quest-giver, Vex/Gruk precedent — collect 2 `ash_sprite`, winnable from
+    the Sentinel itself) → `where_the_heart_fell` (defeat the Pyrelord and
+    ask what he fears; overlaps `ep_pyrelord`'s target, vex/vex_rematch
+    precedent). Threads existing landmarks ONLY — no new places or duelists.
+    The cliffhanger names the two Act II/III doors that already exist as
+    seeded hooks: the Circle of Sighs (pays off with Darkwood Phase 3) and
+    Cinderhollow Mine ("the delvers dug too close to something buried on
+    purpose"). Its own spine, independent of the Vex/Gruk chain.
+  - **New quest objective shape: `visit {x, z, r}`** — the one mechanical
+    addition Act I needs (quests.js supports only duels/collect today, and
+    the chain's opening beat is *go look at the cold firepit*, which no
+    existing shape expresses). Server progresses it from the pos messages it
+    already receives (proximity check, early-exit unless the profile has an
+    active visit quest — the 10 Hz path stays cheap). Position is
+    client-authoritative by standing decision, so a scripted client can fake
+    a visit — same call as the Emberwatch night gate: the objective is about
+    discovery, not fairness. Offline mode: no progress, like all quests —
+    already stated honestly in the UI. Client-side, visit quests carry their
+    own x/z so the existing quest-map-markers system needs no duelist lookup.
+    Reusable for every future discovery beat (Circle of Sighs, the mine…).
+  - **Flavor-line pass ships with Act I**: Bram/Wayfarer/Harrow/Hessa/Marla
+    get one small-omen line each (drafts in LORE.md) via the existing
+    `n.flavor` rotation — ambient reinforcement, never the full myth (Aldric
+    tells it once; that's a LORE.md voice rule).
+  - **Implementation**: worktree `feat/narrative-act1` — visit objective in
+    shared/quests.js + server pos-handler progression + the 4 quests +
+    sentinel giver wiring (client GIVERS map) + flavor lines. Gates: build,
+    node --check, and a headless quest-logic test driving accept →
+    pos-progress → turn-in over the visit shape. Text is the product here:
+    Michael should read LORE.md's quest drafts before or during the branch.
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase

@@ -94,6 +94,7 @@ harrow.flavor = [
   "Marla buys my surplus for the tavern. Everyone eats, even card-players.",
   "Scarecrow's more for my nerves than the crows, truth be told. Quiet company, though.",
   "You want a quiet life? Grow turnips. You want a story? Well — that's what the roads are for.",
+  "Frost in the planting rows this morning. In midsummer. My grandfather would've thrown salt over both shoulders and blamed the hearth.",
 ];
 
 // Cobb the Farmhand (DESIGN.md) — a new duelist, minimal footprint: no new
