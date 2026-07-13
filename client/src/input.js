@@ -3,6 +3,7 @@ import { duelActive } from './duel/duelManager.js';
 import { deckbuilderOpen, toggleDeckbuilder } from './deckbuilder.js';
 import { tradeOpen, cancelTrade } from './trade.js';
 import { shopOpen, closeShop } from './shop.js';
+import { hallOpen, closeHall } from './hall.js';
 import { fullmapOpen, toggleFullmap } from './fullmap.js';
 import { sendChat } from './net.js';
 import { toggleWindow } from './hudWindows.js';
@@ -47,6 +48,7 @@ addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT') return;
   if (e.code === 'Escape') {
     if (shopOpen) closeShop();
+    else if (hallOpen) closeHall();
     else if (tradeOpen) cancelTrade();
     else if (deckbuilderOpen) toggleDeckbuilder();
     else if (fullmapOpen) toggleFullmap();

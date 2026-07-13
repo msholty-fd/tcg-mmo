@@ -89,6 +89,11 @@ burning. The player's arc is to become part of what the fire remembers.
   Reserved as an Act II/III thread.
 - **Ignarok the Pyrelord** — a thing of the first fire, and *afraid*. What he
   fears is the Act I cliffhanger; what it IS stays unwritten.
+- **Chronicler Sela** (Highgate's shrine, the Hall of Legends) — a working
+  record-keeper, not a mystic: she reads the Chronicle aloud and believes
+  witnessing is a civic duty ("the fire doesn't care whose story it keeps,
+  only that it's witnessed"). She knows the ledger, not the myth's ending —
+  keep her practical, never prophetic.
 - **Marla, Harrow, the Wayfarer, everyone else** — superstition and small
   omens. Marla is actively dismissive (someone still has to sell the packs).
 

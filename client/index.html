@@ -281,6 +281,28 @@
   #shop .s-actions{display:flex;align-items:center;justify-content:space-between}
   #shop #s-coins{color:var(--gold)}
 
+  /* ---- Hall of Legends (hall.js) ---- */
+  #hall{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);display:none;flex-direction:column;gap:10px;
+    width:min(560px,94vw);max-height:min(72vh,640px);padding:14px 16px;pointer-events:auto;z-index:8}
+  #hall .h-head{font-size:15px;text-align:center}
+  #hall .h-head b{color:var(--gold)}
+  #hall .h-list{overflow-y:auto;display:flex;flex-direction:column;gap:6px;min-height:60px}
+  #hall .h-row{display:flex;align-items:center;gap:10px;border:1px solid var(--gold-dim);border-radius:3px;
+    padding:7px 10px;background:rgba(0,0,0,.25)}
+  #hall .h-row.lv2{border-color:#d8b860}
+  #hall .h-row.lv3{border-color:#ffd76a;box-shadow:0 0 10px rgba(255,215,106,.3)}
+  #hall .h-rank{color:var(--gold);width:20px;text-align:right;font-size:14px}
+  #hall .h-row img{width:36px;height:36px;image-rendering:pixelated}
+  #hall .h-main{min-width:0}
+  #hall .h-name{font-size:13px}
+  #hall .h-lv{color:#d8b860;font-size:11px;letter-spacing:.05em}
+  #hall .h-sub{font-size:11px;color:#9a8f78;margin-top:1px}
+  #hall .h-sub b{color:var(--ink)}
+  #hall .h-prov{font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #hall .h-empty{color:#9a8f78;font-style:italic;text-align:center;padding:14px 8px;font-size:12px}
+  #hall .h-actions{display:flex;align-items:center;justify-content:space-between}
+  #hall .h-note{color:#9a8f78;font-size:11px;font-style:italic}
+
   /* ---- chronicle levels: worn-in card frames ---- */
   .dcard.lv1,.dunit.lv1{border-color:#a08a54;box-shadow:inset 0 0 12px rgba(160,138,84,.25)}
   .dcard.lv2,.dunit.lv2{border-color:#d8b860;box-shadow:0 0 8px rgba(216,184,96,.35),inset 0 0 14px rgba(216,184,96,.2)}
@@ -471,6 +493,14 @@
     <div class="s-actions">
       <span id="s-coins"></span>
       <button class="wow" id="s-close">Close</button>
+    </div>
+  </div>
+  <div id="hall" class="panel">
+    <div class="h-head"><b>The Hall of Legends</b> — the Chronicle, read aloud</div>
+    <div class="h-list" id="h-list"></div>
+    <div class="h-actions">
+      <span class="h-note">The fire remembers what is witnessed.</span>
+      <button class="wow" id="h-close">Close</button>
     </div>
   </div>
   <div id="trade" class="panel">

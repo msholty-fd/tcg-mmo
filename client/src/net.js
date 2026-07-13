@@ -17,6 +17,7 @@ import { startRemoteDuel, applyRemoteView, endRemoteDuel, duelActive } from './d
 import { setGameHour } from './main.js';   // safe cycle: called at runtime only
 import { initTrade, onTradeInvite, onTradeStart, onTradeState, onTradeComplete, onTradeCancelled } from './trade.js';
 import { initShop, onPackResult } from './shop.js';
+import { initHall, onHallOfLegends } from './hall.js';
 
 // production build is served by the game server itself, so the WS lives on
 // our own origin; dev keeps Vite (:5175) + server (:8081) split
@@ -170,6 +171,9 @@ function handle(msg) {
     case 'packResult':
       onPackResult(msg);
       break;
+    case 'hallOfLegends':
+      onHallOfLegends(msg);
+      break;
     case 'tradeInvite': onTradeInvite(msg); break;
     case 'tradeStart': onTradeStart(msg); break;
     case 'tradeState': onTradeState(msg); break;
@@ -274,5 +278,9 @@ export function initNet() {
   initShop({
     isConnected: () => connected,
     sendBuyPack: pack => connected && ws.send(JSON.stringify({ t: 'buyPack', pack })),
+  });
+  initHall({
+    isConnected: () => connected,
+    sendHall: () => connected && ws.send(JSON.stringify({ t: 'hall' })),
   });
 }

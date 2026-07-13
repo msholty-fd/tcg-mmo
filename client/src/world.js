@@ -16,7 +16,7 @@ export { marla, aldric, rowan, maren } from './world/village.js';
 import './world/wilds.js';
 export { vex, kestrel } from './world/redsash.js';
 export { grukNpc } from './world/gruk.js';
-export { yara, verity, tarn } from './world/highgate.js';
+export { yara, verity, tarn, sela } from './world/highgate.js';
 export { sentinel } from './world/emberwatch.js';
 export { bram, footpad } from './world/bramsrest.js';
 export { hessa } from './world/hollowmere.js';

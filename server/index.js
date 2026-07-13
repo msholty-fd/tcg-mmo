@@ -20,7 +20,7 @@ const DUELISTS = { ...CORE_DUELISTS, ...EMBERPEAKS_DUELISTS };
 import { applyXP } from '../shared/progression.js';
 import { questById, canAccept, canTurnin, progressDuelWin, progressVisit } from '../shared/quests.js';
 import { PACKS, rollPack } from '../shared/sets/core/packs.js';
-import { mintCard, levelOf, levelPoints, LEGEND_BUDGET, LEVEL_NAMES, renownFromDuel } from '../shared/chronicle.js';
+import { mintCard, levelOf, levelPoints, LEGEND_BUDGET, LEVEL_NAMES, renownFromDuel, HALL } from '../shared/chronicle.js';
 
 const PORT = +(process.env.PORT || 8081);
 const DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -347,7 +347,15 @@ function onChronicle(room) {
       if (s === w) inst.record.wins++;
       if (stats) { inst.record.kills += stats.kills; inst.record.hearthDmg += stats.hearthDmg; }
       const after = levelOf(inst.renown);
-      if (after > before) events.push({ iid: inst.iid, cardId: inst.cardId, level: after, levelName: LEVEL_NAMES[after] });
+      if (after > before) {
+        events.push({ iid: inst.iid, cardId: inst.cardId, level: after, levelName: LEVEL_NAMES[after] });
+        // realm-wide moment: an ember waking to Veteran/Storied is rare and
+        // is exactly the visible status the Hall of Legends trades in.
+        // Seasoned (level 1) is deliberately not announced — too common.
+        if (after >= 2) {
+          broadcast({ t: 'chat', from: '[Chronicle]', text: `The fire remembers: ${p.profile.name}'s ${getCard(inst.cardId).name} is now ${LEVEL_NAMES[after]}.` });
+        }
+      }
     }
     markDirty(p.profile);
     if (p.live) {
@@ -553,6 +561,31 @@ wss.on('connection', (ws, req) => {
         sendProfile(me);   // coins + new cards land before the reveal renders
         send(me, { t: 'packResult', pack: pack.id, cards: pulls.map(c => ({ cardId: c.cardId, iid: c.iid })) });
         console.log(`${me.name} bought a ${pack.name} (${pulls.map(c => c.cardId).join(', ')})`);
+        break;
+      }
+      case 'hall': {
+        // Hall of Legends — a proximity-gated read of the realm's ledger
+        // (Chronicler Sela in Highgate; coords shared via chronicle.js HALL).
+        // Scans every profile, ranks by renown server-side, ships only the
+        // top N — the read is authoritative and rank can't be spoofed. A
+        // full scan per request is fine at current scale; revisit alongside
+        // the interest-management trigger in DESIGN.md if profiles grow.
+        if (Math.hypot(me.x - HALL.x, me.z - HALL.z) > VENDOR_RANGE) break;
+        const ranked = [];
+        for (const token in profiles) {
+          const pr = profiles[token];
+          for (const c of pr.cards || []) {
+            if (c.renown > 0) ranked.push({ c, owner: pr.name });
+          }
+        }
+        ranked.sort((a, b) => b.c.renown - a.c.renown);
+        send(me, {
+          t: 'hallOfLegends',
+          entries: ranked.slice(0, HALL.top).map(({ c, owner }) => ({
+            cardId: c.cardId, renown: c.renown, level: levelOf(c.renown),
+            owner, origin: c.origin, owners: c.owners || [], record: c.record,
+          })),
+        });
         break;
       }
       case 'tradeRequest': {

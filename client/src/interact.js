@@ -6,6 +6,7 @@ import { objNeed } from '../../shared/quests.js';
 import { PACKS } from '../../shared/sets/core/packs.js';
 import { startDuel } from './duel/duelManager.js';
 import { openShop } from './shop.js';
+import { openHall } from './hall.js';
 import { isConnected, requestNpcDuel, sendQuestAccept, sendQuestTurnin } from './net.js';
 
 export let dialogueT = 0;
@@ -66,6 +67,13 @@ export function handleInteract() {
   // above) — any NPC with .vendorPack set (world.js: Marla, Sutler Varn)
   if (n.vendorPack) {
     openShop(PACKS[n.vendorPack]);
+    return;
+  }
+
+  // the Chronicler's default conversation is the realm ledger (hall.js) —
+  // any NPC with .hall set (world/highgate.js: Chronicler Sela)
+  if (n.hall) {
+    openHall(n);
     return;
   }
 

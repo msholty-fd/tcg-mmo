@@ -1649,6 +1649,42 @@ considered and rejected.
     pos-progress → turn-in over the visit shape. Text is the product here:
     Michael should read LORE.md's quest drafts before or during the branch.
 
+- **The Hall of Legends — the Chronicle made social (2026-07-13,
+  `feat/hall-of-legends`)**: layer 2 of the narrative direction above,
+  green-lit by Michael's blanket "take agency on implementing this" while
+  away. The MMO goal the myth points at ("become part of what the fire
+  remembers") gets its surface: the realm's most renowned card instances,
+  visible to everyone, in the world.
+  - **Chronicler Sela** stands at Highgate's shrine — the Maren pattern
+    (a decorative structure gains a reason to matter), and the right city:
+    Highgate is the trade capital, and provenance is what trading trades in.
+    E opens **the Hall of Legends window** (`client/src/hall.js`, shop-shaped
+    panel): top 12 instances realm-wide with rank, pixel art, ★ level +
+    renown, current holder, win/duel/kill record, origin line, and the
+    owners[] provenance chain. Rows carry `[data-card]` so the hover
+    inspector works. Esc/Close per the shop pattern.
+  - **Server-authoritative ranking**: new `hall` message — proximity-gated
+    against a shared `HALL` constant in `shared/chronicle.js` (the packs.js
+    vendor-coords pattern, so client spawn and server check can't drift).
+    The server scans all profiles, ranks by renown, ships only the top N —
+    rank can't be spoofed and the full ledger never leaves the store. Full
+    scan per request is fine at current scale; revisit alongside the
+    interest-management trigger if profiles grow.
+  - **Realm-wide Chronicle broadcasts**: `onChronicle` already computed
+    level crossings per instance; it now broadcasts Veteran/Storied
+    ascensions to everyone — "The fire remembers: NAME's CARD is now
+    Storied." Seasoned (level 1) deliberately not announced (too common).
+    This is the diegetic status moment the Hall trades in, and the first
+    time one player's progression is visible to the whole realm.
+  - **Taught, not stumbled on**: new quest `hall_of_legends` (Yara, prereq
+    `highgate_gate`) sends players to hear the ledger — the second user of
+    the Act-I `visit` objective, exactly the reuse it was built for.
+  - Deliberately NOT done: pagination/filters (top 12 is a leaderboard, not
+    a browser), per-player "my legends" view (the deck builder/Chronicle
+    panel already shows your own), and any coupling to trading. Layer 3
+    (faction allegiance) remains a recorded candidate — it's a real epic
+    touching server state and Field Effects; not started on blanket agency.
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase
