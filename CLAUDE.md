@@ -176,7 +176,11 @@ progression) when the server is down; it auto-reconnects every 4s.
 
 ## Current state / known issues
 
-- Balance: boarherd starter beats redsash ~75% in AI-vs-AI.
+- Balance: starter spread tuned 2026-07-13 to boarherd 60% vs wardens, 52%
+  vs redsash, wardens 47% vs redsash (was 79/59/37; the old "~75% vs redsash"
+  note was stale). Wardens sims below parity on purpose — the greedy AI
+  undervalues defense. Measure with `node scripts/sim-starters.mjs` before
+  and after any starter-pool card change.
 - Autobattle earns full rewards (coins/XP/renown) — decided 2026-07-08, it's
   a QoL feature; see DESIGN.md before adding any autobattle penalty.
 - World position is persisted server-side (profile.x/z/yaw, updated in memory

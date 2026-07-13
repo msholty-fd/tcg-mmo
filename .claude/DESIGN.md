@@ -1353,6 +1353,35 @@ considered and rejected.
     Inscryption) or both move together — before investing in Stage 2/3
     assets, not after.
 
+- **Starter balance pass (2026-07-13, `balance/redsash-starter`): 8-card
+  tuning, deck lists untouched.** The known-issues note ("boarherd ~75% vs
+  redsash") turned out stale on re-measurement: the real spread was boarherd
+  **79%** vs wardens, 59% vs redsash, and wardens 37% vs redsash — wardens
+  (all low-attack walls + heal, no finisher) was the weak deck, boarherd the
+  strong one. New `scripts/sim-starters.mjs` (round-robin, sides alternated,
+  500 games/pairing) is the measuring stick.
+  - **Why card tweaks, not deck-list edits:** 13 duelist decks `swap()`
+    hard-coded ids out of the STARTER_DECKS lists — editing the lists risks
+    silently breaking deck sizes across the roster. Card-definition changes
+    can't break any list, and they fix the root cause everywhere the card
+    appears.
+  - **Nerfs (boarherd's exclusives/staples):** tusker 4/2→3/2, boar_matron
+    3/5→2/4, gruk 7/7→6/6 (his signature "2 to all" AoE untouched).
+  - **Buffs (wardens' exclusives + underdog-shared):** hearth_keeper 2/3→2/4
+    and heal 1→2, beacon_mage 3/3→4/4, village_warden 2/4→2/5, camp_torcher
+    2/2→2/3, controlled_burn 5c→4c (torcher/burn appear only in the two
+    underdog decks — differential anti-boarherd levers).
+  - **Result: 79/59/37 → 60/52/47.** Stopped at 60 deliberately: each further
+    knob bought ~1 point, and the greedy AI structurally undervalues
+    guardian/ward/heal — a defensive deck simming 40-47% is plausibly at or
+    above parity when a human pilots it. Overtuning to sim-50% risks
+    oppressive wardens in real hands. Revisit with real-play data.
+  - **Ripple checked:** all 15 duelist decks still 30 valid cards, 180-game
+    roster sanity sim (12/duelist vs boarherd) — 0 crashes/stuck, gradient
+    intact (Ashmonger still a gate, bosses still strong). controlled_burn's
+    cost parity flip (5→4, odd→even) trips no Leader rule in practice
+    (test-leaders 198/198).
+
 - **Card-game direction: familiar spine, novel edges — and the world itself
   is the design space (2026-07-13, Michael).** Steer: stop treating the duel
   engine as an MTG clone; ground it in enough shared TCG vocabulary to feel
@@ -1451,7 +1480,14 @@ considered and rejected.
   matters to nothing today; verify that stays true (colliders/npcs are
   order-independent registries).
 - Renown pacing: thresholds 20/60/150 are untested against real play.
-- Starter balance: boarherd ~75% vs redsash (AI-vs-AI); needs a card pass.
+- Starter balance: ADDRESSED 2026-07-13 (`balance/redsash-starter`, see the
+  decision entry). The documented "boarherd ~75% vs redsash" was stale — at
+  pass time the real spread was boarherd 79% vs WARDENS, 59% vs redsash,
+  wardens 37% vs redsash. After an 8-card tuning pass: 60/52/47 (500 games
+  per pairing, sides alternated). Wardens sims at 40-47% deliberately — the
+  greedy AI undervalues guardian/ward/heal, so sim-parity for a defensive
+  deck would likely read as oppressive under human piloting. Re-run
+  `node scripts/sim-starters.mjs` after any starter-pool card change.
 - Highgate placement/scale is untested in real play — verify the walk feels
   like a destination, not a slog, and that the wall gate doesn't create a
   collision pinch point. Bram's Rest (below) is a first attempt at breaking
