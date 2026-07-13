@@ -1304,7 +1304,12 @@ considered and rejected.
     thousands per shard, per the vision.
 
 - **Graphical fidelity path (2026-07-13, Michael): polish over time is the
-  plan — and it still doesn't justify zone isolation.** Michael kept the look
+  plan — and it still doesn't justify zone isolation.** **STATUS: DEFERRED —
+  documentation only. Michael explicitly chose not to act on this yet (same
+  session); no stage, not even Stage 0, starts until he green-lights it.
+  The same deferral covers the other two 2026-07-13 entries (world.js
+  per-region split, Field Effects + shared zone map): direction is recorded,
+  work is not queued.** Michael kept the look
   simple to build fast and wants to raise fidelity gradually. This
   ACCELERATES the scale plan's timeline but doesn't change its shape: modern
   seamless worlds at any fidelity are built on streaming + LOD + instancing
@@ -1430,7 +1435,8 @@ considered and rejected.
   polish: the third-person camera gets "lifted" awkwardly when you stand on
   the steep ridge (terrain-clamp → upward gaze) — noted, not yet addressed.
 - Field Effects (per-zone duel rules — direction decided 2026-07-13, nothing
-  built): which zone ships the first field? Emberpeaks is the natural
+  built, **deferred: do not start until Michael green-lights**): which zone
+  ships the first field? Emberpeaks is the natural
   flagship (complete zone, thematically loud, its set already rewards the
   ashfall/kindle synergies a fire field would feed) — but it's also the
   end-game zone, so few duels happen there to playtest against. Does the
@@ -1438,11 +1444,12 @@ considered and rejected.
   And what does autobattle/AI do about fields — `ai.js` must tolerate them
   before any field ships, but how much field-awareness does the greedy brain
   need before autobattling in a hostile zone feels like throwing?
-- World.js per-region split (decided 2026-07-13, not yet done): pure
-  authoring refactor, no runtime change — worth doing before the NEXT zone
-  lands rather than after (the merge-conflict pain it solves is already
-  real). Registration order matters to nothing today; verify that stays true
-  (colliders/npcs are order-independent registries).
+- World.js per-region split (decided 2026-07-13, **deferred — do not start
+  until Michael green-lights**): pure authoring refactor, no runtime change —
+  when it does happen, do it before the NEXT zone lands rather than after
+  (the merge-conflict pain it solves is already real). Registration order
+  matters to nothing today; verify that stays true (colliders/npcs are
+  order-independent registries).
 - Renown pacing: thresholds 20/60/150 are untested against real play.
 - Starter balance: boarherd ~75% vs redsash (AI-vs-AI); needs a card pass.
 - Highgate placement/scale is untested in real play — verify the walk feels
