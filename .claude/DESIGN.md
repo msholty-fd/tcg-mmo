@@ -1238,6 +1238,35 @@ considered and rejected.
     covered headlessly, and the bundle compiles with the new cross-set imports;
     the `document.hidden` preview bug persists).
 
+- **Emberpeaks Phase 3b — zone pack + basin vendor (2026-07-13,
+  `feat/emberpeaks-pack`)**. Completes the Emberpeaks zone: the last phase of
+  the plan (terrain → set → duelists/quests → pack & vendor). The zone now
+  realizes "shipping a zone = shipping a set" for the shop economy too.
+  - **Cinder Cache** (`shared/sets/emberpeaks/packs.js`): 5 cards from the
+    16-card `emberpeaks` set, **40 coins** (vs Boarlands' 25 — end-game zone
+    behind a lvl 5-6 quest gate) with a heavier rare weight (60/30/10 vs
+    70/24/6) since the set is small and pulls repeat. Reward pools (the two
+    bosses) remain the primary circulation; the pack is the coin sink for
+    chasing the rest, same complement-not-substitute stance as crafting's
+    rejection.
+  - **Vendor: Sutler Varn** at (14, 196), just inside the pass by the entrance
+    signpost — you meet him walking in, not deep in boss territory. A sutler
+    (camp provisioner) fits a vendor who follows danger to sell to it.
+  - **Shop UI generalized** (the prerequisite this phase was blocked on):
+    `openShop(pack)` takes the pack instead of hardcoding `PACKS.boarlands`;
+    vendor name/pack name/desc/price all render from the pack def (`desc` is
+    now data, moved out of index.html). Vendor NPCs are any NPC with
+    `.vendorPack` set (world.js) — interact.js and the E-prompt key off that,
+    not `n === marla`. One shop window serves all vendors, by design — a
+    per-vendor window would be new UI surface for zero gameplay.
+  - **Pack registry is global across sets** like banners/leaders: core
+    `packs.js` spreads `EMBERPEAKS_PACKS` in. Same third-set promotion note
+    applies.
+  - The server's `buyPack` needed **zero changes** — it was already generic
+    over `PACKS[msg.pack]` and validates proximity against the pack's own
+    vendor coords. `scripts/test-packs.mjs` guards the coord agreement between
+    packs.js and world.js (the one cross-file invariant a typo could break).
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase

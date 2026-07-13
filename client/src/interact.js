@@ -3,7 +3,7 @@ import { player, npcs } from './state.js';
 import { say } from './ui.js';
 import { npcQuest, npcTurnin, npcActiveQuest, questHave } from './quests.js';
 import { objNeed } from '../../shared/quests.js';
-import { marla } from './world.js';
+import { PACKS } from '../../shared/sets/core/packs.js';
 import { startDuel } from './duel/duelManager.js';
 import { openShop } from './shop.js';
 import { isConnected, requestNpcDuel, sendQuestAccept, sendQuestTurnin } from './net.js';
@@ -62,9 +62,10 @@ export function handleInteract() {
     return;
   }
 
-  // Marla's default conversation is her pack shop (quest business wins above)
-  if (n === marla) {
-    openShop();
+  // a vendor's default conversation is their pack shop (quest business wins
+  // above) — any NPC with .vendorPack set (world.js: Marla, Sutler Varn)
+  if (n.vendorPack) {
+    openShop(PACKS[n.vendorPack]);
     return;
   }
 

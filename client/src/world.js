@@ -468,6 +468,7 @@ VILLAGER_SPOTS.forEach(([x, z], i) =>
   spawnCritter(() => humanoid({ shirt: VILLAGER_SHIRTS[i % VILLAGER_SHIRTS.length] }), x, z));
 
 export const marla = spawnNPC('Quartermaster Marla', 3.5, 4, { shirt: 0x7a5aa8 });
+marla.vendorPack = 'boarlands';   // interact.js: E on a .vendorPack NPC opens their pack shop
 export const aldric = spawnNPC('Warden Aldric', -4, -6, { shirt: 0x55636e, hat: 0x3a444c });
 
 // ---------- duelist NPCs (roster shared with the server) ----------
@@ -1125,3 +1126,10 @@ export const ashmonger = spawnDuelist('ashmonger', EP.x - 22, EP.z - 24, { shirt
 export const pyrelord = spawnDuelist('pyrelord', EP.x, EP.z + 14, { shirt: 0x5a1a10, hat: 0xdd4400 });
 const pyreGlow = new THREE.PointLight(0xff5a1e, 1.6, 14); pyreGlow.position.y = 2.6; pyrelord.mesh.add(pyreGlow);
 lavaPool(EP.x, EP.z + 20, 5);   // a lava basin at the boss's back
+
+// ---- Emberpeaks vendor (Phase 3b) — Sutler Varn sells the zone pack just
+// inside the pass, by the entrance signpost, so you meet him on the way in
+// (not deep in boss territory). Coords must match shared/sets/emberpeaks/
+// packs.js vendor (the server validates purchase proximity against those).
+export const varn = spawnNPC('Sutler Varn', EP.x + 14, EP.z - 39, { shirt: 0xa85a2a, hat: 0x4a2a1a });
+varn.vendorPack = 'emberpeaks';

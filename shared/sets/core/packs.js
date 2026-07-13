@@ -5,7 +5,11 @@
 // reads name/price/vendor for the shop UI.
 
 import { cardsInSet } from '../../engine/cards.js';
+import { EMBERPEAKS_PACKS } from '../emberpeaks/packs.js';
 
+// The pack registry is GLOBAL across sets, aggregated here like banners.js/
+// leaders.js (the de-facto global registry pattern). If a third set lands,
+// promote all three to a real per-set registry instead of growing the merges.
 export const PACKS = {
   boarlands: {
     id: 'boarlands',
@@ -14,8 +18,10 @@ export const PACKS = {
     price: 25,
     size: 5,
     weights: { common: 70, uncommon: 24, rare: 6 },
+    desc: 'Five cards from the Boarlands. No promises on which five.',
     vendor: { name: 'Quartermaster Marla', x: 3.5, z: 4 },   // must match her world.js spawn
   },
+  ...EMBERPEAKS_PACKS,
 };
 
 // Roll `pack.size` card ids: pick a rarity by weight, then a uniform card
