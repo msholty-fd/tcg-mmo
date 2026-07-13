@@ -1546,6 +1546,47 @@ considered and rejected.
     Hunter's Rest, and the Gruk's Hollow/Highgate sightlines all eyeballed.
     Zero console errors; build clean.
 
+- **Deep Darkwood immersion pass — "the living gloom" (2026-07-13,
+  `feat/darkwood-gloom`)**: Michael playtested Phase 1: "nothing that makes
+  me feel like I'm entering a scary dark wood." Diagnosis: the zone had
+  props but no *atmosphere* — scary woods are made of failing light and
+  dying sightlines, not objects. His ask is taken as the green-light for
+  **zone-scoped** atmosphere only; DESIGN.md's global Stage 0 (bloom/post/
+  per-zone grading everywhere) stays deferred.
+  - *The gloom* (the headline): `updateDarkwood(hour, px, pz)` in
+    world/darkwood.js returns a 0..1 factor from the player's distance to
+    the heart (0 by r56 — Gruk's camp at 56 away keeps normal weather; 1
+    inside r24). main.js's day/night block applies it every frame: fog
+    pulls from (70,300) to (16,60), fog/sky colors lerp to a murky green
+    (day) or near-black (night), sun/hemi dim ~50-60%, and the sun/moon
+    discs + stars fade out — you can't see the sky through this canopy.
+    Every application is an exact no-op at gloom 0 (verified numerically:
+    fog restores to exactly 70/300; village and Gruk's camp read 0).
+    Because it keys on player position, the whole realm's weather is
+    per-viewer — which is correct: atmosphere is what YOUR sky looks like,
+    and two players in different zones each get their own. Nothing here is
+    shared-world state (unlike NPC positions).
+  - *Circle wisps*: three pale bobbing lights over the Circle of Sighs,
+    visible 20:00-6:00 only (the Sentinel's window) — the stone circle is
+    lit by something that isn't fire. Emissive-only, no PointLights.
+    Night-duelist bait for Phase 3.
+  - *Shades*: four hooded, coal-black silhouettes with pale eyes drifting
+    between the trees on the critter wander system — critters are never
+    interactable, so what they are stays an open question until Phase 3.
+  - *Darkwolves*: the zone pack got darker coats + amber emissive eyeshine
+    (reads through the fog before the wolf does).
+  - *Flora*: hanging moss strands under every gnarltree canopy; 8 bare
+    snags (deadTree, promoted Hollowmere→lib.js under the 2+ regions rule).
+  - *Not done, noted for later*: audio (no sound system exists in the game
+    at all — a first howl/wind pass would be its own decision), and any
+    gameplay teeth (shades that watch you, night-only spawns) belong to
+    Phase 3, not ambience.
+  - Verified live (worktree dev server + manual renderer.render):
+    noon-in-the-wood and night-in-the-wood screenshots both eyeballed
+    (fog closes in, wisps float, glowcaps read in the dark), wisp gating
+    0-at-noon/3-at-night, gloom-0 restoration exact, zero console errors,
+    build clean.
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase

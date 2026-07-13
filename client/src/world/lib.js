@@ -99,6 +99,21 @@ export function campfire(x, z) {
   return g;
 }
 
+// A bare dead tree — first built for Hollowmere's swamp, promoted here when
+// the Deep Darkwood wanted snags too (the 2+ regions rule).
+export function deadTree(x, z, rot, scale = 1) {
+  const g = new THREE.Group();
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(.22 * scale, .4 * scale, 3.2 * scale, 6), M.deadwood);
+  trunk.position.y = 1.6 * scale; trunk.castShadow = true; g.add(trunk);
+  for (const [dy, a, len] of [[2.4, .6, 1.6], [2.0, -1.1, 1.3], [2.8, 2.4, 1.1]]) {
+    const branch = new THREE.Mesh(new THREE.CylinderGeometry(.05 * scale, .1 * scale, len * scale, 5), M.deadwood);
+    branch.position.set(Math.cos(a) * len * scale * .4, dy * scale, Math.sin(a) * len * scale * .4);
+    branch.rotation.z = Math.PI / 2 - a; branch.rotation.y = a; branch.castShadow = true; g.add(branch);
+  }
+  g.position.set(x, groundH(x, z), z); g.rotation.y = rot; scene.add(g);
+  addCircle(x, z, .3 * scale);
+}
+
 // Cross-region registries: regions push their own campfires/torches as they
 // build (Red-Sash camp, Gruk's hollow, Highgate, Bram's Rest...); main.js
 // animates whatever ends up here. Order is irrelevant.
