@@ -148,7 +148,15 @@ progression) when the server is down; it auto-reconnects every 4s.
   page/canvas doesn't clear it either. When this happens, fall back to
   build + `node --check` + headless logic tests and say so honestly in
   STATUS.md rather than blocking the merge on a live check that isn't
-  currently possible.
+  currently possible. **Partial workaround (discovered 2026-07-13, Phase 3b
+  session): the stall only kills rAF — JS eval, WS networking, DOM, and CSS
+  all still work.** So you CAN still verify a lot live: token auto-login
+  (mint a char over raw WS, set `emberwood.token` + `emberwood.session` in
+  localStorage, reload), drive module functions directly via
+  `import('/src/x.js')`, read the DOM, and — key discovery — `computer
+  screenshot` forces a one-off paint, so HUD windows/overlays opened via
+  eval DO appear in screenshots. Movement/animation stay impossible; only
+  the game loop is dead, not the page.
 
 ## Current state / known issues
 
