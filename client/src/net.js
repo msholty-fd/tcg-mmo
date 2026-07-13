@@ -40,8 +40,8 @@ let pendingChallenge = null;
 
 export function isConnected() { return connected; }
 
-export function startNet(name, outfit, password = '') {
-  joinInfo = { name, outfit, password };
+export function startNet(name, outfit, password = '', mode = 'login') {
+  joinInfo = { name, outfit, password, mode };
   connect();
 }
 
@@ -51,7 +51,7 @@ function connect() {
     connected = true;
     ws.send(JSON.stringify({
       t: 'join', token: getToken(),
-      name: joinInfo.name, password: joinInfo.password, outfit: joinInfo.outfit,
+      name: joinInfo.name, password: joinInfo.password, mode: joinInfo.mode, outfit: joinInfo.outfit,
       deck: getDeckCardIds(),
     }));
   };
@@ -74,13 +74,15 @@ function handle(msg) {
   switch (msg.t) {
     case 'joinError':
       localStorage.removeItem('emberwood.session');
-      alert(msg.reason);
+      // shown on the title screen after reload (main.js) — nicer than alert()
+      sessionStorage.setItem('emberwood.joinError', msg.reason);
       location.reload();
       return;
     case 'welcome': {
       myId = msg.id;
       if (msg.token) localStorage.setItem(TOKEN_KEY, msg.token);
       joinInfo.password = '';   // token covers future reconnects
+      joinInfo.mode = 'login';  // never re-create on a reconnect
       log(`[Server] Claudemoon realm — ${msg.online} player${msg.online === 1 ? '' : 's'} online`, 'sys');
       if (msg.hour !== undefined) setGameHour(msg.hour);   // shared world clock
       if (msg.x !== undefined) {

@@ -36,7 +36,7 @@ const randomOutfit = () => OUTFIT_KEYS[ri(0, OUTFIT_KEYS.length - 1)];
 
 const SESSION_KEY = 'emberwood.session';
 
-function enterWorld(name, starter, pos = null, password = '') {
+function enterWorld(name, starter, pos = null, password = '', mode = 'login') {
   const s = STARTERS[starter];
   player.outfit = s;
   player.name = name;
@@ -50,7 +50,7 @@ function enterWorld(name, starter, pos = null, password = '') {
   $('charselect').style.display = 'none';
   setStarted(true);
   log('Welcome to Emberwood Online, ' + player.name + '!', 'sys');
-  startNet(player.name, starter, password);
+  startNet(player.name, starter, password, mode);
   updateMark(marla); updateMark(aldric);
   renderTracker();
   // remember the character (and, every few seconds, where they're standing)
@@ -59,15 +59,43 @@ function enterWorld(name, starter, pos = null, password = '') {
   setInterval(saveSession, 5000);
 }
 
+// intent is explicit — the server enforces it (create rejects taken names,
+// login rejects unknown ones), so a typo'd name can't silently mint a fresh
+// level-1 character anymore
+let authMode = 'create';
+function setAuthMode(mode) {
+  authMode = mode;
+  $('tab-create').classList.toggle('selected', mode === 'create');
+  $('tab-login').classList.toggle('selected', mode === 'login');
+  $('charpass2').style.display = mode === 'create' ? '' : 'none';
+  $('authhint').textContent = mode === 'create'
+    ? 'Leave the name blank for a wandering alias · a password (3+ characters) recovers this character anywhere'
+    : 'Recover your character from any device with their name and password';
+  $('autherr').textContent = '';
+}
+$('tab-create').addEventListener('click', () => setAuthMode('create'));
+$('tab-login').addEventListener('click', () => setAuthMode('login'));
+
 $('enterworld').addEventListener('click', () => {
+  const name = $('charname').value.trim();
+  const password = $('charpass').value;
+  const err = m => { $('autherr').textContent = m; };
+  if (authMode === 'create') {
+    if (password.length < 3) return err('Choose a password of 3+ characters — it recovers this character anywhere.');
+    if (password !== $('charpass2').value) return err('Passwords don’t match.');
+  } else {
+    if (!name) return err('Enter your character’s name.');
+    if (!password) return err('Enter your password.');
+  }
   // recovering an existing character will fetch their real collection from
   // the server; a stale local mirror from another character must not leak in
   localStorage.removeItem('emberwood.collection.v2');
   enterWorld(
-    $('charname').value.trim() || ('Fable' + ri(10, 99)),
+    name || ('Fable' + ri(10, 99)),
     randomOutfit(),
     null,
-    $('charpass').value
+    password,
+    authMode
   );
 });
 
@@ -83,6 +111,13 @@ initEscMenu({
     location.reload();
   },
 });
+
+// a rejected join reloads back to this screen (see net.js) — show why, and
+// land on the login tab since that's where bounced players belong
+const joinError = sessionStorage.getItem('emberwood.joinError');
+sessionStorage.removeItem('emberwood.joinError');
+setAuthMode(joinError ? 'login' : 'create');
+if (joinError) $('autherr').textContent = joinError;
 
 // returning player: skip the intro entirely and drop back in where they stood
 try {
