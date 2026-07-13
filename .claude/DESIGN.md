@@ -1540,12 +1540,19 @@ considered and rejected.
   And what does autobattle/AI do about fields — `ai.js` must tolerate them
   before any field ships, but how much field-awareness does the greedy brain
   need before autobattling in a hostile zone feels like throwing?
-- World.js per-region split (decided 2026-07-13, **deferred — do not start
-  until Michael green-lights**): pure authoring refactor, no runtime change —
-  when it does happen, do it before the NEXT zone lands rather than after
-  (the merge-conflict pain it solves is already real). Registration order
-  matters to nothing today; verify that stays true (colliders/npcs are
-  order-independent registries).
+- World.js per-region split: **DONE 2026-07-13** (`feat/world-split`, Michael
+  green-lit it as the prerequisite for the Deep Darkwood zone). world.js is
+  now a barrel over `client/src/world/` — `lib.js` (materials, shared prop
+  builders, spawn helpers, the fires/torches/camCollidables registries) plus
+  one module per region (village, wilds, redsash, gruk, highgate, emberwatch,
+  bramsrest, hollowmere, roads, harrowfield, mine, emberpeaks). Import sites
+  unchanged. Extraction was done by exact line ranges (scripted, verbatim);
+  equivalence proven live: two dev servers (main vs branch) produced
+  byte-identical world fingerprints — all 25 NPCs (name/pos/duelist/vendor/
+  flavor), 54 critters, 8 fires, 12 torches, 24 camCollidables, 645 scene
+  objects, matching patrol positions. Rule for new zones: one module per
+  region built on lib.js; world-spanning systems (flora, roads) get their
+  own modules.
 - Renown pacing: thresholds 20/60/150 are untested against real play.
 - Starter balance: ADDRESSED 2026-07-13 (`balance/redsash-starter`, see the
   decision entry). The documented "boarherd ~75% vs redsash" was stale — at

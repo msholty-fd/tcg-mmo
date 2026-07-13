@@ -53,7 +53,7 @@ progression) when the server is down; it auto-reconnects every 4s.
   it doesn't belong in shared.
 - **The world stays ONE seamless scene** (decided 2026-07-13, DESIGN.md
   "World architecture"): never instanced/portal zones. Scale via per-region
-  authoring modules (world.js split — pending), then server-side interest
+  authoring modules (world.js split — DONE 2026-07-13, see client/src/world/), then server-side interest
   management (~50 concurrent players), then client prop streaming — each has
   an explicit trigger in DESIGN.md; don't build them early. Rising graphical
   fidelity accelerates those triggers but doesn't change the shape (DESIGN.md
