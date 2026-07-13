@@ -4,7 +4,7 @@ import { groundH } from './terrain.js';
 import { humanoid, boarMesh, wolfMesh, deerMesh, rabbitMesh, emberElementalMesh, makeLabel } from './entities.js';
 import { critters, npcs } from './state.js';
 import { rand } from './utils.js';
-import { addCircle, addRect } from './colliders.js';
+import { addCircle, addRect, resolveCollision } from './colliders.js';
 
 const M = {
   trunk:    new THREE.MeshLambertMaterial({ color: 0x6b4a2f }),
@@ -819,12 +819,62 @@ wayfarer.flavor = [
 // that had nobody — Gruk road E, Emberwatch road NE, Hollowmere road SW.
 // (South/Highgate has the footpad at Bram's Rest; north/Cinderpass passes
 // Marrow's mine — those routes already have someone.) Player-initiated like
-// every duelist; they never approach or auto-challenge. Positions sit near
-// waystones by dead reckoning (same caveat as the stones themselves — the
-// preview gotcha; worst case is cosmetic, an NPC standing in a tree).
+// every duelist; they never approach or auto-challenge. The spawn coords are
+// just the patrol midpoints — updatePatrols() below owns their position from
+// the first frame.
 export const sorrel = spawnDuelist('sorrel', 62, -40, { shirt: 0x7a5a34, hat: 0x4a3620 });
 export const finch = spawnDuelist('finch', 58, 60, { shirt: 0x9a4030, hat: 0x30302a });
 export const brenna = spawnDuelist('brenna', -44, -58, { shirt: 0x4a5a6a, hat: 0x3a3228 });
+
+// Road duelists PATROL their routes, and the realm agrees where they are:
+// position is a pure function of the server-synced game hour (the same
+// shared clock that drives the sky — welcome + 10 Hz state broadcasts, local
+// advance between syncs), NOT per-client randomness like critter wander. No
+// NPC positions cross the wire; every client computes the identical spot,
+// and a player logging in mid-walk lands on the same timeline as everyone
+// else. Offline mode uses the local clock fallback — solo, so no one to
+// disagree with. Ping-pong along a road polyline once per PATROL_PERIOD
+// game hours (divides 24, so the midnight wrap is seamless), with a short
+// stand at each end so they're easy to walk up to and challenge. The
+// resolveCollision safety push-out is deterministic over the static
+// collider registry, so it can't diverge between clients either.
+const PATROLS = [
+  { npc: sorrel, path: [[40, -26], [56, -36], [76, -46]] },     // Gruk road, through its waystone
+  { npc: finch, path: [[44, 46], [58, 60], [72, 74]] },         // Emberwatch road, between its waystones
+  { npc: brenna, path: [[-30, -48], [-44, -58], [-58, -68]] },  // Hollowmere road, between its waystones
+];
+const PATROL_PERIOD = 1;   // game hours per out-and-back (= 50 real seconds)
+for (const p of PATROLS) {
+  p.legs = []; p.total = 0;
+  for (let i = 1; i < p.path.length; i++) {
+    const [ax, az] = p.path[i - 1], [bx, bz] = p.path[i];
+    const len = Math.hypot(bx - ax, bz - az);
+    p.legs.push({ ax, az, bx, bz, len, start: p.total });   // start: cumulative distance to this leg
+    p.total += len;
+  }
+}
+// remap each half-loop so ~8% of it (≈2s real) is spent standing at the ends
+const dwell = q => Math.min(1, Math.max(0, (q - .08) / .84));
+
+export function updatePatrols(hour) {
+  for (const p of PATROLS) {
+    const s = ((hour % PATROL_PERIOD) + PATROL_PERIOD) % PATROL_PERIOD / PATROL_PERIOD;
+    const forward = s < .5;
+    const u = forward ? dwell(s * 2) : dwell(2 - s * 2);   // 0..1 along the path
+    // cumulative leg starts + clamped t: float drift past the last boundary
+    // pins to the far end instead of snapping back to the leg's start
+    const dist = u * p.total;
+    let leg = p.legs[p.legs.length - 1];
+    for (const l of p.legs) if (dist <= l.start + l.len) { leg = l; break; }
+    const t = Math.min(Math.max((dist - leg.start) / leg.len, 0), 1);
+    let x = leg.ax + (leg.bx - leg.ax) * t, z = leg.az + (leg.bz - leg.az) * t;
+    ({ x, z } = resolveCollision(x, z, .5));
+    const n = p.npc;
+    n.x = x; n.z = z;
+    n.mesh.position.set(x, groundH(x, z), z);
+    n.mesh.rotation.y = Math.atan2(leg.bx - leg.ax, leg.bz - leg.az) + (forward ? 0 : Math.PI);
+  }
+}
 
 // ---------- Harrow's Field: a working farmstead (x=-55 z=-28) ----------
 // The first *cultivated* place — every location so far is wild, martial, or

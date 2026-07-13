@@ -1441,9 +1441,11 @@ considered and rejected.
   between POIs were legible (waystones, Bram's Rest) but inert — every duel
   lived at a destination, and ambient critters are pure cosmetics. Answer:
   *more people to duel*, not mobs (which pivot #2 deliberately removed) and
-  not wandering NPCs (critter wandering is per-client, so a roaming duelist
-  would stand in different places for different players; revisit only with
-  server-seeded paths). Three minor duelists standing ON the three routes
+  not per-client wandering (critter wander is per-client randomness, so a
+  roaming duelist would stand in different places for different players —
+  the "revisit with server-seeded paths" note was picked up the same day;
+  see the Realm-synced patrols entry below). Three minor duelists on the
+  three routes
   that had nobody: Sorrel the Boartracker (Gruk road E, 62,-40, Boarherd),
   Finch the Relic-Runner (Emberwatch road NE, 58,60, Red-Sash), Brenna
   Lampwright (Hollowmere road SW, -44,-58, Wardens). South/Highgate already
@@ -1463,6 +1465,39 @@ considered and rejected.
     correct name/kind, concede → duelEnd, no server errors). Positions are
     dead-reckoned near waystones (same caveat as the stones — worst case an
     NPC stands in a tree; cosmetic).
+
+- **Realm-synced patrols — road duelists walk, and everyone agrees where
+  (2026-07-13, `feat/duelist-patrols`)**: Michael's follow-up to route
+  trainers: wandering duelists must look the same for every player logged
+  in — "not a client side thing but a server side thing." The mechanism
+  chosen is the day/night pattern, not per-frame NPC broadcasts: position
+  is a **pure function of the server-synced game hour** (`welcome` + 10 Hz
+  `state` carry the wall-clock-derived hour; clients advance it smoothly
+  between syncs). Every client computes the identical spot from the shared
+  timeline, late joiners and reconnects agree by construction, and zero NPC
+  traffic crosses the wire. True server-side *simulation* was rejected as
+  strictly worse here: the server has no terrain/collider data (client-only
+  registries), and for deterministic waypoint patrols a broadcast would
+  just duplicate what each client can already derive — this IS the
+  server-authoritative clock driving positions, the same way the whole
+  realm shares one sky.
+  - *Shape*: each road duelist ping-pongs along a hand-authored polyline
+    following its road's waystones, one out-and-back per game hour (50 real
+    seconds, ~1.6-2.0 u/s walk), with ~2s standing at each end so players
+    can walk up and challenge (`PATROLS`/`updatePatrols()` in world.js,
+    called from main.js's update alongside critter wander). Interact
+    prompts track live `n.x/n.z`, so challenging mid-walk works. The
+    `resolveCollision` safety push-out is deterministic over the static
+    collider registry, so it can't diverge between clients either.
+  - *Camp duelists don't move* — patrols are a road-duelist thing; a boss
+    pacing away from their own camp set-dressing would read as wrong.
+  - *Offline mode*: local clock fallback, solo player, nobody to disagree
+    with — consistent by vacuity.
+  - Caught in verification: a float fallthrough in leg selection snapped
+    unequal-leg paths (sorrel's) back to the last leg's start at the
+    turnaround — a once-per-loop teleport. Fixed with cumulative leg
+    starts + clamped t; the headless replica test (endpoints, dwell,
+    ping-pong symmetry, midnight wrap, bounded speed) now passes 24/24.
 
 ## Open questions
 

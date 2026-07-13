@@ -5,7 +5,7 @@ import { groundH } from './terrain.js';
 import { humanoid, makeLabel } from './entities.js';
 import { STARTERS, ZONES, CAMPS } from './constants.js';
 import { player, critters } from './state.js';
-import { fires, torches, marla, aldric, camCollidables, sentinel } from './world.js';
+import { fires, torches, marla, aldric, camCollidables, sentinel, updatePatrols } from './world.js';
 import { log, updateHUD } from './ui.js';
 import { keys, cam, started, setStarted, autoWalk, touchMove, isTouch, initTouchControls, tickTouchUI } from './input.js';
 import { resolveCollision } from './colliders.js';
@@ -283,6 +283,10 @@ function update(dt) {
     }
     c.mesh.position.set(c.x, groundH(c.x, c.z), c.z);
   }
+
+  // road duelists walk their routes on the realm-shared clock (world.js
+  // PATROLS) — same gameHour every client, same position every client
+  updatePatrols(gameHour);
 
   netTick(dt);
 
