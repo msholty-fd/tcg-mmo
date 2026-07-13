@@ -8,6 +8,13 @@ export const LEVEL_NAMES = ['Fresh', 'Seasoned', 'Veteran', 'Storied'];
 export const RENOWN_THRESHOLDS = [20, 60, 150];   // xp needed for L1, L2, L3
 export const LEGEND_BUDGET = 8;
 
+// The Hall of Legends — the Chronicle made social (DESIGN.md "Narrative
+// direction"). Chronicler Sela reads the realm's ledger aloud at Highgate's
+// shrine; the client spawns her at these coords and the server validates
+// hall requests against the same ones (the packs.js vendor pattern — shared
+// so the two can't drift). `top` caps how many entries the ledger shows.
+export const HALL = { x: 20, z: -150, name: 'Chronicler Sela', top: 12 };
+
 export const levelOf = renown =>
   renown >= RENOWN_THRESHOLDS[2] ? 3 :
   renown >= RENOWN_THRESHOLDS[1] ? 2 :

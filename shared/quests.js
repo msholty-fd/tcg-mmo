@@ -123,6 +123,16 @@ export const QUESTS = [
     obj: have => `Warden Captain owned: ${have}/1`,
     thanks: "Filed and countersigned. Highgate's word is good again, and that's worth more than the card.",
   },
+  // The Hall of Legends (hall.js, DESIGN.md "Narrative direction"): Yara
+  // points newcomers at Chronicler Sela so the realm ledger is taught, not
+  // stumbled on. Uses the visit objective; coords match chronicle.js HALL.
+  {
+    id: 'hall_of_legends', giver: 'yara', title: 'The Fire Remembers', minLvl: 3, prereq: 'highgate_gate',
+    visit: { x: 20, z: -150, r: 8 }, xp: 150, coins: 10,
+    offer: "You've seen the Chronicle work — every card you've ever won remembers who held it and what it did with them. Chronicler Sela reads the realm's ledger aloud at the shrine on the west side of the square. Go hear whose names the fire keeps. Traders respect a duelist who knows the company they're trying to join.",
+    obj: () => "Hear the ledger at Highgate's shrine",
+    thanks: "So now you know the names. The ledger has room for more — the fire doesn't care whose story it keeps, only that it's witnessed.",
+  },
   // Emberwatch Ruins — a night-only landmark (DESIGN.md). The Sentinel only
   // manifests after dark (client-side visibility gate in world.js/main.js),
   // so this quest is discovery flavor: Aldric points at the rumor, finding

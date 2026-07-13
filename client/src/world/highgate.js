@@ -5,6 +5,7 @@ import { humanoid } from '../entities.js';
 import { addCircle, addRect } from '../colliders.js';
 import { M, camCollidables, torch, torches, tavern, shrine, marketStall, crate, barrel, banner,
          wallSeg, watchtower, spawnCritter, spawnNPC, spawnDuelist, VILLAGER_SHIRTS } from './lib.js';
+import { HALL } from '../../../shared/chronicle.js';
 
 // ---------- Highgate: southern trade capital (x=40 z=-145) ----------
 // A walled capital, deliberately far south of Meadowbrook Village (~187
@@ -84,3 +85,12 @@ HIGHGATE_SPOTS.forEach(([x, z], i) =>
 export const yara = spawnNPC('Guildmaster Yara', 40, -155, { shirt: 0x8a6a2a, hat: 0x5a4a1a });
 export const verity = spawnDuelist('verity', 40, -112, { shirt: 0x2f4d8a, hat: 0x1e3060 });
 export const tarn = spawnDuelist('tarn', 40, -98, { shirt: 0x6a5a3a, hat: 0x3a2e1c });
+
+// Chronicler Sela — keeper of the Hall of Legends (hall.js; LORE.md: the
+// Chronicle is the record the fire keeps, and she reads it aloud). Stands at
+// Highgate's shrine, which was purely decorative until now — the Maren
+// pattern: an existing structure gains a reason to matter. Coords are the
+// shared HALL constant (chronicle.js) so the server's proximity check can't
+// drift from where she actually stands.
+export const sela = spawnNPC(HALL.name, HALL.x, HALL.z, { shirt: 0x7a3a2a, hat: 0xd4af37 });
+sela.hall = true;

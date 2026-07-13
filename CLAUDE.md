@@ -112,6 +112,10 @@ progression) when the server is down; it auto-reconnects every 4s.
 - `client/src/escMenu.js` — Esc menu (resume / controls / log out); Esc closes
   the deck builder first if it's open
 - `client/src/cardZoom.js` — hover inspector for any `[data-card]` element
+- `client/src/hall.js` — the Hall of Legends (E on Chronicler Sela at
+  Highgate's shrine): realm-wide top card instances by renown, ranked
+  server-side (`hall` msg, proximity vs `HALL` in shared/chronicle.js);
+  Veteran/Storied ascensions broadcast realm-wide from `onChronicle`
 - `shared/sets/core/packs.js` — supply-pack definitions + rarity-weighted
   `rollPack()`. Coin economy: duel wins pay 5 (NPC) / 10 (PvP) — autobattle
   included (QoL decision, DESIGN.md); packs are the sink,
