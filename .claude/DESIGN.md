@@ -1462,7 +1462,11 @@ considered and rejected.
   the zone is findable, not stumbled-over. **This zone is now genuinely
   eyeballed live** (the preview loop happened to run this session). Remaining
   polish: the third-person camera gets "lifted" awkwardly when you stand on
-  the steep ridge (terrain-clamp → upward gaze) — noted, not yet addressed.
+  the steep ridge (terrain-clamp → upward gaze) — FIXED 2026-07-13
+  (`fix/camera-ridge`, merge `f1913be`): uphill terrain now occludes the
+  camera (ray-march over groundH pulls it in, like the house raycast);
+  flat-ground sky-gazing verified unchanged. Confirm feel on the ridge in
+  the next live pass.
 - Field Effects (per-zone duel rules — direction decided 2026-07-13, nothing
   built, **deferred: do not start until Michael green-lights**): which zone
   ships the first field? Emberpeaks is the natural
