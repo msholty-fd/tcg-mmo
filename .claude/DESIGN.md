@@ -1499,6 +1499,53 @@ considered and rejected.
     starts + clamped t; the headless replica test (endpoints, dwell,
     ping-pong symmetry, midnight wrap, bounded speed) now passes 24/24.
 
+- **The Deep Darkwood — Phase 1 (2026-07-13, `feat/darkwood`)**: Michael
+  asked to expand the world with new zones in the open areas. Candidates
+  surveyed: SE quadrant forest, a western lake (Mirrormere), a port south of
+  Highgate (Saltreach). He picked the SE forest — the biggest empty stretch
+  of map, it gives the outer ZONES ring's "Darkwood" label an actual
+  destination, it creates the first outer-to-outer road (Gruk's Hollow ↔
+  Highgate), and unlike the water zones it needs zero new rendering tech.
+  Zone heart (118,-115), CAMPS r=45 ("The Deep Darkwood"; listed after
+  Gruk's Hollow and Highgate so their labels win the road overlaps).
+  Follows the Emberpeaks playbook — this is Phase 1 (terrain + landmarks);
+  Phase 2 = a `shared/sets/darkwood/` card set (shadow/ambush/night is the
+  natural theme; ambush is Red-Sash's axis, so differentiate — night-matters
+  is genuinely unowned), Phase 3 = duelists + quest chain, 3b = zone pack +
+  vendor. **First region authored as a `world/` module** (world/darkwood.js)
+  rather than into the old monolith — the split earned its keep same-day.
+  - *Ground tint* (terrain.js): a radial "gloom" blend around the heart
+    (full inside ~r18, gone by ~r52), cool light-starved greens with mossy
+    mottling — same isolation promise as the volcanic blend (distance-gated,
+    nothing else in the world shifts). First pass was too subtle (~22%
+    darker than the Darkwood ring baseline — invisible in a live render);
+    deepened to ~40%, confirmed live by sampling terrain vertex colors.
+  - *Signature flora*: gnarltrees (crooked deadwood trunks, ball canopies —
+    a silhouette nothing else uses), dense dark pines, glowcap mushroom
+    clusters (emissive-only, no PointLights — night identity on the cheap).
+    All scatter skips the road corridor (ROAD/nearRoad in darkwood.js —
+    keep in sync with the waystones in roads.js).
+  - *Landmarks, both deliberately unexplained Phase-3 hooks*: the **Circle
+    of Sighs** (seven mossy standing stones + one fallen, ringing the heart
+    waystone — seeded for the zone's night content/duelist, the way the
+    Mine seeded Marrow and Emberwatch seeded the Sentinel) and the
+    **Hunter's Rest** (an abandoned camp with a conspicuously COLD firepit —
+    every other camp in the realm burns; whoever left, left in a hurry).
+  - *The Darkwood road* (roads.js): waystones Gruk's Hollow → heart →
+    Highgate's gate. Obstruction profile sampled live: equal to or better
+    than the existing village→Highgate road (trees brushing roads is the
+    realm-wide status quo).
+  - *Wildlife*: the wood has its own wolf pack (6, denser than the wilds'
+    thin band; road corridor kept clear).
+  - Verified live via a worktree dev server (launch.json can point vite at
+    a worktree — new trick, works): zone labels correct at heart/roads/
+    neighbor overlaps, road walkable, critters 54→58, terrain tint sampled
+    at vertices, **manual renderer.render() + screenshot** (bypasses the
+    rAF-stall gotcha entirely — camera aimed at the heart, one-off render,
+    real screenshots of the zone) — stone circle, gnarltrees, glowcaps,
+    Hunter's Rest, and the Gruk's Hollow/Highgate sightlines all eyeballed.
+    Zero console errors; build clean.
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase

@@ -38,6 +38,11 @@ export function groundH(x, z) {
   // in the low basin, blended in by how far north the vertex is.
   const vBasalt = new THREE.Color(0x2b2420), vAsh = new THREE.Color(0x514740),
         vEmber = new THREE.Color(0x7a3320), vRock = new THREE.Color(0x3a332e);
+  // Deep Darkwood palette — a cool, light-starved forest floor around the
+  // zone heart (118,-115; world/darkwood.js). Radial and distance-gated so
+  // nothing else in the world shifts (same isolation promise as the
+  // volcanic blend's z-gate).
+  const wGloom = new THREE.Color(0x20301c), wMoss = new THREE.Color(0x2e4a28);
   for (let i = 0; i < pos.count; i++) {
     const x = pos.getX(i), z = pos.getZ(i), h = groundH(x, z), d = Math.hypot(x, z);
     pos.setY(i, h);
@@ -45,6 +50,13 @@ export function groundH(x, z) {
     if (d > 85) c.lerp(cDark, smoothstep(85, 130, d) * .7);
     if (h > 6.5) c.lerp(cR, smoothstep(6.5, 10, h));
     if (d < 24 && Math.abs(Math.sin(x * .4) * Math.cos(z * .4)) < .14) c.lerp(cP, .5);
+    // Deep Darkwood heart: full gloom inside ~r18, fading out by ~r52, with
+    // mossy mottling so the floor isn't one flat dark green.
+    const gloom = smoothstep(52, 18, Math.hypot(x - 118, z + 115));
+    if (gloom > 0) {
+      const w = wGloom.clone().lerp(wMoss, (Math.sin(x * .22) * Math.cos(z * .19) + 1) / 2 * .6);
+      c.lerp(w, gloom * .88);
+    }
     // volcanic recolor from the ridge northward. Two blend drivers, whichever
     // is stronger: `north` (how far into the basin) AND `rocky` (how high the
     // terrain is) — so the RIDGE itself reads as dark rock even though it's
