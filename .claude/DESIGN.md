@@ -1436,6 +1436,34 @@ considered and rejected.
     starter zone last (new players should learn the vanilla game first —
     or get the gentlest field, not none; open question below).
 
+- **Route trainers — road duelists between settlements (2026-07-13,
+  `feat/road-duelists`)**: Michael's call, Pokémon-trainer framing: the wilds
+  between POIs were legible (waystones, Bram's Rest) but inert — every duel
+  lived at a destination, and ambient critters are pure cosmetics. Answer:
+  *more people to duel*, not mobs (which pivot #2 deliberately removed) and
+  not wandering NPCs (critter wandering is per-client, so a roaming duelist
+  would stand in different places for different players; revisit only with
+  server-seeded paths). Three minor duelists standing ON the three routes
+  that had nobody: Sorrel the Boartracker (Gruk road E, 62,-40, Boarherd),
+  Finch the Relic-Runner (Emberwatch road NE, 58,60, Red-Sash), Brenna
+  Lampwright (Hollowmere road SW, -44,-58, Wardens). South/Highgate already
+  has the footpad; north/Cinderpass passes Marrow's mine.
+  - *Deliberately LIGHT decks* — a single 2-card swap on a starter, the
+    original-footpad pattern, NOT deepened boss identities: roads should
+    duel easier than the camps they lead to. Sim (100/side): sorrel 57-67%,
+    finch 51-59%, brenna 31-42% vs starters (wardens-base sims low, greedy-AI
+    defense blind spot — known). Zero stuck games.
+  - `scout_ahead`, `rally_the_line`, `forest_sow`, `thicket_beast` get their
+    first deck owners (all had shipped straight to pack/reward pools).
+  - *Player-initiated only*, like every duelist — no proximity aggro, ever.
+  - *Economy note*: three more repeatable 5-coin NPC faucets; fine at current
+    scale, but count faucets before adding many more.
+  - Verified: build + syntax gates, headless deck sim, and a live raw-WS
+    duel against each of the three through the real server (duelStart with
+    correct name/kind, concede → duelEnd, no server errors). Positions are
+    dead-reckoned near waystones (same caveat as the stones — worst case an
+    NPC stands in a tree; cosmetic).
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase

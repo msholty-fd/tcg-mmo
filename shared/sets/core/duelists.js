@@ -195,6 +195,30 @@ const cobbDeck = swap(
   ['young_boar', 'wild_boar', 'tusker', 'boar_matron', 'pack_alpha', 'kindled_fury'],
   ['farmhands_boy', 'stout_plowman', 'yoke_ox', 'old_drover', 'cobb', 'harrows_plow_ox'],
 );
+// Road duelists (DESIGN.md "Route trainers", 2026-07-13) — minor duelists
+// stationed on the waystone routes that had nobody to duel between
+// settlements (Gruk road E, Emberwatch road NE, Hollowmere road SW).
+// Deliberately LIGHT: a single 2-card swap on a starter, like the original
+// footpad — NOT deepened boss identities. They're commoners who share their
+// family's staples, and a road should duel easier than the camp it leads to.
+// scout_ahead / forest_sow / thicket_beast / rally_the_line get their first
+// deck owners here (all four shipped straight to pack/reward pools and had
+// never been in an actual deck).
+const sorrelDeck = swap(
+  STARTER_DECKS.boarherd,
+  ['militia_recruit', 'militia_recruit'],
+  ['forest_sow', 'thicket_beast'],
+);
+const finchDeck = swap(
+  STARTER_DECKS.redsash,
+  ['young_boar', 'young_boar'],
+  ['scout_ahead', 'scout_ahead'],
+);
+const brennaDeck = swap(
+  STARTER_DECKS.wardens,
+  ['wild_boar', 'wild_boar'],
+  ['rally_the_line', 'counterspark'],
+);
 
 export const DUELISTS = {
   rowan: {
@@ -248,5 +272,17 @@ export const DUELISTS = {
   cobb: {
     name: 'Cobb the Farmhand', deck: cobbDeck,
     rewards: [...cobbDeck, 'quartermaster', 'hearth_meal'],
+  },
+  sorrel: {
+    name: 'Sorrel the Boartracker', deck: sorrelDeck,
+    rewards: [...sorrelDeck, 'dire_wolf'],
+  },
+  finch: {
+    name: 'Finch the Relic-Runner', deck: finchDeck,
+    rewards: [...finchDeck, 'quick_fingers'],
+  },
+  brenna: {
+    name: 'Brenna Lampwright', deck: brennaDeck,
+    rewards: [...brennaDeck, 'second_wind'],
   },
 };
