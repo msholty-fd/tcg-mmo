@@ -1267,6 +1267,96 @@ considered and rejected.
     vendor coords. `scripts/test-packs.mjs` guards the coord agreement between
     packs.js and world.js (the one cross-file invariant a typo could break).
 
+- **World architecture: stay ONE seamless world; scale by chunked authoring +
+  interest management, not by zone isolation (2026-07-13, Michael asked
+  whether the all-in-memory single world is sustainable).** Answer: yes, and
+  isolating regions into separate loaded zones would be solving the wrong
+  problem while breaking a design pillar (the Emberpeaks decision explicitly
+  chose seamless/continuous over portals/instances — walking north and
+  watching the grass turn to basalt IS the product).
+  - **Memory is not the bottleneck and won't be for a long time.** The world
+    is untextured low-poly primitives — a few thousand meshes across 640×640
+    units. Browsers handle an order of magnitude more before "loaded at once"
+    matters. Don't spend complexity budget here.
+  - **The real scaling walls, in the order they'll actually arrive:**
+    1. *Authoring collisions* — `world.js` is a single 1,100+-line module
+       every region shares; parallel worktree sessions already dance around
+       each other in it. **Fix soon, cheap:** split into per-region modules
+       (`world/village.js`, `world/emberpeaks.js`, …) that register into the
+       same shared arrays (npcs/critters/colliders). Pure refactor, zero
+       runtime change, and it's the same "sets are folders" move that already
+       worked for cards.
+    2. *Broadcast fan-out* — the server ships every player to every player at
+       10 Hz (`state` snapshot) with no interest management: O(n²) messages.
+       Irrelevant at current population; the first REAL zone-ish change when
+       it bites is server-side proximity filtering (only broadcast players
+       within ~80u), which needs no client or content change. **Trigger:
+       revisit at ~50 concurrent players.**
+    3. *Client build/draw cost* — lazy-build region props on approach +
+       dispose behind (streaming within the one scene, not zones). **Trigger:
+       initial world build > ~2s or fps problems on real hardware.**
+  - **If a region ever genuinely wants separation** (e.g. a Cinderhollow Mine
+    interior), prefer a *seam* (fog-choked corridor that streams the interior
+    in) over an instanced zone — the "no pocket-dimension/teleport" note
+    above already points this way for building interiors.
+  - What we deliberately give up by staying seamless: per-zone server
+    sharding. Acceptable — this game's ceiling is "a realm of friends," not
+    thousands per shard, per the vision.
+
+- **Card-game direction: familiar spine, novel edges — and the world itself
+  is the design space (2026-07-13, Michael).** Steer: stop treating the duel
+  engine as an MTG clone; ground it in enough shared TCG vocabulary to feel
+  learnable, then push mechanics MTG *can't* do — especially per-zone rules
+  so each region plays differently. Recorded direction + design framework:
+  - **Keep the familiar spine (unchanged):** ember ramp, creature combat with
+    keywords, 30-card decks, 20 Hearth, ≤3 copies. This is the "I already
+    basically know how to play" surface — it stays boring on purpose. The
+    no-priority-stack reaction decision also stands; innovation must not
+    reintroduce a stack by the back door.
+  - **The two assets MTG doesn't have are already built:** (1) duels happen at
+    a *place and time* in a persistent world (zones, server-synced day/night);
+    (2) cards are *instances with history* (Chronicle: origin, owners, battle
+    record, renown). Innovation should spend these, not generic
+    mechanic-space.
+  - **Headline mechanic: Field Effects (per-zone duel rules).** Dueling in a
+    region applies that region's standing rule to BOTH sides for the whole
+    duel — the land is effectively a shared enchantment nobody cast. Sketches
+    (illustrative, to be designed/simmed properly per zone):
+    - *Emberpeaks — Ashfall:* end of each turn, each side's leftmost creature
+      takes 1 damage (feeds the set's onDeath/kindle identities; hostile to
+      go-wide grassland decks — you feel the heat).
+    - *Hollowmere bog:* creatures that die return face-down under their
+      owner's deck's bottom, or first exhume each duel costs 0 (graveyard
+      density rises — Hessa's home advantage).
+    - *The Boarlands:* first creature each turn costs 1 less (open pasture —
+      teaches ramp-tempo to new players in the starter zone).
+    - *Night, anywhere:* a time-of-day condition, not a zone — e.g. cards
+      with a `nocturnal` bonus wake up (hour is already server-synced and in
+      every `state` broadcast; Emberwatch Ruins night-gating shows the
+      pattern).
+    The payoffs: geography becomes deck-building input ("what do I bring to
+    the Emberpeaks?"), zone NPCs get built around their home field so bosses
+    *belong*, and traveling is mechanically meaningful, not just scenery.
+  - **Architecture landing (all pieces exist):** promote the zone map from
+    `client/src/constants.js` CAMPS to `shared/` (server must authoritatively
+    derive the field from duel location — never client-claimed); duelRoom/
+    duelManager pass `opts.field` into `createDuel` (opts already exists);
+    the engine applies field hooks at `startTurn`/end-of-turn via the same
+    `registerEffect` primitive registry; the duel UI shows the field as a
+    banner card so the rule is legible. AI (`ai.js`) needs to at least not
+    crash into fields; teaching it to *play around* them can lag.
+  - **Second axis, later: Chronicle-powered play** — cards that reference
+    their own instance history ("this copy's kills") would be genuinely novel
+    (no paper game can do it). Deliberately deferred: it flirts with
+    pay-to-grind power creep, and the balance resolution above (levels are
+    modest) must not be undermined. Design it after Field Effects prove the
+    innovation loop works.
+  - **Costs acknowledged:** every field effect multiplies the balance surface
+    (headless sims should run per-field, not just per-matchup) and adds a
+    rules-legibility burden on the duel UI. Ship fields one zone at a time,
+    starter zone last (new players should learn the vanilla game first —
+    or get the gentlest field, not none; open question below).
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase
@@ -1294,6 +1384,20 @@ considered and rejected.
   eyeballed live** (the preview loop happened to run this session). Remaining
   polish: the third-person camera gets "lifted" awkwardly when you stand on
   the steep ridge (terrain-clamp → upward gaze) — noted, not yet addressed.
+- Field Effects (per-zone duel rules — direction decided 2026-07-13, nothing
+  built): which zone ships the first field? Emberpeaks is the natural
+  flagship (complete zone, thematically loud, its set already rewards the
+  ashfall/kindle synergies a fire field would feed) — but it's also the
+  end-game zone, so few duels happen there to playtest against. Does the
+  starter Boarlands get a gentle field or no field (learn vanilla first)?
+  And what does autobattle/AI do about fields — `ai.js` must tolerate them
+  before any field ships, but how much field-awareness does the greedy brain
+  need before autobattling in a hostile zone feels like throwing?
+- World.js per-region split (decided 2026-07-13, not yet done): pure
+  authoring refactor, no runtime change — worth doing before the NEXT zone
+  lands rather than after (the merge-conflict pain it solves is already
+  real). Registration order matters to nothing today; verify that stays true
+  (colliders/npcs are order-independent registries).
 - Renown pacing: thresholds 20/60/150 are untested against real play.
 - Starter balance: boarherd ~75% vs redsash (AI-vs-AI); needs a card pass.
 - Highgate placement/scale is untested in real play — verify the walk feels

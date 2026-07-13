@@ -47,6 +47,18 @@ progression) when the server is down; it auto-reconnects every 4s.
   (`shared/sets/`), quests, chronicle, and progression math run identically in
   browser and Node. No DOM, no THREE, no fs. If a change needs platform APIs,
   it doesn't belong in shared.
+- **The world stays ONE seamless scene** (decided 2026-07-13, DESIGN.md
+  "World architecture"): never instanced/portal zones. Scale via per-region
+  authoring modules (world.js split — pending), then server-side interest
+  management (~50 concurrent players), then client prop streaming — each has
+  an explicit trigger in DESIGN.md; don't build them early.
+- **Duel innovation direction (2026-07-13, DESIGN.md "Card-game direction"):**
+  familiar TCG spine stays fixed; new design space comes from what MTG can't
+  do — per-zone **Field Effects** (a region's standing rule applies to both
+  sides of duels fought there) and, later, Chronicle-powered mechanics.
+  Prerequisite for any field work: promote the zone map from
+  `client/src/constants.js` CAMPS to `shared/` so the server derives the
+  field from duel location authoritatively.
 - **The server is authoritative for everything worth having**: card grants
   (minting), decks (validated: ownership, ≤3 copies, Legend Budget), XP/levels/
   coins, quest accepts/turn-ins/progress, duel outcomes. The client is a view;
