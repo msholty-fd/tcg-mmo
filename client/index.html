@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Emberwood Online — Classic-Style Web RPG</title>
 <style>
   :root{
@@ -11,6 +11,13 @@
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{width:100%;height:100%;overflow:hidden;background:#050509;font-family:Georgia,serif;color:var(--ink)}
+  /* touch hardening: the game owns all gestures (no browser pan/zoom/select);
+     scrollable panels opt back in with touch-action below */
+  body{touch-action:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+  body.touch{-webkit-user-select:none;user-select:none}
+  body.touch input{-webkit-user-select:text;user-select:text}
+  #chat,#d-log,#db-grid,#db-deck,.t-pool,.t-cards,#chronicle,#tracker{touch-action:pan-y}
+  #d-my-hand{touch-action:pan-x}
   canvas.game{display:block}
   .panel{background:var(--panel);border:1px solid var(--gold-dim);border-radius:4px;box-shadow:0 0 0 1px #000,0 4px 16px rgba(0,0,0,.6)}
   /* ---- esc menu ---- */
@@ -317,6 +324,82 @@
   .cz-flavor{font-size:12.5px;color:var(--ink-dim);font-style:italic;line-height:1.5;margin:8px 0 0;border-top:1px solid rgba(138,114,56,.4);padding-top:8px}
   .cz-stats{font-size:16px;font-weight:bold;margin-top:10px;text-align:center}
   .cz-stats .atk{color:#f0c060}.cz-stats .hp{color:#e05a4a}
+
+  /* ---- touch controls (body.touch only — see input.js/MOBILE.md) ---- */
+  #touchui{display:none}
+  body.touch #touchui{display:block}
+  #joy{position:fixed;left:calc(18px + env(safe-area-inset-left));bottom:calc(24px + env(safe-area-inset-bottom));
+    width:112px;height:112px;border-radius:50%;border:2px solid var(--gold-dim);background:rgba(10,10,14,.35);
+    pointer-events:auto;touch-action:none;z-index:6}
+  #joy-nub{position:absolute;left:50%;top:50%;margin:-24px 0 0 -24px;width:48px;height:48px;border-radius:50%;
+    background:radial-gradient(#3a2f18,#241d10);border:1px solid var(--gold);pointer-events:none}
+  #tb-right{position:fixed;right:calc(16px + env(safe-area-inset-right));bottom:calc(26px + env(safe-area-inset-bottom));
+    display:flex;flex-direction:column;gap:12px;align-items:center;pointer-events:auto;z-index:6}
+  #tb-right button{width:58px;height:58px;border-radius:50%;font-size:22px;padding:0}
+  #tb-act{border-color:#7ac96a}
+  #tb-top{position:fixed;top:calc(72px + env(safe-area-inset-top));right:calc(14px + env(safe-area-inset-right));
+    display:flex;flex-direction:column;gap:8px;pointer-events:auto;z-index:6}
+  #tb-top button{width:40px;height:40px;border-radius:8px;font-size:17px;padding:0}
+  #tb-walk.on{border-color:#7ac96a;color:#7ac96a;box-shadow:0 0 10px rgba(122,201,106,.35)}
+  body.touch #hints{display:none!important}   /* keyboard hints are noise on touch */
+  #d-logbtn{display:none}   /* log toggle exists only where the sidebar doesn't fit */
+
+  /* ---- small screens (phones) — HUD + duel fit 390px portrait ---- */
+  @media (max-width: 740px){
+    .uframe{width:160px;padding:6px 8px;top:calc(10px + env(safe-area-inset-top))}
+    #pframe{left:calc(10px + env(safe-area-inset-left))}
+    #tframe{left:auto;right:calc(10px + env(safe-area-inset-right));top:calc(66px + env(safe-area-inset-top))}
+    #mmwrap{width:96px;top:calc(10px + env(safe-area-inset-top));right:calc(10px + env(safe-area-inset-right))}
+    #minimap{width:96px;height:96px}
+    #tb-top{top:calc(150px + env(safe-area-inset-top))}
+    #tracker{top:auto;bottom:200px;right:10px;width:200px;font-size:11.5px}
+    #chat{left:10px;bottom:150px;width:min(340px,56vw);max-height:110px;font-size:11.5px}
+    #chatinput{left:10px;bottom:270px;width:min(340px,80vw)}
+    #xpwrap{bottom:calc(8px + env(safe-area-inset-bottom))}
+    #prompt{bottom:auto;top:calc(120px + env(safe-area-inset-top));font-size:12px;padding:5px 12px;width:max-content;max-width:92vw}
+    #dialogue{bottom:auto;top:calc(150px + env(safe-area-inset-top))}
+    #hints{display:none}
+    #namerow{flex-direction:column}
+    #charname,#charpass{width:220px}
+    /* duel board on a phone: smaller cards, scrollable hand, no log sidebar */
+    .dcard{width:64px;height:106px;padding:4px 4px;border-radius:5px}
+    .dcard .art{height:28px;margin-top:5px}
+    .dcard .art img{width:24px;height:24px}
+    .dcard .cname{font-size:8.5px}
+    .dcard .ctext{font-size:7px;margin-top:2px}
+    .dcard .cost{width:17px;height:17px;font-size:11px;top:-5px;left:-5px}
+    .dcard .stats{font-size:10.5px;bottom:3px;left:4px;right:4px}
+    .dcard.cardback{width:34px;height:48px}
+    .dcard:hover{transform:none}
+    .dunit{width:58px;height:86px;padding:3px 4px}
+    .dunit .art{height:26px}
+    .dunit .art img{width:24px;height:24px}
+    .dunit .cname{font-size:8px}
+    .dunit .stats{font-size:10.5px}
+    .dhearth{width:46px;height:46px;font-size:15px;border-width:2px}
+    .dember{font-size:11px}
+    .dreact{width:22px;height:32px;font-size:10px}
+    .dench{width:26px;height:36px}
+    .dench img{width:20px;height:20px}
+    .drow{gap:5px;min-height:0}
+    #d-foe-hand{min-height:52px}
+    #d-board{margin:3px 4px}
+    #d-my-hand{justify-content:flex-start;overflow-x:auto;overflow-y:visible;flex-wrap:nowrap;
+      padding:10px 8px 6px;gap:6px;min-height:120px}
+    #d-log{display:none;position:fixed;inset:10% 6%;width:auto;max-width:none;z-index:13;
+      background:var(--panel);border:1px solid var(--gold-dim);border-radius:6px;font-size:12px}
+    #d-log.show{display:block}
+    #d-logbtn{display:inline-block}
+    #d-controls{gap:8px;padding:4px;padding-bottom:calc(4px + env(safe-area-inset-bottom))}
+    #d-controls button{font-size:12px;padding:7px 12px}
+    /* deck builder: stack panes; the deck/leaders panel becomes a bottom sheet */
+    #deckbuilder{padding:10px 2vw;padding-top:calc(10px + env(safe-area-inset-top))}
+    #db-head{flex-wrap:wrap;gap:8px}
+    #db-head h2{font-size:16px}
+    #db-main{flex-direction:column}
+    #db-deck{width:100%;max-height:34vh}
+    #cardzoom{width:min(264px,74vw)}
+  }
 </style>
 </head>
 <body>
@@ -359,6 +442,21 @@
     <span><b id="ti-name"></b> wants to trade!</span>
     <button class="wow" id="ti-accept">Accept</button>
     <button class="wow" id="ti-decline">Decline</button>
+  </div>
+  <div id="touchui">
+    <div id="joy"><div id="joy-nub"></div></div>
+    <div id="tb-right">
+      <button class="wow" id="tb-trade" style="display:none">🤝</button>
+      <button class="wow" id="tb-act" style="display:none">⚔</button>
+      <button class="wow" id="tb-jump">⤒</button>
+    </div>
+    <div id="tb-top">
+      <button class="wow" id="tb-menu" title="Menu">☰</button>
+      <button class="wow" id="tb-chat" title="Chat">💬</button>
+      <button class="wow" id="tb-deck" title="Deck builder">🎴</button>
+      <button class="wow" id="tb-quests" title="Quests">❗</button>
+      <button class="wow" id="tb-walk" title="Auto-walk">🚶</button>
+    </div>
   </div>
   <div id="shop" class="panel">
     <div class="s-head"><b id="s-vendor"></b> — Supply Packs</div>
@@ -415,6 +513,7 @@
     <button class="wow" id="d-auto" title="Let the duelist brain play your turns">Auto: Off</button>
     <button class="wow" id="d-concede">Concede</button>
     <button class="wow" id="d-helpbtn">?</button>
+    <button class="wow" id="d-logbtn">Log</button>
   </div>
   <div id="d-help" class="panel">
     <h3>How to Duel</h3>

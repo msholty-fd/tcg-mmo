@@ -7,7 +7,7 @@ import { STARTERS, ZONES, CAMPS } from './constants.js';
 import { player, critters } from './state.js';
 import { fires, torches, marla, aldric, camCollidables, sentinel } from './world.js';
 import { log, updateHUD } from './ui.js';
-import { keys, cam, started, setStarted, autoWalk } from './input.js';
+import { keys, cam, started, setStarted, autoWalk, touchMove, isTouch, initTouchControls, tickTouchUI } from './input.js';
 import { resolveCollision } from './colliders.js';
 import { nearestInteract, handleInteract, tickDialogue } from './interact.js';
 import { renderTracker, updateMark, npcQuest, npcTurnin } from './quests.js';
@@ -26,6 +26,7 @@ initFullmap();
 initNet();
 initCardZoom();
 initHudWindows();
+initTouchControls();
 
 // ---------- intro ----------
 // Players no longer pick a deck — the server rolls a starter deck for new
@@ -186,8 +187,9 @@ function update(dt) {
   // dayF/night blend above) so it's a discrete "it's here or it isn't."
   sentinel.mesh.visible = gameHour >= 20 || gameHour < 6;
 
-  // player movement
-  let mx = 0, mz = 0;
+  // player movement (keyboard + virtual joystick — atan2 below only keeps
+  // the direction, so joystick magnitude doesn't change speed, same as WASD)
+  let mx = touchMove.x, mz = touchMove.z;
   if (keys.KeyW || autoWalk) mz -= 1; if (keys.KeyS) mz += 1;
   if (keys.KeyA) mx -= 1; if (keys.KeyD) mx += 1;
   const gy = groundH(player.x, player.z);
@@ -275,6 +277,16 @@ function update(dt) {
       : `<b>E</b> — challenge · <b>T</b> — trade with ${rp.name} <span style="color:#8fd0f0">(player)</span>`;
   } else {
     pr.style.display = 'none';
+  }
+  if (isTouch) {
+    // context buttons mirror the prompt: the action button shows whenever
+    // there's someone to E, the trade button only beside a real player
+    $('tb-act').style.display = (n || rp) ? '' : 'none';
+    $('tb-trade').style.display = rp ? '' : 'none';
+    $('tb-act').textContent = n
+      ? ((n.duelist && !npcQuest(n) && !npcTurnin(n)) ? '⚔' : n.vendorPack && !npcQuest(n) && !npcTurnin(n) ? '🪙' : '💬')
+      : '⚔';
+    tickTouchUI();
   }
   if (keys.KeyE && !ePressed) {
     ePressed = true;

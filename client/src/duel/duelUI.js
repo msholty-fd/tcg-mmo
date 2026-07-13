@@ -252,6 +252,12 @@ export function initDuelUI() {
     const h = $('d-help');
     h.style.display = h.style.display === 'block' ? 'none' : 'block';
   });
+  // phones: the event-log sidebar doesn't fit, so a Log button (shown only
+  // by the small-screen media query) toggles it as a fullscreen overlay
+  $('d-logbtn').addEventListener('click', ev => {
+    ev.stopPropagation();
+    $('d-log').classList.toggle('show');
+  });
   $('duel').addEventListener('click', () => {
     hideMenu();
     if (selectedUnit || pendingPlay) { selectedUnit = null; pendingPlay = null; setMsg(''); render(); }

@@ -13,6 +13,10 @@ Deeper notes live in `.claude/`:
   safe pattern-copying for cheaper/smaller models (green), which needs care
   (yellow), and which is frontier-model-only (red). Smaller models: read it
   first and stay in your tier.
+- `.claude/MOBILE.md` — iPhone/touch support: what works, the touch-layer
+  architecture (touch buttons write into `keys`, joystick → `touchMove`,
+  `?touch=1` test override), Phase-1 gaps, and the Phase-2 wishlist. Read it
+  before touching input.js or any UI that must work on a phone.
 
 ## Working style (see .claude/WORKFLOW.md for the full procedure)
 
