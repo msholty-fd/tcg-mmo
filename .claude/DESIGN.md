@@ -1780,6 +1780,65 @@ considered and rejected.
     pass partly because packs.js/test-packs was another session's active
     lane) and the duel-UI night indicator flagged in the Phase 2 entry.
 
+- **Factions — THE progression system (2026-07-14, Michael)**: "as you play
+  with cards in that faction you earn points which allow you to play higher
+  level or newer cards from that faction." Decisions via AskUserQuestion:
+  **5 factions** to start (Boarherd/Wardens/Red-Sash from the starter
+  identities + Emberpeaks/Darkwood as zone factions), everything data-driven
+  so more can land later; **full re-gate** of the existing pool (this IS the
+  progression system) with a profiles.db wipe at deploy; Leaders integration
+  left to my judgment with "interesting but not overbearing" as the bar.
+  - **The judgment call — champion = +1 rank, not a second lock**: faction
+    rank is now the ONE card gate. The old Leader-ownership banner gate is
+    REMOVED from deckConstraints; owning any of a faction's champion Leaders
+    grants +1 effective rank with that faction ("a champion vouches for
+    you"). Leaders keep everything else — designation, fielding rules
+    (minBanner/costParity/singleton/…), Legend Budget stays orthogonal — so
+    net rule count for a player is unchanged: one gate type, one leader-rule
+    system, one budget. Chosen over keep-both (double locks on one card
+    read as noise) and over rank-replaces-leaders-entirely (demotes shipped
+    champions to cosmetics).
+  - **Mechanics** (`shared/factions.js`, pure/shared): `factionOf` maps core
+    cards via their families.js family (boars/piercing/graveyard → boarherd;
+    wardens/ward/crimson → wardens; bandits/warband → redsash; kindle_kin +
+    ashfall → emberpeaks, an early on-ramp to the zone faction) and zone
+    sets wholesale; village_hearth + the card-TYPE families are neutral —
+    never gated, earn nothing. **Standing**: each faction card you PLAY in
+    a duel = 1 point (win ×2, ≤8 plays counted/duel; kindle-burns
+    deliberately earn nothing — a sacrifice is not a witnessing; autobattle
+    earns in full per the standing QoL decision). **Ranks**: Stranger →
+    Known (40) → Trusted (120) → Sworn (300); requirement derives from
+    rarity (common 0 / uncommon 1 / rare 2, champions +1) — legible, zero
+    per-card data. The legacy starter pool + starter champions are pinned
+    rank 0.
+  - **Fresh characters**: `buildBannerStarter` no longer deals rares — a
+    new player is a Stranger whose DEALT champion vouches them to Known in
+    their own archetype, which is exactly what makes their dealt uncommons
+    legal. Day-one decks re-save under the player's own ranks by
+    construction (tested, 30 rolls). Caveat: trading away your only
+    champion drops the vouch — the deck still plays but won't re-save with
+    its uncommons until standing catches up; acceptable friction, flag if
+    playtests disagree.
+  - **Server**: standing is earned in onChronicle from `duel.log` (both
+    PvP + NPC), stored in `profile.factions`, shipped in profileUpdate +
+    a `standing` message (client logs gains and rank-ups); `validDeck`
+    passes `effectiveRanks(profile)` into the shared `evaluateDeck`.
+  - **Client**: deck builder locks show `🔒 <Faction>: <RankName>`; a new
+    `#db-factions` standing strip shows rank/points/next-threshold per
+    faction, gilded ▲ when a champion vouches.
+  - **Verification**: `scripts/test-factions.mjs` (new, 399 assertions:
+    map totals, rank derivation, gate + vouch, earn math from real AI duel
+    logs incl. win-doubling and caps, server-contract lifecycle incl.
+    own-but-can't-deck); test-leaders reworked for the new gate (198, incl.
+    the deliberate flip: starter with no designated Leaders is now VALID);
+    test-packs 4436/4436; starter sims byte-identical (60/52/47); raw-WS
+    e2e through the real server (autobattled duel → standing gains + sync,
+    locked save rejected, standing-seeded save accepted, persisted across
+    resume). NOT live-verified: the deck-builder standing strip + lock
+    badges visually (same DOM patterns as the banner locks they replace).
+  - **DEPLOY REQUIRES a profiles.db wipe** (Michael chose full re-gate):
+    existing profiles lack `factions` and their decks hold now-gated cards.
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase

@@ -10,11 +10,15 @@ import { newPlayerStarter } from '../shared/sets/core/cards.js';
 import { LEADERS } from '../shared/sets/core/leaders.js';
 import { BANNERS, bannerOf, matchesBanner } from '../shared/sets/core/banners.js';
 import { evaluateDeck, leaderRules } from '../shared/deckConstraints.js';
+import { FACTIONS, MAX_RANK, effectiveRanks } from '../shared/factions.js';
 
 let pass = 0, fail = 0;
 const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('  ✗ ' + msg); } };
 const defsOf = ids => ids.map(getCard);
 const parity = c => (c % 2 === 0 ? 'even' : 'odd');
+// all-Sworn rank context: used where a test targets Leader CONSTRAINTS and
+// must not trip the (separately tested) faction-rank gate
+const SWORN_ALL = Object.fromEntries(FACTIONS.map(f => [f.id, MAX_RANK]));
 
 // ---- 1. roster consistency -------------------------------------------------
 console.log('1. roster consistency');
@@ -34,22 +38,30 @@ for (const [id, L] of Object.entries(LEADERS)) {
 }
 
 // ---- 2. starter decks are valid by construction ----------------------------
+// evaluated under the fresh character's OWN effective ranks: zero standing,
+// but the dealt starter champion vouches them to Known in their archetype —
+// which is exactly what makes the dealt uncommons legal (factions.js).
 console.log('2. starter validity (30 rolls)');
+const freshRanks = s => effectiveRanks({ factions: {}, cards: s.deck.map(id => ({ cardId: id })) });
 for (let i = 0; i < 30; i++) {
   const s = newPlayerStarter();
   ok(s.deck.length === 30, 'starter has 30 cards');
   const copies = {}; s.deck.forEach(id => copies[id] = (copies[id] || 0) + 1);
   ok(Object.values(copies).every(n => n <= 3), 'starter respects ≤3 copies');
-  const res = evaluateDeck(defsOf(s.deck), s.leaders);
+  const res = evaluateDeck(defsOf(s.deck), s.leaders, freshRanks(s));
   ok(res.valid, 'starter passes evaluateDeck: ' + res.failures.map(f => f.text).join('; '));
 }
 
-// ---- 3. the gate: removing the Leader invalidates the deck ------------------
-console.log('3. gate enforcement');
+// ---- 3. the gate: faction rank (replaced the Leader-ownership gate) --------
+console.log('3. gate enforcement (faction rank)');
 {
+  // the OLD behavior is gone by design: a starter deck with NO Leaders
+  // DESIGNATED is now valid — ownership of the champion (not designation)
+  // is what vouches the ranks
   const s = newPlayerStarter();
-  const res = evaluateDeck(defsOf(s.deck), []);   // no Leader
-  ok(!res.valid && res.failures.some(f => f.banner), 'gated cards without a Leader → invalid');
+  const res = evaluateDeck(defsOf(s.deck), [], freshRanks(s));
+  ok(res.valid, 'starter deck with no designated Leaders is valid (rank gate replaced ownership gate): ' + res.failures.map(f => f.text).join('; '));
+  // the full rank-gate battery lives in scripts/test-factions.mjs
 }
 
 // ---- 4. generic satisfiability per Leader (catches self-contradictions) ----
@@ -93,7 +105,9 @@ function buildFor(leaderId) {
 }
 for (const id of Object.keys(LEADERS)) {
   const deck = buildFor(id);
-  const res = evaluateDeck(defsOf(deck), [id]);
+  // all-Sworn context: this section tests each Leader's CONSTRAINTS are
+  // satisfiable, independent of the (rank) gate tested in sections 3/6
+  const res = evaluateDeck(defsOf(deck), [id], SWORN_ALL);
   ok(deck.length === 30 && res.valid, `Leader "${id}" builds a legal 30 (n=${deck.length}): ${res.failures.map(f => f.text).join('; ')}`);
 }
 
@@ -104,14 +118,14 @@ console.log('5. negative cases');
   const gruk = buildFor('gruk');
   const reaction = allCards().find(c => c.type === 'reaction');
   const bad = [...gruk.slice(0, 29), reaction.id];
-  ok(!evaluateDeck(defsOf(bad), ['gruk']).valid, 'gruk + a reaction → invalid (banType)');
+  ok(!evaluateDeck(defsOf(bad), ['gruk'], SWORN_ALL).valid, 'gruk + a reaction → invalid (banType)');
 }
 {
   // marrow is singleton: duplicate a card
   const marrow = buildFor('marrow');
   const dupTarget = marrow.find(id => id !== 'marrow');
   const bad = [dupTarget, ...marrow.slice(0, 29)];   // now two of dupTarget
-  ok(!evaluateDeck(defsOf(bad), ['marrow']).valid, 'marrow + a duplicate → invalid (singleton)');
+  ok(!evaluateDeck(defsOf(bad), ['marrow'], SWORN_ALL).valid, 'marrow + a duplicate → invalid (singleton)');
 }
 ok(leaderRules('tarn').length === 2 && leaderRules('tarn').some(r => /odd|even/.test(r)), 'leaderRules(tarn) reads sensibly: ' + JSON.stringify(leaderRules('tarn')));
 
@@ -137,15 +151,15 @@ function serverValidDeck(profile, iids, leaderIids) {
     if (!inst || !deckSet.has(iid) || !isLeaderCard(inst.cardId)) return false;
     leaderCardIds.push(inst.cardId);
   }
-  return evaluateDeck(iids.map(iid => getCard(byId.get(iid).cardId)), leaderCardIds).valid;
+  return evaluateDeck(iids.map(iid => getCard(byId.get(iid).cardId)), leaderCardIds, effectiveRanks(profile)).valid;
 }
 {
   const s = newPlayerStarter();
   const cards = s.deck.map(id => mintCard(id, 'Starter deck', 'Tester'));
   const leaders = s.leaders.map(cid => cards.find(c => c.cardId === cid).iid);
-  const profile = { cards, deck: cards.map(c => c.iid) };
+  const profile = { cards, deck: cards.map(c => c.iid), factions: {} };
   ok(serverValidDeck(profile, profile.deck, leaders), 'minted starter passes server validDeck');
-  ok(!serverValidDeck(profile, profile.deck, []), 'same deck with no leaders → rejected (gate)');
+  ok(serverValidDeck(profile, profile.deck, []), 'starter with no leaders now accepted (rank gate, not ownership gate)');
   // a leader iid that isn't in the deck is rejected
   const orphan = mintCard(s.leaders[0], 'x', 'y');
   ok(!serverValidDeck({ cards: [...cards, orphan], deck: profile.deck }, profile.deck, [orphan.iid]),

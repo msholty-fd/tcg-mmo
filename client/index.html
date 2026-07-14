@@ -183,6 +183,12 @@
   #db-count.good{color:#7ac96a}
   #db-main{flex:1;display:flex;gap:16px;min-height:0}
   #db-collection{flex:1;display:flex;flex-direction:column;min-height:0;padding:0}
+  #db-factions{display:flex;gap:6px;padding:10px 12px 0;flex-wrap:wrap;flex-shrink:0}
+  #db-factions .fac{border:1px solid var(--gold-dim);border-radius:4px;padding:3px 9px;font-size:10.5px;
+    color:var(--ink-dim);background:rgba(0,0,0,.25);font-variant:small-caps;letter-spacing:.06em}
+  #db-factions .fac b{color:#d8b860;font-weight:normal}
+  #db-factions .fac .pts{color:var(--ink-dim);font-variant:normal;letter-spacing:0}
+  #db-factions .fac.vouched b{color:#ffd76a}
   #db-tabs{display:flex;gap:6px;padding:10px 12px 0;flex-shrink:0}
   #db-tabs button{background:#15131e;border:1px solid var(--gold-dim);color:var(--ink-dim);font-size:11px;padding:4px 13px;border-radius:4px;cursor:pointer;font-variant:small-caps;letter-spacing:.08em}
   #db-tabs button:hover{color:var(--ink);border-color:var(--gold)}
@@ -582,12 +588,13 @@
   </div>
   <div id="db-main">
     <div id="db-collection" class="panel">
+      <div id="db-factions"></div>
       <div id="db-tabs"></div>
       <div id="db-chips"></div>
       <div id="db-grid"></div>
     </div>
     <div id="db-deck" class="panel">
-      <h3>Leaders <span class="db-sub">— fly a banner to unlock its cards</span></h3>
+      <h3>Leaders <span class="db-sub">— champions vouch for you and set your deck's rules</span></h3>
       <div id="db-leaders"></div>
       <div id="db-rules"></div>
       <h3>Your Deck</h3>

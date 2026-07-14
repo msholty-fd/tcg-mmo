@@ -61,6 +61,17 @@ Canon facts. Everything else in the realm should be consistent with these:
 duel fought, every card carried and traded and made Storied, keeps a memory
 burning. The player's arc is to become part of what the fire remembers.
 
+**Factions & standing (the progression system, diegetically)**: witnessing
+runs both ways. Play a faction's embers and that faction *witnesses you* —
+standing is their memory of your deeds, and their deeper memories (higher-
+rank cards) open only to someone they know: Stranger → Known → Trusted →
+Sworn. A champion's card in your keeping vouches for you one rank beyond
+your standing — the folk who follow that champion take their word for it.
+Neutral cards (Village & Hearth, plain relics and tricks) belong to
+everyone and no one; playing them is life, not allegiance. In dialogue,
+NPCs may reference rank names naturally ("you're Known to the Wardens now")
+but never say "points" or "unlock."
+
 ## Voice & tone
 
 - **Cozy-melancholy folk-tale.** The threat is slow and quiet — a superstition

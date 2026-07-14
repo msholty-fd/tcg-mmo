@@ -71,8 +71,9 @@ progression) when the server is down; it auto-reconnects every 4s.
   `client/src/constants.js` CAMPS to `shared/` so the server derives the
   field from duel location authoritatively.
 - **The server is authoritative for everything worth having**: card grants
-  (minting), decks (validated: ownership, ≤3 copies, Legend Budget), XP/levels/
-  coins, quest accepts/turn-ins/progress, duel outcomes. The client is a view;
+  (minting), decks (validated: ownership, ≤3 copies, Legend Budget, faction
+  ranks), XP/levels/coins, faction standing, quest accepts/turn-ins/progress,
+  duel outcomes. The client is a view;
   it renders sanitized duel views (opponent hands are nulls) and sends action
   requests. Never add a client-side path that mutates progression.
 - **Cards are instances, not counts.** Every copy has an iid, origin, owners[],
@@ -92,6 +93,11 @@ progression) when the server is down; it auto-reconnects every 4s.
 
 - `shared/engine/engine.js` — turn structure, actions, combat keywords
 - `shared/engine/state.js` — duel state, instance normalization, stats/chatter
+- `shared/factions.js` — THE progression system: card→faction map, standing
+  earned by playing faction cards (server: onChronicle), ranks
+  (Stranger/Known/Trusted/Sworn) gating deck-building by rarity tier;
+  champions vouch +1. The one card gate — see DESIGN.md "Factions" before
+  touching deck validation, starters, or leader gating.
 - `shared/engine/ai.js` — greedy duelist brain (NPCs, autobattle, headless sims)
 - `server/index.js` — auth (name+password, scrypt + legacy-sha256 migration), profiles, presence, chat
 - `server/duelRoom.js` — duel rooms: PvP + NPC(AI), reconnect grace, rewards
