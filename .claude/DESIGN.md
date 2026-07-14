@@ -1940,6 +1940,36 @@ considered and rejected.
     business (camps, duels, vendors); a flavour landmark earns a route
     when it earns content. Revisit if playtests never find it.
 
+- **The Dial Stone — skywatcher landmark, the clock made visible
+  (2026-07-14, `feat/dial-stone`)**: worldbuilding-loop iteration 3. The
+  east wedge between Gruk's Hollow and the Emberwatch Ruins was the last
+  big empty stretch, and the pick does double duty as *mechanical
+  diegesis*: the server-synced hour is a real system (night duelists,
+  Nocturnal, torch ramps, the shared sky) and nothing in the world ever
+  talked about it.
+  - **The place** (`client/src/world/dialstone.js`, CAMPS (165,25) r=16):
+    a weathered sundial — low plinth (local mid-gray material; the first
+    render's M.waystone read as new marble, retoned), a leaning gnomon
+    whose REAL shadow from the moving directional sun sweeps the ring
+    (the feature costs nothing — shadows already exist), and 12 hour
+    stones with two fallen and one missing ("Merle won't say which").
+    Merle's camp downhill so the tent never shades the dial; two watching
+    benches.
+  - **Merle the Skywatcher** — flavour NPC, small-omens tier: grounds the
+    clock ("twelve stones and a shadow"), ties to the economy (Highgate
+    buys star-charts), and — the load-bearing line — **points players at
+    the realm's night content** ("there are those that only keep night
+    hours: the old watch's ruin has one, the deep wood has another"),
+    answering the long-standing "is the Sentinel's window discoverable?"
+    open question with an in-world hint instead of UI. One seeded omen:
+    the nights measure the same but *feel* longer.
+  - **Flora clearings** (`wilds.js`): the global random tree/rock scatter
+    (d 30–190, re-rolled each load) could drop a pine inside the dial
+    ring or the Wether Downs fold on any given load — caught live when
+    one did. New small CLEARINGS list in wilds.js for open-ground
+    landmarks whose read needs clear sightlines; forested zones and
+    walled places deliberately not listed.
+
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase
   1 and hit the predicted problem: "walked over a big hill that wasn't very
   clear I could climb." Two real flaws, both fixed:
