@@ -15,7 +15,7 @@ import { groundH } from '../terrain.js';
 import { wolfMesh } from '../entities.js';
 import { rand, smoothstep } from '../utils.js';
 import { addCircle } from '../colliders.js';
-import { M, tree, tent, crate, signpost, deadTree, spawnCritter } from './lib.js';
+import { M, tree, tent, crate, signpost, deadTree, spawnCritter, spawnDuelist } from './lib.js';
 
 const DW = { x: 118, z: -115 };   // zone heart (constants.js CAMPS r=45)
 
@@ -215,6 +215,21 @@ for (let i = 0; i < 3; i++) {
   w.position.set(x, baseY, z); w.visible = false; scene.add(w);
   WISPS.push({ mesh: w, baseY, phase: rand(0, Math.PI * 2) });
 }
+
+// ---- Phase 3: the zone's duelists (DESIGN.md "Deep Darkwood Phase 3") ----
+// Tamsin works the Highgate-side road ~30% out from the heart — ON the
+// kept-clear corridor (nearRoad w=7), day-reachable, the zone's gate duelist.
+export const tamsin = spawnDuelist('tamsin', 95, -110, { shirt: 0x3a332c, hat: 0x1f1b16 });
+
+// Weir the Forgotten — the Circle of Sighs' night walker (main quest Act II,
+// LORE.md). Stands inside the stone ring among the wisps; only manifests
+// 20:00–6:00 via the Sentinel's visibility-gate pattern (main.js), which
+// also means his nocturnal-heavy deck always fights on its home condition.
+// interact.js skips invisible NPCs generically, so no other wiring needed.
+export const weir = spawnDuelist('weir', DW.x - 3, DW.z + 3, { shirt: 0x26302a, hat: 0x182018 });
+weir.mesh.visible = false;   // corrected within the first frame by main.js's gameHour check
+const weirGlow = new THREE.PointLight(0xbfe8c8, 1.1, 10);
+weirGlow.position.y = 2.4; weir.mesh.add(weirGlow);
 
 export function updateDarkwood(hour, px, pz) {
   const night = hour >= 20 || hour < 6;

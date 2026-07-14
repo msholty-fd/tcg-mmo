@@ -50,6 +50,14 @@ registerCards([
     nocturnal: { atk: 2, hp: 2 },
     name: 'Hollow Shade', text: 'Nocturnal — at night: +2/+2.',
     flavor: "What the land forgets doesn't always forget the land." },
+  // Weir's signature — the "boss plays themself" pattern (Gruk/Vex/Rowan/…).
+  // Act II of the main quest turns on him; Bram's coda quest asks the player
+  // to carry this exact card (LORE.md: witnessing keeps an ember burning).
+  { id: 'weir', set: 'darkwood', rarity: 'rare', type: 'creature', cost: 5, atk: 4, hp: 3, keywords: ['ambush'],
+    nocturnal: { atk: 1, hp: 1 },
+    triggers: { onPlay: [{ effect: 'damage', target: 'randomEnemy', amount: 2 }] },
+    name: 'Weir the Forgotten', text: 'Ambush. When played, deal 2 damage to a random enemy. Nocturnal — at night: +1/+1.',
+    flavor: 'He still checks his snares. He no longer remembers why.' },
 
   // ---- spells ----
   { id: 'dw_carried_coal', set: 'darkwood', rarity: 'common', type: 'spell', cost: 1,

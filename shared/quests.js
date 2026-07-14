@@ -217,6 +217,33 @@ export const QUESTS = [
     obj: have => `Defeat Ignarok, the Pyrelord: ${have}/1`,
     thanks: "So the Pyrelord is afraid. A thing of the first fire — afraid. He is right about one thing: what is coming is not cold. Cold is only what it leaves behind. Seven stones stand in the deep wood where an eighth has already fallen, and under the mountain the delvers dug too close to something buried on purpose. When you are ready to know more, one of those doors will open. I will keep the watch until then. I have gotten rather good at it.",
   },
+  // ── The main quest, Act II: "What the Wood Kept" (see .claude/LORE.md) ───
+  // The Circle of Sighs door opens (the Act I cliffhanger named it). Act II
+  // answers one question — where the forgetting started, and who walks the
+  // ring — and opens the next: who pulled the eighth stone down (the mine,
+  // Act III's door). Weir is night-only at the Circle (the Sentinel gate),
+  // so `what_the_wood_kept` is night-gated by the world itself.
+  {
+    id: 'the_fallen_stone', giver: 'sentinel', title: 'The Fallen Stone', minLvl: 6, prereq: 'where_the_heart_fell',
+    visit: { x: 118, z: -115, r: 12 }, xp: 400, coins: 30,
+    offer: "You asked what the Pyrelord fears. Here is where I would begin. Deep in the southeast wood there is a ring of stones — my order raised eight, one for each watchfire of the realm. The wood was not dark when we raised them. Go to the ring. Count what stands. I have not had the courage to ask anyone in a long time.",
+    obj: () => 'Find the Circle of Sighs in the Deep Darkwood',
+    thanks: "Seven, and one fallen. Still only one, then. You have stood where the forgetting started — the first watchfire to go out, so long ago the wood grew over its grave. What burns can be relit. What is forgotten must be remembered first. And something out there still remembers: the wisps do not circle for nothing. Go back at night.",
+  },
+  {
+    id: 'what_the_wood_kept', giver: 'sentinel', title: 'What the Wood Kept', minLvl: 6, prereq: 'the_fallen_stone',
+    duels: { target: 'weir', need: 1 }, xp: 600, coins: 50,
+    offer: "Whatever walks the ring after dark is no beast — the wisps make way for it. If it was ever one of us, it will answer the old way: with cards. Duel it. Win or lose, learn its name.",
+    obj: have => `Defeat what walks the Circle at night: ${have}/1`,
+    thanks: "Weir. The hunter who would not stop looking for what killed his fire. The wood has half-forgotten him — and he it — but you dueled him, and a duel is a witnessing. That is how he is held here now: keep his story told. And mark this. The eighth stone did not crumble; it was pulled down. Nothing that lives in that wood pulls down a watchstone. Ask what the delvers found under the mountain that wanted a beacon put out.",
+  },
+  {
+    id: 'a_coal_for_bram', giver: 'bram', title: 'A Coal for Bram', minLvl: 6, prereq: 'what_the_wood_kept',
+    collect: { cardId: 'weir', need: 1 }, xp: 350, coins: 30,
+    offer: "So it's him. Twenty years sharing this fire, and he goes and becomes a ghost story. The old watcher told you a witnessed ember burns brighter? Then witness him proper. His memory's out there in the wood, in the cards he plays — win a piece of it, carry it, let it be seen. Don't bring it to me to keep. Bring it everywhere. But come show me first, so an old man knows it's really him.",
+    obj: have => `Weir the Forgotten (the card) owned: ${have}/1`,
+    thanks: "That's his fletching on the sleeve, sure as sunrise. Hello, old friend. …Go on, take him with you. A fire that's fed doesn't die, and a story that's told doesn't either. I'll keep the first one going. You keep the second.",
+  },
 ];
 
 export const questById = id => QUESTS.find(q => q.id === id);
