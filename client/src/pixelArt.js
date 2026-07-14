@@ -433,7 +433,123 @@ const SPRITES = {
       '................',
     ],
   },
+
+  // ---- wardrobe garments (faction regalia icons, wardrobe.js) ------------
+  // One sprite per dress slot; every item is a palette swap: c cloth,
+  // C cloth shade, h highlight (the smolder tint on glow items), k outline,
+  // t leather trim. Cloth colors are derived from the item's mesh color in
+  // wardrobe.js so icon and 3D look can never drift apart.
+  garb_head: {
+    pal: { k: '#14100c', c: '#8a8578', C: '#5e5a50', h: '#b8b2a2' },
+    rows: [
+      '................',
+      '.......kk.......',
+      '......khck......',
+      '......kcck......',
+      '.....kchcck.....',
+      '.....kcccck.....',
+      '....kcchccck....',
+      '...kccchcccck...',
+      '...kcccccccck...',
+      '..kCccccccccCk..',
+      '.kkkkkkkkkkkkkk.',
+      '.kCCCCCCCCCCCCk.',
+      '..kkkkkkkkkkkk..',
+      '................',
+      '................',
+      '................',
+    ],
+  },
+  garb_body: {
+    pal: { k: '#14100c', c: '#8a8578', C: '#5e5a50', h: '#b8b2a2', t: '#3a2c1c' },
+    rows: [
+      '................',
+      '..kkkkkkkkkkkk..',
+      '.kcchccccccchck.',
+      'kcckcccccccckcck',
+      'kcckcccccccckcck',
+      'kkkkcccccccckkkk',
+      '...kcccccccck...',
+      '...kttttttttk...',
+      '...kcccccccck...',
+      '..kcccccccccck..',
+      '..kCccccccccCk..',
+      '..kkkkkkkkkkkk..',
+      '................',
+      '................',
+      '................',
+      '................',
+    ],
+  },
+  garb_legs: {
+    pal: { k: '#14100c', c: '#8a8578', C: '#5e5a50', h: '#b8b2a2', t: '#3a2c1c' },
+    rows: [
+      '................',
+      '..kkkkkkkkkkkk..',
+      '.kttttttttttttk.',
+      '.kcccccccccccck.',
+      '.kccccckkccccck.',
+      '.kcccck..kcccck.',
+      '.kchcck..kcchck.',
+      '.kcccck..kcccck.',
+      '.kcccck..kcccck.',
+      '.kCccck..kccCck.',
+      '.kCCCCk..kCCCCk.',
+      '.kkkkkk..kkkkkk.',
+      '................',
+      '................',
+      '................',
+      '................',
+    ],
+  },
+  garb_back: {
+    pal: { k: '#14100c', c: '#8a8578', C: '#5e5a50', h: '#b8b2a2' },
+    rows: [
+      '................',
+      '.....kkkkkk.....',
+      '....kcchccck....',
+      '...kcccccccck...',
+      '..kcChccccChck..',
+      '.kccCccccccCcck.',
+      '.kccCcchhccCcck.',
+      '.kccCccccccCcck.',
+      '.kccCccccccCcck.',
+      '.kccCccccccCcck.',
+      '.kcCCccccccCCck.',
+      '.kCCCCCCCCCCCCk.',
+      '.kk.kkk..kkk.kk.',
+      '................',
+      '................',
+      '................',
+    ],
+  },
 };
+
+// Render any sprite with palette overrides — for non-card art (the wardrobe
+// garment icons). Same 16x16 canvas machinery as artFor, keyed per palette.
+const spriteCache = new Map();
+export function spriteArt(name, pal = {}) {
+  const key = name + JSON.stringify(pal);
+  if (spriteCache.has(key)) return spriteCache.get(key);
+  const sprite = SPRITES[name];
+  if (!sprite) return null;
+  const url = renderSprite(sprite, { ...sprite.pal, ...pal });
+  spriteCache.set(key, url);
+  return url;
+}
+
+function renderSprite(sprite, pal) {
+  const c = document.createElement('canvas');
+  c.width = 16; c.height = 16;
+  const ctx = c.getContext('2d');
+  sprite.rows.forEach((row, y) => {
+    for (let x = 0; x < 16; x++) {
+      const col = pal[row[x]];
+      if (col) { ctx.fillStyle = col; ctx.fillRect(x, y, 1, 1); }
+    }
+  });
+  return c.toDataURL();
+}
 
 // card -> {sprite, pal overrides}
 const CARD_ART = {
@@ -685,17 +801,7 @@ export function artFor(cardId) {
   const def = CARD_ART[cardId];
   if (!def) { cache.set(cardId, null); return null; }
   const sprite = SPRITES[def.sprite];
-  const pal = { ...sprite.pal, ...(def.pal || {}) };
-  const c = document.createElement('canvas');
-  c.width = 16; c.height = 16;
-  const ctx = c.getContext('2d');
-  sprite.rows.forEach((row, y) => {
-    for (let x = 0; x < 16; x++) {
-      const col = pal[row[x]];
-      if (col) { ctx.fillStyle = col; ctx.fillRect(x, y, 1, 1); }
-    }
-  });
-  const url = c.toDataURL();
+  const url = renderSprite(sprite, { ...sprite.pal, ...(def.pal || {}) });
   cache.set(cardId, url);
   return url;
 }
