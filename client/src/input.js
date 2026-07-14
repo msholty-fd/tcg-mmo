@@ -5,6 +5,7 @@ import { tradeOpen, cancelTrade } from './trade.js';
 import { shopOpen, closeShop } from './shop.js';
 import { hallOpen, closeHall } from './hall.js';
 import { fullmapOpen, toggleFullmap } from './fullmap.js';
+import { wardrobeOpen, toggleWardrobe, closeWardrobe } from './wardrobe.js';
 import { sendChat } from './net.js';
 import { toggleWindow } from './hudWindows.js';
 import { toggleEscMenu, escMenuOpen } from './escMenu.js';
@@ -50,6 +51,7 @@ addEventListener('keydown', e => {
     if (shopOpen) closeShop();
     else if (hallOpen) closeHall();
     else if (tradeOpen) cancelTrade();
+    else if (wardrobeOpen) closeWardrobe();
     else if (deckbuilderOpen) toggleDeckbuilder();
     else if (fullmapOpen) toggleFullmap();
     else toggleEscMenu();
@@ -59,10 +61,11 @@ addEventListener('keydown', e => {
   if (e.code === 'Enter') { chat.style.display = 'block'; chat.focus(); e.preventDefault(); return; }
 
   if (e.code === 'KeyR') { autoWalk = !autoWalk; return; }
-  if (e.code === 'KeyB' && !tradeOpen && !shopOpen && !fullmapOpen) { toggleDeckbuilder(); return; }
-  if (e.code === 'KeyM' && !tradeOpen && !shopOpen && !deckbuilderOpen) { toggleFullmap(); return; }
+  if (e.code === 'KeyB' && !tradeOpen && !shopOpen && !fullmapOpen && !wardrobeOpen) { toggleDeckbuilder(); return; }
+  if (e.code === 'KeyM' && !tradeOpen && !shopOpen && !deckbuilderOpen && !wardrobeOpen) { toggleFullmap(); return; }
+  if (e.code === 'KeyO' && !tradeOpen && !shopOpen && !deckbuilderOpen && !fullmapOpen) { toggleWardrobe(); return; }
   if (HUD_KEYS[e.code]) { toggleWindow(HUD_KEYS[e.code]); return; }
-  if (deckbuilderOpen || tradeOpen || shopOpen || fullmapOpen) return;
+  if (deckbuilderOpen || tradeOpen || shopOpen || fullmapOpen || wardrobeOpen) return;
   if (e.code === 'Space') e.preventDefault();
   if (e.code === 'KeyS') autoWalk = false;   // pressing back cancels auto-walk (WoW behavior)
   keys[e.code] = true;

@@ -42,6 +42,7 @@ const SESSION_KEY = 'emberwood.session';
 function enterWorld(name, starter, pos = null, password = '', mode = 'resume') {
   const s = STARTERS[starter];
   player.outfit = s;
+  player.outfitKey = starter;   // wardrobe.js lookOpts base look (regalia layers over it)
   player.name = name;
   if (pos) { player.x = pos.x; player.z = pos.z; }
   initCollection(starter, player.name);

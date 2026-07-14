@@ -1839,6 +1839,46 @@ considered and rejected.
   - **DEPLOY REQUIRES a profiles.db wipe** (Michael chose full re-gate):
     existing profiles lack `factions` and their decks hold now-gated cards.
 
+- **Faction regalia — cosmetic wardrobe earned by standing (2026-07-14,
+  Michael)**: "as you progress through the factions you get unlockable
+  clothes for various body parts to look more and more like a faction."
+  Standing's visible payoff: each faction offers 4 pieces across the
+  humanoid's dress slots (body / legs / head / back), gated by **effective
+  rank** — the same `effectiveRanks` math that gates deck-building, so a
+  champion's vouch opens the wardrobe too (a fresh character can wear their
+  starter faction's rank-1 coat on day one; deliberate, it mirrors the
+  deck-builder vouch and gives new players an immediate visible identity).
+  Ladder: Known → the coat, Trusted → leggings + headwear, Sworn → a cape
+  (new `cape` part on `humanoid()`; the Emberpeaks mantle smolders via the
+  campfire emissive trick). Purely cosmetic — no stats, by design; the
+  Field-Effects direction owns gameplay-side zone identity.
+  - **Shared**: `shared/cosmetics.js` — WARDROBE data (20 items),
+    `sanitizeAppearance` (garbage-proof), `validAppearance` (rank check).
+    Items are DATA like factions.js: a new faction's regalia = 4 entries.
+  - **Server authoritative**: `setAppearance` re-validates against the
+    profile (client can't dress above its standing), persists
+    `profile.appearance {slot: itemId}`, echoes `appearance`; the 10 Hz
+    presence snapshot carries `appearance` so remotes render regalia and
+    live-swap meshes when it changes. Additive schema — old profiles
+    default to `{}`, **no db wipe needed**.
+  - **Client**: Wardrobe panel (O, Esc-chained like the other panels) —
+    faction rows with rank, swatch chips, worn = gilded, locked = dimmed
+    with the rank name; "Plain clothes" resets. Bare slots fall back to
+    the starter outfit's colors (`lookOpts` layers regalia over STARTERS).
+  - **Voice**: diegetic throughout — "wear the colors of those who know
+    you", rejection is "They don't know you well enough to wear that";
+    never "unlock" (LORE.md rule).
+  - **Verification**: headless cosmetics checks (data sanity, sanitize,
+    rank gating, vouch); raw-WS e2e through the real server (Stranger
+    over-rank rejected, vouched rank-1 accepted, seeded-Sworn full set
+    accepted + persisted across restart/reconnect, observer's snapshot
+    carries the regalia); live client checked under the document.hidden
+    stall workaround (welcome syncs the look, mesh parts carry exact item
+    colors incl. cape at z=-.3, panel renders with correct worn/locked
+    states, real bubbling click doffs the helm → mesh reverts to starter
+    hat color → server profile updates). NOT verified: animated/in-motion
+    look (rAF stall), true two-browser visual of a remote's cape.
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase
