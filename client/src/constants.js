@@ -55,6 +55,10 @@ export const CAMPS = [
   // small circle overlaps on the roads between them. See DESIGN.md
   // "Deep Darkwood".
   { x: 118, z: -115, r: 45, name: 'The Deep Darkwood' },
+  // A shepherd's grazing downs due west — the first pastoral place, in the
+  // unclaimed wedge between Red-Sash Camp and Hollowmere. See DESIGN.md
+  // "The Wether Downs".
+  { x: -150, z: -10, r: 20, name: 'The Wether Downs' },
   // An abandoned mine dug into a rocky rise due north, in the Darkwood — a
   // scenic discovery, not enterable (seeds future underground content). See
   // DESIGN.md "Cinderhollow Mine".

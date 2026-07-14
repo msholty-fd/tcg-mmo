@@ -1911,7 +1911,34 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
-## Open questions
+- **The Wether Downs — pastoral shepherd landmark (2026-07-14,
+  `feat/wether-downs`)**: worldbuilding-loop iteration under Michael's
+  "continue expanding the world out." With the Darkwood complete, the map
+  survey found the due-west wedge (between Red-Sash Camp and Hollowmere,
+  x −120…−200) the biggest unclaimed stretch — and *pastoral* the missing
+  archetype (wild/martial/mercantile/agricultural/industrial all taken).
+  Landmark-tier scope on purpose (Harrowfield precedent): card-light,
+  world-module-only, no duelist, plain bundle deploy.
+  - **The place** (`client/src/world/wetherdowns.js`, CAMPS (−150,−10)
+    r=20): a C-shaped drystone sheepfold (cosmetic low wall — the
+    Harrowfield fence decision applies verbatim), a shepherd's hut
+    (collider + camera occluder), a kept campfire (LORE relationship to
+    the fire: **tended** — the cozy counterweight to the cold wood), a
+    herder's cairn, hay/crate/barrel/signpost dressing.
+  - **The flock**: 7 sheep + lambs (module-local `sheepMesh`, single-region
+    rule), a tan off-duty dog by the fire, and **the bellwether** — a
+    darker lead ewe grazing apart on the western rise. She is the zone's
+    seeded hook: Wynn's omen line has her staring west at nothing
+    ("the world's edge"), a door named before its content exists (the
+    Mine pattern). Do not pay it off without a content phase.
+  - **Shepherd Wynn** — flavour NPC, small-omens tier (LORE.md list
+    updated): six lines tying wool to Marla/Highgate (economy, like
+    Harrow's), wolves to the wood, plus the bellwether omen and a
+    keep-the-fire line ("a dark camp is a borrowed camp — never did say
+    borrowed from whom").
+  - No west road/waystones on purpose: routes mark destinations with
+    business (camps, duels, vendors); a flavour landmark earns a route
+    when it earns content. Revisit if playtests never find it.
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase
   1 and hit the predicted problem: "walked over a big hill that wasn't very
