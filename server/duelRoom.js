@@ -5,6 +5,7 @@
 
 import '../shared/sets/core/cards.js';
 import '../shared/sets/emberpeaks/cards.js';
+import '../shared/sets/darkwood/cards.js';
 import { createDuel, findUnit } from '../shared/engine/state.js';
 import { startTurn, endTurn, playCard, kindle, attack } from '../shared/engine/engine.js';
 import { takeTurn } from '../shared/engine/ai.js';
@@ -29,7 +30,9 @@ export class DuelRoom {
     this.autoSides = new Set();   // human sides that toggled autobattle
     this.turnTimer = null;
     this.turnTimeouts = [0, 0];   // consecutive idle-turn skips per side
-    this.duel = createDuel([...a.deckItems], [...b.deckItems], { names: [a.name, b.name] });
+    // night comes from the server-synced game hour at room creation
+    // (opts.night via roomOpts in index.js) and is fixed for the whole duel
+    this.duel = createDuel([...a.deckItems], [...b.deckItems], { names: [a.name, b.name], night: opts.night });
     startTurn(this.duel);
     for (let s = 0; s < 2; s++) this.sendStart(s);
     this.maybeBotTurn();
@@ -49,7 +52,7 @@ export class DuelRoom {
   view(side) {
     const d = this.duel;
     return {
-      turn: d.turn, active: d.active, winner: d.winner,
+      turn: d.turn, active: d.active, winner: d.winner, night: d.night,
       chatter: d.chatter.slice(-12),
       players: d.players.map((p, i) => ({
         hearth: p.hearth, ember: p.ember, emberMax: p.emberMax,

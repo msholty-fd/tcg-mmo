@@ -372,7 +372,12 @@ function endRoom(room) {
   }
 }
 
-const roomOpts = extra => ({ onEnd: endRoom, grant, onWin: onDuelWin, onChronicle, ...extra });
+// night matches the Sentinel/wisp window (20:00–6:00), evaluated when the
+// room is created — nocturnal cards (Darkwood set) key off it for the whole
+// duel. Same server-synced clock every client renders, so the duel's night
+// state always agrees with the sky the players are looking at.
+const isNight = () => { const h = gameHour(); return h >= 20 || h < 6; };
+const roomOpts = extra => ({ onEnd: endRoom, grant, onWin: onDuelWin, onChronicle, night: isNight(), ...extra });
 
 wss.on('connection', (ws, req) => {
   if (!originAllowed(req)) {

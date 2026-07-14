@@ -31,6 +31,11 @@ export function createDuel(deckA, deckB, opts = {}) {
     chatter: [],
     stats: {},                                   // iid -> {kills, hearthDmg}
     names: opts.names || ['You', 'Opponent'],
+    // fixed at duel start (a standing condition, like the coming Field
+    // Effects — no mid-duel stat swings when the hour rolls over 20:00).
+    // Server duels derive it from the server-synced game hour; offline
+    // duels from the local clock. Powers the `nocturnal` card field.
+    night: !!opts.night,
     players: [makePlayer(deckA, rng), makePlayer(deckB, rng)],
   };
   for (let s = 0; s < 2; s++) for (let i = 0; i < 4; i++) drawCard(duel, s);
@@ -93,10 +98,14 @@ export function drawCard(duel, side) {
   }
 }
 
-// Chronicle level bonuses: Veteran +1/+1, Storied +2/+2 (+ card's storiedKeyword)
-export function unitFromCard(c, side) {
+// Chronicle level bonuses: Veteran +1/+1, Storied +2/+2 (+ card's storiedKeyword).
+// Nocturnal cards (def.nocturnal = {atk, hp}) enter play with their bonus when
+// the duel is under night (duel.night, fixed at duel start) — the Darkwood
+// set's identity. Applied here so tokens and played cards behave identically.
+export function unitFromCard(c, side, night = false) {
   const def = getCard(c.card);
   const bonus = c.level >= 3 ? 2 : c.level >= 2 ? 1 : 0;
+  const noct = night && def.nocturnal ? def.nocturnal : { atk: 0, hp: 0 };
   const keywords = [...(def.keywords || [])];
   if (c.level >= 3 && def.storiedKeyword && !keywords.includes(def.storiedKeyword)) {
     keywords.push(def.storiedKeyword);
@@ -106,9 +115,9 @@ export function unitFromCard(c, side) {
     side,
     card: c.card,
     level: c.level,
-    atk: def.atk + bonus,
-    hp: def.hp + bonus,
-    maxhp: def.hp + bonus,
+    atk: def.atk + bonus + (noct.atk || 0),
+    hp: def.hp + bonus + (noct.hp || 0),
+    maxhp: def.hp + bonus + (noct.hp || 0),
     keywords,
     sick: !keywords.includes('ambush'),
     attacksLeft: keywords.includes('ambush') ? (keywords.includes('frenzy') ? 2 : 1) : 0,
@@ -119,7 +128,7 @@ export function unitFromCard(c, side) {
 export function summonUnit(duel, side, cardId) {
   const p = duel.players[side];
   if (p.field.length >= 6) return null;
-  const u = unitFromCard({ card: cardId, iid: 't' + uid(), level: 0 }, side);
+  const u = unitFromCard({ card: cardId, iid: 't' + uid(), level: 0 }, side, duel.night);
   p.field.push(u);
   duel.log.push({ type: 'summon', side, unit: u.uid, card: cardId });
   say(duel, `A ${getCard(cardId).name} joins ${duel.names[side]}'s side.`);
