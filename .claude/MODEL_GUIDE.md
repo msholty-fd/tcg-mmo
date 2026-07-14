@@ -1,8 +1,10 @@
 # Emberwood Online — Model Guide (task routing by capability)
 
-Written 2026-07-08 by a Fable-tier session, for routing work to cheaper /
-smaller models (Haiku-tier, Sonnet-tier) so they contribute safely and
-effectively. If you are a smaller model reading this: the GREEN section is
+Written 2026-07-08 by a Fable-tier session; updated 2026-07-14 after ~20
+merges under this routing (factions, three completed zones, the world/
+split, LORE.md). For routing work to cheaper / smaller models (Haiku-tier,
+Sonnet-tier) so they contribute safely and effectively. **Companion doc:
+`.claude/VERIFICATION.md`** — the exact recipes for every check named here. If you are a smaller model reading this: the GREEN section is
 your home turf — copy the cited reference pattern exactly, run the listed
 checks, and you will produce work indistinguishable from a frontier model's.
 The RED section is where plausible-looking changes quietly corrupt the
@@ -44,6 +46,16 @@ is "add data, don't change machinery."
 6. **Record verification honestly** in STATUS.md — what you ran and what
    you skipped. "Build passed, live check blocked by the preview gotcha"
    is a fine entry; a claimed check that didn't run is not.
+7. **Read `.claude/LORE.md` before writing ANY player-facing text** — quest
+   text, NPC dialogue, card names/flavor, UI copy, broadcast lines. It has
+   voice rules (rank names not "points", fires have tiers, hooks are
+   *referenced never explained*) and a who-knows-what ledger. Cheap models
+   produce fine prose in the wrong voice; the voice IS the product here.
+8. **Run the standing suites and compare counts against main's baseline**
+   (test-packs / test-leaders / test-factions — see VERIFICATION.md §1).
+   A dropped count means your branch broke a cross-file invariant even if
+   your feature works. These suites exist precisely so smaller models get
+   machine-checked instead of judgment-checked.
 
 ---
 
@@ -54,8 +66,17 @@ The common shape: **find the newest existing example, imitate it exactly,
 register everything, verify headlessly.**
 
 ### G1. New cards using existing mechanics
-- **Files**: `shared/sets/core/cards.js` (+ art, see G2; + a duelist reward
-  pool or the pack, or the card never enters circulation — see G3).
+- **Files**: `shared/sets/core/cards.js` — or a zone set's cards.js; three
+  sets exist now (`core`, `emberpeaks`, `darkwood`) and new sets are folders
+  (+ art, see G2; + a duelist reward pool or a pack, or the card never
+  enters circulation — see G3).
+- **Faction mapping (new since factions, 2026-07-14)**: every card must
+  resolve through `shared/factions.js` — core cards map via their
+  deck-builder family (`FACTION_OF_FAMILY`), zone sets map wholesale
+  (`FACTION_OF_SET`), unmapped families are deliberately neutral. A card in
+  a gated family is rank-gated by rarity (common 0 / uncommon 1 / rare 2,
+  champions +1) — so rarity is now a PROGRESSION decision, not just a pack
+  weight. `node scripts/test-factions.mjs` checks the map end-to-end.
 - **Pattern**: any recent entry in cards.js. A card is one object:
   `{ id, set, rarity, type, cost, atk, hp, keywords?, triggers?,
   needsTarget?, storiedKeyword?, name, text, flavor }`.
@@ -103,9 +124,11 @@ register everything, verify headlessly.**
 ### G4. New quests using existing objective shapes
 - **Files**: `shared/quests.js` (definitions + gating), `client/src/quests.js`
   (GIVERS map), sometimes `client/src/interact.js`.
-- **Pattern**: any QUESTS entry. Two objective shapes exist: `duels:
-  {target, need}` and `collect: {cardId, need}`. `giver` is client-only;
-  any NPC can give quests with zero server changes.
+- **Pattern**: any QUESTS entry. Three objective shapes exist: `duels:
+  {target, need}`, `collect: {cardId, need}`, and `visit: {x, z, r}`
+  (added 2026-07-13; progressed server-side from the pos stream — good for
+  discovery quests). `giver` is client-only; any NPC can give quests with
+  zero server changes.
 - **Checklist**: `minLvl`/`prereq` gate set thoughtfully (early content
   gates early — see `road_toll`); offer/obj/thanks text written in the
   established voice; collect quests do NOT consume cards (by design);
@@ -115,22 +138,34 @@ register everything, verify headlessly.**
   not green.
 
 ### G5. Worldbuilding: props, camps, landmarks, flavor NPCs
-- **Files**: `client/src/world.js` (builders), `client/src/colliders.js`
+- **Files**: world authoring is now per-region modules (2026-07-13 split):
+  a new place = new `client/src/world/<region>.js` built on `world/lib.js`
+  (materials, prop builders, spawn helpers, registries), re-exported from
+  the `world.js` barrel. Promote a builder into lib.js only once 2+ regions
+  use it (the deadTree rule). Plus `client/src/colliders.js`
   (registration), `client/src/constants.js` (CAMPS zone entry),
   `client/src/interact.js` only if using `n.flavor`.
-- **Pattern**: Bram's Rest (small), Emberwatch Ruins (landmark), Highgate
-  (full hub) — read their DESIGN.md entries first; they document placement
-  logic, what was reused, and what was deliberately not done. Reuse the
-  existing primitives: tent/campfire/signpost/crate/barrel/`spawnNPC`/
-  `spawnDuelist`, `groundH()` for terrain-following, `n.flavor`
-  (string or string[]) for dialogue-only NPCs.
+- **Pattern**: The Wether Downs (`world/wetherdowns.js`) is the newest
+  worked example of a landmark; Bram's Rest (small), Emberwatch Ruins
+  (landmark), Highgate (full hub) — read their DESIGN.md entries first;
+  they document placement logic, what was reused, and what was deliberately
+  not done. Reuse the existing primitives: tent/campfire/signpost/crate/
+  barrel/`spawnNPC`/`spawnDuelist`, `groundH()` for terrain-following,
+  `n.flavor` (string or string[]) for dialogue-only NPCs.
+- **Scope by tier**: *landmark* (Harrowfield, Wether Downs precedent) =
+  world module + flavor NPC only, no cards/duelist/quests — a flavor
+  landmark earns a road/duelist when it earns content. *Zone* = the full
+  phased playbook (see "The zone playbook" below). Picking the tier is a
+  design call; executing a landmark is green.
 - **Checklist**: every solid prop registers a collider (unregistered =
   walk-through; convention: banners/totems/bone piles stay uncollided);
-  placement clear of existing sites (spawn (0,9), village r≈38, Vex
-  (-88,66), Gruk (107,-60), Highgate (40,-145), Emberwatch (100,100),
-  Bram's Rest (20,-70); world clamp ~210); CAMPS entry if it should have a
-  zone label; add a DESIGN.md entry recording your placement reasoning and
-  open questions, matching the existing entries' format.
+  survey `CAMPS` in constants.js + the DESIGN.md map-survey entries for
+  free space before placing (the map has grown past any coordinate list
+  this file could keep current; world clamp ~210); fires follow LORE.md's
+  fire tiers (kept/tended/cold — it's canon, not decoration); CAMPS entry
+  if it should have a zone label; add a DESIGN.md entry recording your
+  placement reasoning and open questions, matching the existing entries'
+  format.
 - **This is the best-proven cheap-model lane**: the worldbuilding loop
   iterations were nearly pure recombination of verified builders, and the
   risk note each time was "identical primitives to already-live code."
@@ -148,6 +183,61 @@ STATUS.md handoff entries, DESIGN.md decision records, CLAUDE.md gotchas —
 format-following work, and high-value. Copy the tone and structure of
 recent entries (what merged, what was verified, what was skipped and why,
 what to look at next session).
+
+### G8. Wardrobe items (faction regalia) — new 2026-07-14
+- **Files**: `shared/cosmetics.js` (`WARDROBE` entries), nothing else — the
+  server validates and the client renders from the same data.
+- **Pattern**: `{id, name, slot, faction, rank, color, glow?}`; slots map
+  1:1 onto `humanoid()` parts. Copy an existing faction's four-piece spread
+  (Known → body, Trusted → legs + head, Sworn → back/cape).
+- **Checklist**: rank follows the Known/Trusted/Sworn convention; names in
+  LORE voice (diegetic "wearing their colors", never "unlock"); `glow` only
+  where the fiction earns it (the Emberpeaks mantle smolders). A new SLOT
+  (vs item) touches `entities.js` mesh work — that's yellow, not green.
+
+### G9. Zone packs + vendors — new since Phase 3b ×2 (both zones shipped
+this exact shape with ZERO server changes)
+- **Files**: new `shared/sets/<zone>/packs.js`, merged into core
+  `packs.js`'s registry (hand-merge, same as banners/leaders — the
+  promotion trigger for a real registry is recorded there: a fourth set);
+  vendor NPC gets `.vendorPack` in its world module (`interact.js`/shop are
+  generic over it).
+- **Pattern**: Night-Gather (`shared/sets/darkwood/packs.js`) + Pedlar Rusk
+  is the newest worked example; `openShop(pack)` and server `buyPack` are
+  already generic (price, desc, vendor coords all live on the pack def).
+- **Checklist**: 5-card rolls from the zone set; **price and rarity weights
+  are economy decisions** — stay inside the established band (Boarlands 25 /
+  Night-Gather 35 / Cinder Cache 40; weights ~60-65/28-30/8-10, rare weight
+  kept modest so chase cards stay chases) and say so in the handoff; vendor
+  placed at the zone edge on a road (the Varn/Rusk placement rule);
+  `test-packs.mjs` green (it checks the vendor-coord invariant); raw-WS
+  e2e of far-buy/poor-buy/real-buy (VERIFICATION.md §4).
+
+---
+
+## The zone playbook — the proven macro-arc for new zones
+
+Two zones (Emberpeaks, Deep Darkwood) shipped complete through the same
+phase sequence; it is now the default shape for "add a zone". Each phase is
+a separate branch/session, tiered independently:
+
+1. **Phase 1 — terrain + props + seeded hooks** (G5, green): the place
+   exists, with 1-2 *named but unexplained* hooks for later phases (the
+   Circle of Sighs pattern — a door named before its content exists).
+2. **Phase 2 — the zone card set** (yellow): 15-16 cards on one mechanical
+   axis the zone owns (emberpeaks: kindle-matters; darkwood:
+   night-matters). Usually includes ONE engine addition (Y1/R1 depending
+   on depth — `nocturnal` was a state.js touch). Cards stay OUT of
+   circulation this phase, by precedent.
+3. **Phase 3 — duelists + quest chain** (G3/G4 + Y for any new gating):
+   the hooks pay off; reward pools put the set into circulation.
+4. **Phase 3b — pack + vendor + polish** (G9, green): the coin sink,
+   plus any UI debt flagged earlier (the night badge pattern).
+
+Phase boundaries are where cheap models hand off cleanly: each phase ends
+with suites green, a STATUS.md entry, and the next phase's hooks named.
+Don't reorder (circulation before duelists breaks the chase-card economy)
+and don't compress phases into one branch.
 
 ---
 
@@ -167,8 +257,12 @@ than catastrophic. Budget extra verification.
   serves NPCs + autobattle + balance sims, so any change moves all three.
   Always run before/after sims (20+ games per matchup) and report spreads.
 - **Y3. Balance passes** (stats/costs in cards.js): mechanically trivial,
-  analytically not. The open item: boarherd beats redsash ~75% AI-vs-AI.
-  Sims are cheap — iterate with data, not vibes.
+  analytically not. Current tuned spread (2026-07-13): boarherd 60% vs
+  wardens, 52% vs redsash, wardens 47% vs redsash — wardens below sim
+  parity ON PURPOSE (the greedy AI undervalues defense). Run
+  `node scripts/sim-starters.mjs` before AND after; report both spreads.
+  Prefer card-definition tweaks over deck-list edits (13 duelist decks
+  `swap()` hard-coded starter ids; list edits risk silent size breakage).
 - **Y4. New quest objective shapes** (a third sibling to duels/collect):
   touches shared validation + server progress events + client rendering.
   The `collect` implementation is the worked example — including the latent
@@ -177,9 +271,11 @@ than catastrophic. Budget extra verification.
   inline `house1Interior()` pattern (wall segments + doorway gap +
   per-segment colliders). The teleport/pocket-room approach is REJECTED —
   proposing it again is an instant fail.
-- **Y6. Shop/vendor-like flows**: client window (`shop.js` pattern) is
-  green, but the paired server handler (validate coins + proximity, mint
-  server-side) is the part that needs care — mirror `buyPack` exactly.
+- **Y6. NEW shop/vendor-like flows**: a standard zone pack + vendor is
+  green now (G9 — `buyPack`/`openShop` are generic). Yellow is a *new kind*
+  of purchasable: the client window stays easy, but the paired server
+  handler (validate coins + proximity, mint server-side) is the part that
+  needs care — mirror `buyPack` exactly, and e2e the refusal paths.
 - **Y7. Day/night–gated content**: client-side `gameHour` checks are the
   established pattern (Sentinel), but remember the hour is server-synced;
   test via offline mode or right after a fresh Vite start (STATUS.md
@@ -215,7 +311,14 @@ down realm, or a broken economy — and the bugs *look* fine locally.
   schema changes need migration thinking, pre-deploy backups, and a
   STATUS.md flag for the deploy. History: schema changes have forced
   full wipes before.
-- **R6. Design-space decisions** — anything DESIGN.md marks as an open
+- **R6. `shared/factions.js` + `shared/deckConstraints.js` math** — THE
+  progression system (2026-07-14). Adding a faction or a wardrobe item is
+  data (green); changing standing earn rates, rank thresholds, the
+  rarity→rank derivation, the champion vouch, or how `validDeck` composes
+  its gates reprices every player's progress at once. These numbers were
+  chosen deliberately (DESIGN.md "Factions"); a plausible-looking tweak
+  passes all 399 assertions and still breaks the economy.
+- **R7. Design-space decisions** — anything DESIGN.md marks as an open
   question (renown thresholds, starter balance direction, fast travel),
   anything that adds a new *system* (crafting, marketplaces, instancing),
   and anything touching the settled decisions in the hard-rails list.
@@ -227,29 +330,36 @@ down realm, or a broken economy — and the bugs *look* fine locally.
 ## Verification menu, cheapest first
 
 Match the check to the change; don't reach for the browser when a sim
-answers the question.
+answers the question. **Full recipes with exact commands, env vars, and
+gotchas live in `.claude/VERIFICATION.md`** — this is just the menu.
 
 1. `node --check <file>` — syntax on any changed server/shared file. Free.
 2. `npm run build` — required gate, catches client import/parse errors.
-3. **Headless quest-gate script** — fake profile objects against
-   `shared/quests.js` (canAccept/canTurnin/progressDuelWin permutations).
-4. **Headless balance sim** — `createDuel` + `ai.takeTurn` loop in Node;
+3. **The standing suites** — `scripts/test-packs.mjs`, `test-leaders.mjs`,
+   `test-factions.mjs`, `sim-starters.mjs`. Run on main first for the
+   baseline, then on your branch; a dropped count = broken invariant.
+4. **Headless quest-gate script** — fake profile objects against
+   `shared/quests.js` (canAccept/canTurnin/progress permutations).
+5. **Headless balance sim** — `createDuel` + `ai.takeTurn` loop in Node;
    20 games in seconds; check winner spread + no stuck games. Required
    when touching `shared/engine/` or `shared/sets/`.
-5. **Raw-WS driver** — second `WebSocket('ws://localhost:8081')` to
-   simulate another player (join/challenge/duel/trade messages).
-6. **Live browser via preview** — the most expensive and the flakiest:
-   see CLAUDE.md's `document.hidden === true` gotcha (game loop silently
-   suspended; confirm with a per-frame value read twice ~1s apart before
-   debugging anything). If it's stuck, fall back to 1–5 and say so in
-   STATUS.md rather than burning a session fighting it. Cheap models
-   especially: do not rabbit-hole here.
+6. **Raw-WS e2e** — throwaway server (`PORT=8099 DB_FILE=<temp>`), plain
+   WebSocket driver; assert the REFUSAL paths, not just success. The
+   standard check for anything server-authoritative.
+7. **Live browser via preview** — the most expensive and the flakiest:
+   the `document.hidden === true` rAF stall (confirm with a per-frame
+   value read twice ~1s apart before debugging anything). More survives
+   the stall than the old notes said — evals, WS, DOM, screenshots
+   (forced paint), manual `renderer.render()` for world shots
+   (VERIFICATION.md §6) — but movement never does. If it's stuck, verify
+   what you can, fall back to 1–6 for the rest, and say so in STATUS.md.
+   Cheap models especially: do not rabbit-hole here.
 
 ## One-line router
 
 > Registering data into an existing list (card, quest, duelist, sprite,
-> prop, panel)? **Green — go.** Adding a new primitive/shape the engine
-> consumes? **Yellow — go carefully, test headlessly, before/after sims.**
-> Changing what the engine, server, or protocol *does*, or making a
-> design call? **Red — leave it for a frontier session and flag it in
-> STATUS.md.**
+> prop, panel, wardrobe item, zone pack)? **Green — go.** Adding a new
+> primitive/shape the engine consumes? **Yellow — go carefully, test
+> headlessly, before/after sims.** Changing what the engine, server,
+> protocol, or progression math *does*, or making a design call?
+> **Red — leave it for a frontier session and flag it in STATUS.md.**

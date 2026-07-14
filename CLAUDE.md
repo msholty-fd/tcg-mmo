@@ -16,6 +16,10 @@ Deeper notes live in `.claude/`:
   safe pattern-copying for cheaper/smaller models (green), which needs care
   (yellow), and which is frontier-model-only (red). Smaller models: read it
   first and stay in your tier.
+- `.claude/VERIFICATION.md` — the verification cookbook: exact commands for
+  the standing test suites, headless sim/quest-gate recipes, raw-WS e2e
+  with throwaway servers (`PORT`/`DB_FILE`), worktree alt-port live rigs,
+  and the full rAF-stall playbook. Read before claiming any check ran.
 - `.claude/MOBILE.md` — iPhone/touch support: what works, the touch-layer
   architecture (touch buttons write into `keys`, joystick → `touchMove`,
   `?touch=1` test override), Phase-1 gaps, and the Phase-2 wishlist. Read it
