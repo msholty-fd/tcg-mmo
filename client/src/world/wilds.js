@@ -8,14 +8,27 @@ import { rand } from '../utils.js';
 import { addCircle } from '../colliders.js';
 import { M, tree, spawnCritter } from './lib.js';
 
+// Small landmark clearings the random flora must not intrude on. Only for
+// OPEN-GROUND landmarks whose read depends on clear sightlines (a tree
+// through the sundial ring, a pine inside the sheepfold) — forested zones
+// (Darkwood) and walled/large places handle their own ground. Radii cover
+// the built footprint, not the whole CAMPS circle.
+const CLEARINGS = [
+  { x: 165, z: 25, r: 16 },    // The Dial Stone — the shadow needs open sky
+  { x: -150, z: -10, r: 16 },  // The Wether Downs fold + hut
+];
+const inClearing = (x, z) => CLEARINGS.some(c => Math.hypot(x - c.x, z - c.z) < c.r);
+
 // Flora
 for (let i = 0; i < 150; i++) {
   const a = rand(0, Math.PI * 2), d = rand(30, 190);
-  tree(Math.cos(a) * d, Math.sin(a) * d, d > 85);
+  const x = Math.cos(a) * d, z = Math.sin(a) * d;
+  if (inClearing(x, z)) continue;
+  tree(x, z, d > 85);
 }
 for (let i = 0; i < 45; i++) {
   const x = rand(-190, 190), z = rand(-190, 190);
-  if (Math.hypot(x, z) < 30) continue;
+  if (Math.hypot(x, z) < 30 || inClearing(x, z)) continue;
   const size = rand(.5, 1.8);
   const r = new THREE.Mesh(new THREE.DodecahedronGeometry(size), M.rock);
   r.position.set(x, groundH(x, z) + .2, z); r.castShadow = true; scene.add(r);

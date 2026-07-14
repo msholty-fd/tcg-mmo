@@ -112,6 +112,11 @@ but never say "points" or "unlock."
   practical tradeswoman who feeds hearths for a living and doesn't like
   what the wood's been whispering. (Duelists can't surface `n.flavor` —
   her knowledge shows in quest/DESIGN text only for now.)
+- **Merle the Skywatcher** (the Dial Stone, due east) — small omens tier,
+  and the realm's hint-giver for night content: they know WHO keeps night
+  hours (the Sentinel, the wood's walker) but not what they are — "I keep
+  count, not company." Their seeded omen (nights measure the same but feel
+  longer) leans on the Going-Out without naming it; do not sharpen it.
 - **Shepherd Wynn** (the Wether Downs, due west) — small omens tier: keeps
   one small fire nightly ("a dark camp is a borrowed camp"), and their
   bellwether has taken to staring west at nothing. What she watches for is

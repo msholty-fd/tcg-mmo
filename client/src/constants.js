@@ -55,6 +55,10 @@ export const CAMPS = [
   // small circle overlaps on the roads between them. See DESIGN.md
   // "Deep Darkwood".
   { x: 118, z: -115, r: 45, name: 'The Deep Darkwood' },
+  // A weathered sundial ring on the eastern grass, between Gruk's Hollow
+  // and the Emberwatch Ruins — the realm's clock, made visible. See
+  // DESIGN.md "The Dial Stone".
+  { x: 165, z: 25, r: 16, name: 'The Dial Stone' },
   // A shepherd's grazing downs due west — the first pastoral place, in the
   // unclaimed wedge between Red-Sash Camp and Hollowmere. See DESIGN.md
   // "The Wether Downs".
