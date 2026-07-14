@@ -63,11 +63,18 @@ for (const p of Object.values(PACKS)) {
 }
 
 // ---- 4. vendor coords match the client world spawns --------------------------
-// world.js is THREE-laden (can't import here); assert the literals instead so
-// a coord drift between packs.js and world.js fails the test at least one way.
+// The world modules are THREE-laden (can't import here); assert the literals
+// instead so a coord drift between packs.js and the world fails the test at
+// least one way. world.js is a barrel over client/src/world/* since the
+// 2026-07-13 split, so concatenate every region module — vendors can live in
+// (or move between) any of them.
 console.log('4. vendor coords');
-import { readFileSync } from 'node:fs';
-const world = readFileSync(new URL('../client/src/world.js', import.meta.url), 'utf8');
+import { readFileSync, readdirSync } from 'node:fs';
+const worldDir = new URL('../client/src/world/', import.meta.url);
+const world = readdirSync(worldDir)
+  .filter(f => f.endsWith('.js'))
+  .map(f => readFileSync(new URL(f, worldDir), 'utf8'))
+  .join('\n');
 ok(/spawnNPC\('Quartermaster Marla', 3\.5, 4/.test(world), 'Marla spawn matches boarlands vendor (3.5, 4)');
 ok(PACKS.boarlands.vendor.x === 3.5 && PACKS.boarlands.vendor.z === 4, 'boarlands vendor coords are (3.5, 4)');
 ok(/spawnNPC\('Sutler Varn', EP\.x \+ 14, EP\.z - 39/.test(world), 'Varn spawn matches emberpeaks vendor (EP 0,235 → 14, 196)');
