@@ -6,6 +6,7 @@
 
 import '../shared/sets/core/cards.js';            // registers the core set
 import '../shared/sets/emberpeaks/cards.js';      // registers the emberpeaks set
+import '../shared/sets/darkwood/cards.js';        // registers the darkwood set
 import { getCard, cardsInSet } from '../shared/engine/cards.js';
 import { PACKS, rollPack } from '../shared/sets/core/packs.js';
 
@@ -14,7 +15,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
 
 // ---- 1. registry shape ------------------------------------------------------
 console.log('1. registry shape');
-ok(Object.keys(PACKS).length === 2, `registry has 2 packs (got ${Object.keys(PACKS).length})`);
+ok(Object.keys(PACKS).length === 3, `registry has 3 packs (got ${Object.keys(PACKS).length})`);
 for (const [key, p] of Object.entries(PACKS)) {
   ok(p.id === key, `pack "${key}" id matches its registry key`);
   ok(typeof p.name === 'string' && p.name.length > 0, `pack "${key}" has a name`);
@@ -79,8 +80,11 @@ ok(/spawnNPC\('Quartermaster Marla', 3\.5, 4/.test(world), 'Marla spawn matches 
 ok(PACKS.boarlands.vendor.x === 3.5 && PACKS.boarlands.vendor.z === 4, 'boarlands vendor coords are (3.5, 4)');
 ok(/spawnNPC\('Sutler Varn', EP\.x \+ 14, EP\.z - 39/.test(world), 'Varn spawn matches emberpeaks vendor (EP 0,235 → 14, 196)');
 ok(PACKS.emberpeaks.vendor.x === 14 && PACKS.emberpeaks.vendor.z === 196, 'emberpeaks vendor coords are (14, 196)');
-ok(/vendorPack = 'boarlands'/.test(world) && /vendorPack = 'emberpeaks'/.test(world),
-   'both vendors carry .vendorPack for interact.js');
+ok(/spawnNPC\('Pedlar Rusk', 106, -72/.test(world), 'Rusk spawn matches darkwood vendor (106, -72)');
+ok(PACKS.darkwood.vendor.x === 106 && PACKS.darkwood.vendor.z === -72, 'darkwood vendor coords are (106, -72)');
+ok(/vendorPack = 'boarlands'/.test(world) && /vendorPack = 'emberpeaks'/.test(world)
+   && /vendorPack = 'darkwood'/.test(world),
+   'all vendors carry .vendorPack for interact.js');
 
 console.log(`\n${pass}/${pass + fail} passed`);
 if (fail) process.exit(1);

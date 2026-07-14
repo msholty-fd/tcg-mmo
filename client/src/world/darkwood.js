@@ -15,7 +15,7 @@ import { groundH } from '../terrain.js';
 import { wolfMesh } from '../entities.js';
 import { rand, smoothstep } from '../utils.js';
 import { addCircle } from '../colliders.js';
-import { M, tree, tent, crate, signpost, deadTree, spawnCritter, spawnDuelist } from './lib.js';
+import { M, tree, tent, crate, signpost, deadTree, spawnCritter, spawnNPC, spawnDuelist } from './lib.js';
 
 const DW = { x: 118, z: -115 };   // zone heart (constants.js CAMPS r=45)
 
@@ -230,6 +230,17 @@ export const weir = spawnDuelist('weir', DW.x - 3, DW.z + 3, { shirt: 0x26302a, 
 weir.mesh.visible = false;   // corrected within the first frame by main.js's gameHour check
 const weirGlow = new THREE.PointLight(0xbfe8c8, 1.1, 10);
 weirGlow.position.y = 2.4; weir.mesh.add(weirGlow);
+
+// ---- Phase 3b: the zone vendor (DESIGN.md "Deep Darkwood Phase 3b") ----
+// Pedlar Rusk sells the Night-Gather pack just inside the zone edge on the
+// Gruk-side road — you meet him walking in, not deep among the stones (the
+// Sutler Varn placement rule). Off the walkline (~3u west) so patrol paths
+// and players don't clip him; his crate of wares beside him. Coords must
+// match shared/sets/darkwood/packs.js (test-packs guards the invariant).
+// LORE.md knowledge tier: small omens — he sells by daylight, gone by dusk.
+export const rusk = spawnNPC('Pedlar Rusk', 106, -72, { shirt: 0x8a7a4a, hat: 0x5a4a33 });
+rusk.vendorPack = 'darkwood';   // interact.js: E on a .vendorPack NPC opens their pack shop
+crate(104.5, -71, .7);
 
 export function updateDarkwood(hour, px, pz) {
   const night = hour >= 20 || hour < 6;

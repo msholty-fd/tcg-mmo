@@ -18,3 +18,6 @@ server/profiles.db-shm
 
 # local prod-data backups (fly ssh sftp get) — never commit, repo is public
 profiles.backup.*
+
+# Vite local env overrides (the worktree alt-port WS trick — never committed)
+client/.env.local

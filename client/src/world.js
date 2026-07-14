@@ -22,6 +22,6 @@ export { bram, footpad } from './world/bramsrest.js';
 export { hessa } from './world/hollowmere.js';
 export { wayfarer, sorrel, finch, brenna, updatePatrols } from './world/roads.js';
 export { harrow, cobb } from './world/harrowfield.js';
-export { updateDarkwood, tamsin, weir } from './world/darkwood.js';
+export { updateDarkwood, tamsin, weir, rusk } from './world/darkwood.js';
 export { marrow } from './world/mine.js';
 export { halvard, ashmonger, pyrelord, varn } from './world/emberpeaks.js';
