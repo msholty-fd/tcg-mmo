@@ -1685,6 +1685,56 @@ considered and rejected.
     (faction allegiance) remains a recorded candidate — it's a real epic
     touching server state and Field Effects; not started on blanket agency.
 
+- **Deep Darkwood Phase 2 — the `darkwood` card set + the `nocturnal`
+  mechanic (2026-07-14, autonomous under Michael's blanket agency)**: the
+  zone plan's Phase 2 (the Phase-1 entry above reserved "night-matters —
+  genuinely unowned" as this set's axis; ambush is Vex's, so shadow/ambush
+  was out). 15 cards in `shared/sets/darkwood/cards.js` (`dw_` prefix,
+  5 common / 6 uncommon / 4 rare; 8 creatures, 3 spells, 1 relic,
+  1 reaction, 2 enchantments), registered via side-effect import next to
+  core/emberpeaks in duelManager.js + duelRoom.js — the Emberpeaks Phase-2
+  playbook exactly, including "registered but nothing grants them yet"
+  (circulation arrives with Phase 3 duelist reward pools + the 3b pack).
+  - **The one engine addition: `nocturnal: {atk, hp}`** — the creature
+    enters play with the bonus when the duel is under night. Night is a new
+    `createDuel` opt (`duel.night`), **fixed at duel start** (a standing
+    condition like the coming Field Effects — no mid-duel stat swings when
+    the clock crosses 20:00), derived from the server-synced game hour at
+    room creation (`isNight()` in index.js, 20:00–6:00 — the same window as
+    the Sentinel/wisps) and from the local clock in the offline fallback
+    (`getGameHour()` export in main.js). Applied in `unitFromCard` (third
+    param), so played cards and summoned tokens behave identically and
+    Chronicle level bonuses stack on top. This is deliberately NOT Field
+    Effects (still deferred pending Michael's green light): night is a
+    *card* field on one set, not a zone's standing rule applied to both
+    sides — but the hour-into-the-duel plumbing it adds (opts.night,
+    view().night) is exactly the shape fields will reuse.
+  - *Duel views ship `night`* (duelRoom.view + local state) but the duel UI
+    does not render an indicator yet — flagged for Phase 3 alongside the
+    zone's duelists (a moon glyph by the turn banner is the likely shape;
+    rules text on every nocturnal card states the condition meanwhile).
+  - *LORE.md grounding*: the wood's creatures are what moves in a place the
+    land is forgetting (canon fact 7) — stronger where the light is not.
+    Flavor references Weir's camp, the wisps, and the Circle of Sighs
+    (`dw_seventh_stone`, `dw_circle_chip`) without explaining them; Act II
+    stays reserved.
+  - *Verification*: build + `node --check` clean; test-leaders 198/198;
+    headless suite — registry (15/15 resolve, 8 nocturnal), unitFromCard
+    day/night/Veteran-stacking/asymmetric-bonus/core-cards-unaffected,
+    played-card stats in real duels both states, 60 AI games (day+night ×
+    3 starters) 0 crashes/0 stuck, and the identity check: a mono-darkwood
+    test deck wins 6/30 by day vs 19/30 at night. Starter round-robin
+    re-run: 60/52/47, byte-identical to the documented spread (engine path
+    regression-clean). test-packs is 4433/4436 on this branch AND on main —
+    pre-existing: the world.js split broke the test's vendor-coord regex
+    against the old monolith path; flagged as a separate task, not fixed
+    here.
+  - *Balance note*: the mono-set deck's 20% day winrate is an artifact of
+    the artificial test deck, not a shipped experience — no player can even
+    assemble it yet. Real balance tuning happens in Phase 3 when the zone's
+    duelist decks are built (sim per the usual duelist-pass procedure, and
+    sim BOTH night states — first set where that matters).
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase

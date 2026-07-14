@@ -5,12 +5,14 @@
 
 import '../../../shared/sets/core/cards.js';        // register core set
 import '../../../shared/sets/emberpeaks/cards.js';  // register Emberpeaks set
+import '../../../shared/sets/darkwood/cards.js';    // register Darkwood set
 import { createDuel } from '../../../shared/engine/state.js';
 import { startTurn, endTurn, playCard, kindle, attack } from '../../../shared/engine/engine.js';
 import { takeTurn } from '../../../shared/engine/ai.js';
 import { openDuel, closeDuel, updateDuel, render, setMsg, showResult, initDuelUI } from './duelUI.js';
 import { getDeckItems, grantCard } from '../collection.js';
 import { player } from '../state.js';
+import { getGameHour } from '../main.js';   // safe cycle: called at runtime only (net.js precedent)
 import { log } from '../ui.js';
 import { ri } from '../utils.js';
 
@@ -28,7 +30,10 @@ export function startDuel(duelist) {
   duelActive = true;
   localAuto = false;
   currentFoe = duelist;
-  duel = createDuel(getDeckItems(), [...duelist.deck], { names: [player.name, duelist.name] });
+  // offline fallback path — night from the local clock, same 20:00–6:00
+  // window the server uses (online NPC duels get it server-side instead)
+  const h = getGameHour();
+  duel = createDuel(getDeckItems(), [...duelist.deck], { names: [player.name, duelist.name], night: h >= 20 || h < 6 });
   startTurn(duel);   // player goes first
   openDuel(duel, ME, duelist.name, {
     onPlay(i, target) { if (playCard(duel, ME, i, target)) afterAction(); else setMsg("Can't play that."); },

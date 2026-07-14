@@ -194,7 +194,7 @@ export function playCard(duel, side, handIndex, target = null) {
   say(duel, `${duel.names[side]} plays ${def.name}.`);
 
   if (def.type === 'creature') {
-    const u = unitFromCard(c, side);
+    const u = unitFromCard(c, side, duel.night);
     p.field.push(u);
     duel.log.push({ type: 'summon', side, unit: u.uid, card: c.card });
     fireTriggers(duel, side, u, 'onPlay', { target });

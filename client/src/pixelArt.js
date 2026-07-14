@@ -654,6 +654,25 @@ const CARD_ART = {
   ep_brand_of_embers:  { sprite: 'talisman', pal: { c: '#7a2a14', w: '#ff9a40', W: '#dd5a20' } },
   ep_eternal_pyre:     { sprite: 'rite', pal: { b: '#ffb050', B: '#cc7a20', e: '#ff5a1a', f: '#ffd050' } },
   ep_flare_trap:       { sprite: 'snare', pal: { r: '#c85a2a', R: '#8e3a18', g: '#ff7a20' } },
+
+  // ---- Darkwood set (shared/sets/darkwood/) — cool moss-greens, moon
+  // silvers, and void violets: light-starved palettes, distinct from every
+  // duelist scheme and from the Emberpeaks' fire. Existing grids only.
+  dw_glowcap_sprite:   { sprite: 'emberling', pal: { f: '#7ac9a0', F: '#b8f0d0', r: '#3a6e54', e: '#eafff0' } },
+  dw_dusk_moth:        { sprite: 'wraith', pal: { a: '#6a5a7a', A: '#4c3f5a', e: '#d8c8f0', s: '#2a2436' } },
+  dw_thicket_prowler:  { sprite: 'wolf', pal: { g: '#2c3328', G: '#1e241c', e: '#9adf70', n: '#141a12' } },
+  dw_gloom_owl:        { sprite: 'emberling', pal: { f: '#5a6478', F: '#8a94a8', r: '#3a4250', e: '#ffe9a0' } },
+  dw_shade_of_the_wood:{ sprite: 'hooded', pal: { h: '#26302a', H: '#182018', m: '#101610', e: '#a8e8c0' } },
+  dw_gnarlwood_sentry: { sprite: 'colossus', pal: { l: '#3a4a34', L: '#28341f', t: '#4e3a28', T: '#36281a', e: '#9adf70' } },
+  dw_pale_hart:        { sprite: 'boar', pal: { d: '#dfe4e8', D: '#b8c0c8', n: '#f4f8fa', m: '#9aa4ae', e: '#8fd0ff' } },
+  dw_hollow_shade:     { sprite: 'wraith', pal: { a: '#2e2a3a', A: '#1e1a28', e: '#c0f0d8', s: '#12101a' } },
+  dw_carried_coal:     { sprite: 'burn', pal: { f: '#ff9a40', F: '#ffd9a0' } },
+  dw_hunters_lament:   { sprite: 'bolt', pal: { f: '#8fa8c0', F: '#c8d8ea', r: '#4a5a6e' } },
+  dw_night_chorus:     { sprite: 'howl' },
+  dw_circle_chip:      { sprite: 'talisman', pal: { c: '#5a6e54', w: '#c8d8c0', W: '#8fa886' } },
+  dw_moonlit_reprisal: { sprite: 'snare', pal: { r: '#8a94a8', R: '#5a636e' } },
+  dw_wisp_ring:        { sprite: 'spark', pal: { k: '#101820', F: '#c0f0d8', f: '#5a8f7a', w: '#eafff0' } },
+  dw_seventh_stone:    { sprite: 'rite', pal: { b: '#9aa89a', B: '#6e7a6e', e: '#a8e8c0', f: '#d8e8d0' } },
 };
 
 const cache = new Map();

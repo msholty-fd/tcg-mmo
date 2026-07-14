@@ -141,6 +141,7 @@ let ePressed = false, tPressed = false;
 // ---------- game loop ----------
 let gameHour = 10, uiT = 0;
 export function setGameHour(h) { gameHour = h; }   // debug/testing hook
+export const getGameHour = () => gameHour;   // read hook (offline duels derive night from it)
 const clock = new THREE.Clock();
 
 // camera collision: reused across frames to avoid per-frame allocation
