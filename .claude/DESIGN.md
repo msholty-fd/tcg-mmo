@@ -1861,23 +1861,41 @@ considered and rejected.
     presence snapshot carries `appearance` so remotes render regalia and
     live-swap meshes when it changes. Additive schema — old profiles
     default to `{}`, **no db wipe needed**.
-  - **Client**: Wardrobe panel (O, Esc-chained like the other panels) —
-    faction rows with rank, swatch chips, worn = gilded, locked = dimmed
-    with the rank name; "Plain clothes" resets. Bare slots fall back to
-    the starter outfit's colors (`lookOpts` layers regalia over STARTERS).
+  - **Client (v2 fitting room, same day — Michael's playtest feedback:
+    "I need to see my character", "only show items I have unlocked",
+    "just blocks on the screen sucks")**: the panel (O, Esc-chained) is a
+    fitting room — a live rotating mannequin (its own small THREE
+    renderer on `#w-canvas`; `renderPreviewFrame` exported for the
+    rAF-stall workaround) wears your current set, **hovering a piece
+    tries it on** (mannequin only — player mesh and server untouched
+    until click), clicking equips/doffs. **Inventory semantics: only
+    earned pieces are listed** — locked items are hidden entirely,
+    factions with nothing earned don't appear; each row teases the next
+    rank that offers more ("more when you are Trusted"), and a no-faction
+    character gets diegetic empty-state copy. Items render as
+    **palette-swapped 16×16 garment sprites** (one per slot in
+    pixelArt.js, new `spriteArt()` export) tinted from the item's mesh
+    color so icon and 3D look can't drift. "Plain clothes" resets; bare
+    slots fall back to the starter outfit's colors (`lookOpts`).
   - **Voice**: diegetic throughout — "wear the colors of those who know
     you", rejection is "They don't know you well enough to wear that";
     never "unlock" (LORE.md rule).
-  - **Verification**: headless cosmetics checks (data sanity, sanitize,
-    rank gating, vouch); raw-WS e2e through the real server (Stranger
-    over-rank rejected, vouched rank-1 accepted, seeded-Sworn full set
-    accepted + persisted across restart/reconnect, observer's snapshot
-    carries the regalia); live client checked under the document.hidden
-    stall workaround (welcome syncs the look, mesh parts carry exact item
-    colors incl. cape at z=-.3, panel renders with correct worn/locked
-    states, real bubbling click doffs the helm → mesh reverts to starter
-    hat color → server profile updates). NOT verified: animated/in-motion
-    look (rAF stall), true two-browser visual of a remote's cape.
+  - **Verification** (v1 + v2): headless cosmetics checks (data sanity,
+    sanitize, rank gating, vouch); raw-WS e2e through the real server
+    (Stranger over-rank rejected, vouched rank-1 accepted, seeded-Sworn
+    full set accepted + persisted across restart/reconnect, observer's
+    snapshot carries the regalia). v2 live client (worktree servers
+    :5176/:8082, rAF alive this session): O opens via the real handler,
+    mannequin renders and spins, real hover swapped the mannequin's hat
+    to the Crest Helm without touching player/server, real click equipped
+    it (observer snapshot confirmed server-side), inventory hides locked
+    items + unearned factions, tease line renders, all 12 icons
+    pixel-art. Debug lesson re-learned the hard way: mid-session file
+    edits split eval imports from the app's module instances (the
+    documented HMR gotcha) AND two THREE renderers on one canvas render
+    garbage — restart Vite before eval-driven verification. Synthetic
+    browser-pane keypresses lack `e.code` (all hotkeys gate on it) —
+    dispatch a real KeyboardEvent instead.
 
 - **Deep Darkwood Phase 3b — zone pack + vendor + night indicator
   (2026-07-14, `feat/darkwood-pack`)**: the zone playbook's last phase
