@@ -23,6 +23,7 @@ import { questById, canAccept, canTurnin, progressDuelWin, progressVisit } from 
 import { PACKS, rollPack } from '../shared/sets/core/packs.js';
 import { mintCard, levelOf, levelPoints, LEGEND_BUDGET, LEVEL_NAMES, renownFromDuel, HALL } from '../shared/chronicle.js';
 import { earnStanding, effectiveRanks } from '../shared/factions.js';
+import { sanitizeAppearance, validAppearance } from '../shared/cosmetics.js';
 
 const PORT = +(process.env.PORT || 8081);
 const DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -108,7 +109,7 @@ function newProfile(name, outfit) {
   const cards = starter.deck.map(id => mintCard(id, 'Starter deck', name));
   // designate the leader instance(s): the first minted copy of each leader card
   const leaders = starter.leaders.map(cid => cards.find(c => c.cardId === cid)?.iid).filter(Boolean);
-  return { name, outfit, cards, deck: cards.map(c => c.iid), leaders, xp: 0, lvl: 1, coins: 0, quests: {}, factions: {} };
+  return { name, outfit, cards, deck: cards.map(c => c.iid), leaders, xp: 0, lvl: 1, coins: 0, quests: {}, factions: {}, appearance: {} };
 }
 
 // Validate a deck + its designated Leaders. Base rules (30 / ≤3 / Legend
@@ -482,7 +483,7 @@ wss.on('connection', (ws, req) => {
       }
 
       // restore last world position (fresh characters spawn at the well)
-      me = { id: nextId++, ws, token, name: profile.name, outfit: profile.outfit, x: profile.x ?? 0, z: profile.z ?? 9, yaw: profile.yaw ?? 0, profile, room: null };
+      me = { id: nextId++, ws, token, name: profile.name, outfit: profile.outfit, appearance: profile.appearance || {}, x: profile.x ?? 0, z: profile.z ?? 9, yaw: profile.yaw ?? 0, profile, room: null };
       players.set(me.id, me);
       console.log(`join: ${me.name} (#${me.id}, ${players.size} online)`);
       const { passwordHash, salt, pwAlg, ...pub } = profile;   // never ship credentials
@@ -540,6 +541,21 @@ wss.on('connection', (ws, req) => {
         } else {
           send(me, { t: 'chat', from: '[Server]', text: 'Deck rejected — invalid cards, Legend Budget, or Leader rules not met.' });
         }
+        break;
+      }
+      case 'setAppearance': {
+        // cosmetic, but rank-gated like deck-building: re-derive the wearer's
+        // right to every piece from their profile (shared/cosmetics.js) — a
+        // client can't dress above its standing
+        const app = sanitizeAppearance(msg.appearance);
+        if (!validAppearance(me.profile, app)) {
+          send(me, { t: 'chat', from: '[Server]', text: 'They don’t know you well enough to wear that.' });
+          break;
+        }
+        me.profile.appearance = app;
+        me.appearance = app;   // presence snapshot shows the new look next tick
+        markDirty(me.profile);
+        send(me, { t: 'appearance', appearance: app });
         break;
       }
       case 'questAccept': {
@@ -722,7 +738,7 @@ setInterval(() => {
 setInterval(() => {
   if (!players.size) return;
   const snapshot = [...players.values()].map(p => ({
-    id: p.id, name: p.name, outfit: p.outfit, x: p.x, z: p.z, yaw: p.yaw, inDuel: !!p.room,
+    id: p.id, name: p.name, outfit: p.outfit, appearance: p.appearance, x: p.x, z: p.z, yaw: p.yaw, inDuel: !!p.room,
   }));
   broadcast({ t: 'state', players: snapshot, hour: gameHour() });
 }, 100);

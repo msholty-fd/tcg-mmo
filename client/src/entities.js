@@ -1,12 +1,19 @@
 import * as THREE from 'three';
 
-export function humanoid({ shirt = 0x6a8ac9, skin = 0xd9a878, hat = null, scale = 1 } = {}) {
+// cape/glow: faction regalia (shared/cosmetics.js) — cape is a thin slab on
+// the back; glow is an emissive tint (campfire trick) so Emberpeaks cloth
+// smolders after dark like everything else the mountain owns.
+export function humanoid({ shirt = 0x6a8ac9, skin = 0xd9a878, hat = null, legs: legColor = 0x4a4038, cape = null, capeGlow = null, scale = 1 } = {}) {
   const g = new THREE.Group();
-  const mk = (geo, color) => new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ color }));
-  const legs = mk(new THREE.BoxGeometry(.55, .7, .35), 0x4a4038); legs.position.y = .35; g.add(legs);
+  const mk = (geo, color, em) => new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ color, emissive: em || 0x000000 }));
+  const legs = mk(new THREE.BoxGeometry(.55, .7, .35), legColor); legs.position.y = .35; g.add(legs);
   const body = mk(new THREE.BoxGeometry(.7, .85, .45), shirt); body.position.y = 1.12; body.castShadow = true; g.add(body);
   const head = mk(new THREE.BoxGeometry(.5, .5, .5), skin); head.position.y = 1.85; head.castShadow = true; g.add(head);
   if (hat) { const h = mk(new THREE.ConeGeometry(.42, .55, 6), hat); h.position.y = 2.35; g.add(h); }
+  if (cape != null) {
+    const c = mk(new THREE.BoxGeometry(.72, .95, .07), cape, capeGlow);
+    c.position.set(0, 1.08, -.3); c.castShadow = true; g.add(c);
+  }
   const armR = mk(new THREE.BoxGeometry(.18, .7, .18), shirt); armR.position.set(.46, 1.15, 0); g.add(armR);
   const armL = armR.clone(); armL.position.x = -.46; g.add(armL);
   g.userData.armR = armR;

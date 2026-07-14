@@ -5,7 +5,6 @@ import { $, lerp } from './utils.js';
 import { scene } from './scene.js';
 import { groundH } from './terrain.js';
 import { humanoid, makeLabel } from './entities.js';
-import { STARTERS } from './constants.js';
 import { player, bots } from './state.js';
 import { log, fct, updateHUD } from './ui.js';
 import { getDeck, getLeaders, getDeckCardIds, adoptProfile } from './collection.js';
@@ -19,6 +18,7 @@ import { setGameHour } from './main.js';   // safe cycle: called at runtime only
 import { initTrade, onTradeInvite, onTradeStart, onTradeState, onTradeComplete, onTradeCancelled } from './trade.js';
 import { initShop, onPackResult } from './shop.js';
 import { initHall, onHallOfLegends } from './hall.js';
+import { initWardrobe, lookOpts, refreshPlayerMesh } from './wardrobe.js';
 
 // production build is served by the game server itself, so the WS lives on
 // our own origin; dev keeps Vite (:5175) + server (:8081) split
@@ -99,6 +99,8 @@ function handle(msg) {
       adoptProfile(msg.profile);
       player.xp = msg.profile.xp; player.lvl = msg.profile.lvl; player.coins = msg.profile.coins;
       player.factions = msg.profile.factions || {};
+      player.appearance = msg.profile.appearance || {};
+      refreshPlayerMesh();   // regalia persists server-side, worn on arrival
       setQuests(msg.profile.quests);
       updateHUD();
       break;
@@ -143,6 +145,12 @@ function handle(msg) {
     case 'chat':
       log(msg.from + ': ' + msg.text, msg.from === '[Server]' ? 'sys' : 'say');
       break;
+    case 'appearance':
+      // server-validated echo of setAppearance — authoritative version of
+      // the optimistic local equip (idempotent when they agree)
+      player.appearance = msg.appearance || {};
+      refreshPlayerMesh();
+      break;
     case 'state': {
       if (msg.hour !== undefined) setGameHour(msg.hour);
       const seen = new Set();
@@ -151,6 +159,7 @@ function handle(msg) {
         seen.add(p.id);
         let r = remotes.get(p.id);
         if (!r) { r = addRemote(p); remotes.set(p.id, r); }
+        if (r.look !== lookKey(p)) refreshRemote(r, p);
         r.tx = p.x; r.tz = p.z; r.yaw = p.yaw; r.inDuel = p.inDuel;
       }
       for (const [id, r] of remotes) if (!seen.has(id)) { removeRemote(r); remotes.delete(id); }
@@ -196,15 +205,31 @@ function handle(msg) {
   }
 }
 
-function addRemote(p) {
-  const s = STARTERS[p.outfit] || STARTERS.boarherd;
-  const mesh = humanoid({ shirt: s.shirt, hat: s.hat });
+const lookKey = p => JSON.stringify(p.appearance || 0);
+
+function remoteMesh(p) {
+  const mesh = humanoid(lookOpts(p.outfit, p.appearance));
   const label = makeLabel(p.name, '#8fd0f0', 22); label.position.y = 2.9; mesh.add(label);
+  return mesh;
+}
+
+function addRemote(p) {
+  const mesh = remoteMesh(p);
   mesh.position.set(p.x, groundH(p.x, p.z), p.z);
   scene.add(mesh);
-  const r = { id: p.id, name: p.name, mesh, x: p.x, z: p.z, tx: p.x, tz: p.z, yaw: p.yaw, inDuel: false };
+  const r = { id: p.id, name: p.name, mesh, look: lookKey(p), x: p.x, z: p.z, tx: p.x, tz: p.z, yaw: p.yaw, inDuel: false };
   bots.push(r);
   return r;
+}
+
+// regalia changed (wardrobe equip elsewhere) — swap the mesh in place;
+// netTick repositions it next frame
+function refreshRemote(r, p) {
+  scene.remove(r.mesh);
+  r.mesh = remoteMesh(p);
+  r.mesh.position.set(r.x, groundH(r.x, r.z), r.z);
+  scene.add(r.mesh);
+  r.look = lookKey(p);
 }
 
 function removeRemote(r) {
@@ -296,5 +321,8 @@ export function initNet() {
   initHall({
     isConnected: () => connected,
     sendHall: () => connected && ws.send(JSON.stringify({ t: 'hall' })),
+  });
+  initWardrobe({
+    sendAppearance: appearance => connected && ws.send(JSON.stringify({ t: 'setAppearance', appearance })),
   });
 }

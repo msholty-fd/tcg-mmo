@@ -268,6 +268,23 @@
   /* ---- Marla's pack shop ---- */
   #shop{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);display:none;flex-direction:column;gap:10px;
     width:min(460px,92vw);padding:14px 16px;pointer-events:auto;z-index:8}
+  #wardrobe{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);display:none;flex-direction:column;gap:10px;
+    width:min(560px,94vw);max-height:86vh;padding:14px 16px;pointer-events:auto;z-index:8}
+  #wardrobe.open{display:flex}
+  #wardrobe .w-head{font-size:15px;text-align:center}
+  #wardrobe .w-head b{color:var(--gold)}
+  #wardrobe #w-list{overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+  #wardrobe .w-fac{font-size:12.5px;color:#9a8f78;margin-bottom:4px}
+  #wardrobe .w-fac b{color:var(--gold)}
+  #wardrobe .w-items{display:flex;gap:6px;flex-wrap:wrap}
+  #wardrobe .w-item{display:flex;align-items:center;gap:6px;padding:5px 8px;font:inherit;font-size:11.5px;
+    color:#d8cfae;background:rgba(0,0,0,.3);border:1px solid var(--gold-dim);border-radius:3px;cursor:pointer}
+  #wardrobe .w-item.worn{border-color:var(--gold);background:rgba(120,90,20,.25)}
+  #wardrobe .w-item.locked{opacity:.45}
+  #wardrobe .w-swatch{width:12px;height:12px;border-radius:2px;border:1px solid #000;flex:none}
+  #wardrobe .w-meta{color:#8a8068;font-size:10.5px}
+  #wardrobe .w-actions{display:flex;justify-content:space-between;align-items:center}
+  #wardrobe .w-note{color:#9a8f78;font-size:11px}
   #shop .s-head{font-size:15px;text-align:center}
   #shop .s-head b{color:var(--gold)}
   #shop .s-offer{display:flex;align-items:center;gap:12px;justify-content:space-between;
@@ -449,7 +466,7 @@
   <div id="xpwrap"><div id="xpfill"></div></div>
   <div id="prompt" class="panel"><span id="prompt-text"></span></div>
   <div id="dialogue" class="panel"><div class="name" id="d-name"></div><div class="text" id="d-text"></div><div class="reward" id="d-reward"></div></div>
-  <div id="hints" class="panel"><b>WASD</b> move · <b>R</b> auto-walk · <b>Space</b> jump · <b>drag</b> camera<br><b>E</b> talk/challenge · <b>B</b> deck builder · <b>M</b> map · <b>Enter</b> chat<br><b>Q</b> quests · <b>H</b> controls · <b>P</b> prompt · drag windows to move</div>
+  <div id="hints" class="panel"><b>WASD</b> move · <b>R</b> auto-walk · <b>Space</b> jump · <b>drag</b> camera<br><b>E</b> talk/challenge · <b>B</b> deck builder · <b>M</b> map · <b>O</b> wardrobe · <b>Enter</b> chat<br><b>Q</b> quests · <b>H</b> controls · <b>P</b> prompt · drag windows to move</div>
   <div id="dingflash"></div>
   <input id="chatinput" maxlength="200" placeholder="Say something… (Enter to send, Esc to close)" style="display:none">
   <div id="escmenu">
@@ -499,6 +516,17 @@
     <div class="s-actions">
       <span id="s-coins"></span>
       <button class="wow" id="s-close">Close</button>
+    </div>
+  </div>
+  <div id="wardrobe" class="panel">
+    <div class="w-head"><b>Wardrobe</b> — wear the colors of those who know you</div>
+    <div id="w-list"></div>
+    <div class="w-actions">
+      <span class="w-note">A faction dresses the people it has witnessed.</span>
+      <span>
+        <button class="wow" id="w-bare">Plain clothes</button>
+        <button class="wow" id="w-close">Close</button>
+      </span>
     </div>
   </div>
   <div id="hall" class="panel">

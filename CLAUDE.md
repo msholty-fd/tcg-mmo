@@ -93,6 +93,10 @@ progression) when the server is down; it auto-reconnects every 4s.
 
 - `shared/engine/engine.js` — turn structure, actions, combat keywords
 - `shared/engine/state.js` — duel state, instance normalization, stats/chatter
+- `shared/cosmetics.js` + `client/src/wardrobe.js` — faction regalia:
+  cosmetic wardrobe (O) gated by effective faction rank; server validates
+  `setAppearance` with the same shared code, presence snapshot carries
+  `appearance` so remotes render it. Bare slots fall back to STARTERS colors.
 - `shared/factions.js` — THE progression system: card→faction map, standing
   earned by playing faction cards (server: onChronicle), ranks
   (Stranger/Known/Trusted/Sworn) gating deck-building by rarity tier;
