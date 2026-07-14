@@ -112,6 +112,10 @@ but never say "points" or "unlock."
   practical tradeswoman who feeds hearths for a living and doesn't like
   what the wood's been whispering. (Duelists can't surface `n.flavor` —
   her knowledge shows in quest/DESIGN text only for now.)
+- **Shepherd Wynn** (the Wether Downs, due west) — small omens tier: keeps
+  one small fire nightly ("a dark camp is a borrowed camp"), and their
+  bellwether has taken to staring west at nothing. What she watches for is
+  a seeded door — do not answer it without a Wether Downs content phase.
 - **Pedlar Rusk** (the Darkwood road, Gruk side) — small omens tier: sells
   the Night-Gather by daylight and is gone by dusk, and won't say why beyond
   "the light's better." (Vendor interactions can't surface flavor lines —
