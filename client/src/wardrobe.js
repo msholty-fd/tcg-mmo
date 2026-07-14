@@ -98,8 +98,8 @@ function ensurePreview() {
   key.position.set(2, 3, 4);
   pscene.add(key);
   const camera = new THREE.PerspectiveCamera(34, w / h, .1, 20);
-  camera.position.set(0, 1.7, 4.6);
-  camera.lookAt(0, 1.15, 0);
+  camera.position.set(0, 1.6, 5.4);
+  camera.lookAt(0, 1.25, 0);
   pv = { renderer, scene: pscene, camera, mesh: null };
 }
 
@@ -126,6 +126,14 @@ function setPreviewLook(appearance) {
 export function renderPreviewFrame() {
   if (pv?.mesh) pv.renderer.render(pv.scene, pv.camera);
 }
+
+// test hook: inspect the live preview scene (used by headless verification)
+export const previewState = () => pv && {
+  sceneKids: pv.scene.children.length,
+  meshKids: pv.mesh ? pv.mesh.children.length : null,
+  meshYaw: pv.mesh ? +pv.mesh.rotation.y.toFixed(3) : null,
+  app: previewApp,
+};
 
 function previewLoop() {
   if (!wardrobeOpen || !pv) return;
