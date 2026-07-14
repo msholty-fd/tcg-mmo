@@ -728,7 +728,11 @@ function buildBannerStarter(arch) {
   };
 
   const bannerFam = FAMILIES.find(f => f.id === arch.banner);
-  const bannerCards = bannerFam ? bannerFam.cardIds.filter(id => { try { return !!getCard(id); } catch { return false; } }) : [];
+  // no rares: faction ranks (shared/factions.js) gate rares at Trusted, and
+  // a fresh character is a Stranger whose dealt starter champion vouches
+  // them only to Known — commons (open) + uncommons (Known) keep the dealt
+  // deck exactly re-saveable under the player's own day-one ranks.
+  const bannerCards = bannerFam ? bannerFam.cardIds.filter(id => { try { return getCard(id).rarity !== 'rare'; } catch { return false; } }) : [];
   const neutralFam = FAMILIES.find(f => f.id === NEUTRAL_FILL_FAMILY);
   const neutral = neutralFam ? neutralFam.cardIds.filter(id => { try { return !!getCard(id); } catch { return false; } }) : [];
 

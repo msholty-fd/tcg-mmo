@@ -1,15 +1,19 @@
-// Deck-building constraint engine — the Leader system's rules, pure and shared
-// so the server (authoritative validateDeck) and the client deckbuilder run
-// the SAME checks. See DESIGN.md "Leaders" for the design.
+// Deck-building constraint engine — pure and shared so the server
+// (authoritative validateDeck) and the client deckbuilder run the SAME
+// checks. See DESIGN.md "Leaders" and the Factions entry for the design.
 //
 // Two layers:
-//   1. The GATE (global): a card whose family is a gated banner may only be in
-//      a deck that fields a Leader of that banner. This is what kills "mix the
-//      30 best" — every themed card drags in its Leader.
-//   2. Per-Leader CONSTRAINTS: each Leader carries a list of constraint
-//      primitives run against the 30. `minBanner` (field this Leader, owe ≥N of
-//      its banner) is the reciprocal of the gate and the most common one, but
-//      it's just one primitive among many (costParity, singleton, requireType…).
+//   1. The GATE (global): FACTION RANK (shared/factions.js) — a faction
+//      card may only be in a deck whose owner has earned that card's rank
+//      requirement with its faction (standing comes from playing the
+//      faction's cards; owning one of its champions vouches +1). This
+//      REPLACED the original Leader-ownership banner gate (2026-07-14):
+//      one lock type, earned by play. Neutral cards are never gated.
+//   2. Per-Leader CONSTRAINTS (unchanged): each fielded Leader carries a
+//      list of constraint primitives run against the 30. `minBanner`
+//      (field this Leader, owe ≥N of its banner) is the most common one,
+//      but it's just one primitive among many (costParity, singleton,
+//      requireType…).
 //
 // Constraints are DATA (`{kind, ...params}`), dispatched through the PRIMS
 // registry — the same "composable primitives over special-cased rules" posture
@@ -17,8 +21,9 @@
 // adding a future tribe/element axis = new kinds + a card attribute, with zero
 // change to evaluateDeck or its callers.
 
-import { matchesBanner, bannerName, bannerOf } from './sets/core/banners.js';
+import { matchesBanner, bannerName } from './sets/core/banners.js';
 import { LEADERS } from './sets/core/leaders.js';
+import { factionOf, rankOf, factionName, RANK_NAMES } from './factions.js';
 
 const parityOf = cost => (cost % 2 === 0 ? 'even' : 'odd');
 const countType = (defs, type) => defs.filter(d => d.type === type).length;
@@ -77,25 +82,28 @@ export function leaderRules(cardId) {
 }
 
 // Evaluate a full deck (array of card DEFS) under a set of chosen Leaders
-// (array of Leader cardIds). Returns { valid, failures: [{text, banner?, leader?}] }.
+// (array of Leader cardIds) and the owner's effective faction ranks
+// (shared/factions.js effectiveRanks — {factionId: rank}; omitted ranks
+// read as 0/Stranger, so passing {} is the strictest evaluation).
+// Returns { valid, failures: [{text, faction?, leader?}] }.
 // Callers resolve deck iids -> card defs and leader iids -> cardIds first.
-export function evaluateDeck(defs, leaderCardIds = []) {
+export function evaluateDeck(defs, leaderCardIds = [], effRanks = {}) {
   const failures = [];
-  const active = new Set();
   for (const id of leaderCardIds) {
     const L = LEADERS[id];
-    if (!L) { failures.push({ leader: id, text: `Unknown Leader: ${id}` }); continue; }
-    active.add(L.banner);
+    if (!L) failures.push({ leader: id, text: `Unknown Leader: ${id}` });
   }
 
-  // (1) gate — every gated card must have its banner's Leader fielded
-  const missing = new Set();
+  // (1) gate — every faction card must be within the owner's earned rank
+  const short = new Map();   // factionId -> highest unmet requirement
   for (const d of defs) {
-    const b = bannerOf(d.id);
-    if (b && !active.has(b)) missing.add(b);
+    const f = factionOf(d.id);
+    if (!f) continue;
+    const req = rankOf(d.id);
+    if (req > (effRanks[f] ?? 0)) short.set(f, Math.max(short.get(f) || 0, req));
   }
-  for (const b of missing) {
-    failures.push({ banner: b, text: `${bannerName(b)} cards need a ${bannerName(b)} Leader` });
+  for (const [f, req] of short) {
+    failures.push({ faction: f, text: `Needs ${factionName(f)} ${RANK_NAMES[req]} — earn standing by playing ${factionName(f)} cards` });
   }
 
   // (2) per-Leader: must be in the deck, and its constraints must hold

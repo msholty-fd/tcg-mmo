@@ -11,6 +11,7 @@ import { log, fct, updateHUD } from './ui.js';
 import { getDeck, getLeaders, getDeckCardIds, adoptProfile } from './collection.js';
 import { setQuests } from './quests.js';
 import { questById, objNeed } from '../../shared/quests.js';
+import { factionName, standingRank, RANK_NAMES } from '../../shared/factions.js';
 import { getCard } from '../../shared/engine/cards.js';
 import { LEVEL_NAMES } from '../../shared/chronicle.js';
 import { startRemoteDuel, applyRemoteView, endRemoteDuel, duelActive } from './duel/duelManager.js';
@@ -97,6 +98,7 @@ function handle(msg) {
       // server profile is authoritative
       adoptProfile(msg.profile);
       player.xp = msg.profile.xp; player.lvl = msg.profile.lvl; player.coins = msg.profile.coins;
+      player.factions = msg.profile.factions || {};
       setQuests(msg.profile.quests);
       updateHUD();
       break;
@@ -104,6 +106,7 @@ function handle(msg) {
     case 'profileUpdate': {
       const oldLvl = player.lvl;
       player.xp = msg.xp; player.lvl = msg.lvl; player.coins = msg.coins;
+      if (msg.factions) player.factions = msg.factions;
       if (msg.cards) adoptProfile(msg);
       setQuests(msg.quests);
       if (msg.lvl > oldLvl) {
@@ -113,6 +116,17 @@ function handle(msg) {
         setTimeout(() => $('dingflash').style.opacity = 0, 600);
       }
       updateHUD();
+      break;
+    }
+    case 'standing': {
+      // faction standing gains arrive BEFORE the profileUpdate that carries
+      // the new totals, so compare against the current mirror for rank-ups
+      for (const [f, pts] of Object.entries(msg.gains)) {
+        const before = standingRank(player.factions?.[f]);
+        const after = standingRank((player.factions?.[f] || 0) + pts);
+        log(`+${pts} standing with ${factionName(f)}.`, 'sys');
+        if (after > before) log(`${factionName(f)} now call you ${RANK_NAMES[after]}! New cards are open to your decks.`, 'ding');
+      }
       break;
     }
     case 'questEvent': {

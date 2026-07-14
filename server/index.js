@@ -22,6 +22,7 @@ import { applyXP } from '../shared/progression.js';
 import { questById, canAccept, canTurnin, progressDuelWin, progressVisit } from '../shared/quests.js';
 import { PACKS, rollPack } from '../shared/sets/core/packs.js';
 import { mintCard, levelOf, levelPoints, LEGEND_BUDGET, LEVEL_NAMES, renownFromDuel, HALL } from '../shared/chronicle.js';
+import { earnStanding, effectiveRanks } from '../shared/factions.js';
 
 const PORT = +(process.env.PORT || 8081);
 const DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -107,13 +108,13 @@ function newProfile(name, outfit) {
   const cards = starter.deck.map(id => mintCard(id, 'Starter deck', name));
   // designate the leader instance(s): the first minted copy of each leader card
   const leaders = starter.leaders.map(cid => cards.find(c => c.cardId === cid)?.iid).filter(Boolean);
-  return { name, outfit, cards, deck: cards.map(c => c.iid), leaders, xp: 0, lvl: 1, coins: 0, quests: {} };
+  return { name, outfit, cards, deck: cards.map(c => c.iid), leaders, xp: 0, lvl: 1, coins: 0, quests: {}, factions: {} };
 }
 
 // Validate a deck + its designated Leaders. Base rules (30 / ≤3 / Legend
-// Budget) then the Leader system (gate + per-Leader constraints via the shared
-// engine). leaderIids must be owned instances that are in the deck and whose
-// card is a registered Leader.
+// Budget), then the faction-rank gate + per-Leader constraints via the
+// shared engine (deckConstraints.js). leaderIids must be owned instances
+// that are in the deck and whose card is a registered Leader.
 function validDeck(profile, iids, leaderIids = []) {
   if (!Array.isArray(iids) || iids.length !== 30 || new Set(iids).size !== 30) return false;
   const byId = new Map(profile.cards.map(c => [c.iid, c]));
@@ -139,7 +140,7 @@ function validDeck(profile, iids, leaderIids = []) {
     leaderCardIds.push(inst.cardId);
   }
   const defs = iids.map(iid => getCard(byId.get(iid).cardId));
-  return evaluateDeck(defs, leaderCardIds).valid;
+  return evaluateDeck(defs, leaderCardIds, effectiveRanks(profile)).valid;
 }
 
 // mint a won card into a profile; returns the instance
@@ -238,8 +239,8 @@ function broadcast(msg, except = null) {
 }
 
 function sendProfile(p) {
-  const { xp, lvl, coins, quests, cards, deck, leaders = [] } = p.profile;
-  send(p, { t: 'profileUpdate', xp, lvl, coins, quests, cards, deck, leaders });
+  const { xp, lvl, coins, quests, cards, deck, leaders = [], factions = {} } = p.profile;
+  send(p, { t: 'profileUpdate', xp, lvl, coins, quests, cards, deck, leaders, factions });
 }
 
 // ---- trading ----
@@ -358,9 +359,20 @@ function onChronicle(room) {
         }
       }
     }
+    // faction standing — THE progression system (DESIGN.md "Factions"):
+    // each faction card this side PLAYED earns standing with its faction,
+    // doubled on a win, capped per duel (shared/factions.js earnStanding).
+    // Autobattle earns in full, same as every other duel reward.
+    const gains = earnStanding(room.duel.log, s, s === w);
+    const gainedFactions = Object.keys(gains);
+    if (gainedFactions.length) {
+      p.profile.factions = p.profile.factions || {};
+      for (const f of gainedFactions) p.profile.factions[f] = (p.profile.factions[f] || 0) + gains[f];
+    }
     markDirty(p.profile);
     if (p.live) {
       if (events.length) send(p.live, { t: 'chronicle', events });
+      if (gainedFactions.length) send(p.live, { t: 'standing', gains });
       sendProfile(p.live);
     }
   }

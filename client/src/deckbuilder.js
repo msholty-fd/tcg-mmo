@@ -11,7 +11,9 @@ import { artFor } from './pixelArt.js';
 import { FAMILIES } from '../../shared/sets/core/families.js';
 import { LEADERS, isLeaderCard } from '../../shared/sets/core/leaders.js';
 import { evaluateDeck, leaderRules } from '../../shared/deckConstraints.js';
-import { bannerOf, bannerName } from '../../shared/sets/core/banners.js';
+import { bannerName } from '../../shared/sets/core/banners.js';
+import { factionOf, rankOf, factionName, effectiveRanks, standingRank, FACTIONS, RANK_NAMES, RANK_THRESHOLDS, MAX_RANK } from '../../shared/factions.js';
+import { player } from './state.js';
 
 export const DECK_SIZE = 30;
 export const MAX_COPIES = 3;
@@ -21,12 +23,19 @@ export let deckbuilderOpen = false;
 let working = [];         // selected instance iids
 let workingLeaders = [];  // designated Leader iids (a subset of working)
 
-// --- Leader system helpers (banner gating + constraints) ------------------
+// --- Leader constraints + faction-rank gating ------------------------------
 const leaderCardIds = () => workingLeaders.map(iid => getInstance(iid)?.cardId).filter(Boolean);
-const activeBanners = () => new Set(leaderCardIds().map(cid => LEADERS[cid]?.banner).filter(Boolean));
+// effective faction ranks from the server-mirrored standing + owned champions
+// (shared/factions.js — same math the server's validDeck runs)
+const myRanks = () => effectiveRanks({ factions: player.factions, cards: getCards() });
+// null if buildable, else the faction the card is still locked behind
+const lockOf = (cardId, ranks) => {
+  const f = factionOf(cardId);
+  return f && rankOf(cardId) > (ranks[f] ?? 0) ? f : null;
+};
 // deck as card defs for the shared constraint engine
 const deckDefs = () => working.map(iid => getCard(getInstance(iid).cardId));
-const evalDeck = () => evaluateDeck(deckDefs(), leaderCardIds());
+const evalDeck = () => evaluateDeck(deckDefs(), leaderCardIds(), myRanks());
 
 // ---- collection organization: family grouping (core set) + set tabs ----
 // families.js is a curated cardId -> family mapping kept OUT of cards.js on
@@ -39,7 +48,7 @@ const evalDeck = () => evaluateDeck(deckDefs(), leaderCardIds());
 const FAMILY_BY_CARD = new Map();
 for (const fam of FAMILIES) for (const id of fam.cardIds) FAMILY_BY_CARD.set(id, fam.id);
 const UNCATEGORIZED = { id: 'uncategorized', name: 'Uncategorized' };
-const SET_LABELS = { core: 'Core', emberpeaks: 'The Emberpeaks' };
+const SET_LABELS = { core: 'Core', emberpeaks: 'The Emberpeaks', darkwood: 'The Darkwood' };
 const labelForSet = s => SET_LABELS[s] || (s.charAt(0).toUpperCase() + s.slice(1));
 
 function familyOf(cardId) {
@@ -84,6 +93,30 @@ function buildSections() {
   }
 
   return sections;
+}
+
+// Faction standing strip — the progression readout: rank name, points, and
+// progress to the next threshold per faction; gilded when a champion vouches
+// (+1 effective rank; hover title explains). Data mirrors the server
+// (player.factions + owned champions), same math validDeck runs.
+function renderFactions() {
+  const row = $('db-factions');
+  row.innerHTML = '';
+  const ranks = myRanks();
+  for (const f of FACTIONS) {
+    const pts = player.factions?.[f.id] || 0;
+    const base = standingRank(pts);
+    const eff = ranks[f.id];
+    const vouched = eff > base;
+    const next = base < MAX_RANK ? ` · ${pts}/${RANK_THRESHOLDS[base + 1]}` : ` · ${pts}`;
+    const chip = document.createElement('span');
+    chip.className = 'fac' + (vouched ? ' vouched' : '');
+    chip.title = vouched
+      ? `${f.name}: ${RANK_NAMES[base]} by standing, ${RANK_NAMES[eff]} effective — a champion vouches for you`
+      : `${f.name}: play their cards in duels to earn standing`;
+    chip.innerHTML = `${f.name} <b>${RANK_NAMES[eff]}${vouched ? ' ▲' : ''}</b><span class="pts">${next}</span>`;
+    row.appendChild(chip);
+  }
 }
 
 function renderFilters() {
@@ -135,6 +168,7 @@ function open() {
   working = getDeck().filter(iid => getInstance(iid));
   workingLeaders = getLeaders().filter(iid => getInstance(iid) && working.includes(iid));
   $('deckbuilder').classList.add('open');
+  renderFactions();
   renderFilters();
   render();
 }
@@ -271,7 +305,7 @@ function toggleLeader(cid) {
 // need to touch the deck count/legend/deck-list.
 function renderGrid() {
   const groups = buildOwnedGroups();
-  const active = activeBanners();
+  const ranks = myRanks();
 
   const grid = $('db-grid');
   grid.innerHTML = '';
@@ -291,8 +325,8 @@ function renderGrid() {
       const owned = groups.get(def.id) || [];
       const inDeck = working.filter(iid => getInstance(iid).cardId === def.id).length;
       const best = owned[0];
-      const banner = bannerOf(def.id);
-      const locked = banner && !active.has(banner);   // gated: needs its Leader
+      const lockFaction = lockOf(def.id, ranks);   // faction-rank gate (factions.js)
+      const locked = !!lockFaction;
       const slot = document.createElement('div');
       slot.className = 'db-slot';
       const el = cardEl(def, best ? instLevel(best) : 0);
@@ -300,11 +334,11 @@ function renderGrid() {
       if (locked) el.classList.add('locked');
       const badge = document.createElement('div');
       badge.className = 'owned' + (inDeck ? ' indeck' : '') + (locked ? ' locked' : '');
-      badge.textContent = locked ? `🔒 needs ${bannerName(banner)} Leader`
+      badge.textContent = locked ? `🔒 ${factionName(lockFaction)}: ${RANK_NAMES[rankOf(def.id)]}`
         : inDeck ? `${inDeck} in deck · own ${owned.length}` : `own ${owned.length}`;
       slot.appendChild(el); slot.appendChild(badge);
       el.onclick = locked
-        ? () => log(`${def.name} needs a ${bannerName(banner)} Leader — fly that banner to run it.`, 'bad')
+        ? () => log(`${def.name} needs ${factionName(lockFaction)} rank ${RANK_NAMES[rankOf(def.id)]} — play their cards to earn standing.`, 'bad')
         : () => addCopy(def.id, groups);
       el.oncontextmenu = ev => { ev.preventDefault(); if (owned.length) showChronicle(def, owned); };
       grid.appendChild(slot);
@@ -313,11 +347,12 @@ function renderGrid() {
 }
 
 function addCopy(cardId, groups, force = false) {
-  // gate: a banner card can't be added unless its Leader is flown (force skips
-  // this — used when the Leader card itself is being pulled into the deck)
-  const banner = bannerOf(cardId);
-  if (!force && banner && !activeBanners().has(banner)) {
-    log(`${getCard(cardId).name} needs a ${bannerName(banner)} Leader.`, 'bad');
+  // gate: a faction card can't be added past your earned rank (force skips
+  // this — used when a Leader card itself is being pulled into the deck;
+  // the server re-validates the whole deck on save either way)
+  const lockFaction = force ? null : lockOf(cardId, myRanks());
+  if (lockFaction) {
+    log(`${getCard(cardId).name} needs ${factionName(lockFaction)} rank ${RANK_NAMES[rankOf(cardId)]}.`, 'bad');
     return;
   }
   const owned = groups.get(cardId) || [];
