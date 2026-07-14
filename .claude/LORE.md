@@ -94,6 +94,13 @@ burning. The player's arc is to become part of what the fire remembers.
   witnessing is a civic duty ("the fire doesn't care whose story it keeps,
   only that it's witnessed"). She knows the ledger, not the myth's ending —
   keep her practical, never prophetic.
+- **Weir the Forgotten** (the Circle of Sighs, night only) — half-faded;
+  remembers the hunt, not the hunter. Quiet dignity, never horror. See Act
+  II canon below.
+- **Tamsin the Charcoal-Burner** (the Darkwood road) — small omens tier: a
+  practical tradeswoman who feeds hearths for a living and doesn't like
+  what the wood's been whispering. (Duelists can't surface `n.flavor` —
+  her knowledge shows in quest/DESIGN text only for now.)
 - **Marla, Harrow, the Wayfarer, everyone else** — superstition and small
   omens. Marla is actively dismissive (someone still has to sell the packs).
 
@@ -172,19 +179,43 @@ duels { target: 'pyrelord', need: 1 }, xp 750, coins 75
   to know more, one of those doors will open. I will keep the watch until
   then. I have gotten rather good at it."
 
-## Act II & III — doors, not scripts (reserved)
+## Act II — "What the Wood Kept" (WRITTEN, Darkwood Phase 3)
 
-Both doors are named in the Act I cliffhanger and both already exist in the
-world as seeded hooks. Do NOT write their answers until their zone phases
-happen:
+The Circle of Sighs door from the Act I cliffhanger. New canon (continues
+the numbered facts above):
 
-- **Act II — the Circle of Sighs** (Deep Darkwood Phase 3): seven standing
-  stones, one fallen. Suggested meaning (decide properly in Act II): one
-  stone per watchfire/beacon of the old order; the fallen one is the first
-  that went cold. Night-matters card set is the natural mechanical pairing.
+11. **The watchfire ring.** The Emberwatch raised eight standing stones,
+    one for each watchfire of the realm — the Circle of Sighs is that ring,
+    and the wood was not dark when they raised it. The fallen eighth stone
+    marks the FIRST watchfire to go out: the Deep Darkwood is not a new
+    wound but the oldest one, forgotten so long the wood grew over its
+    grave. **The stone did not crumble — it was pulled down.** By whom or
+    what is Act III's question; do not answer it.
+12. **Weir the Forgotten.** Bram's hunter friend followed the cold-fire
+    trail to the Circle and stayed too long in a place that forgets. He is
+    half-faded — still checks his snares, no longer remembers why — and
+    walks the ring only at night, among the wisps. A duel is a witnessing:
+    being fought, and his card (`weir`) being carried and played, is what
+    holds him in the world. He speaks little and remembers less; write him
+    with quiet dignity, never horror. Bram knows now — keep Bram's grief
+    understated and practical ("I'll keep the first one going. You keep
+    the second.").
+
+Act II quests (shared/quests.js, prereq'd on Act I's finale):
+`the_fallen_stone` (Sentinel — visit the Circle, count the stones) →
+`what_the_wood_kept` (Sentinel — defeat Weir at night; the reveal) →
+`a_coal_for_bram` (Bram — own the `weir` card: witnessing made mechanical).
+Tamsin the Charcoal-Burner (day duelist, the wood's road) is Phase-3 zone
+content beside the act, knowledge level "small omens": she feeds hearths
+for a living and doesn't like what the wood's been whispering.
+
+## Act III — a door, not a script (reserved)
+
 - **Act III — Cinderhollow Mine** (the seeded underground hook): what the
-  delvers dug too close to. Marrow the Delver is already standing at the
-  door. "Buried on purpose" is the only canon fact so far.
+  delvers dug too close to, and what pulled the eighth stone down —
+  presumably one answer. Marrow the Delver is already standing at the door.
+  "Buried on purpose" + "wanted a beacon put out" are the only canon facts
+  so far. Do NOT write it until the mine's own content phase.
 
 ## Flavor-line pass (ships with Act I)
 

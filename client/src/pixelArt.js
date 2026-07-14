@@ -673,6 +673,9 @@ const CARD_ART = {
   dw_moonlit_reprisal: { sprite: 'snare', pal: { r: '#8a94a8', R: '#5a636e' } },
   dw_wisp_ring:        { sprite: 'spark', pal: { k: '#101820', F: '#c0f0d8', f: '#5a8f7a', w: '#eafff0' } },
   dw_seventh_stone:    { sprite: 'rite', pal: { b: '#9aa89a', B: '#6e7a6e', e: '#a8e8c0', f: '#d8e8d0' } },
+  // Weir — a hunter half-faded: worn leathers gone grey-green, wisp-pale
+  // eyes (the Circle's light, not a living one).
+  weir:                { sprite: 'hooded', pal: { h: '#4e584a', H: '#363e34', m: '#242a22', e: '#c0f0d8' } },
 };
 
 const cache = new Map();

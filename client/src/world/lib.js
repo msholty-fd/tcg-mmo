@@ -13,6 +13,7 @@ import { rand } from '../utils.js';
 import { addCircle, addRect } from '../colliders.js';
 import { DUELISTS as CORE_DUELISTS } from '../../../shared/sets/core/duelists.js';
 import { EMBERPEAKS_DUELISTS } from '../../../shared/sets/emberpeaks/duelists.js';
+import { DARKWOOD_DUELISTS } from '../../../shared/sets/darkwood/duelists.js';
 
 export const M = {
   trunk:    new THREE.MeshLambertMaterial({ color: 0x6b4a2f }),
@@ -261,7 +262,7 @@ export function spawnNPC(name, x, z, opts) {
 export const VILLAGER_SHIRTS = [0x8a6a4a, 0x5a7a5a, 0x7a5a6a, 0x4a6a8a, 0x9a8a4a, 0x6a4a4a];
 
 // ---------- duelist NPCs (roster shared with the server) ----------
-export const DUELISTS = { ...CORE_DUELISTS, ...EMBERPEAKS_DUELISTS };
+export const DUELISTS = { ...CORE_DUELISTS, ...EMBERPEAKS_DUELISTS, ...DARKWOOD_DUELISTS };
 
 export function spawnDuelist(id, x, z, opts) {
   const def = DUELISTS[id];

@@ -1735,6 +1735,51 @@ considered and rejected.
     duelist decks are built (sim per the usual duelist-pass procedure, and
     sim BOTH night states — first set where that matters).
 
+- **Deep Darkwood Phase 3 — duelists + main quest Act II (2026-07-14,
+  Michael green-lit "ok, lets go")**: the zone plan's Phase 3, fused with
+  the narrative's Act II — the Circle of Sighs door the Act I cliffhanger
+  named. Canon written in LORE.md (facts 11–12): the Circle is the
+  Emberwatch's **watchfire ring** (eight stones, one per beacon of the old
+  order); the fallen eighth marks the FIRST fire to go out — the Darkwood is
+  the oldest wound, not a new one — and the stone was **pulled down**, not
+  crumbled (Act III's question; the mine). Who walks the ring at night:
+  **Weir the Forgotten** — Bram's missing hunter from Act I, half-faded by a
+  place that forgets, held in the world by being witnessed (duels, and his
+  `weir` card being carried — the myth's witnessing theme made mechanical).
+  - **Roster** (`shared/sets/darkwood/duelists.js`, merged at the two
+    DUELISTS sites like emberpeaks): **Tamsin the Charcoal-Burner** (gate,
+    day, ON the Highgate-side road corridor at 95,-110) and **Weir** (boss,
+    at the Circle among the wisps, night-only via the Sentinel's
+    visibility-gate pattern in main.js — which also means his
+    nocturnal-heavy deck always fights on its home condition: the zone boss
+    *belongs* to his field, per the card-game direction). Their reward
+    pools put the darkwood set into circulation — the founding pillar.
+    New 16th set card: `weir` (5c 4/3 Ambush, nocturnal +1/+1, onPlay ping —
+    the boss-plays-themself pattern).
+  - **Act II quests** (`the_fallen_stone` visit → `what_the_wood_kept`
+    defeat Weir → `a_coal_for_bram` own the `weir` card): prereq'd on Act
+    I's finale; the coda deliberately makes "carry his memory" a collect
+    quest on the boss's signature drop (~1-in-33 pool odds per win, plus
+    tradeable — the Chronicle economy IS the quest).
+  - *Tuning*: Tamsin's first pass (17 darkwood cards) simmed 27% vs
+    starters — nocturnal commons are day-weak and she duels by day; retuned
+    to 15 darkwood/15 vanilla-body mix → 35% (route-trainer band; Brenna
+    ships at 31-42%). Weir sims 77% at night (boss-tier, between Ashmonger
+    and Pyrelord), 23% by day (unreachable state, simmed for crash coverage
+    only). 0 stuck/0 crashes across all 180 games.
+  - *Verification*: build + node --check clean; test-leaders 198/198;
+    test-packs 4436/4436 (the parallel fix session's repair held); headless
+    suite ALL PASS (deck legality, reward resolution, signature-in-pool,
+    winrate bands, full Act II gating chain incl. visit progress at the
+    heart); live raw-WS duels vs both through the real server (duelStart
+    name/kind + `night` in the view, concede → duelEnd, zero errors). NOT
+    verified live: Weir/Tamsin visual placement and the night-gate flip
+    (same spawnDuelist/visibility code paths as Sentinel/every duelist;
+    dead-reckoned coords — worst case cosmetic).
+  - *Remaining for the zone*: Phase 3b (zone pack + vendor — deferred this
+    pass partly because packs.js/test-packs was another session's active
+    lane) and the duel-UI night indicator flagged in the Phase 2 entry.
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase

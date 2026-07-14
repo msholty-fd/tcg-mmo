@@ -5,7 +5,7 @@ import { groundH } from './terrain.js';
 import { humanoid, makeLabel } from './entities.js';
 import { STARTERS, ZONES, CAMPS } from './constants.js';
 import { player, critters } from './state.js';
-import { fires, torches, marla, aldric, camCollidables, sentinel, updatePatrols, updateDarkwood } from './world.js';
+import { fires, torches, marla, aldric, camCollidables, sentinel, weir, updatePatrols, updateDarkwood } from './world.js';
 import { log, updateHUD } from './ui.js';
 import { keys, cam, started, setStarted, autoWalk, touchMove, isTouch, initTouchControls, tickTouchUI } from './input.js';
 import { resolveCollision } from './colliders.js';
@@ -188,7 +188,10 @@ function update(dt) {
   // The Ashen Sentinel (Emberwatch Ruins) only manifests 20:00-6:00 — a
   // night-only landmark, see DESIGN.md. Hard hour gate (not the smooth
   // dayF/night blend above) so it's a discrete "it's here or it isn't."
+  // Weir the Forgotten (Circle of Sighs) walks the same window — the
+  // Darkwood's night duelist, main quest Act II.
   sentinel.mesh.visible = gameHour >= 20 || gameHour < 6;
+  weir.mesh.visible = sentinel.mesh.visible;
 
   // Deep Darkwood gloom (world/darkwood.js): the wood closes in around the
   // player — fog pulls from (70,300) to (16,60), the light dies under the
