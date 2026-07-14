@@ -269,20 +269,30 @@
   #shop{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);display:none;flex-direction:column;gap:10px;
     width:min(460px,92vw);padding:14px 16px;pointer-events:auto;z-index:8}
   #wardrobe{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);display:none;flex-direction:column;gap:10px;
-    width:min(560px,94vw);max-height:86vh;padding:14px 16px;pointer-events:auto;z-index:8}
+    width:min(680px,94vw);max-height:86vh;padding:14px 16px;pointer-events:auto;z-index:8}
   #wardrobe.open{display:flex}
   #wardrobe .w-head{font-size:15px;text-align:center}
   #wardrobe .w-head b{color:var(--gold)}
-  #wardrobe #w-list{overflow-y:auto;display:flex;flex-direction:column;gap:10px}
-  #wardrobe .w-fac{font-size:12.5px;color:#9a8f78;margin-bottom:4px}
+  #wardrobe .w-main{display:flex;gap:14px;min-height:0}
+  #wardrobe .w-fig{flex:none;width:190px;display:flex;flex-direction:column;align-items:center;gap:4px;
+    border:1px solid var(--gold-dim);border-radius:4px;padding:6px 4px 8px;
+    background:radial-gradient(ellipse at 50% 30%, rgba(120,100,50,.14), rgba(0,0,0,.4) 75%)}
+  #wardrobe #w-canvas{width:180px;height:250px;display:block}
+  #wardrobe .w-fignote{color:#8a8068;font-size:10px;font-style:italic}
+  #wardrobe #w-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;min-width:0}
+  #wardrobe .w-fac{font-size:12px;color:#9a8f78;margin-bottom:5px;letter-spacing:.4px}
   #wardrobe .w-fac b{color:var(--gold)}
-  #wardrobe .w-items{display:flex;gap:6px;flex-wrap:wrap}
-  #wardrobe .w-item{display:flex;align-items:center;gap:6px;padding:5px 8px;font:inherit;font-size:11.5px;
-    color:#d8cfae;background:rgba(0,0,0,.3);border:1px solid var(--gold-dim);border-radius:3px;cursor:pointer}
-  #wardrobe .w-item.worn{border-color:var(--gold);background:rgba(120,90,20,.25)}
-  #wardrobe .w-item.locked{opacity:.45}
-  #wardrobe .w-swatch{width:12px;height:12px;border-radius:2px;border:1px solid #000;flex:none}
-  #wardrobe .w-meta{color:#8a8068;font-size:10.5px}
+  #wardrobe .w-tease{color:#6e6552;font-size:10.5px;font-style:italic;margin-left:8px}
+  #wardrobe .w-items{display:flex;gap:8px;flex-wrap:wrap}
+  #wardrobe .w-item{display:flex;flex-direction:column;align-items:center;gap:3px;width:104px;padding:8px 4px 6px;
+    font:inherit;color:#d8cfae;background:rgba(0,0,0,.3);border:1px solid var(--gold-dim);border-radius:4px;cursor:pointer}
+  #wardrobe .w-item:hover{border-color:var(--gold);background:rgba(60,48,20,.35)}
+  #wardrobe .w-item.worn{border-color:var(--gold);background:rgba(120,90,20,.28);box-shadow:0 0 6px rgba(220,180,80,.25) inset}
+  #wardrobe .w-item img{width:48px;height:48px;image-rendering:pixelated}
+  #wardrobe .w-name{font-size:11px;text-align:center;line-height:1.25}
+  #wardrobe .w-slot{color:#8a8068;font-size:9.5px;letter-spacing:.5px;text-transform:uppercase}
+  #wardrobe .w-item.worn .w-slot{color:var(--gold)}
+  #wardrobe .w-empty{color:#9a8f78;font-size:12px;font-style:italic;padding:18px 8px;text-align:center}
   #wardrobe .w-actions{display:flex;justify-content:space-between;align-items:center}
   #wardrobe .w-note{color:#9a8f78;font-size:11px}
   #shop .s-head{font-size:15px;text-align:center}
@@ -439,6 +449,10 @@
     #d-controls button{font-size:12px;padding:7px 12px}
     /* deck builder: stack panes; the deck/leaders panel becomes a bottom sheet */
     #deckbuilder{padding:10px 2vw;padding-top:calc(10px + env(safe-area-inset-top))}
+    #wardrobe .w-main{flex-direction:column;align-items:center}
+    #wardrobe .w-fig{width:150px}
+    #wardrobe #w-canvas{width:140px;height:150px}
+    #wardrobe #w-list{max-height:38vh;width:100%}
     #db-head{flex-wrap:wrap;gap:8px}
     #db-head h2{font-size:16px}
     #db-main{flex-direction:column}
@@ -520,7 +534,13 @@
   </div>
   <div id="wardrobe" class="panel">
     <div class="w-head"><b>Wardrobe</b> — wear the colors of those who know you</div>
-    <div id="w-list"></div>
+    <div class="w-main">
+      <div class="w-fig">
+        <canvas id="w-canvas"></canvas>
+        <div class="w-fignote">hover a piece to try it on</div>
+      </div>
+      <div id="w-list"></div>
+    </div>
     <div class="w-actions">
       <span class="w-note">A faction dresses the people it has witnessed.</span>
       <span>
