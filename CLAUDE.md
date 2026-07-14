@@ -128,8 +128,9 @@ progression) when the server is down; it auto-reconnects every 4s.
   Veteran/Storied ascensions broadcast realm-wide from `onChronicle`
 - `shared/sets/core/packs.js` — supply-pack definitions + rarity-weighted
   `rollPack()`. Coin economy: duel wins pay 5 (NPC) / 10 (PvP) — autobattle
-  included (QoL decision, DESIGN.md); packs are the sink,
-  sold in-world by Marla (`client/src/shop.js`, E when no quest business).
+  included (QoL decision, DESIGN.md); packs are the sink, sold in-world by
+  `.vendorPack` NPCs — Marla (Boarlands), Sutler Varn (Cinder Cache), Pedlar
+  Rusk (Night-Gather) — via `client/src/shop.js` (E when no quest business).
   Server validates coins + proximity and mints (`buyPack` in server/index.js).
   No crafting — deliberate, see DESIGN.md ("packs complement trading,
   crafting substitutes for it").

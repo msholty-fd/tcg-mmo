@@ -75,6 +75,11 @@ export function render() {
   $('d-foe-ember').textContent = '🔥 ' + foe.ember + '/' + foe.emberMax;
   $('d-my-ember').textContent = '🔥 ' + me.ember + '/' + me.emberMax;
 
+  // night badge — duel.night is fixed at duel start (server-synced hour;
+  // local clock offline) and ships in every server view. Nocturnal rules
+  // text carries the condition; this is the board-level "it's live" cue.
+  $('d-night').style.display = duel.night ? '' : 'none';
+
   // face-down reactions: yours are inspectable (hover zoom), theirs are backs
   renderReactions($('d-foe-reacts'), foe.reactions || [], false);
   renderReactions($('d-my-reacts'), me.reactions || [], true);

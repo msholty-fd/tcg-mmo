@@ -1879,6 +1879,38 @@ considered and rejected.
     hat color → server profile updates). NOT verified: animated/in-motion
     look (rAF stall), true two-browser visual of a remote's cape.
 
+- **Deep Darkwood Phase 3b — zone pack + vendor + night indicator
+  (2026-07-14, `feat/darkwood-pack`)**: the zone playbook's last phase
+  (Emberpeaks precedent: terrain → set → duelists/quests → pack & vendor)
+  plus the duel-UI night indicator flagged since Phase 2. **The Deep
+  Darkwood is now complete** — the worldbuilding loop returns to general
+  iteration.
+  - **Night-Gather** (`shared/sets/darkwood/packs.js`): 5 cards from the
+    16-card darkwood set, **35 coins** (between Boarlands' 25 and the
+    Cinder Cache's 40 — the wood is mid-realm on the Gruk↔Highgate road),
+    weights 64/28/8. Rare weight deliberately below the Cinder Cache's:
+    `weir` is Act II's chase card and a trade driver (`a_coal_for_bram`);
+    at 8/5 rares a pack pull is ~8% to hold him (~10 packs expected) — the
+    pack feeds the chase without ending it.
+  - **Vendor: Pedlar Rusk** at (106, −72), just inside the zone edge on the
+    Gruk-side road (the Varn placement rule: you meet him walking in, not
+    deep among the stones), ~3u off the walkline with his crate of wares.
+    LORE.md knowledge tier: small omens — he sells by daylight and is gone
+    by dusk. Zero shop/server changes needed: `openShop(pack)` and
+    `buyPack` were already generic (the Phase-3b generalization paying off).
+  - **Duel-UI night badge** (`#d-night`, index.html + duelUI.render): a
+    "🌙 Night" chip beside the foe name whenever `duel.night`, tooltip
+    explaining Nocturnal. Rules text still carries the condition — the
+    badge is the board-level "it's live" cue, day duels show nothing.
+  - **The third-set promotion note FIRED and was deliberately not taken**:
+    darkwood is the third pack in core packs.js's hand-merge. Kept the
+    spread anyway — three static entries are still cheaper than registry
+    machinery, and banners/leaders remain at two sets (darkwood ships
+    neither: its cards flow through reward pools + this pack, and the
+    faction rank gate already covers them). New promotion trigger, recorded
+    in packs.js: a FOURTH set, or any single set needing banners + leaders
+    + packs at once.
+
 ## Open questions
 
 - **Cinderpass fix (2026-07-08, `fix/cinderpass`)** — Michael playtested Phase

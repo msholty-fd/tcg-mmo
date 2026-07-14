@@ -6,10 +6,15 @@
 
 import { cardsInSet } from '../../engine/cards.js';
 import { EMBERPEAKS_PACKS } from '../emberpeaks/packs.js';
+import { DARKWOOD_PACKS } from '../darkwood/packs.js';
 
 // The pack registry is GLOBAL across sets, aggregated here like banners.js/
-// leaders.js (the de-facto global registry pattern). If a third set lands,
-// promote all three to a real per-set registry instead of growing the merges.
+// leaders.js (the de-facto global registry pattern). The third-set promotion
+// note fired with darkwood (2026-07-14): the merge was kept anyway — three
+// static spreads are still cheaper than registry machinery, and banners/
+// leaders remain at two sets (darkwood ships neither). Promote all three
+// registries together when a FOURTH set lands or when any single set needs
+// banners + leaders + packs at once (rationale in DESIGN.md, Darkwood 3b).
 export const PACKS = {
   boarlands: {
     id: 'boarlands',
@@ -22,6 +27,7 @@ export const PACKS = {
     vendor: { name: 'Quartermaster Marla', x: 3.5, z: 4 },   // must match her world.js spawn
   },
   ...EMBERPEAKS_PACKS,
+  ...DARKWOOD_PACKS,
 };
 
 // Roll `pack.size` card ids: pick a rarity by weight, then a uniform card

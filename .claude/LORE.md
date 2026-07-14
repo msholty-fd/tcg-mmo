@@ -112,6 +112,10 @@ but never say "points" or "unlock."
   practical tradeswoman who feeds hearths for a living and doesn't like
   what the wood's been whispering. (Duelists can't surface `n.flavor` —
   her knowledge shows in quest/DESIGN text only for now.)
+- **Pedlar Rusk** (the Darkwood road, Gruk side) — small omens tier: sells
+  the Night-Gather by daylight and is gone by dusk, and won't say why beyond
+  "the light's better." (Vendor interactions can't surface flavor lines —
+  his knowledge shows in the pack desc and DESIGN text only for now.)
 - **Marla, Harrow, the Wayfarer, everyone else** — superstition and small
   omens. Marla is actively dismissive (someone still has to sell the packs).
 
