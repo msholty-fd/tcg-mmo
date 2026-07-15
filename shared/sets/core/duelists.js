@@ -233,6 +233,23 @@ const tollyDeck = swap(
   ['ember_bolt', 'sudden_spark'],
   ['herd_instinct', 'hearth_meal'],
 );
+// Dace (Pell's Pond) — the netmender fishes with patience: wardens base
+// trading arson for tackle. camp_torcher is the one card a fisher would
+// never carry; in come hidden_snare (a net is a snare set underwater) and
+// patient_sentry (the trade IS waiting). Route-trainer tier like Tolly —
+// commoners sharing family staples, not a deepened boss identity.
+// Tuned in sims (500/side vs each starter): 36/46/44 vs boarherd/wardens/
+// redsash — the route-trainer band (a landing duels easier than a camp;
+// brenna's plain wardens base sims 32/41/40, so the swap is a gentle nudge
+// up, not a power shift). Rejected: a deeper 4-card trap lean (+boar_pit/
+// warding_bell over burn — 41/52/49, but route trainers are single light
+// swaps by decision, not deepened identities), and a redsash base with the
+// same two cards (46/47/49, and it reads bandit, not fisher).
+const daceDeck = swap(
+  STARTER_DECKS.wardens,
+  ['camp_torcher', 'camp_torcher'],
+  ['hidden_snare', 'patient_sentry'],
+);
 
 export const DUELISTS = {
   rowan: {
@@ -302,5 +319,9 @@ export const DUELISTS = {
   tolly: {
     name: 'Tolly the Lambward', deck: tollyDeck,
     rewards: [...tollyDeck, 'forest_sow'],
+  },
+  dace: {
+    name: 'Dace the Netmender', deck: daceDeck,
+    rewards: [...daceDeck, 'boar_pit'],
   },
 };
