@@ -1929,6 +1929,57 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **The West Road — waystones for the Downs and the Pond (2026-07-15,
+  worldbuilding loop iteration 9)**: the seeded ledger's ripest entry by its
+  own trigger. The downs rule — "a flavour landmark earns a route when it
+  earns content" — was written at the Wether Downs, quoted at Pell's Pond,
+  and iteration 8's entry noted it now describes BOTH: the downs earned
+  Tolly (iteration 4), the pond earned Dace (iteration 8), and neither had
+  a single stone pointing at it. Shape variance was the other driver:
+  iterations 6–7 were landmarks and 8 a duelist, while connective tissue
+  hadn't been touched since the original Waystones entry (2026-07-08) —
+  and this is that entry's own sequel, card-free and one-file by the same
+  reasoning (`client/src/world/roads.js` only; no main.js/entities.js/
+  net.js while the humanoid session owns them, no CAMPS change, no server).
+  - **The route** (5 stones, existing `waystone()` builder, colliders
+    self-registered): due west from the crossroads to the downs —
+    (−34,−22), (−76,−17), (−114,−13) aimed at DEST.wetherdowns — then a
+    1.2-scale downs-edge marker at (−147,8) bending the road north (the
+    Darkwood heart-marker precedent: the onward pointer at a destination),
+    and (−145,33) on to DEST.pellspond. The realm's second outer-to-outer
+    road: a walker at either landmark now learns the other exists, and the
+    north end delivers them to Dace's bank — the route ends in a duel,
+    which is the realm's grammar for a road worth marking. Terrain scanned
+    numerically before siting (the pond technique, dry-land variant): all
+    stones on gentle ground (max slope Δ0.44 within r=1.5, route max h
+    5.2 — no cliffs), all clear of the downs' furniture colliders (nearest:
+    hut 21, cairn 21+) and of brenna's patrol path (nearest new stone ~28
+    from her Hollowmere-road polyline — the patrol/collider teleport gotcha
+    stays satisfied).
+  - **The Wayfarer** gains one line naming the road (his established job —
+    every route he can see from the crossroads gets a line; a west road
+    without one would break the pattern): "West's the newest road — Wynn's
+    downs first, then the stones bend north for Pell's water." Practical
+    tier, no omen; LORE.md untouched (no new NPC).
+  - **Rejected this survey**: the Bee Meads duelist (ripe by the
+    one-iteration-gap precedent, but it's the same *shape* as iteration 8 —
+    back-to-back duelists is exactly the fatigue this loop's variance brief
+    exists to prevent; still seeded, and the road makes its later duelist
+    findable); the Red-Sash camp-life pass (its centerpiece, the night
+    dice-fire, wants an hour-gated update hook — per the Bee Meads
+    precedent that's a main.js call site, reserved while the humanoid
+    session owns the file; building the pass without its night layer would
+    ship the seed's weakest half — still seeded, whole); the hot spring
+    (rejected in surveys 7 AND 8 for the same reason — the omen sharpens
+    Act I's staging — a third look found nothing changed); the windmill
+    (still blocked on the same main.js hook).
+  - **Deliberately NOT done**: no stones to the Bee Meads (no business
+    there yet — the rule that picked this iteration also scopes it); no
+    west route trainer (roads earn their trainers the way landmarks earn
+    their roads — seeded: a west-road patroller if the route sees traffic,
+    Sorrel/Finch/Brenna pattern); no Wynn/Pell dialogue changes (the
+    Darkwood road precedent — destination NPCs didn't mention it either).
+
 - **Dace the Netmender — Pell's Pond's duelist (2026-07-15, worldbuilding
   loop iteration 8)**: a deliberate shape change. Iterations 6 and 7 were
   both "new landmark + flavour NPC in an empty wedge," so this survey

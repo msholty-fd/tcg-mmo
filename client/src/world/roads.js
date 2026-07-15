@@ -51,6 +51,8 @@ const DEST = {
   cinderpass:[0, 158],
   darkwood:  [118, -115],
   village:   [0, 0],
+  wetherdowns:[-150, -10],
+  pellspond: [-141, 58],
 };
 
 // A hub crossroads just south of the village where the roads diverge, then
@@ -84,6 +86,20 @@ waystone(115, -98, ...DEST.darkwood);
 waystone(118, -115, ...DEST.highgate, 1.2);   // heart marker, by the stone circle
 waystone(95, -113, ...DEST.highgate);
 waystone(68, -110, ...DEST.highgate);
+// the West Road (2026-07-15, worldbuilding iteration 9 — DESIGN.md): the
+// downs rule — "a flavour landmark earns a route when it earns content" —
+// has now fired for BOTH western landmarks (the Wether Downs got Tolly, the
+// pond got Dace), so one route serves both: due west from the crossroads to
+// the downs, then the stones bend north along the realm's western edge to
+// Pell's Pond. The downs-edge marker is the onward pointer (Darkwood
+// heart-marker precedent) — the realm's second outer-to-outer road, so each
+// landmark teaches the other exists. The Bee Meads stays roadless on
+// purpose: same rule, no business there yet.
+waystone(-34, -22, ...DEST.wetherdowns);
+waystone(-76, -17, ...DEST.wetherdowns);
+waystone(-114, -13, ...DEST.wetherdowns);
+waystone(-147, 8, ...DEST.pellspond, 1.2);   // downs-edge marker, pointing on north
+waystone(-145, 33, ...DEST.pellspond);
 
 // The Wayfarer — a roaming teller who keeps the roads' stories, stationed at
 // the crossroads hub. First flavour NPC placed out in the Boarlands rather
@@ -97,6 +113,7 @@ wayfarer.flavor = [
   "West-and-south the ground goes soft: Hollowmere, where Old Hessa deals cards to the dead. Bring dry boots.",
   "Northeast the markers thin out. There's a ruin that lights itself after dark — I don't follow that road at night, and neither should you.",
   "East for Gruk's bones, northwest for the Red-Sash. Both roads end in a duel; that's the realm for you.",
+  "West's the newest road — Wynn's downs first, then the stones bend north for Pell's water. Sheep, then fish. Even the quiet end of the realm wants finding.",
   "I don't duel, I don't trade. I just walk the roads and remember who's on them. Someone has to.",
   "Roads remember feet the way fires remember faces — that's what my mother said. I keep walking so something remembers me.",
 ];
