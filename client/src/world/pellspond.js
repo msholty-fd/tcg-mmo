@@ -18,7 +18,7 @@ import { scene } from '../scene.js';
 import { groundH } from '../terrain.js';
 import { rand } from '../utils.js';
 import { addCircle, addRect } from '../colliders.js';
-import { M, camCollidables, campfire, crate, barrel, signpost, spawnCritter, spawnNPC, spawnDuelist } from './lib.js';
+import { M, camCollidables, campfire, fires, crate, barrel, signpost, spawnCritter, spawnNPC, spawnDuelist } from './lib.js';
 
 const PP = { x: -141, z: 58 };   // heart (constants.js CAMPS r=18)
 const POND_R = 9;
@@ -112,9 +112,9 @@ for (const a of [.3, 1.2, 2.7, 4.1, 5.3]) {
 })();
 
 // The smoking fire — LORE "tended," made literal: kept low, kept always,
-// with the drying rack hung beside it. campfire() registers in fires[] so
-// it ramps with darkness like every kept hearth in the realm.
-campfire(PP.x + 10, PP.z + 2.5);
+// with the drying rack hung beside it. Pushed into fires[] so it flickers
+// like every kept hearth (campfire() does not self-register).
+fires.push(campfire(PP.x + 10, PP.z + 2.5));
 
 // Drying rack — two posts, a crossbar, and the catch hung to smoke.
 (function rack() {

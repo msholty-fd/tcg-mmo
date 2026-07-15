@@ -13,7 +13,7 @@ import { scene } from '../scene.js';
 import { groundH } from '../terrain.js';
 import { rand } from '../utils.js';
 import { addCircle, addRect } from '../colliders.js';
-import { M, camCollidables, campfire, hayBale, crate, barrel, signpost, spawnCritter, spawnNPC, spawnDuelist } from './lib.js';
+import { M, camCollidables, campfire, fires, hayBale, crate, barrel, signpost, spawnCritter, spawnNPC, spawnDuelist } from './lib.js';
 
 const WD = { x: -150, z: -10 };   // heart (constants.js CAMPS r=20)
 
@@ -62,9 +62,10 @@ function drystoneRun(x1, z1, x2, z2) {
   camCollidables.push(g);
 })();
 
-// The kept fire — small and outside the door, per Wynn's rule. campfire()
-// registers in fires[] so it ramps with darkness like every tended hearth.
-campfire(WD.x + 4.5, WD.z + .5);
+// The kept fire — small and outside the door, per Wynn's rule. Pushed into
+// fires[] so it flickers like every tended hearth (campfire() itself does
+// not self-register — a comment here used to claim it did; it never has).
+fires.push(campfire(WD.x + 4.5, WD.z + .5));
 hayBale(WD.x + 9.5, WD.z + 1); hayBale(WD.x + 10.5, WD.z - .5);
 crate(WD.x + 9, WD.z - 5.5, .4); barrel(WD.x + 10, WD.z - 4.5);
 signpost(WD.x + 12, WD.z + 5, 1.2);

@@ -20,7 +20,7 @@ import { scene } from '../scene.js';
 import { groundH } from '../terrain.js';
 import { rand } from '../utils.js';
 import { addCircle, addRect } from '../colliders.js';
-import { M, camCollidables, campfire, crate, barrel, signpost, spawnCritter, spawnNPC, spawnDuelist } from './lib.js';
+import { M, camCollidables, campfire, fires, crate, barrel, signpost, spawnCritter, spawnNPC, spawnDuelist } from './lib.js';
 
 const BM = { x: -147, z: -93 };   // heart (constants.js CAMPS r=17)
 
@@ -108,9 +108,9 @@ for (const [dx, dz, rot] of [[-4.5, -2.5, .5], [-6, .5, .9], [-6.5, 3.5, 1.3], [
   camCollidables.push(g);
 })();
 
-// The keeper's fire — small, outside the door. campfire() registers in
-// fires[] so it ramps with darkness like every tended hearth in the realm.
-campfire(BM.x + 4.5, BM.z - .5);
+// The keeper's fire — small, outside the door. Pushed into fires[] so it
+// flickers like every tended hearth (campfire() does not self-register).
+fires.push(campfire(BM.x + 4.5, BM.z - .5));
 
 // The honey table — plank table with the season's pots, waiting on Marla.
 // (It got its errand: shared/quests.js `honey_run` — Marla sends the player

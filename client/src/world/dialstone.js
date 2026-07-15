@@ -15,7 +15,7 @@ import { scene } from '../scene.js';
 import { groundH } from '../terrain.js';
 import { rand } from '../utils.js';
 import { addCircle } from '../colliders.js';
-import { M, camCollidables, campfire, tent, crate, barrel, signpost, spawnNPC } from './lib.js';
+import { M, camCollidables, campfire, fires, tent, crate, barrel, signpost, spawnNPC } from './lib.js';
 
 const DS = { x: 165, z: 25 };   // heart (constants.js CAMPS r=16)
 
@@ -55,7 +55,7 @@ const M_DIAL = new THREE.MeshLambertMaterial({ color: 0x9a9a90 });
 // a low tent, the kept-small fire, a chart crate, a rain barrel, and a
 // signpost for the walk-up read.
 tent(DS.x - 9, DS.z + 6, 2.2, .85);
-campfire(DS.x - 6, DS.z + 8);
+fires.push(campfire(DS.x - 6, DS.z + 8));   // in fires[] so it flickers (campfire() does not self-register)
 crate(DS.x - 10.5, DS.z + 8.5, .6); barrel(DS.x - 11.5, DS.z + 7);
 signpost(DS.x - 4, DS.z + 12, -2.6);
 
