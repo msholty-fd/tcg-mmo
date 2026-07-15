@@ -67,6 +67,11 @@ export const CAMPS = [
   // northwest wedge beyond Red-Sash Camp — the pond sits on a natural flat
   // low in groundH (scanned, not terraformed). See DESIGN.md "Pell's Pond".
   { x: -141, z: 58, r: 18, name: "Pell's Pond" },
+  // An apiary in a wildflower meadow in the deep southwest corner — honey
+  // and candle-wax, the realm's sweet trade. Sited on the flattest ground
+  // in the quadrant (scanned, not terraformed — the Pell's Pond technique).
+  // See DESIGN.md "The Bee Meads".
+  { x: -147, z: -93, r: 17, name: 'The Bee Meads' },
   // An abandoned mine dug into a rocky rise due north, in the Darkwood — a
   // scenic discovery, not enterable (seeds future underground content). See
   // DESIGN.md "Cinderhollow Mine".
