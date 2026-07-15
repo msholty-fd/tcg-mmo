@@ -1958,6 +1958,25 @@ considered and rejected.
     business (camps, duels, vendors); a flavour landmark earns a route
     when it earns content. Revisit if playtests never find it.
 
+- **Hollowmere "the mire breathes" — life + night pass (2026-07-14,
+  `feat/mire-life`)**: worldbuilding-loop iteration 5. Hollowmere was the
+  realm's thinnest place — bones (pools, reeds, snags) and no movement —
+  and its Hessa thread is reserved (Act II/III), so the deepening is
+  strictly environmental: nothing interactable, nothing explained.
+  - **Life**: 3 herons (module-local tall-wader mesh, stalk the pool edges
+    via the critter wander system), 5 frogs, cattails ringing the pools.
+  - **Mire-sparks** — the night layer, and LORE fact 7 made visible
+    without a word of text: the mire remembers WITHOUT burning, so its
+    night lights are cold, low, and many — deliberately unlike both fire
+    and the Darkwood's three tall wisps (those mark a place; these are
+    ambient). 8 emissive dots drifting over the pools 20:00–6:00, no
+    PointLights (the glowcap budget trick), gated by new
+    `updateHollowmere(hour)` — same shape and main.js call site as
+    updateDarkwood.
+  - Deliberately NOT done: mire fog/atmosphere (that's the Darkwood's
+    identity; Hollowmere's is water + cold memory), any hint surface for
+    Hessa's mystery.
+
 - **Tolly the Lambward — the Wether Downs' duelist (2026-07-14,
   `feat/downs-duelist`)**: worldbuilding-loop iteration 4, taking the
   seeded option recorded one iteration earlier ("the downs can host a
