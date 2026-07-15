@@ -8,16 +8,17 @@
 // water disc reads as a pond with zero terrain edits.
 // LORE relationship to the fire: TENDED — the smoking fire, kept low and
 // kept always (smoke preserves what flame would eat).
-// Card-light, world-module-only, no duelist — the pond can host a duelist
-// later if the loop wants one (Wether Downs → Tolly precedent). Seeded hook:
-// whatever the fish over the deep hole have gone shy of. Do not pay either
-// off without a content phase.
+// The "pond can host a duelist later" option was taken one iteration after
+// the landmark shipped (the exact Wether Downs → Tolly gap): Dace the
+// Netmender, below. Seeded hooks still open: whatever the fish over the
+// deep hole have gone shy of, and who dug the pond. Do not pay either off
+// without a content phase.
 import * as THREE from 'three';
 import { scene } from '../scene.js';
 import { groundH } from '../terrain.js';
 import { rand } from '../utils.js';
 import { addCircle, addRect } from '../colliders.js';
-import { M, camCollidables, campfire, crate, barrel, signpost, spawnCritter, spawnNPC } from './lib.js';
+import { M, camCollidables, campfire, crate, barrel, signpost, spawnCritter, spawnNPC, spawnDuelist } from './lib.js';
 
 const PP = { x: -141, z: 58 };   // heart (constants.js CAMPS r=18)
 const POND_R = 9;
@@ -169,6 +170,15 @@ for (const [dx, dz] of [[-3, 1], [3.5, -2.5], [-1, 5.5]]) spawnCritter(duckMesh,
 // way Harrow's and Wynn's lines do, keeps the fire rule without preaching
 // it, and carries the zone's seeded hook sideways.
 export const pell = spawnNPC('Fisher Pell', PP.x + 8.5, PP.z + .5, { shirt: 0x4a6a7a, hat: 0x6a5a42 });
+
+// Dace the Netmender — the pond's duelist (the seeded option in this
+// module's header, taken one iteration later — the exact Wether Downs →
+// Tolly gap): a young netmender working beside the beached boat on the
+// south bank, minimal footprint (Tolly/Cobb/Kestrel pattern — no new
+// structure, no CAMPS change). Pell stays a flavour NPC on purpose:
+// converting him would short-circuit his six lines behind the duelist
+// interaction (the known dialogue-priority gap).
+export const dace = spawnDuelist('dace', PP.x - 5.5, PP.z + 12, { shirt: 0x3e5a66, hat: 0x5a4a36 });
 pell.flavor = [
   "Perch, mostly. Eel when the traps mind their business. Smoked right, a fish keeps the winter.",
   "Smoke keeps what flame would eat. Same log either way — the difference is patience.",

@@ -1929,6 +1929,55 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **Dace the Netmender — Pell's Pond's duelist (2026-07-15, worldbuilding
+  loop iteration 8)**: a deliberate shape change. Iterations 6 and 7 were
+  both "new landmark + flavour NPC in an empty wedge," so this survey
+  weighed the deepening shapes first and found the seeded ledger's ripest
+  entry: the pond duelist, written into both iteration 6's entry and
+  pellspond.js's own header ("Wether Downs → Tolly precedent") — and taken
+  at the exact gap that precedent set (the downs got Tolly one iteration
+  after the landmark shipped). Route-trainer tier: existing cards only, a
+  single 2-card swap, no new art, no CAMPS/structure/server change (core
+  DUELISTS merges into both import sites automatically).
+  - **Rejected this survey**: a *third* landmark (hot spring, still seeded —
+    shape fatigue was the explicit brief); the Bee Meads duelist (seeded
+    only last iteration — the meads deserve one loop of being found first);
+    a Red-Sash Camp set-dressing pass (at 23 module lines it is the realm's
+    thinnest zone for a faction seat, but "crude and sparse" is partly its
+    read, and it's already the most business-dense spot in the realm — two
+    duelists; **seeded**: a camp-life pass — lookout post, loot pile, a
+    night dice-fire — if a future loop wants a deepening); a Highgate life
+    pass (its promise is "full-hub tier" but it's genuinely mid-thick —
+    walls, stalls, fountain, five villagers, four NPCs — and its open
+    questions are playtest-shaped, not build-shaped; **noted, not seeded**:
+    the trade capital sells no packs, an economy question for Michael, not
+    a loop pick); the windmill (still blocked — turning sails need a
+    main.js per-frame hook and a parallel session owns that file).
+  - **The duelist** (`shared/sets/core/duelists.js` + a spawn in
+    `pellspond.js`): Dace, a young netmender by the beached boat on the
+    south bank. Pell stays a flavour NPC (the Wynn rule verbatim —
+    converting him would bury his six lines behind the duelist
+    interaction). Wardens base — fisherfolk are hearth-folk, and it evens
+    the route-trainer bases (2 boarherd / 2 wardens / 1 redsash). The swap
+    is thematically exact: out go the two `camp_torcher`s (the one card a
+    fisher would never carry), in come `hidden_snare` (a net is a snare
+    set underwater) and `patient_sentry` (the trade IS waiting).
+  - **Tuning** (500 games/side vs each starter): 36/46/44 vs boarherd/
+    wardens/redsash, vs the plain-wardens baseline's (brenna) 32/41/40 — a
+    gentle nudge, inside the route-trainer band (a landing duels easier
+    than a camp). Rejected variants, both simmed: a deeper 4-card trap
+    lean (+`boar_pit`/`warding_bell` over burn — 41/52/49, but route
+    trainers are single light swaps by decision, not deepened identities)
+    and a redsash base with the same two cards (46/47/49, and it reads
+    bandit, not fisher). Reward-pool extra: `boar_pit` ("Dug for boars.
+    Works on everything." — the netmender's escalation). Starter spread
+    untouched and re-verified byte-identical: 60/52/47.
+  - Still no northwest road on purpose — but note the downs rule's own
+    words ("a flavour landmark earns a route when it earns content") now
+    describe BOTH the downs and the pond, and neither has waystones. If a
+    future loop wants a small, zero-card iteration: one waystone route
+    west serving both, now that both have business.
+
 - **The Bee Meads — apiary in a wildflower meadow, the realm's sweet trade
   (2026-07-15, worldbuilding loop iteration 7)**: with the northwest just
   claimed by Pell's Pond, the survey found the deep southwest corner

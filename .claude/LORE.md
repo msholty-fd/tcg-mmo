@@ -132,6 +132,13 @@ but never say "points" or "unlock."
   pond. Do not answer either without a Pell's Pond content phase — and
   keep Pell's omens about fish and smoke, never water-that-remembers
   (memory-without-fire is Hessa's reserved thread).
+- **Dace the Netmender** (Pell's Pond, the young netmender on the south
+  bank) — small omens tier, mostly none: mends nets by the beached boat
+  and drills with cards between mendings, because netting and dueling are
+  the same trade — set your snare, then wait. Knows nothing of the deep
+  hole beyond that Pell won't cast there; do not give Dace opinions about
+  it. (Duelists can't surface flavor lines — their knowledge lives here
+  and in DESIGN text only.)
 - **Beeman Odo** (the Bee Meads, the southwest flowers) — small omens tier:
   tells the bees the news, as his folk always have (witnessing made folk
   practice — never say so out loud), and smokes them gentle ("they forget
