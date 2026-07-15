@@ -1958,6 +1958,33 @@ considered and rejected.
     business (camps, duels, vendors); a flavour landmark earns a route
     when it earns content. Revisit if playtests never find it.
 
+- **Tolly the Lambward — the Wether Downs' duelist (2026-07-14,
+  `feat/downs-duelist`)**: worldbuilding-loop iteration 4, taking the
+  seeded option recorded one iteration earlier ("the downs can host a
+  shepherd duelist later"). Route-trainer tier: existing cards only, no
+  new art, no CAMPS/structure change — the landmark now has business,
+  which is the bar the "no west road yet" note set for earning a route.
+  - **The deck** (`swap()` on the boarherd starter): burn out, flock in —
+    `ember_bolt`/`sudden_spark` → **`herd_instinct`** + `hearth_meal`.
+    herd_instinct was the LAST unclaimed core card (every other card is
+    played or dropped by some duelist) and it is thematically exact: the
+    shepherd plays the herd. Reward pool adds `forest_sow`.
+  - **Tuning** (500 games/side vs each starter): 56/72/58 vs boarherd/
+    wardens/redsash. The 72 rides the documented greedy-AI defense blind
+    spot (plain boarherd starter already hits 60 vs wardens). Rejected
+    variants: double herd_instinct (~79 vs wardens), tusker-out (27 vs
+    redsash — tusker is load-bearing there).
+  - **Wynn deliberately stays a flavour NPC** — converting them would
+    short-circuit their six lines behind the duelist interaction (the
+    known dialogue-priority gap). Tolly is a separate young shepherd at
+    the fold's west edge.
+  - Session gotcha worth recording: the harness shell's cwd silently
+    reset from the worktree to the primary checkout mid-iteration —
+    gates/sims quietly ran against MAIN's code (the roster check passed
+    with 16 duelists, tolly absent). Caught via a "16 vs 17" count.
+    Worktree sessions should assert `pwd`/branch before trusting any
+    gate output.
+
 - **The Dial Stone — skywatcher landmark, the clock made visible
   (2026-07-14, `feat/dial-stone`)**: worldbuilding-loop iteration 3. The
   east wedge between Gruk's Hollow and the Emberwatch Ruins was the last
