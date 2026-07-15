@@ -164,6 +164,14 @@ progression) when the server is down; it auto-reconnects every 4s.
 
 ## Testing patterns that work here
 
+- **The dev rig** (`node scripts/dev-rig.mjs --fresh --standing wardens=300 …`,
+  see VERIFICATION.md §5): one command starts alt-port servers with a scratch
+  DB, mints + seeds a character (standing/coins/xp/cards/appearance via the
+  env-gated `devSeed` message), and prints a `__test.loginAs(...)` snippet.
+  Dev builds install `window.__test` (loginAs, state, key-with-e.code,
+  real-event click/hover, manual render frames) — dev-only, statically
+  stripped from prod bundles; grep `client/dist` for `__test` after building
+  if you touch devHooks.js.
 - **Headless balance sim**: `createDuel` + `ai.takeTurn` in a loop (browser eval
   or Node) — 20 games in seconds; check winner spread and stuck games.
 - **Raw-WS driver**: open a second `WebSocket('ws://localhost:8081')` in a

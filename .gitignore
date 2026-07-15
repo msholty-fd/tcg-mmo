@@ -9,6 +9,10 @@ server/profiles.db
 server/profiles.db-journal
 server/profiles.db-wal
 server/profiles.db-shm
+server/profiles.dev-rig.db
+server/profiles.dev-rig.db-journal
+server/profiles.dev-rig.db-wal
+server/profiles.dev-rig.db-shm
 
 # local session handoff (contains test-account credentials; repo is public)
 .claude/STATUS.md

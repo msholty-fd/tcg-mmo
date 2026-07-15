@@ -109,8 +109,40 @@ Rules of the recipe:
 
 ## 5. Live-verifying a WORKTREE build (alt-port rig)
 
-Contrary to older notes, worktrees CAN run live: the default ports
-(8081/5175) belong to the primary checkout, so use others.
+**Use the dev rig first (2026-07-14)** — it replaces the whole
+mint-char → stop-server → edit-sqlite → restart → hand-write-localStorage
+dance with one command:
+
+```bash
+# in the worktree — starts WS server (:8082, scratch DB, DEV_SEED=1) +
+# Vite (:5176), mints + seeds a character, prints token + login snippet:
+node scripts/dev-rig.mjs --fresh --name Fit \
+  --standing wardens=300,redsash=40 --coins 250 --xp 800 \
+  --cards weir,sentinel --appearance back=ward_mantle
+# then in the browser (dev builds install window.__test):
+#   __test.loginAs('<token>', 'Fit')       — stores token+session, reloads
+#   __test.state()                          — name/lvl/coins/factions/appearance/pos
+#   __test.key('KeyO')                      — real KeyboardEvent WITH e.code
+#                                             (browser-pane synthetic keys lack
+#                                             e.code and every hotkey gates on it)
+#   __test.click/hover/unhover('<selector>')— real bubbling pointer events
+#   __test.renderWorld() / .wardrobeFrame() — manual frames under the rAF stall
+```
+
+- Re-running with the same `--name` logs in instead of failing (idempotent);
+  `--seed-only` seeds against already-running rig servers; `--fresh` wipes
+  the scratch DB (`server/profiles.dev-rig.db` — never the real dev DB).
+- The rig fails fast if the ports are already served — zombie servers from a
+  crashed session silently run OLD code; kill them, don't reuse them.
+- **Security posture**: `devSeed` is triple-gated (the `DEV_SEED=1` env var
+  only the rig sets — deploys set nothing; loopback-only; self-profile-only)
+  and `window.__test` lives behind `if (import.meta.env.DEV)` so it is
+  statically eliminated from production bundles. **The merge gate greps the
+  built bundle**: `npm run build && grep -rc "__test\|devSeed" client/dist/assets/*.js`
+  must return 0 hits for any change touching devHooks.js or the dev-gated
+  import in main.js.
+
+Manual fallback (pre-rig recipe, still valid for odd cases):
 
 ```bash
 # in the worktree:

@@ -25,6 +25,7 @@ import { DUELISTS as CORE_DUELISTS } from '../shared/sets/core/duelists.js';
 import { EMBERPEAKS_DUELISTS } from '../shared/sets/emberpeaks/duelists.js';
 import { DARKWOOD_DUELISTS } from '../shared/sets/darkwood/duelists.js';
 const DUELISTS = { ...CORE_DUELISTS, ...EMBERPEAKS_DUELISTS, ...DARKWOOD_DUELISTS };
+import { createDevSeedHandlers } from './handlers/devSeed.js';
 
 const PORT = +(process.env.PORT || 8081);
 const DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -110,6 +111,7 @@ const handlers = {
   ...createCollectionHandlers(ctx),
   ...tradeHandlers,
   ...createDuelModule(ctx).handlers,
+  ...createDevSeedHandlers(ctx),   // {} unless DEV_SEED=1 (local rig only)
 };
 
 wss.on('connection', (ws, req) => {
@@ -208,7 +210,7 @@ wss.on('connection', (ws, req) => {
     }
 
     // restore last world position (fresh characters spawn at the well)
-    me = { id: nextId++, ws, token, name: profile.name, outfit: profile.outfit, appearance: profile.appearance || {}, x: profile.x ?? 0, z: profile.z ?? 9, yaw: profile.yaw ?? 0, profile, room: null, chatTimes: [] };
+    me = { id: nextId++, ws, ip, token, name: profile.name, outfit: profile.outfit, appearance: profile.appearance || {}, x: profile.x ?? 0, z: profile.z ?? 9, yaw: profile.yaw ?? 0, profile, room: null, chatTimes: [] };
     players.set(me.id, me);
     console.log(`join: ${me.name} (#${me.id}, ${players.size} online)`);
     const { passwordHash, salt, pwAlg, ...pub } = profile;   // never ship credentials
