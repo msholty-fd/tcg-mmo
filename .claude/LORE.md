@@ -168,6 +168,19 @@ but never say "points" or "unlock."
   Odo — Nell hauls what's ready, she doesn't answer for what isn't).
   (Duelists can't surface flavor lines — her knowledge lives here and in
   DESIGN text only.)
+- **Mason Hobb** (Hobb's Quarry, the eastern grass) — small omens tier: cuts
+  the realm's waystones, hearthstones, and Highgate's wall-stone, and
+  believes stone does the quiet half of every hearth's work ("fire gets the
+  songs; the stone does the holding" — one light echo of the tended-fire
+  theme, kept at one line, never explained further). Two seeded doors, both
+  gentle: frost-split blocks coming out of the face in midsummer (the same
+  register as Harrow's out-of-season frost omen — cold where cold has no
+  business, never sharpened toward the Going-Out), and the dressed millstone
+  waiting on a mill nobody has built (commerce-tier — it feeds the ledger's
+  windmill option, not the myth). Knows Merle wants an hour stone cut and
+  that they won't name the hour — Hobb must never learn or guess which hour
+  it is (the missing stone stays Merle's joke). No opinions on the old ring
+  in the deep wood, the mine, or any of the western folk's doors.
 - **Pedlar Rusk** (the Darkwood road, Gruk side) — small omens tier: sells
   the Night-Gather by daylight and is gone by dusk, and won't say why beyond
   "the light's better." (Vendor interactions can't surface flavor lines —
