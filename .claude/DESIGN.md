@@ -1929,6 +1929,95 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **Nell the Carter — the west road's route trainer, first on a forked road
+  (2026-07-15, worldbuilding loop iteration 13)**: the seeded ledger's
+  ripest entry by a margin no seed has had before — seeded at iteration 9
+  ("a west-road patroller if the route sees traffic"), deferred at 10 (no
+  one had walked the road), at 11 (the honey run created the traffic but no
+  deploy had shipped the road), and at 12 (the spur completed the network
+  the trainer would walk — "infrastructure strictly precedes it"). Every
+  deferral reason has expired: the honey run routes level-3 players west
+  by name, the road network is final after the spur, and iteration 12's
+  entry sited this trainer explicitly ("the region's remaining seed is the
+  route trainer... patrol one arm, not both"). Shape variance holds too:
+  the run reads duelist (10), quest (11), road (12) — a duelist at 13 is
+  the rhythm, not a repeat (the last duelist was three iterations back).
+  - **Rejected this survey**: the Red-Sash camp-life pass + windmill (still
+    BLOCKED — `git worktree list` confirms humanoid-fidelity still holds
+    main.js); the hot spring (seventh look, parked per surveys 7–12 —
+    nothing changed); an environmental/life pass (no eligible target —
+    same verdict as surveys 10/11/12: redsash.js's deepening IS the
+    blocked pass, everything else has its life layer or is sparse by
+    charter); a second quest (the honey run is one iteration old and the
+    quest system's next natural giver — the Sentinel's Act II chain — is
+    reserved). Nothing surveyed outranked a thrice-deferred seed whose
+    trigger strengthened at every look.
+  - **The duelist** (`shared/sets/core/duelists.js` + a spawn and PATROLS
+    entry in `world/roads.js`, 1-line barrel export in world.js): Nell the
+    Carter — the west's goods walk east because someone walks them: Wynn's
+    wool, Pell's smoked fish, Odo's honey and Wick's candles (the
+    Wayfarer's "sheep, fish, and honey" line made a person; Wynn's
+    "everything walks, out here" was already true, now it's tangible).
+    Route-trainer tier by decision: a single 2-card swap, existing cards
+    only, no new art, no CAMPS/server change. **Wardens base** — carters
+    are common working folk, and the destination grammar forced it (see
+    tuning): out `kindled_fury` ×2 (a carter doesn't pick fights, and
+    nothing kindled rides beside a loaded wain — deliberately NOT Dace's
+    camp_torcher outs; same-base trainers must not share the same shape),
+    in `yoke_ox` ("pulls the cart, pulls its weight" — the wain's puller
+    by its own printed flavor) and `wayside_watcher` ("watches the road
+    better than she walks it" — the road's own card). Micro-read: **"the
+    load comes through"** — a steady puller and eyes on the road, distinct
+    from Dace's snares, Wick's punish-attack, Tolly's herd buffs. Reward
+    extra: `roadblock` ("The road was never as clear as it looked." — the
+    carter's escalation, the boar_pit/warding_bell pattern). Route-trainer
+    bases go 2 boarherd / 3 wardens / 2 redsash — the 2/2/2 tie had to
+    break somewhere, and the whole quiet west already duels hearth-folk.
+  - **Tuning** (500 games/side vs each starter, 0 stuck across all 24,000
+    games incl. rejected variants): **43/54/49** vs boarherd/wardens/
+    redsash — between dace (36/46/44) and finch (49/53/52), just under
+    Wick (45/44/48), the arm's own destination. The deciding rule was the
+    route-trainer entry's own grammar — "roads should duel easier than the
+    camps they lead to" — which this road makes binding in both directions
+    (Wick at the arm's end, Tolly at the fork). Rejected + simmed at
+    500/side: boarherd ember_bolt×2 → yoke_ox+old_drover (60/73/62 — the
+    carter's full team and the first pick on theme, but it out-duels BOTH
+    destinations and tops sorrel's road ceiling; a spur trainer must not
+    be the strongest thing on its road); boarherd wild_boar×2 → same ins
+    (55/68/58 — Tolly-tier, same objection); wardens camp_torcher×2 →
+    yoke_ox+old_drover (45/57/53 — band-legal but duplicates Dace's exact
+    shape, the Wick-survey objection verbatim); wardens kindled_fury×2 →
+    yoke_ox+stout_plowman (46/57/53 — statistically indistinguishable from
+    the pick, so theme decided it: wayside_watcher is the road's card).
+    Starter spread untouched and re-verified byte-identical: 60/52/47.
+  - **The patrol** (the realm's first on a forked road): she walks the
+    fork's **south arm only** — the meads spur, the newest leg and the one
+    with quest-directed traffic (the honey run walks it at level 3+; a
+    walker on that errand now meets someone on the way). One arm by the
+    recorded design note: a polyline through the fork would cross the twin
+    1.2-scale edge-markers' colliders (the sorrel waystone-teleport
+    gotcha). Path [[-143,-36],[-144,-53],[-145,-70]] — 34.06u, ~3u east of
+    the spur's stone line, 1.62 u/s in the patrol band, spawn at the
+    midpoint per the pattern. Terrain + clearance scanned numerically
+    before siting: h −1.33..−0.86, slope dev 0.17 (meadow-flat); nearest
+    collider the mid spur stone at 2.99 (push-out margin 1.99), downs
+    cairn 15.8, meads skeps ≥14.9, brenna's polyline 87. Headless
+    updatePatrols replica 24/24 (endpoints, dwell, ping-pong symmetry,
+    waypoint arc-length hit, determinism, 24h + midnight wrap, negative
+    hour, bounded speed <2.2 u/s, no leg-boundary teleport).
+  - **Deliberately NOT done**: no patrol through the fork or on the north
+    arm (one arm by design; the north arm ends at Dace — it can earn its
+    own walker if the west ever needs a second); no Wayfarer line (his
+    west line already names both arms — he names roads, not people); no
+    new cards (route trainers are single light swaps by decision); no
+    flavor lines (duelists can't surface them — Nell's knowledge lives in
+    LORE.md, small-omens tier, barred from the bellwether/deep-hole/
+    Odo-doors seeds AND from Marla's honey-run business). **Seeded**: none
+    new — the western circuit is now complete AND walked (landmarks,
+    duelists, roads, a quest, a patrol); the region's remaining ledger
+    entries stay Red-Sash camp-life + windmill (blocked on main.js) and
+    the hot spring (parked, 7 rejections).
+
 - **The Bee Meads spur — the west road forks at the downs (2026-07-15,
   worldbuilding loop iteration 12)**: the seeded ledger's ripest entry, and
   the first seed to fire on a DOUBLE trigger. The downs rule ("a flavour

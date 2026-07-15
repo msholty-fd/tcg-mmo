@@ -277,6 +277,38 @@ const wickDeck = swap(
   ['camp_torcher', 'camp_torcher'],
   ['alarm_bell', 'quick_fingers'],
 );
+// Nell (the west road's meads arm) — the realm's first trainer on a forked
+// road: the carter who hauls the west's goods east when the trades call for
+// it (Wynn's wool, Pell's fish, Odo's honey, Wick's candles — the Wayfarer's
+// own "sheep, fish, and honey" line made a person). Wardens base — carters
+// are common working folk, and the destination grammar forces it: roads duel
+// easier than the places they lead to, and this road's ends are Wick
+// (45/44/48) and Tolly, so a boarherd base can't get low enough (see
+// rejected variants below). Out go kindled_fury x2 — a carter doesn't pick
+// fights, and nothing kindled rides beside a loaded wain; NOT Dace's
+// camp_torcher outs, deliberately (same-base trainers must not share the
+// same shape). In come yoke_ox ("pulls the cart, pulls its weight" — the
+// wain's puller by its own printed flavor) and wayside_watcher ("watches the
+// road better than she walks it" — the road's own small body). Micro-read:
+// "the load comes through" — a steady puller and eyes on the road, no fury,
+// distinct from Dace's set-and-wait snares, Wick's punish-attack, and
+// Tolly's herd buffs.
+// Tuned in sims (500/side vs each starter, 0 stuck anywhere): 43/54/49 vs
+// boarherd/wardens/redsash — between dace (36/46/44) and finch (49/53/52),
+// just under the meads' own duelist. Rejected variants, all simmed at
+// 500/side: boarherd ember_bolt x2 -> yoke_ox+old_drover (60/73/62 — the
+// carter's full team, but it out-duels BOTH destinations and tops sorrel's
+// road ceiling; a spur trainer must not be the strongest thing on its road);
+// boarherd wild_boar x2 -> same ins (55/68/58 — Tolly-tier, still above the
+// destination); wardens camp_torcher x2 -> yoke_ox+old_drover (45/57/53 —
+// band-legal but it duplicates Dace's exact shape: same base, same outs);
+// wardens kindled_fury x2 -> yoke_ox+stout_plowman (46/57/53 — statistically
+// close to the pick, so theme decided it: wayside_watcher is the road's card).
+const nellDeck = swap(
+  STARTER_DECKS.wardens,
+  ['kindled_fury', 'kindled_fury'],
+  ['yoke_ox', 'wayside_watcher'],
+);
 
 export const DUELISTS = {
   rowan: {
@@ -354,5 +386,9 @@ export const DUELISTS = {
   wick: {
     name: 'Wick the Waxwright', deck: wickDeck,
     rewards: [...wickDeck, 'warding_bell'],   // the bigger alarm — the waxwright's escalation (Dace's boar_pit pattern)
+  },
+  nell: {
+    name: 'Nell the Carter', deck: nellDeck,
+    rewards: [...nellDeck, 'roadblock'],   // "The road was never as clear as it looked." — the carter's escalation (Dace's boar_pit pattern)
   },
 };

@@ -156,6 +156,18 @@ but never say "points" or "unlock."
   opinion on the bees shunning the mire's edge; do not give Wick answers to
   either of Odo's seeded doors. (Duelists can't surface flavor lines —
   his knowledge lives here and in DESIGN text only.)
+- **Nell the Carter** (the west road's meads arm) — small omens tier, mostly
+  none: carts the west's goods east when the trades call for it — Wynn's
+  wool, Pell's smoked fish, Odo's honey and Wick's candles (the Wayfarer's
+  "sheep, fish, and honey" made a person) — and drills with cards between
+  loads, because a carter's trade is mostly waiting on someone else's to
+  finish. Knows every stone of the west road and nothing of what the folk at
+  either end are watching for: do not give Nell opinions on Wynn's
+  bellwether, Pell's deep hole, or either of Odo's doors, and keep her out
+  of Marla's honey-run business (whether Odo is late is between Marla and
+  Odo — Nell hauls what's ready, she doesn't answer for what isn't).
+  (Duelists can't surface flavor lines — her knowledge lives here and in
+  DESIGN text only.)
 - **Pedlar Rusk** (the Darkwood road, Gruk side) — small omens tier: sells
   the Night-Gather by daylight and is gone by dusk, and won't say why beyond
   "the light's better." (Vendor interactions can't surface flavor lines —
