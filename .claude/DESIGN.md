@@ -1929,6 +1929,60 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **The Bee Meads — apiary in a wildflower meadow, the realm's sweet trade
+  (2026-07-15, worldbuilding loop iteration 7)**: with the northwest just
+  claimed by Pell's Pond, the survey found the deep southwest corner
+  (x −130…−210, z −60…−210, south of the Wether Downs and west of
+  Hollowmere) the biggest unclaimed stretch — and *sweetness* the missing
+  food/craft archetype: the food economy names farm (Harrow), flock
+  (Wynn/Tolly), fish (Pell), and trade (Marla/Highgate), and nothing in the
+  realm makes honey or wax, though every candle on Highgate's hill has to
+  come from somewhere. Landmark tier on purpose (Harrowfield/Wether Downs/
+  Pell's Pond precedent): card-light, world-module-only, no duelist, no
+  schema, plain bundle deploy.
+  - **Siting reused the Pell's Pond numeric-scan technique** for flat
+    ground instead of water: a groundH scan of the whole quadrant found
+    the flattest r=12 disc at **(−147, −93)** (max deviation 0.35 — the
+    flattest spot in the corner), zero terrain edits. The circle spacing
+    to Hollowmere (centers 47 apart, radii 22+17) leaves the same ~9-unit
+    gap as Pell's Pond ↔ Red-Sash — precedent-consistent.
+  - **The place** (`client/src/world/beemeads.js`, CAMPS (−147,−93) r=17,
+    wilds.js CLEARINGS r=15 — flowers want open sun, not pine shade): 8
+    wildflower drifts (4 shared head materials, glowcap budget stance:
+    2-mesh low clutter, walkable), an arc of 5 straw skeps on plank
+    benches (circle colliders — waist-high and solid), the smoker, the
+    Wether-Downs-pattern hut (rect collider + camera occluder), a honey
+    table (rect collider), crate/barrel/signpost dressing, and 2 drifting
+    bee-swarm motes (module-local mesh on the ordinary critter wander;
+    always out — hour-gating would need a main.js update hook, which this
+    iteration deliberately doesn't add while a parallel session owns
+    main.js). LORE relationship to the fire: **tended** — the keeper's
+    fire plus the wax trade feeding Highgate's candles; the smoker's
+    forget-their-quarrel line is a deliberate one-line echo of the
+    forgetting theme, never explained.
+  - **Beeman Odo** — flavour NPC, small-omens tier (LORE.md updated): six
+    lines tying honey/wax to Marla/Highgate (the economy read, like
+    Harrow's/Wynn's/Pell's), mead to the Wayfarer (cross-NPC texture),
+    telling-the-bees folk practice (witnessing made folk custom — the
+    realm's theme in miniature, never stated as such), and two gentle
+    seeded doors: the hive that emptied at midsummer with the honey
+    untouched, and the bees refusing the mire's edge (kept a bee's
+    unexplained opinion — memory-without-fire stays Hessa's reserved
+    thread).
+  - **Rejected this survey**: a hot spring in the eastern foothills
+    (smaller gap, adjacent to Act I's Emberwatch staging, and
+    "the ground's warmth stirring" sharpens the Going-Out hook — the loop
+    seeds gently); a windmill/gristmill (the grain-to-Highgate link is
+    real, but sails that never turn read as broken, and turning them needs
+    a per-frame update hook in main.js — reserved while the humanoid
+    session owns that file; seeded as a future option); a southeast lumber
+    camp (narrower strip east of the Darkwood, and industry is the mine's
+    identity); anything northwest (just filled) or on a reserved thread.
+  - No southwest road on purpose (the Wether Downs rule verbatim: a
+    flavour landmark earns a route when it earns content). Seeded for
+    later: a meads duelist (Tolly precedent), the emptied hive, the
+    bee-shunned mire edge, and the windmill option above.
+
 - **Pell's Pond — the fisher's landing, the realm's first standing water
   (2026-07-15, worldbuilding loop iteration 6)**: with the Downs, Dial
   Stone, and Hollowmere passes done, the survey found two gaps that one

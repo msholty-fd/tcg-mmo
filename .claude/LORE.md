@@ -132,6 +132,15 @@ but never say "points" or "unlock."
   pond. Do not answer either without a Pell's Pond content phase — and
   keep Pell's omens about fish and smoke, never water-that-remembers
   (memory-without-fire is Hessa's reserved thread).
+- **Beeman Odo** (the Bee Meads, the southwest flowers) — small omens tier:
+  tells the bees the news, as his folk always have (witnessing made folk
+  practice — never say so out loud), and smokes them gentle ("they forget
+  what they were cross about" — a light echo of the forgetting theme, kept
+  at one line). Two seeded doors: the hive that emptied at midsummer with
+  the honey untouched, and the bees refusing the mire's edge. Do not answer
+  either without a Bee Meads content phase — and the mire refusal stays a
+  bee's unexplained opinion, never an explanation of Hollowmere
+  (memory-without-fire is Hessa's reserved thread).
 - **Pedlar Rusk** (the Darkwood road, Gruk side) — small omens tier: sells
   the Night-Gather by daylight and is gone by dusk, and won't say why beyond
   "the light's better." (Vendor interactions can't surface flavor lines —
