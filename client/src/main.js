@@ -27,6 +27,10 @@ initNet();
 initCardZoom();
 initHudWindows();
 initTouchControls();
+// window.__test hooks for local verification — import.meta.env.DEV is a
+// build-time constant, so this line AND devHooks.js are absent from the
+// production bundle (the build gate greps dist to prove it)
+if (import.meta.env.DEV) import('./devHooks.js');
 
 // ---------- intro ----------
 // Players no longer pick a deck — the server rolls a starter deck for new
