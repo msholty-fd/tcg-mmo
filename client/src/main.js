@@ -5,7 +5,7 @@ import { groundH } from './terrain.js';
 import { humanoid, makeLabel } from './entities.js';
 import { STARTERS, ZONES, CAMPS } from './constants.js';
 import { player, critters } from './state.js';
-import { fires, torches, marla, aldric, camCollidables, sentinel, weir, updatePatrols, updateDarkwood } from './world.js';
+import { fires, torches, marla, aldric, camCollidables, sentinel, weir, updatePatrols, updateDarkwood, updateHollowmere } from './world.js';
 import { log, updateHUD } from './ui.js';
 import { keys, cam, started, setStarted, autoWalk, touchMove, isTouch, initTouchControls, tickTouchUI } from './input.js';
 import { resolveCollision } from './colliders.js';
@@ -204,6 +204,7 @@ function update(dt) {
   // it). gloom is 0 outside the zone, so every line below is an exact
   // no-op there — the realm's weather is untouched.
   const gloom = updateDarkwood(gameHour, player.x, player.z);
+  updateHollowmere(gameHour);   // mire-sparks: night-only, cheap visibility flips
   scene.fog.near = lerp(70, 16, gloom);
   scene.fog.far = lerp(300, 60, gloom);
   if (gloom > 0) {
