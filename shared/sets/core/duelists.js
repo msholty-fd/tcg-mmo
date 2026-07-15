@@ -250,6 +250,33 @@ const daceDeck = swap(
   ['camp_torcher', 'camp_torcher'],
   ['hidden_snare', 'patient_sentry'],
 );
+// Wick (the Bee Meads) — the waxwright keeps the hive's rules: redsash base
+// (bees are the realm's smallest tempo family — quick, cheap, many, stinging;
+// and it evens the route-trainer bases at 2 boarherd / 2 wardens / 2 redsash)
+// trading open flame for the hive's answer. Two of the base's three
+// camp_torchers go — around skeps the fire stays small and the smoke cool;
+// the third stays, because a waxwright's trade runs on one careful flame
+// under the wax pot (it's the mob of torches he won't have). In come
+// alarm_bell (rile the hive and the whole hive answers) and quick_fingers
+// (the sting: brush the comb, lose a drop). Route-trainer tier
+// like Tolly/Dace — a single light swap, not a deepened identity; his
+// micro-read is "don't poke the hive" (both ins punish enemyAttack), distinct
+// from Dace's set-and-wait snares and Tolly's herd-wide buffs.
+// Tuned in sims (500/side vs each starter): 45/44/48 vs boarherd/wardens/
+// redsash — the route-trainer band (dace 36/46/44, brenna 32/41/40; finch's
+// near-plain redsash base sims 49/53/52, so trading two proactive torcher
+// bodies for reactions nudges the mead gently easier than the roads, which
+// fits — an apiary duels friendlier than a bandit route). Rejected variants,
+// both simmed at 500/side: alarm_bell+hidden_snare (45/45/48 — statistically
+// indistinguishable, so theme decided it: the snare is Dace's signature move,
+// while the sting's ember drop reads bee), and a wardens base with the same
+// two ins (34/43/41 — route-trainer legal, but it duplicates Dace's exact
+// shape: same base, same camp_torcher outs, two wardens landings in a row).
+const wickDeck = swap(
+  STARTER_DECKS.redsash,
+  ['camp_torcher', 'camp_torcher'],
+  ['alarm_bell', 'quick_fingers'],
+);
 
 export const DUELISTS = {
   rowan: {
@@ -323,5 +350,9 @@ export const DUELISTS = {
   dace: {
     name: 'Dace the Netmender', deck: daceDeck,
     rewards: [...daceDeck, 'boar_pit'],
+  },
+  wick: {
+    name: 'Wick the Waxwright', deck: wickDeck,
+    rewards: [...wickDeck, 'warding_bell'],   // the bigger alarm — the waxwright's escalation (Dace's boar_pit pattern)
   },
 };
