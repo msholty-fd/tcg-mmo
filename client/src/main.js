@@ -2,9 +2,9 @@ import * as THREE from 'three';
 import { $, lerp, smoothstep, rand, ri } from './utils.js';
 import { scene, renderer, camera, sun, hemi, starMat, sunDisc, moonDisc } from './scene.js';
 import { groundH } from './terrain.js';
-import { humanoid, makeLabel } from './entities.js';
+import { humanoid, makeLabel, animateFigure } from './entities.js';
 import { STARTERS, ZONES, CAMPS } from './constants.js';
-import { player, critters } from './state.js';
+import { player, critters, npcs } from './state.js';
 import { fires, torches, marla, aldric, camCollidables, sentinel, weir, updatePatrols, updateDarkwood } from './world.js';
 import { log, updateHUD } from './ui.js';
 import { keys, cam, started, setStarted, autoWalk, touchMove, isTouch, initTouchControls, tickTouchUI } from './input.js';
@@ -240,7 +240,11 @@ function update(dt) {
   const g2 = groundH(player.x, player.z);
   if (y <= g2) { y = g2; player.vy = 0; }
   player.mesh.position.set(player.x, y, player.z);
-  if ((mx || mz) && player.vy === 0) player.mesh.position.y += Math.abs(Math.sin(performance.now() * .013)) * .1;
+  const walking = !!(mx || mz) && player.vy === 0;
+  if (walking) player.mesh.position.y += Math.abs(Math.sin(performance.now() * .013)) * .1;
+  animateFigure(player.mesh, dt, walking);
+  // NPCs stand in place — give them a gentle idle sway so they read as alive
+  for (const n of npcs) animateFigure(n.mesh, dt, false);
 
   // camera — when the terrain clamp blocks the camera from dipping lower,
   // convert the blocked descent into upward gaze so you can still look at the sky

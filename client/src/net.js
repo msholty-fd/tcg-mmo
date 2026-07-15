@@ -4,7 +4,7 @@
 import { $, lerp } from './utils.js';
 import { scene } from './scene.js';
 import { groundH } from './terrain.js';
-import { humanoid, makeLabel } from './entities.js';
+import { humanoid, makeLabel, animateFigure } from './entities.js';
 import { player, bots } from './state.js';
 import { log, fct, updateHUD } from './ui.js';
 import { getDeck, getLeaders, getDeckCardIds, adoptProfile } from './collection.js';
@@ -252,6 +252,7 @@ export function netTick(dt) {
     r.mesh.rotation.y = r.yaw;
     const bob = moving ? Math.abs(Math.sin(performance.now() * .012 + r.id)) * .07 : 0;
     r.mesh.position.set(r.x, groundH(r.x, r.z) + bob, r.z);
+    animateFigure(r.mesh, dt, moving);
   }
 }
 

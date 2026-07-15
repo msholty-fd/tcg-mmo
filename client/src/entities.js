@@ -68,10 +68,14 @@ export function humanoid({ shirt = 0x6a8ac9, skin = 0xd9a878, hat = null, legs: 
   const mk = (geo, color, em) => new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ color, emissive: em || 0x000000 }));
   const mkCloth = (geo, color) => new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ color, map: clothTexture() }));
 
-  // legs — two rounded capsules with soft feet, replacing the single block
+  // legs — two rounded capsules with soft feet, each hung from a HIP PIVOT at
+  // the top so a walk cycle swings the whole leg from the hip (see animateFigure).
+  // The mesh sits at pivot-local y = -.36, so its world centre is unchanged (.38).
   const legGeo = capsuleGeo(.15, .42, 8);
-  const legR = mk(legGeo, legColor); legR.position.set(.17, .38, 0); legR.castShadow = true; g.add(legR);
-  const legL = mk(legGeo, legColor); legL.position.set(-.17, .38, 0); legL.castShadow = true; g.add(legL);
+  const legPivR = new THREE.Object3D(); legPivR.position.set(.17, .74, 0); g.add(legPivR);
+  const legR = mk(legGeo, legColor); legR.position.y = -.36; legR.castShadow = true; legPivR.add(legR);
+  const legPivL = new THREE.Object3D(); legPivL.position.set(-.17, .74, 0); g.add(legPivL);
+  const legL = mk(legGeo, legColor); legL.position.y = -.36; legL.castShadow = true; legPivL.add(legL);
 
   // torso — a soft tapered barrel (broader shoulders, slimmer waist), flattened
   // front-to-back, capped by a rounded shoulder dome so it doesn't read as a tube.
@@ -103,10 +107,13 @@ export function humanoid({ shirt = 0x6a8ac9, skin = 0xd9a878, hat = null, legs: 
   const deltR = mkCloth(deltoidGeo, shirt); deltR.position.set(.34, 1.45, 0); deltR.scale.z = .8; g.add(deltR);
   const deltL = mkCloth(deltoidGeo, shirt); deltL.position.set(-.34, 1.45, 0); deltL.scale.z = .8; g.add(deltL);
 
-  // arms — rounded capsules, tucked into the deltoids, angled a touch outward
+  // arms — rounded capsules hung from SHOULDER PIVOTS; the outward rest splay
+  // lives on the pivot (rotation.z) so the walk swing (rotation.x) composes on top.
   const armGeo = capsuleGeo(.09, .5, 8);
-  const armR = mkCloth(armGeo, shirt); armR.position.set(.40, 1.14, 0); armR.rotation.z = .14; g.add(armR);
-  const armL = mkCloth(armGeo, shirt); armL.position.set(-.40, 1.14, 0); armL.rotation.z = -.14; g.add(armL);
+  const armPivR = new THREE.Object3D(); armPivR.position.set(.4, 1.5, 0); armPivR.rotation.z = .14; g.add(armPivR);
+  const armR = mkCloth(armGeo, shirt); armR.position.y = -.36; armPivR.add(armR);
+  const armPivL = new THREE.Object3D(); armPivL.position.set(-.4, 1.5, 0); armPivL.rotation.z = -.14; g.add(armPivL);
+  const armL = mkCloth(armGeo, shirt); armL.position.y = -.36; armPivL.add(armL);
 
   // ---- adventurer kit: collar, belt, gloves, boots (Dark Cloud outfitting) ----
   // A cream collar rolls at the neck (Toan's poncho collar); a dark belt sits on
@@ -123,11 +130,34 @@ export function humanoid({ shirt = 0x6a8ac9, skin = 0xd9a878, hat = null, legs: 
   const bootGeo = capsuleGeo(.17, .18, 8);
   for (const leg of [legR, legL]) { const bt = mk(bootGeo, KIT.boot); bt.position.y = -.12; bt.castShadow = true; leg.add(bt); }
 
-  // handles kept for a future motion pass (Stage 1): arm swing / leg stride
-  g.userData.armR = armR; g.userData.armL = armL; g.userData.legR = legR; g.userData.legL = legL;
+  // pivots are the animated handles (animateFigure rotates these each frame)
+  g.userData.armR = armPivR; g.userData.armL = armPivL; g.userData.legR = legPivR; g.userData.legL = legPivL;
 
   g.scale.setScalar(scale);
   return g;
+}
+
+// Fidelity pass 3 (2026-07-15, Stage-1 "motion"): give the humanoid a walk
+// cycle + idle sway — a moving world reads as far higher-fidelity than a static
+// one with better meshes (DESIGN.md). Called each frame by the update loops
+// (player: main.js, remotes: net.js, NPCs: main.js). Rotates the shoulder/hip
+// PIVOTS about x for opposite-phase limb swing; no-op on non-humanoid meshes
+// (critters lack the handles). Phase clock is per-figure (userData.animT) so
+// the cast isn't robotically in sync. `speed` scales the stride amplitude.
+export function animateFigure(mesh, dt, moving, speed = 1) {
+  const u = mesh.userData;
+  if (!u.armR) return;
+  u.animT = (u.animT || 0) + dt;
+  // Ease a 0..1 stride weight toward the movement state instead of switching
+  // instantly — this is what keeps start/stop/turn from SNAPPING the limbs
+  // (the old jerkiness), and also absorbs the remotes' 10 Hz moving flicker.
+  const target = moving ? 1 : 0;
+  u.stride = (u.stride ?? 0) + (target - (u.stride ?? 0)) * Math.min(1, dt * 6);
+  const w = u.stride;
+  const swing = Math.sin(u.animT * 8) * Math.min(.55, .34 * speed) * w;  // faded by weight
+  const idle = Math.sin(u.animT * 1.7) * .05 * (1 - w);                  // breathing when still
+  u.armR.rotation.x = swing + idle;  u.armL.rotation.x = -swing - idle;
+  u.legR.rotation.x = -swing;        u.legL.rotation.x = swing;
 }
 
 export function boarMesh(color, scale) {
