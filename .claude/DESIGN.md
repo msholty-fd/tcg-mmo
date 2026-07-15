@@ -1929,6 +1929,75 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **Wick the Waxwright — the Bee Meads' duelist (2026-07-15, worldbuilding
+  loop iteration 10)**: the seeded ledger's ripest entry, taken at last —
+  seeded at iteration 7 with the meads themselves, deliberately deferred at
+  8 ("the meads deserve one loop of being found first") and again at 9
+  (back-to-back duelists was exactly the shape fatigue the variance brief
+  exists to prevent). Both deferral reasons have now expired: the meads have
+  had three loops of findability, and iteration 9 was a road, so a duelist
+  at 10 reads as rhythm (landmark, landmark, duelist, road, duelist), not
+  repetition. The pick also completes the western ecosystem the loop has
+  been building: by the downs rule ("a flavour landmark earns a route when
+  it earns content"), Wick gives the Bee Meads business — the meads are now
+  road-eligible, the exact hand-off iterations 4→9 rehearsed twice
+  (downs→Tolly→stones, pond→Dace→stones).
+  - **Rejected this survey**: a west-road route trainer (one iteration old —
+    roads earn their trainers "if the route sees traffic," and no one has
+    walked it yet; still seeded); the Red-Sash camp-life pass (still BLOCKED —
+    its night dice-fire centerpiece wants a main.js hour hook and the
+    humanoid session still owns that file); the hot spring (fourth look,
+    nothing new — parked per surveys 7/8/9); the windmill (same main.js
+    block); an environmental/life pass (surveyed module sizes: redsash.js at
+    23 lines is the realm's thinnest zone, but its deepening IS the blocked
+    camp-life pass; Emberwatch's sparseness is Act I staging by decision;
+    every other zone has had its life layer); a zone pack/vendor (no target —
+    core/emberpeaks/darkwood all have packs, and Highgate's pack economy is
+    flagged for Michael, not a loop pick); landmark-tier quest content (a
+    real shape the loop hasn't done — e.g. a Marla honey-run visit quest to
+    the meads — but it loses to a twice-deferred ripe seed, and it reads
+    better AFTER the meads have a duel to send players toward; **seeded**:
+    a visit-objective side quest threading Marla → the meads, now that the
+    meads have business).
+  - **The duelist** (`shared/sets/core/duelists.js` + a spawn in
+    `beemeads.js`): Wick, Odo's young second — Odo keeps the bees, Wick
+    renders the wax into the candles that walk to Highgate (Odo's own
+    flavor line already ships the trade; Wick is the hands that make it).
+    Odo stays a flavour NPC (the Wynn/Pell rule verbatim). Route-trainer
+    tier: existing cards only, a single 2-card swap, no new art, no
+    CAMPS/structure/server change. **Redsash base** — it evens the
+    route-trainer bases at 2/2/2 (the Dace entry weighed exactly this and
+    redsash was the shortfall), and the family fits: bees are the realm's
+    smallest tempo family — quick, cheap, many, stinging. The swap is
+    thematically exact in both directions: out go two of the base's three
+    `camp_torcher`s (around skeps the fire stays small and the smoke cool —
+    the Dace arson-out move; the third torcher deliberately stays, because
+    a waxwright's trade runs on one careful flame under the wax pot — his
+    LORE line is "mind the heat, never let it become fire," and a 3-card
+    swap would break the route-trainer single-light-swap decision anyway),
+    in come `alarm_bell` (rile the hive and the whole hive answers)
+    and `quick_fingers` (the sting: brush the comb, lose a drop). Both ins
+    punish enemyAttack — his micro-read is "don't poke the hive," distinct
+    from Dace's set-and-wait snares and Tolly's herd-wide buffs. Reward
+    extra: `warding_bell` ("Rung once for wolves, twice for worse" — the
+    bigger alarm, the waxwright's escalation, Dace's boar_pit pattern).
+  - **Tuning** (500 games/side vs each starter, 0 stuck across all 16,000
+    games): 45/44/48 vs boarherd/wardens/redsash — inside the route-trainer
+    band (dace 36/46/44, brenna 32/41/40), and gently below finch's
+    near-plain redsash base (49/53/52, simmed as reference): trading two
+    proactive torcher bodies for reactions duels the mead friendlier than
+    the bandit roads, which fits. Rejected variants, both simmed at
+    500/side: `alarm_bell`+`hidden_snare` (45/45/48 — statistically
+    indistinguishable, so theme decided it: the snare is Dace's signature
+    move, the sting's ember drop reads bee) and a wardens base with the
+    same ins (34/43/41 — band-legal but it duplicates Dace's exact shape:
+    same base, same camp_torcher outs, two wardens landings in a row).
+    Starter spread untouched and re-verified byte-identical: 60/52/47.
+  - *Placement*: (−148, −88) — mid-mead north of the smoker, facing the
+    skep arc; nearest skep collider 4.5 away, Odo 4.6 (labels clear),
+    flower drifts are walkable clutter. No patrol (Tolly/Dace precedent —
+    landmark duelists stand their ground).
+
 - **The West Road — waystones for the Downs and the Pond (2026-07-15,
   worldbuilding loop iteration 9)**: the seeded ledger's ripest entry by its
   own trigger. The downs rule — "a flavour landmark earns a route when it

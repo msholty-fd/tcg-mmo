@@ -148,6 +148,14 @@ but never say "points" or "unlock."
   either without a Bee Meads content phase — and the mire refusal stays a
   bee's unexplained opinion, never an explanation of Hollowmere
   (memory-without-fire is Hessa's reserved thread).
+- **Wick the Waxwright** (the Bee Meads, Odo's young second) — small omens
+  tier, mostly none: Odo keeps the bees, Wick renders the wax into the
+  candles that walk to Highgate, and drills with cards between pourings —
+  wax work and dueling are the same trade: mind the heat, never let it
+  become fire. Knows the skeps but not the emptied hive's why, and has no
+  opinion on the bees shunning the mire's edge; do not give Wick answers to
+  either of Odo's seeded doors. (Duelists can't surface flavor lines —
+  his knowledge lives here and in DESIGN text only.)
 - **Pedlar Rusk** (the Darkwood road, Gruk side) — small omens tier: sells
   the Night-Gather by daylight and is gone by dusk, and won't say why beyond
   "the light's better." (Vendor interactions can't surface flavor lines —

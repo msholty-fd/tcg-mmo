@@ -10,16 +10,17 @@
 // trade that feeds every candle on Highgate's hill; and the smoker, which
 // gentles bees by making them forget their quarrel (a deliberate light echo,
 // never explained).
-// Card-light, world-module-only, no duelist — the meads can host one later
-// if the loop wants it (Wether Downs → Tolly precedent). Seeded hooks: the
-// hive that emptied at midsummer with the honey untouched, and the bees
-// refusing the mire's edge. Do not pay either off without a content phase.
+// The meads' duelist arrived one loop later (Wether Downs → Tolly precedent):
+// Wick the Waxwright, route-trainer tier, by the skep arc below. Seeded hooks
+// still open: the hive that emptied at midsummer with the honey untouched,
+// and the bees refusing the mire's edge. Do not pay either off without a
+// content phase.
 import * as THREE from 'three';
 import { scene } from '../scene.js';
 import { groundH } from '../terrain.js';
 import { rand } from '../utils.js';
 import { addCircle, addRect } from '../colliders.js';
-import { M, camCollidables, campfire, crate, barrel, signpost, spawnCritter, spawnNPC } from './lib.js';
+import { M, camCollidables, campfire, crate, barrel, signpost, spawnCritter, spawnNPC, spawnDuelist } from './lib.js';
 
 const BM = { x: -147, z: -93 };   // heart (constants.js CAMPS r=17)
 
@@ -149,6 +150,16 @@ function beeSwarm() {
 }
 spawnCritter(beeSwarm, BM.x - 5, BM.z + 2);
 spawnCritter(beeSwarm, BM.x - 8, BM.z + 6);
+
+// Wick the Waxwright — the meads' duelist (route-trainer tier, DESIGN.md
+// iteration 10; the Tolly/Dace precedent, one-plus loops after the landmark).
+// Odo's young second: Odo keeps the bees, Wick renders the wax into the
+// candles that walk to Highgate — and drills with cards between pourings.
+// Stands mid-mead north of the smoker, facing the skep arc: nearest skep
+// collider 4.5 away, Odo 4.6 (labels stay clear), flower drifts are walkable
+// clutter. Odo stays a flavour NPC on purpose (the Wynn/Pell rule verbatim —
+// converting him would bury his six lines behind the duelist interaction).
+export const wick = spawnDuelist('wick', BM.x - 1, BM.z + 5, { shirt: 0xb0985a, hat: 0x6a5a3a });
 
 // Beeman Odo — flavour NPC (Bram/Wayfarer/Harrow/Wynn/Pell tier:
 // superstition and small omens, per LORE.md). Ties the meads into the
