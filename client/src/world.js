@@ -23,6 +23,7 @@ export { hessa, updateHollowmere } from './world/hollowmere.js';
 export { wayfarer, sorrel, finch, brenna, updatePatrols } from './world/roads.js';
 export { harrow, cobb } from './world/harrowfield.js';
 export { wynn, tolly } from './world/wetherdowns.js';
+export { pell } from './world/pellspond.js';
 export { merle } from './world/dialstone.js';
 export { updateDarkwood, tamsin, weir, rusk } from './world/darkwood.js';
 export { marrow } from './world/mine.js';

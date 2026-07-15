@@ -1929,6 +1929,53 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **Pell's Pond — the fisher's landing, the realm's first standing water
+  (2026-07-15, worldbuilding loop iteration 6)**: with the Downs, Dial
+  Stone, and Hollowmere passes done, the survey found two gaps that one
+  place fills. *Map*: the northwest wedge (x −110…−200, z 55…150, beyond
+  Red-Sash Camp toward the mountains) is now the biggest unclaimed stretch.
+  *Archetype*: the realm has NO standing water beyond Hollowmere's four
+  bog-pool discs, and the food economy names farm (Harrow), flock
+  (Wynn/Tolly), and trade (Marla/Highgate) — nothing from water.
+  Landmark tier on purpose (Harrowfield/Wether Downs precedent):
+  card-light, world-module-only, no duelist, plain bundle deploy.
+  - **Siting is the interesting part**: the terrain has no basins (groundH
+    is gentle sinusoids), so instead of terraforming, a numeric scan found
+    a natural flat low at **(−141, 58)** — center h −1.97 with the whole
+    r=9 disc within 0.27 of it. The water is one flat CircleGeometry disc
+    set just above the highest ground inside its rim (sampled at build
+    time), so nothing pokes through and the shore sits nearly flush —
+    zero terrain edits, and the technique is reusable for any future pond.
+    Walkable like Hollowmere's pools (wading is the charm); the jetty gets
+    a rect collider instead, since knee-high planks would clip a wader.
+  - **The place** (`client/src/world/pellspond.js`, CAMPS (−141,58) r=18,
+    wilds.js CLEARINGS r=15 so the random pines stay out of the water):
+    pond + lily pads (deliberately a *living*-water palette — M_POND is
+    cool slate, not M.bogWater's murk, and no cattails: gone-to-seed heads
+    are the mire's motif), reed clumps, shore stones, plank jetty, the
+    Wether-Downs-pattern hut (collider + camera occluder), a drying rack
+    hung with the catch, an upturned boat, and 3 ducks (module-local mesh,
+    single-region rule — entities.js untouched, a parallel session owns
+    it). LORE relationship to the fire: **tended** — the smoking fire
+    (campfire(), ramps at night) kept low and kept always: smoke preserves
+    what flame would eat, the fire-that-keeps made economic.
+  - **Fisher Pell** — flavour NPC, small-omens tier (LORE.md updated): six
+    lines tying fish to Marla/Highgate (the economy read, like Harrow's
+    and Wynn's), the herons to Hollowmere (they never fish here — cross-
+    zone texture), and two gentle seeded doors: the fish over the deep
+    hole have gone shy, and nobody living remembers who dug the pond.
+    Deliberately NOT water-remembers phrasing — memory-without-fire is
+    Hessa's reserved thread; Pell's omens stay about fish and smoke.
+  - **Rejected this survey**: burial/memorial ground (the realm is already
+    stone-heavy — cairn, waystones, Circle of Sighs, Dial Stone — and
+    graves-and-forgetting grazes the reserved acts' themes), an orchard
+    (second agricultural, redundant with Harrowfield), deepening the
+    Emberwatch Ruins environmentally (its sparseness IS the read, and it
+    is Act I staging), anything Hollowmere/Hessa (reserved).
+  - No northwest road on purpose (the Wether Downs rule verbatim: a
+    flavour landmark earns a route when it earns content). Seeded for
+    later: a pond duelist (Tolly precedent), and the deep-hole omen.
+
 - **The Wether Downs — pastoral shepherd landmark (2026-07-14,
   `feat/wether-downs`)**: worldbuilding-loop iteration under Michael's
   "continue expanding the world out." With the Darkwood complete, the map

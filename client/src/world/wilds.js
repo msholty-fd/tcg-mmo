@@ -16,6 +16,7 @@ import { M, tree, spawnCritter } from './lib.js';
 const CLEARINGS = [
   { x: 165, z: 25, r: 16 },    // The Dial Stone — the shadow needs open sky
   { x: -150, z: -10, r: 16 },  // The Wether Downs fold + hut
+  { x: -141, z: 58, r: 15 },   // Pell's Pond — no pines growing out of the water
 ];
 const inClearing = (x, z) => CLEARINGS.some(c => Math.hypot(x - c.x, z - c.z) < c.r);
 
