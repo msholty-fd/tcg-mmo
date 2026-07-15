@@ -149,6 +149,17 @@ wayfarer.flavor = [
 export const sorrel = spawnDuelist('sorrel', 62, -40, { shirt: 0x7a5a34, hat: 0x4a3620 });
 export const finch = spawnDuelist('finch', 58, 60, { shirt: 0x9a4030, hat: 0x30302a });
 export const brenna = spawnDuelist('brenna', -44, -58, { shirt: 0x4a5a6a, hat: 0x3a3228 });
+// Nell the Carter (2026-07-15, worldbuilding iteration 13 — DESIGN.md): the
+// west road's trainer, the realm's first on a forked road. She walks the
+// fork's SOUTH arm — the meads spur, the newest leg and the one the honey
+// run gives directed traffic — one arm only, on the recorded design note:
+// a polyline through the fork would cross the twin edge-markers' colliders
+// (the sorrel waystone-teleport gotcha). Path runs ~3u east of the spur's
+// stone line; terrain + clearances scanned numerically before siting
+// (h -1.33..-0.86, slope dev 0.17 — meadow-flat; nearest collider the mid
+// stone at 2.99, push-out margin 1.99; meads skeps >=14.9, downs cairn 15.8,
+// brenna's polyline 87).
+export const nell = spawnDuelist('nell', -144, -53, { shirt: 0x7a6648, hat: 0x4e4030 });
 
 // Road duelists PATROL their routes, and the realm agrees where they are:
 // position is a pure function of the server-synced game hour (the same
@@ -169,6 +180,7 @@ const PATROLS = [
   { npc: sorrel, path: [[40, -26], [57, -33], [76, -46]] },     // Gruk road, past its waystone
   { npc: finch, path: [[44, 46], [58, 60], [72, 74]] },         // Emberwatch road, between its waystones
   { npc: brenna, path: [[-30, -48], [-44, -58], [-58, -68]] },  // Hollowmere road, between its waystones
+  { npc: nell, path: [[-143, -36], [-144, -53], [-145, -70]] }, // meads spur (the fork's south arm), east of its stones
 ];
 const PATROL_PERIOD = 1;   // game hours per out-and-back (= 50 real seconds)
 for (const p of PATROLS) {
