@@ -1929,6 +1929,75 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **The Bee Meads spur — the west road forks at the downs (2026-07-15,
+  worldbuilding loop iteration 12)**: the seeded ledger's ripest entry, and
+  the first seed to fire on a DOUBLE trigger. The downs rule ("a flavour
+  landmark earns a route when it earns content") fired for the meads at
+  iteration 10 (Wick is business), and iteration 11 sharpened it into
+  something no prior road had: **directed traffic** — the honey run's offer
+  text routes level-3 players "west road past Wynn's downs, then keep south
+  till the grass turns to flowers," which is a road the realm describes but
+  does not mark. The spur is the ground honoring the quest's words. Shape
+  fatigue was weighed and dismissed: the last road was iteration 9, three
+  iterations back with a duelist (10) and a quest (11) between — the run
+  reads landmark, landmark, duelist, road, duelist, quest, road, which is
+  rhythm, not repetition — and the precedent cadence was actually *faster*
+  (the West Road landed one iteration after Dace; this waited two after
+  Wick). One file (`client/src/world/roads.js`), card-free, zero
+  server/shared change — the smallest-risk shape available while a
+  parallel session's mechanics merge is still settling.
+  - **Rejected this survey**: the west-road route trainer (its written
+    trigger — "if the route sees traffic" — is *now met on paper* by the
+    honey run, but a trainer patrolling a route whose meads leg doesn't
+    exist yet would guard half a road; the spur completes the network the
+    trainer would walk, so infrastructure strictly precedes it — riper
+    next survey than ever, and the trainer's patrol should be sited AFTER
+    the spur's stones so the collider/teleport gotcha is checked against
+    final geometry); the Red-Sash camp-life pass + windmill (still
+    BLOCKED — `git worktree list` confirms humanoid-fidelity still holds
+    main.js); the hot spring (sixth look, parked per surveys 7/8/9/10/11 —
+    nothing changed); an environmental/life pass on the early-authored
+    zones (surveyed: redsash.js 23 lines is still thinnest but its
+    deepening IS the blocked camp-life pass; bramsrest.js 33 lines is
+    "small, unglamorous" by its own charter and Bram's seven lines carry
+    it; emberwatch.js 37 lines is Act I staging by decision; gruk.js 70
+    lines reads complete for a bone-hollow boss camp — no eligible target,
+    same verdict as surveys 10 and 11).
+  - **The route** (3 stones, existing `waystone()` builder, colliders
+    self-registered): the west road now forks at the downs — the existing
+    1.2-scale north edge-marker points on to Pell's water, and a new
+    twin 1.2-scale **south edge-marker at (−146,−30)** points on to the
+    meads (Darkwood heart-marker precedent, both arms now legible from
+    the fold), then (−147,−53) and a meads-edge stone at (−148,−76) —
+    from there the skeps are inside sightline (17.0 from the meads heart,
+    CAMPS r 17). Stone gaps 23.0/23.0 (the Darkwood band, tighter than
+    the West Road's ~40 — the spur crosses open grass where stones are
+    the only feature, so they carry the line alone). Terrain scanned
+    numerically before siting (the West Road technique, inlined groundH):
+    route height −1.13..0.10, max slope deviation 0.18 within r=1.5 — the
+    flattest road in the realm, fitting for meadow country. Clearances:
+    downs cairn 9.2 from the edge-marker (nearest furniture), meads skep
+    8.2 from the last stone, brenna's patrol polyline ≥90 — no patrol
+    crosses any new collider (Tolly and Wick stand their ground).
+  - **The Wayfarer's west line is EDITED, not added** (rotation stays at
+    8): "West road forks at Wynn's downs now — north for Pell's water,
+    south for Odo's flowers. Sheep, fish, and honey." His job is naming
+    what the stones do, and the stones changed; a second west line would
+    have him repeating himself. Practical tier, no omen; LORE.md untouched
+    (no new NPC, no knowledge change).
+  - **Deliberately NOT done**: no honey_run text change (Marla's
+    directions were already the spur's blueprint — the quest reads better,
+    not different); no route trainer bundled (one shape per iteration —
+    and the trainer now has clean final geometry to site against); no
+    meads-side dressing (the signpost at the meads' east edge greets the
+    Hollowmere walk-in; the spur arrives from the north past the skeps,
+    which greet better than furniture). **The western circuit is now
+    complete** — downs, pond, and meads all roaded, every western landmark
+    duelist reachable by stones; the region's remaining seed is the route
+    trainer, which would be the realm's first duelist serving a forked
+    road (patrol one arm, not both — a polyline through the fork would
+    cross the edge-markers' colliders).
+
 - **The Honey Run — Marla's Bee Meads errand, the loop's first quest
   (2026-07-15, worldbuilding loop iteration 11)**: the seeded ledger's ripest
   entry by its own written trigger. Iteration 10 seeded "a visit-objective

@@ -53,6 +53,7 @@ const DEST = {
   village:   [0, 0],
   wetherdowns:[-150, -10],
   pellspond: [-141, 58],
+  beemeads:  [-147, -93],
 };
 
 // A hub crossroads just south of the village where the roads diverge, then
@@ -93,13 +94,30 @@ waystone(68, -110, ...DEST.highgate);
 // the downs, then the stones bend north along the realm's western edge to
 // Pell's Pond. The downs-edge marker is the onward pointer (Darkwood
 // heart-marker precedent) — the realm's second outer-to-outer road, so each
-// landmark teaches the other exists. The Bee Meads stays roadless on
-// purpose: same rule, no business there yet.
+// landmark teaches the other exists. The Bee Meads stayed roadless then on
+// purpose: same rule, no business there yet — a rule that has since fired
+// (see the meads spur below, iteration 12).
 waystone(-34, -22, ...DEST.wetherdowns);
 waystone(-76, -17, ...DEST.wetherdowns);
 waystone(-114, -13, ...DEST.wetherdowns);
 waystone(-147, 8, ...DEST.pellspond, 1.2);   // downs-edge marker, pointing on north
 waystone(-145, 33, ...DEST.pellspond);
+// the Bee Meads spur (2026-07-15, worldbuilding iteration 12 — DESIGN.md):
+// the downs rule fired for the meads too — Wick gave them business
+// (iteration 10) and Marla's honey run gave them directed traffic
+// (iteration 11: "take the west road past Wynn's downs, then keep south
+// till the grass turns to flowers" — directions the ground now marks).
+// The west road forks at the downs: the north edge-marker points on to
+// Pell's water, this south edge-marker points on to Odo's flowers — twin
+// 1.2-scale onward pointers (Darkwood heart-marker precedent), then two
+// stones south along the realm's western grass to the meads' skeps.
+// Terrain scanned numerically before siting (the West Road technique):
+// route height −1.13..0.10, max slope deviation 0.18 within r=1.5; nearest
+// colliders — downs cairn 9.2 from the edge marker, meads skep 8.2 from
+// the last stone; brenna's patrol polyline ≥90 away.
+waystone(-146, -30, ...DEST.beemeads, 1.2);  // downs south-edge marker, the fork's other arm
+waystone(-147, -53, ...DEST.beemeads);
+waystone(-148, -76, ...DEST.beemeads);       // meads-edge stone — the skeps are in sight from here
 
 // The Wayfarer — a roaming teller who keeps the roads' stories, stationed at
 // the crossroads hub. First flavour NPC placed out in the Boarlands rather
@@ -113,7 +131,7 @@ wayfarer.flavor = [
   "West-and-south the ground goes soft: Hollowmere, where Old Hessa deals cards to the dead. Bring dry boots.",
   "Northeast the markers thin out. There's a ruin that lights itself after dark — I don't follow that road at night, and neither should you.",
   "East for Gruk's bones, northwest for the Red-Sash. Both roads end in a duel; that's the realm for you.",
-  "West's the newest road — Wynn's downs first, then the stones bend north for Pell's water. Sheep, then fish. Even the quiet end of the realm wants finding.",
+  "West road forks at Wynn's downs now — north for Pell's water, south for Odo's flowers. Sheep, fish, and honey. Even the quiet end of the realm wants finding.",
   "I don't duel, I don't trade. I just walk the roads and remember who's on them. Someone has to.",
   "Roads remember feet the way fires remember faces — that's what my mother said. I keep walking so something remembers me.",
 ];
