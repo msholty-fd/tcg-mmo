@@ -1,4 +1,33 @@
 import * as THREE from 'three';
+import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+
+// Fidelity pass 1 (2026-07-15, "softer/rounder" direction): the humanoid is
+// the single most-seen asset — player, every NPC, every remote — so its shape
+// sets the tone for the whole realm. Nudged from hard boxes toward rounded,
+// smooth-shaded forms (capsule limbs, a barrel torso, a spherical head) while
+// keeping the same flat-colour low-poly style, the same {opts} API, and the
+// same overall proportions/height (labels, hp bars, and camera framing all
+// assume a ~2.1-unit-tall figure). Draw calls stay ~1 per body part.
+
+// r128 has no CapsuleGeometry, so a rounded limb is a cylinder body + two
+// hemisphere caps merged into ONE indexed geometry (one draw call). Many
+// humanoids share identical limb dims, so cache each (r,len,seg) build and let
+// every mesh reference the same geometry — geometry is shared, materials are
+// per-figure (colours differ). Cheap, and keeps limb ends soft, not tube-cut.
+const _capsuleCache = new Map();
+function capsuleGeo(r, len, seg = 8) {
+  const key = r + ':' + len + ':' + seg;
+  let g = _capsuleCache.get(key);
+  if (g) return g;
+  const body = new THREE.CylinderGeometry(r, r, len, seg, 1, true);
+  const top = new THREE.SphereGeometry(r, seg, Math.ceil(seg / 2), 0, Math.PI * 2, 0, Math.PI / 2);
+  top.translate(0, len / 2, 0);
+  const bot = new THREE.SphereGeometry(r, seg, Math.ceil(seg / 2), 0, Math.PI * 2, Math.PI / 2, Math.PI / 2);
+  bot.translate(0, -len / 2, 0);
+  g = BufferGeometryUtils.mergeBufferGeometries([body, top, bot]);
+  _capsuleCache.set(key, g);
+  return g;
+}
 
 // cape/glow: faction regalia (shared/cosmetics.js) — cape is a thin slab on
 // the back; glow is an emissive tint (campfire trick) so Emberpeaks cloth
@@ -6,17 +35,37 @@ import * as THREE from 'three';
 export function humanoid({ shirt = 0x6a8ac9, skin = 0xd9a878, hat = null, legs: legColor = 0x4a4038, cape = null, capeGlow = null, scale = 1 } = {}) {
   const g = new THREE.Group();
   const mk = (geo, color, em) => new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ color, emissive: em || 0x000000 }));
-  const legs = mk(new THREE.BoxGeometry(.55, .7, .35), legColor); legs.position.y = .35; g.add(legs);
-  const body = mk(new THREE.BoxGeometry(.7, .85, .45), shirt); body.position.y = 1.12; body.castShadow = true; g.add(body);
-  const head = mk(new THREE.BoxGeometry(.5, .5, .5), skin); head.position.y = 1.85; head.castShadow = true; g.add(head);
-  if (hat) { const h = mk(new THREE.ConeGeometry(.42, .55, 6), hat); h.position.y = 2.35; g.add(h); }
+
+  // legs — two rounded capsules with soft feet, replacing the single block
+  const legGeo = capsuleGeo(.15, .42, 8);
+  const legR = mk(legGeo, legColor); legR.position.set(.17, .38, 0); legR.castShadow = true; g.add(legR);
+  const legL = mk(legGeo, legColor); legL.position.set(-.17, .38, 0); legL.castShadow = true; g.add(legL);
+
+  // torso — a soft tapered barrel (broader shoulders, slimmer waist), flattened
+  // front-to-back, capped by a rounded shoulder dome so it doesn't read as a tube
+  const torso = mk(new THREE.CylinderGeometry(.3, .24, .8, 10, 1), shirt);
+  torso.position.y = 1.12; torso.scale.z = .68; torso.castShadow = true; g.add(torso);
+  const shoulders = mk(new THREE.SphereGeometry(.3, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2), shirt);
+  shoulders.position.y = 1.52; shoulders.scale.set(1, .5, .68); g.add(shoulders);
+
+  // neck + rounded, slightly egg-shaped head
+  const neck = mk(new THREE.CylinderGeometry(.1, .12, .16, 7), skin); neck.position.y = 1.62; g.add(neck);
+  const head = mk(new THREE.SphereGeometry(.28, 12, 10), skin);
+  head.position.y = 1.88; head.scale.set(.92, 1.02, .96); head.castShadow = true; g.add(head);
+
+  if (hat) { const h = mk(new THREE.ConeGeometry(.4, .5, 8), hat); h.position.y = 2.42; g.add(h); }
   if (cape != null) {
     const c = mk(new THREE.BoxGeometry(.72, .95, .07), cape, capeGlow);
     c.position.set(0, 1.08, -.3); c.castShadow = true; g.add(c);
   }
-  const armR = mk(new THREE.BoxGeometry(.18, .7, .18), shirt); armR.position.set(.46, 1.15, 0); g.add(armR);
-  const armL = armR.clone(); armL.position.x = -.46; g.add(armL);
-  g.userData.armR = armR;
+
+  // arms — rounded capsules, angled a touch outward for a natural rest pose
+  const armGeo = capsuleGeo(.09, .5, 8);
+  const armR = mk(armGeo, shirt); armR.position.set(.44, 1.16, 0); armR.rotation.z = .12; g.add(armR);
+  const armL = mk(armGeo, shirt); armL.position.set(-.44, 1.16, 0); armL.rotation.z = -.12; g.add(armL);
+  // handles kept for a future motion pass (Stage 1): arm swing / leg stride
+  g.userData.armR = armR; g.userData.armL = armL; g.userData.legR = legR; g.userData.legL = legL;
+
   g.scale.setScalar(scale);
   return g;
 }
