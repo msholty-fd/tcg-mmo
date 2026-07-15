@@ -1929,6 +1929,91 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **Hobb's Quarry — the stonecutter's yard on the eastern grass (2026-07-15,
+  worldbuilding loop iteration 14)**: the first survey pointed east on
+  purpose — the seeded ledger is nearly dry (camp-life + windmill still
+  BLOCKED, hot spring parked) and the last eight iterations all landed west,
+  so this survey walked the north/east half against the loop's standards
+  and found the two-question answer the west's picks kept finding. *Map*:
+  with the western circuit closed, the east band (x ~135–200, z ~−75…+10,
+  between Gruk's Hollow, the Dial Stone, the Darkwood's east edge, and the
+  world boundary) is now the realm's biggest unclaimed stretch — the same
+  size band the Pell's Pond and Bee Meads wedges were. *Archetype*: the
+  craft economy names farm (Harrow), flock (Wynn), fish (Pell), sweet/wax
+  (Odo/Wick), charcoal (Tamsin) — and yet the realm's single most visible
+  crafted material has no source: every waystone on every road, Highgate's
+  walls, the village hearthstones, cairns, a sundial — none of it cut
+  anywhere. The quarry retro-explains the realm's signature prop exactly
+  the way the meads retro-explained Highgate's candles. *Shape*: the loop's
+  run reads duelist (10), quest (11), road (12), duelist (13) — a landmark
+  is the freshest shape available, untouched for six iterations (last: the
+  meads at 7). Landmark tier on purpose (Harrowfield/Downs/Pond/Meads
+  precedent): card-free, world-module-only, no duelist, no schema, plain
+  bundle deploy.
+  - **Rejected this survey**: the Red-Sash camp-life pass + windmill (still
+    BLOCKED — `git worktree list` confirms humanoid-fidelity still holds
+    main.js); the hot spring (eighth look, parked per surveys 7–13 —
+    nothing changed, and its standing objection is its omen content, which
+    this pick deliberately lacks); a Dial Stone or Emberwatch-road duelist
+    (iteration 13 was a duelist — back-to-back is the exact fatigue the
+    variance brief exists to prevent; also the Dial Stone is a *watching*
+    place, its charter is Merle's hints, not business); a second quest (the
+    honey run is three back but the east has no giver with unclaimed
+    business, and the quest system's natural next chain — the Sentinel's —
+    is reserved); an environmental/life pass (same verdict as surveys
+    10–13: redsash.js's deepening IS the blocked pass, emberwatch.js is Act
+    I staging by decision, bramsrest.js is small by its own charter). The
+    old southeast **lumber camp** rejection was re-examined and stands —
+    but it does not transfer: that objection was "industry is the mine's
+    identity," and the mine's identity is *dead delving underground* (an
+    Act III door); the quarry is a living provisioning trade with a person,
+    the Harrow/Wynn/Pell/Odo family, open to the sky, whose product the
+    player has been walking past since the Waystones entry.
+  - **The place** (`client/src/world/quarry.js`, CAMPS (157,−20) r=16,
+    wilds.js CLEARINGS r=15 — a working yard keeps its ground clear): sited
+    by the Pell's Pond numeric scan — the flattest r=10 disc in the wedge
+    (center h −3.14, max deviation 0.65), zero terrain edits, circle-edge
+    gaps 13.7 to the Dial Stone and 22 to Gruk's Hollow (both over the ~9
+    precedent). The worked face is authored from props (the Cinderhollow
+    Mine precedent — the terrain has no real hill here): two stepped tiers
+    of fresh-cut ledges opening toward the western approach, capped and
+    flanked by natural boulders; a local M_CUT material brighter than
+    M.waystone so new work reads new against grey outcrop (the tilled-soil
+    trick). Yard dressing: squared block stacks, pale grit heaps (the
+    mine's spoil-heap shape, grey not charred), a shear-legs hoist (thin
+    poles, no collider — the torch rule), mallet-and-chisel on a cutting
+    block, the Wether Downs hut pattern verbatim, crate/barrel/signpost.
+    Two signature props: **the half-cut waystone on a sledge** — the exact
+    shaft profile of roads.js's waystone(), lying on its side, no gilded
+    band yet ("the gilding's Highgate's coin; the stone's ours") — and
+    **the dressed millstone leaning on the hut**, ten years waiting on a
+    mill nobody has built, which quietly strengthens the ledger's windmill
+    option (blocked on main.js, not on story). LORE relationship to the
+    fire: **tended** — Hobb's kept fire, plus the trade itself ("fire gets
+    the songs; the stone does the holding" — one light echo, one line).
+    The fire uses an explicit `fires.push(campfire(...))`: campfire() does
+    NOT self-register despite four newer zones' comments claiming it does
+    (wetherdowns/pellspond/beemeads/dialstone — doc-rot found this survey,
+    flagged for its own fix; those four flames never animate).
+  - **Mason Hobb** — flavour NPC, small-omens tier (LORE.md updated): six
+    lines tying stone to Highgate's walls and the village hearths (the
+    economy read, like Harrow's/Wynn's/Pell's/Odo's), the waystone line
+    (the realm's roads, retro-explained), the hearth line (the one echo),
+    the millstone (windmill cross-seed), one seeded omen door — frost-split
+    blocks out of the face in midsummer, Harrow's out-of-season-frost
+    register, never sharpened — and a Merle cross-NPC line that keeps the
+    Dial Stone's missing-hour joke alive without answering it ("how do you
+    cut a stone for an hour nobody will own?").
+  - **Deliberately NOT done**: no duelist (the Tolly/Dace/Wick precedent —
+    landmarks get one loop of being found first; **seeded**: a quarry
+    duelist, an apprentice cutter, route-trainer tier); no east road (the
+    downs rule verbatim — a flavour landmark earns a route when it earns
+    content; when it does, note the quarry sits nearly on the line from
+    Gruk's road to the Dial Stone); no critters (a stone yard is still by
+    nature — the life is Hobb, his fire, and the tool marks); no ring
+    references (the Circle of Sighs stays entirely out of Hobb's mouth —
+    reserved, LORE.md bars him explicitly).
+
 - **Nell the Carter — the west road's route trainer, first on a forked road
   (2026-07-15, worldbuilding loop iteration 13)**: the seeded ledger's
   ripest entry by a margin no seed has had before — seeded at iteration 9

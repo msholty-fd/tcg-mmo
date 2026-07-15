@@ -72,6 +72,12 @@ export const CAMPS = [
   // in the quadrant (scanned, not terraformed — the Pell's Pond technique).
   // See DESIGN.md "The Bee Meads".
   { x: -147, z: -93, r: 17, name: 'The Bee Meads' },
+  // A working stonecutter's yard on the eastern grass, in the wedge between
+  // Gruk's Hollow, the Dial Stone, and the world's edge — where the realm's
+  // waystones, hearthstones, and wall-stone are cut. Sited on the flattest
+  // ground in the wedge (scanned, not terraformed — the Pell's Pond
+  // technique). See DESIGN.md "Hobb's Quarry".
+  { x: 157, z: -20, r: 16, name: "Hobb's Quarry" },
   // An abandoned mine dug into a rocky rise due north, in the Darkwood — a
   // scenic discovery, not enterable (seeds future underground content). See
   // DESIGN.md "Cinderhollow Mine".
