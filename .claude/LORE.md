@@ -125,6 +125,13 @@ but never say "points" or "unlock."
   one small fire nightly ("a dark camp is a borrowed camp"), and their
   bellwether has taken to staring west at nothing. What she watches for is
   a seeded door — do not answer it without a Wether Downs content phase.
+- **Fisher Pell** (Pell's Pond, the northwest water) — small omens tier:
+  smokes the catch over a fire kept low and kept always ("smoke keeps what
+  flame would eat"). Two seeded doors, both gentle: the fish over the
+  pond's deep hole have gone shy, and nobody living remembers who dug the
+  pond. Do not answer either without a Pell's Pond content phase — and
+  keep Pell's omens about fish and smoke, never water-that-remembers
+  (memory-without-fire is Hessa's reserved thread).
 - **Pedlar Rusk** (the Darkwood road, Gruk side) — small omens tier: sells
   the Night-Gather by daylight and is gone by dusk, and won't say why beyond
   "the light's better." (Vendor interactions can't surface flavor lines —

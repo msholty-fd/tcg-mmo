@@ -63,6 +63,10 @@ export const CAMPS = [
   // unclaimed wedge between Red-Sash Camp and Hollowmere. See DESIGN.md
   // "The Wether Downs".
   { x: -150, z: -10, r: 20, name: 'The Wether Downs' },
+  // A fisher's landing on the realm's first true standing water, in the
+  // northwest wedge beyond Red-Sash Camp — the pond sits on a natural flat
+  // low in groundH (scanned, not terraformed). See DESIGN.md "Pell's Pond".
+  { x: -141, z: 58, r: 18, name: "Pell's Pond" },
   // An abandoned mine dug into a rocky rise due north, in the Darkwood — a
   // scenic discovery, not enterable (seeds future underground content). See
   // DESIGN.md "Cinderhollow Mine".
