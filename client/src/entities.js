@@ -29,12 +29,44 @@ function capsuleGeo(r, len, seg = 8) {
   return g;
 }
 
+// Fidelity pass 2 (2026-07-15, "Dark Cloud / PS2" direction): outfit the
+// humanoid — collar, belt, leather gloves & boots — and give the torso cloth a
+// woven texture. This is the FIRST real texture in the game: a procedurally
+// drawn basketweave (near-white grayscale) used as a .map that multiplies the
+// per-figure shirt colour, so one shared texture dresses the whole cast. Same
+// canvas→CanvasTexture trick as pixelArt.js card faces, and the same technique
+// the later surface-texture pass will reuse for wood/thatch/stone/ground.
+let _clothTex = null;
+function clothTexture() {
+  if (_clothTex) return _clothTex;
+  const s = 32, c = document.createElement('canvas'); c.width = c.height = s;
+  const x = c.getContext('2d');
+  x.fillStyle = '#ececec'; x.fillRect(0, 0, s, s);          // near-white: the map keeps the shirt colour
+  const cell = 8;
+  for (let iy = 0; iy < s; iy += cell) for (let ix = 0; ix < s; ix += cell) {
+    const horiz = ((ix / cell + iy / cell) & 1) === 0;       // alternate thread direction → basketweave
+    for (let t = 1; t < cell; t += 2) {
+      x.fillStyle = t % 4 === 1 ? 'rgba(0,0,0,.14)' : 'rgba(255,255,255,.16)';
+      if (horiz) x.fillRect(ix, iy + t, cell, 1); else x.fillRect(ix + t, iy, 1, cell);
+    }
+  }
+  const tex = new THREE.CanvasTexture(c);
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.repeat.set(3, 3);
+  _clothTex = tex; return tex;
+}
+
+// Adventurer kit — a fixed leather-and-cloth palette layered over whatever
+// shirt/legs colours a character has, so every villager reads as "outfitted"
+// (Dark Cloud's Toan) rather than a bare mannequin.
+const KIT = { glove: 0x6a4a30, boot: 0x4a3524, belt: 0x2e2015, scarf: 0xe6dcc4 };
+
 // cape/glow: faction regalia (shared/cosmetics.js) — cape is a thin slab on
 // the back; glow is an emissive tint (campfire trick) so Emberpeaks cloth
 // smolders after dark like everything else the mountain owns.
 export function humanoid({ shirt = 0x6a8ac9, skin = 0xd9a878, hat = null, legs: legColor = 0x4a4038, cape = null, capeGlow = null, scale = 1 } = {}) {
   const g = new THREE.Group();
   const mk = (geo, color, em) => new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ color, emissive: em || 0x000000 }));
+  const mkCloth = (geo, color) => new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ color, map: clothTexture() }));
 
   // legs — two rounded capsules with soft feet, replacing the single block
   const legGeo = capsuleGeo(.15, .42, 8);
@@ -42,10 +74,11 @@ export function humanoid({ shirt = 0x6a8ac9, skin = 0xd9a878, hat = null, legs: 
   const legL = mk(legGeo, legColor); legL.position.set(-.17, .38, 0); legL.castShadow = true; g.add(legL);
 
   // torso — a soft tapered barrel (broader shoulders, slimmer waist), flattened
-  // front-to-back, capped by a rounded shoulder dome so it doesn't read as a tube
-  const torso = mk(new THREE.CylinderGeometry(.3, .24, .8, 10, 1), shirt);
+  // front-to-back, capped by a rounded shoulder dome so it doesn't read as a tube.
+  // Cloth surfaces carry the woven texture; leather/skin stay flat.
+  const torso = mkCloth(new THREE.CylinderGeometry(.3, .24, .8, 10, 1), shirt);
   torso.position.y = 1.12; torso.scale.z = .68; torso.castShadow = true; g.add(torso);
-  const shoulders = mk(new THREE.SphereGeometry(.3, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2), shirt);
+  const shoulders = mkCloth(new THREE.SphereGeometry(.3, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2), shirt);
   shoulders.position.y = 1.52; shoulders.scale.set(1, .5, .68); g.add(shoulders);
 
   // neck + rounded, slightly egg-shaped head
@@ -53,16 +86,43 @@ export function humanoid({ shirt = 0x6a8ac9, skin = 0xd9a878, hat = null, legs: 
   const head = mk(new THREE.SphereGeometry(.28, 12, 10), skin);
   head.position.y = 1.88; head.scale.set(.92, 1.02, .96); head.castShadow = true; g.add(head);
 
-  if (hat) { const h = mk(new THREE.ConeGeometry(.4, .5, 8), hat); h.position.y = 2.42; g.add(h); }
+  if (hat) {
+    // a brimmed, rounded hat — a flared brim + a squashed dome crown — instead
+    // of the old single cone that read as a dunce cap (pass-2 review)
+    const brim = mk(new THREE.CylinderGeometry(.42, .46, .06, 14), hat); brim.position.y = 2.05; g.add(brim);
+    const crown = mk(new THREE.SphereGeometry(.25, 12, 8), hat); crown.scale.y = .82; crown.position.y = 2.17; g.add(crown);
+  }
   if (cape != null) {
     const c = mk(new THREE.BoxGeometry(.72, .95, .07), cape, capeGlow);
     c.position.set(0, 1.08, -.3); c.castShadow = true; g.add(c);
   }
 
-  // arms — rounded capsules, angled a touch outward for a natural rest pose
+  // shoulder deltoids bridge torso → arm so the arms read as attached, not
+  // floating (pass-2 review: "the arms don't connect with the body")
+  const deltoidGeo = new THREE.SphereGeometry(.15, 8, 6);
+  const deltR = mkCloth(deltoidGeo, shirt); deltR.position.set(.34, 1.45, 0); deltR.scale.z = .8; g.add(deltR);
+  const deltL = mkCloth(deltoidGeo, shirt); deltL.position.set(-.34, 1.45, 0); deltL.scale.z = .8; g.add(deltL);
+
+  // arms — rounded capsules, tucked into the deltoids, angled a touch outward
   const armGeo = capsuleGeo(.09, .5, 8);
-  const armR = mk(armGeo, shirt); armR.position.set(.44, 1.16, 0); armR.rotation.z = .12; g.add(armR);
-  const armL = mk(armGeo, shirt); armL.position.set(-.44, 1.16, 0); armL.rotation.z = -.12; g.add(armL);
+  const armR = mkCloth(armGeo, shirt); armR.position.set(.40, 1.14, 0); armR.rotation.z = .14; g.add(armR);
+  const armL = mkCloth(armGeo, shirt); armL.position.set(-.40, 1.14, 0); armL.rotation.z = -.14; g.add(armL);
+
+  // ---- adventurer kit: collar, belt, gloves, boots (Dark Cloud outfitting) ----
+  // A cream collar rolls at the neck (Toan's poncho collar); a dark belt sits on
+  // the torso→legs seam and defines the waist. Both flattened front-to-back to
+  // match the barrel. Torus lies flat (rotate onto the horizontal plane).
+  const collar = mk(new THREE.TorusGeometry(.17, .06, 6, 16), KIT.scarf);
+  collar.rotation.x = Math.PI / 2; collar.scale.z = .68; collar.position.y = 1.55; g.add(collar);
+  const belt = mk(new THREE.TorusGeometry(.25, .05, 6, 16), KIT.belt);
+  belt.rotation.x = Math.PI / 2; belt.scale.z = .68; belt.position.y = .82; g.add(belt);
+  // Gloves & boots ride as children of their limb so they inherit its transform
+  // (arm rest-angle, and a future motion pass's swing/stride) for free.
+  const gloveGeo = capsuleGeo(.105, .1, 8);
+  for (const arm of [armR, armL]) { const gl = mk(gloveGeo, KIT.glove); gl.position.y = -.22; arm.add(gl); }
+  const bootGeo = capsuleGeo(.17, .18, 8);
+  for (const leg of [legR, legL]) { const bt = mk(bootGeo, KIT.boot); bt.position.y = -.12; bt.castShadow = true; leg.add(bt); }
+
   // handles kept for a future motion pass (Stage 1): arm swing / leg stride
   g.userData.armR = armR; g.userData.armL = armL; g.userData.legR = legR; g.userData.legL = legL;
 
