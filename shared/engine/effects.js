@@ -149,3 +149,35 @@ registerEffect('resetKindle', (duel, side) => {
   duel.players[side].kindledThisTurn = false;
   duel.log.push({ type: 'resetKindle', side });
 });
+
+// hand disruption — make a player discard random card(s) to their graveyard.
+// e.who: 'enemy' (default) targets the opponent, 'own' targets yourself.
+// Discards feed graveyard-matters, so a self-discard is a real build-around
+// (compare feed_the_fire's self-damage). Random because hands are hidden —
+// no way to let the discarder's opponent choose, and no engine authority to
+// leak the hand. Fires nothing on its own (the discarded card just leaves).
+registerEffect('discard', (duel, side, e) => {
+  const who = e.who === 'own' ? side : 1 - side;
+  const p = duel.players[who];
+  for (let i = 0; i < (e.amount || 1); i++) {
+    if (!p.hand.length) break;
+    const idx = Math.floor(duel.rng() * p.hand.length);
+    const c = p.hand.splice(idx, 1)[0];
+    p.graveyard.push(c);
+    duel.log.push({ type: 'discard', side: who, card: c.card });
+    say(duel, `${duel.names[who]} discards ${getCard(c.card).name}.`);
+  }
+});
+
+// summon random creature(s) from a fixed pool — the "conjure" axis. Tokens are
+// anonymous fresh instances (summonUnit), so this can pull real creature ids
+// without minting owned copies. e.pool is a list of card ids; e.count defaults
+// to 1. Field-cap aware (summonUnit no-ops at 6).
+registerEffect('summonRandom', (duel, side, e) => {
+  const pool = e.pool || [];
+  if (!pool.length) return;
+  for (let i = 0; i < (e.count || 1); i++) {
+    const id = pool[Math.floor(duel.rng() * pool.length)];
+    summonUnit(duel, side, id);
+  }
+});

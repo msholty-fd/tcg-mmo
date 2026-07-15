@@ -7,7 +7,7 @@ import '../shared/sets/core/cards.js';
 import '../shared/sets/emberpeaks/cards.js';
 import '../shared/sets/darkwood/cards.js';
 import { createDuel, findUnit } from '../shared/engine/state.js';
-import { startTurn, endTurn, playCard, kindle, attack } from '../shared/engine/engine.js';
+import { startTurn, endTurn, playCard, kindle, attack, activateAbility } from '../shared/engine/engine.js';
 import { takeTurn } from '../shared/engine/ai.js';
 
 const RECONNECT_GRACE_MS = 60_000;
@@ -93,6 +93,12 @@ export class DuelRoom {
         const target = this.resolveTarget(act.target);
         if (!target) return;
         attack(d, side, unit, target);
+        break;
+      }
+      case 'activate': {
+        const unit = findUnit(d, act.unitUid);
+        if (!unit || unit.side !== side) return;
+        activateAbility(d, side, unit, this.resolveTarget(act.target));
         break;
       }
       case 'end':

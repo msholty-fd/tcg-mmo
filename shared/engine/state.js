@@ -121,6 +121,7 @@ export function unitFromCard(c, side, night = false) {
     keywords,
     sick: !keywords.includes('ambush'),
     attacksLeft: keywords.includes('ambush') ? (keywords.includes('frenzy') ? 2 : 1) : 0,
+    abilityUsed: false,   // once-per-turn activated ability (def.ability), reset in startTurn
   };
 }
 

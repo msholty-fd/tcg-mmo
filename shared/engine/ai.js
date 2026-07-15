@@ -2,7 +2,7 @@
 // Used by NPC duelists now; later a server can run the same brain.
 
 import { getCard } from './cards.js';
-import { canKindle, kindle, canPlay, playCard, canAttack, attack, endTurn } from './engine.js';
+import { canKindle, kindle, canPlay, playCard, canAttack, attack, endTurn, canActivate, activateAbility } from './engine.js';
 
 export function takeTurn(duel, side) {
   const p = duel.players[side];
@@ -26,6 +26,20 @@ export function takeTurn(duel, side) {
       const target = pickTarget(duel, side, def);
       if (def.needsTarget && !target) continue;
       if (playCard(duel, side, i, target)) { played = true; break; }
+    }
+  }
+
+  // 2.5 Activate abilities greedily (cheapest impact first is fine — the AI
+  // just spends spare Ember on any ready ability whose target it can pick)
+  let acted = true;
+  while (acted && duel.winner === null) {
+    acted = false;
+    for (const u of [...p.field]) {
+      if (!canActivate(duel, side, u)) continue;
+      const ab = getCard(u.card).ability;
+      const target = ab.needsTarget ? pickTargetFor(duel, side, ab.needsTarget) : null;
+      if (ab.needsTarget && !target) continue;
+      if (activateAbility(duel, side, u, target)) { acted = true; break; }
     }
   }
 
@@ -66,20 +80,26 @@ function worstCardIndex(p) {
 }
 
 function pickTarget(duel, side, def) {
+  if (!def.needsTarget) return null;
+  return pickTargetFor(duel, side, def.needsTarget);
+}
+
+// pick a target for the given needsTarget selector — shared by card plays and
+// activated abilities. Greedy: hit the biggest enemy, buff the biggest ally.
+function pickTargetFor(duel, side, needsTarget) {
   const foe = duel.players[1 - side];
   const me = duel.players[side];
-  if (!def.needsTarget) return null;
   const enemies = foe.field.filter(u => !u.keywords.includes('ward'));
-  if (def.needsTarget === 'enemyUnit') {
+  if (needsTarget === 'enemyUnit') {
     if (!enemies.length) return null;
     return { unit: enemies.reduce((a, b) => (a.atk > b.atk ? a : b)) };
   }
-  if (def.needsTarget === 'anyUnit' || def.needsTarget === 'ownUnit') {
+  if (needsTarget === 'anyUnit' || needsTarget === 'ownUnit') {
     // buff own biggest creature
     if (!me.field.length) return null;
     return { unit: me.field.reduce((a, b) => (a.atk > b.atk ? a : b)) };
   }
-  if (def.needsTarget === 'any') {
+  if (needsTarget === 'any') {
     if (foe.hearth <= 2) return { hearth: 1 - side };
     if (enemies.length) return { unit: enemies.reduce((a, b) => (a.atk > b.atk ? a : b)) };
     return { hearth: 1 - side };
