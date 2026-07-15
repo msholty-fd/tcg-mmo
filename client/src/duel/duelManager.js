@@ -6,8 +6,8 @@
 import '../../../shared/sets/core/cards.js';        // register core set
 import '../../../shared/sets/emberpeaks/cards.js';  // register Emberpeaks set
 import '../../../shared/sets/darkwood/cards.js';    // register Darkwood set
-import { createDuel } from '../../../shared/engine/state.js';
-import { startTurn, endTurn, playCard, kindle, attack } from '../../../shared/engine/engine.js';
+import { createDuel, findUnit } from '../../../shared/engine/state.js';
+import { startTurn, endTurn, playCard, kindle, attack, activateAbility } from '../../../shared/engine/engine.js';
 import { takeTurn } from '../../../shared/engine/ai.js';
 import { openDuel, closeDuel, updateDuel, render, setMsg, showResult, initDuelUI } from './duelUI.js';
 import { getDeckItems, grantCard } from '../collection.js';
@@ -39,6 +39,7 @@ export function startDuel(duelist) {
     onPlay(i, target) { if (playCard(duel, ME, i, target)) afterAction(); else setMsg("Can't play that."); },
     onKindle(i) { if (kindle(duel, ME, i)) afterAction(); },
     onAttack(unit, target) { if (attack(duel, ME, unit, target)) afterAction(); else setMsg('Invalid attack — Guardians first.'); },
+    onActivate(unitUid, target) { const u = findUnit(duel, unitUid); if (u && activateAbility(duel, ME, u, target)) afterAction(); else setMsg("Can't use that ability."); },
     onEndTurn() {
       endTurn(duel);
       render();
@@ -106,6 +107,7 @@ export function startRemoteDuel(foeName, side, view, sendAction, kind = 'pvp') {
     onPlay(i, target) { sendAction({ kind: 'play', i, target: ser(target) }); },
     onKindle(i) { sendAction({ kind: 'kindle', i }); },
     onAttack(unit, target) { sendAction({ kind: 'attack', unitUid: unit.uid, target: ser(target) }); },
+    onActivate(unitUid, target) { sendAction({ kind: 'activate', unitUid, target: ser(target) }); },
     onEndTurn() { sendAction({ kind: 'end' }); },
     onConcede() { sendAction({ kind: 'concede' }); },
     onAuto(on) { sendAction({ kind: 'auto', on }); },

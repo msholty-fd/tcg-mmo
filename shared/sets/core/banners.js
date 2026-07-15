@@ -24,9 +24,15 @@ import { EMBERPEAKS_FAMILIES } from '../emberpeaks/families.js';
 // consider promoting this to a per-set registry instead of a hand-merge.
 const ALL_FAMILIES = [...FAMILIES, ...EMBERPEAKS_FAMILIES];
 
-// Families that are NOT banners: generic support + the three card-TYPE
-// families. Everything else (a creature/keyword identity) is gated.
-const NEUTRAL_FAMILIES = new Set(['village_hearth', 'relics', 'reactions', 'enchantments']);
+// Families that are NOT banners: generic support + the card-TYPE families +
+// the new-mechanics families (armory/thieves_cant/desperate_measures/
+// wildcaller/adepts — kept neutral to match factions.js, so they're freely
+// buildable and need no Leader). Everything else (a creature/keyword
+// identity) is gated.
+const NEUTRAL_FAMILIES = new Set([
+  'village_hearth', 'relics', 'reactions', 'enchantments',
+  'armory', 'thieves_cant', 'desperate_measures', 'wildcaller', 'adepts',
+]);
 
 // A banner's signature keyword, used only to BROADEN demand counting (not
 // gating). Trigger-themed banners (boars, graveyard, kindle) have no single

@@ -113,4 +113,34 @@ export const FAMILIES = [
       'bulwark_doctrine', 'bandit_creed', 'boarlords_fury', 'verities_oath', 'mire_toll',
     ],
   },
+
+  // New-mechanics families (see cards.js "NEW-MECHANICS PASS"). Left out of
+  // factions.js FACTION_OF_FAMILY on purpose, so — like the card-TYPE families
+  // above — they stay NEUTRAL: freely buildable, earning no standing, gated by
+  // nobody's rank ladder.
+  {
+    id: 'armory', name: 'The Armory',
+    // equipment — persistent gear that returns to hand when its wielder falls
+    cardIds: ['emberforged_blade', 'oaken_aegis', 'travelers_cloak', 'huntsmans_longbow', 'everburning_brand'],
+  },
+  {
+    id: 'thieves_cant', name: "Thieves' Cant",
+    // hand disruption — attack the opponent's hand
+    cardIds: ['sticky_fingers', 'cutpurse_raid', 'extortionist', 'midnight_raid'],
+  },
+  {
+    id: 'desperate_measures', name: 'Desperate Measures',
+    // additional-cost (discard) — above-rate effects paid for in cards
+    cardIds: ['desperate_gambit', 'pyre_offering', 'grim_bargain'],
+  },
+  {
+    id: 'wildcaller', name: 'The Wildcaller',
+    // conjuration — summon random creatures from a pool
+    cardIds: ['wild_summons', 'call_of_the_wild'],
+  },
+  {
+    id: 'adepts', name: 'The Adepts',
+    // activated abilities — creatures that pay off round after round
+    cardIds: ['emberkin_adept', 'hearth_channeler', 'bog_witch', 'warcry_captain', 'spark_conjurer'],
+  },
 ];

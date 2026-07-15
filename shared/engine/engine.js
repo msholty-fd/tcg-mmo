@@ -100,6 +100,18 @@ export function sweepDead(duel) {
           p.graveyard.push({ card: u.card, iid: u.uid, level: u.level });
           duel.log.push({ type: 'death', side: s, unit: u.uid, card: u.card });
           say(duel, `${uname(u)} is destroyed.`);
+          // equipment outlives its bearer: return each piece to the owner's
+          // hand (graveyard if the hand is full), so gear is never spent for
+          // good the way a one-shot relic is.
+          if (u.equip) for (const eq of u.equip) {
+            if (p.hand.length < 10) {
+              p.hand.push(eq);
+              say(duel, `${getCard(eq.card).name} returns to ${duel.names[s]}'s hand.`);
+            } else {
+              p.graveyard.push(eq);
+            }
+            duel.log.push({ type: 'unequip', side: s, card: eq.card });
+          }
           casualties.push({ s, u });
         }
       }
@@ -122,6 +134,7 @@ export function startTurn(duel) {
   for (const u of p.field) {
     u.sick = false;
     u.attacksLeft = u.keywords.includes('frenzy') ? 2 : 1;
+    u.abilityUsed = false;   // once-per-turn activated abilities refresh
     fireTriggers(duel, side, u, 'startOfTurn');
   }
   fireEnchantmentTriggers(duel, side, 'startOfTurn');
@@ -170,6 +183,9 @@ export function canPlay(duel, side, handIndex) {
   if (def.type === 'creature' && p.field.length >= 6) return false;
   if (def.type === 'reaction' && p.reactions.length >= 2) return false;
   if (def.type === 'enchantment' && p.enchantments.length >= 4) return false;
+  // additional cost: discarding needs that many OTHER cards in hand besides
+  // the one being played (the card itself is still in hand at this point)
+  if (def.additionalCost?.discard && p.hand.length <= def.additionalCost.discard) return false;
   return true;
 }
 
@@ -181,6 +197,19 @@ export function playCard(duel, side, handIndex, target = null) {
 
   const c = p.hand.splice(handIndex, 1)[0];
   p.ember -= def.cost;
+
+  // additional cost: discard random card(s) from the rest of the hand to the
+  // graveyard. Paid after the played card left the hand, so it can never
+  // discard itself; feeds graveyard-matters like any other card that dies.
+  if (def.additionalCost?.discard) {
+    for (let i = 0; i < def.additionalCost.discard; i++) {
+      if (!p.hand.length) break;
+      const d = p.hand.splice(Math.floor(duel.rng() * p.hand.length), 1)[0];
+      p.graveyard.push(d);
+      duel.log.push({ type: 'discardCost', side, card: d.card });
+      say(duel, `${duel.names[side]} discards ${getCard(d.card).name} to power ${def.name}.`);
+    }
+  }
 
   if (def.type === 'reaction') {
     // set face-down — the chatter line must not leak which card it is
@@ -210,6 +239,21 @@ export function playCard(duel, side, handIndex, target = null) {
     p.enchantments.push(c);
     duel.log.push({ type: 'enchant', side, card: c.card });
     fireTriggers(duel, side, c, 'onPlay', { target });
+  } else if (def.type === 'equipment') {
+    // resolves its onPlay buff onto the chosen creature (like a relic), but
+    // then rides that creature as a lasting attachment (unit.equip) instead of
+    // going to the graveyard. When the wielder dies it returns to hand rather
+    // than being spent (sweepDead) — so the gear outlives its bearer and can
+    // be re-equipped. needsTarget: 'ownUnit' guaranteed a live friendly unit.
+    fireTriggers(duel, side, c, 'onPlay', { target });
+    const u = target?.unit;
+    if (u && u.hp > 0) {
+      (u.equip ||= []).push({ card: c.card, iid: c.iid, level: c.level });
+      duel.log.push({ type: 'equip', side, card: c.card, unit: u.uid });
+      say(duel, `${duel.names[side]} equips ${uname(u)} with ${def.name}.`);
+    } else {
+      p.graveyard.push(c);   // wielder died to its own onPlay — gear is lost
+    }
   } else {
     // relic — resolve onPlay effects, then to the graveyard
     fireTriggers(duel, side, c, 'onPlay', { target });
@@ -231,6 +275,33 @@ function validTarget(duel, side, def, target) {
   }
   if (target.hearth !== undefined) return def.needsTarget === 'any';
   return false;
+}
+
+// ---- activated abilities ----
+// A creature's def.ability = { cost, effects, needsTarget?, text }. Costs
+// Ember, usable once per turn (unit.abilityUsed, reset in startTurn), and —
+// unlike attacking — not blocked by summoning sickness, so an ability body
+// gives immediate value the turn it lands. No cooldown beyond once/turn.
+export function canActivate(duel, side, unit) {
+  if (duel.active !== side || duel.winner !== null) return false;
+  const def = getCard(unit.card);
+  if (!def.ability || unit.abilityUsed) return false;
+  return def.ability.cost <= duel.players[side].ember;
+}
+
+export function activateAbility(duel, side, unit, target = null) {
+  if (!canActivate(duel, side, unit)) return false;
+  const ab = getCard(unit.card).ability;
+  if (ab.needsTarget && !validTarget(duel, side, { needsTarget: ab.needsTarget }, target)) return false;
+  duel.players[side].ember -= ab.cost;
+  unit.abilityUsed = true;
+  duel.log.push({ type: 'activate', side, unit: unit.uid, card: unit.card });
+  say(duel, `${uname(unit)} uses ${getCard(unit.card).name}'s ability.`);
+  for (const e of ab.effects) {
+    runEffect(duel, side, e, { card: unit.card, srcIid: unit.uid, unit, target });
+  }
+  sweepDead(duel);
+  return true;
 }
 
 export function canAttack(duel, side, unit) {

@@ -792,6 +792,36 @@ const CARD_ART = {
   // Weir — a hunter half-faded: worn leathers gone grey-green, wisp-pale
   // eyes (the Circle's light, not a living one).
   weir:                { sprite: 'hooded', pal: { h: '#4e584a', H: '#363e34', m: '#242a22', e: '#c0f0d8' } },
+
+  // ---- NEW-MECHANICS PASS (see cards.js) ----
+  // The Armory: equipment (blades on 'fang', shields/cloaks on 'plate', a brand on 'talisman')
+  emberforged_blade:   { sprite: 'fang', pal: { w: '#d8c0a0', W: '#a88a60', f: '#ff5a20', F: '#ffd050' } },
+  oaken_aegis:         { sprite: 'plate', pal: { p: '#8a6a3a', P: '#664926', g: '#c8a24a' } },
+  travelers_cloak:     { sprite: 'plate', pal: { p: '#8a8f96', P: '#5e636a', g: '#bcc0c8' } },
+  huntsmans_longbow:   { sprite: 'fang', pal: { w: '#c8a878', W: '#9a7c50', f: '#6a4a2a', F: '#8a6238' } },
+  everburning_brand:   { sprite: 'talisman', pal: { c: '#dd4400', w: '#ffe080', W: '#ff9a40' } },
+
+  // Thieves' Cant: hand disruption (hooded thieves; night deeds on 'rite'/'howl')
+  sticky_fingers:      { sprite: 'hooded', pal: { h: '#3a3a44', H: '#26262e', m: '#5a4a44' } },
+  cutpurse_raid:       { sprite: 'rite', pal: { b: '#9a9aa4', B: '#64646e', e: '#c85a4a', f: '#e08070' } },
+  extortionist:        { sprite: 'hooded', pal: { h: '#5a2a2a', H: '#401f1f', m: '#3a1414' } },
+  midnight_raid:       { sprite: 'howl', pal: { g: '#2a2e44', m: '#8a94c0', M: '#5a648a' } },
+
+  // Desperate Measures: additional-cost (ashen 'bolt', a pyre on 'burn', a grim 'colossus')
+  desperate_gambit:    { sprite: 'bolt', pal: { f: '#c8c0a0', F: '#fff8e0', r: '#8a7a5a' } },
+  pyre_offering:       { sprite: 'burn', pal: { f: '#ff9a40', F: '#ffe0a0', r: '#c83400' } },
+  grim_bargain:        { sprite: 'colossus', pal: { l: '#5a5060', L: '#423a4a', t: '#6a5a4a', T: '#4a3e32', e: '#c85a4a' } },
+
+  // The Wildcaller: conjuration (a summoning howl, greened)
+  wild_summons:        { sprite: 'howl', pal: { g: '#3a6132', m: '#aef07a', M: '#6a9a4a' } },
+  call_of_the_wild:    { sprite: 'howl', pal: { g: '#4a5a2a', m: '#c8f07a', M: '#8aa84a' } },
+
+  // The Adepts: activated abilities (an ember imp; hooded channelers)
+  emberkin_adept:      { sprite: 'emberling', pal: { f: '#ff9a30', F: '#ffe070', r: '#c83400' } },
+  hearth_channeler:    { sprite: 'hooded', pal: { h: '#b0703a', H: '#8a542a', e: '#ff9a20', s: '#e8b890' } },
+  bog_witch:           { sprite: 'hooded', pal: { h: '#3a5a3a', H: '#2a422a', s: '#a8b890', e: '#aef07a', m: '#2e3e2a' } },
+  warcry_captain:      { sprite: 'hooded', pal: { h: '#8a4a3a', H: '#66352a', e: '#ffcf40', s: '#d8a878' } },
+  spark_conjurer:      { sprite: 'hooded', pal: { h: '#5a3a8a', H: '#43296a', e: '#b070ff', s: '#c8a8d8' } },
 };
 
 const cache = new Map();

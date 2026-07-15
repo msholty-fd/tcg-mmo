@@ -4,7 +4,7 @@
 
 import { $ } from '../utils.js';
 import { getCard } from '../../../shared/engine/cards.js';
-import { canPlay, canKindle, canAttack } from '../../../shared/engine/engine.js';
+import { canPlay, canKindle, canAttack, canActivate } from '../../../shared/engine/engine.js';
 import { artFor } from '../pixelArt.js';
 
 const KW_HELP = {
@@ -22,11 +22,12 @@ let duelRef = null;
 let mySide = 0;
 let selectedUnit = null;
 let pendingPlay = null;
+let pendingAbility = null;   // { unitUid, needsTarget } while choosing an ability target
 let menuHandIndex = null;
 
 export function openDuel(duel, side, foeName, h) {
   duelRef = duel; mySide = side; handlers = h;
-  selectedUnit = null; pendingPlay = null;
+  selectedUnit = null; pendingPlay = null; pendingAbility = null;
   setAutoUI(false);
   $('d-foe-name').textContent = foeName;
   $('d-result').style.display = 'none';
@@ -45,6 +46,7 @@ export function updateDuel(view) {
   duelRef = view;
   selectedUnit = null;
   pendingPlay = null;
+  pendingAbility = null;
   hideMenu();
   if (view.winner === null) setMsg(view.active === mySide ? 'Your turn.' : 'Waiting for opponent…');
   render();
@@ -66,7 +68,7 @@ export function render() {
   const duel = duelRef;
   const me = duel.players[mySide], foe = duel.players[1 - mySide];
   const myTurn = duel.active === mySide && duel.winner === null;
-  const targeting = !!(selectedUnit || pendingPlay);
+  const targeting = !!(selectedUnit || pendingPlay || pendingAbility);
 
   const fh = $('d-foe-hand'); fh.innerHTML = '';
   for (let i = 0; i < foe.hand.length; i++) { const b = document.createElement('div'); b.className = 'dcard cardback'; fh.appendChild(b); }
@@ -93,6 +95,7 @@ export function render() {
   foeHearthEl.onclick = () => {
     if (selectedUnit) { handlers.onAttack(selectedUnit, { hearth: 1 - mySide }); selectedUnit = null; }
     else if (pendingPlay && pendingPlay.needsTarget === 'any') { handlers.onPlay(pendingPlay.handIndex, { hearth: 1 - mySide }); pendingPlay = null; }
+    else if (pendingAbility && pendingAbility.needsTarget === 'any') { handlers.onActivate(pendingAbility.unitUid, { hearth: 1 - mySide }); pendingAbility = null; }
   };
 
   renderField($('d-foe-field'), foe.field, false, myTurn);
@@ -152,8 +155,13 @@ function canTargetHearth() {
     const foe = duelRef.players[1 - mySide];
     return !foe.field.some(u => u.keywords.includes('guardian'));
   }
-  return pendingPlay?.needsTarget === 'any';
+  return pendingPlay?.needsTarget === 'any' || pendingAbility?.needsTarget === 'any';
 }
+
+// selectors an ability/spell can aim at an ENEMY creature (Ward-immune)
+const ENEMY_SEL = ['enemyUnit', 'anyUnit', 'any'];
+// selectors an ability/spell can aim at one of YOUR creatures
+const OWN_SEL = ['anyUnit', 'ownUnit'];
 
 function renderField(el, units, mine, myTurn) {
   el.innerHTML = '';
@@ -164,29 +172,56 @@ function renderField(el, units, mine, myTurn) {
     d.dataset.card = u.card; d.dataset.level = u.level || 0;
     const kw = u.keywords.map(k => `<span title="${KW_HELP[k] || k}">${KW_ICON[k] || ''}</span>`).join('');
     const art = artFor(u.card);
+    // equipment riding this unit — a small badge per attached piece (hoverable)
+    const equip = (u.equip || []).map(e => `<span title="${getCard(e.card).name}">⚔</span>`).join('');
     d.innerHTML = `${art ? `<div class="art"><img src="${art}" alt=""></div>` : ''}
       <div class="cname">${def.name}</div><span class="kw">${kw}</span>
+      ${equip ? `<span class="equip">${equip}</span>` : ''}
       <div class="stats"><span class="atk">${u.atk}</span><span class="hp ${u.hp < u.maxhp ? 'hurt' : ''}">${u.hp}</span></div>`;
     if (mine) {
-      const ownTargetable = pendingPlay && (pendingPlay.needsTarget === 'anyUnit' || pendingPlay.needsTarget === 'ownUnit');
-      if (myTurn && canAttack(duelRef, mySide, u) && !pendingPlay) d.classList.add('canact');
+      const ownTargetable = pendingPlay && OWN_SEL.includes(pendingPlay.needsTarget);
+      const abilityTargetable = pendingAbility && OWN_SEL.includes(pendingAbility.needsTarget);
+      const idle = !pendingPlay && !pendingAbility && !selectedUnit;
+      if (myTurn && canAttack(duelRef, mySide, u) && idle) d.classList.add('canact');
       if (selectedUnit === u) d.classList.add('selected');
-      if (ownTargetable) d.classList.add('targetable');
+      if (ownTargetable || abilityTargetable) d.classList.add('targetable');
+      // activated-ability button — only while nothing else is mid-selection
+      if (myTurn && idle && canActivate(duelRef, mySide, u)) {
+        const btn = document.createElement('button');
+        btn.className = 'abilbtn';
+        btn.textContent = '⚡' + def.ability.cost;
+        btn.title = def.ability.text || 'Activate ability';
+        btn.onclick = (ev) => {
+          ev.stopPropagation();
+          if (def.ability.needsTarget) {
+            pendingAbility = { unitUid: u.uid, needsTarget: def.ability.needsTarget };
+            selectedUnit = null; pendingPlay = null;
+            setMsg('Choose a target for ' + def.name + "'s ability (click empty space to cancel)");
+            render();
+          } else {
+            handlers.onActivate(u.uid, null);
+          }
+        };
+        d.appendChild(btn);
+      }
       d.onclick = (ev) => {
         ev.stopPropagation();
         if (ownTargetable) { handlers.onPlay(pendingPlay.handIndex, { unit: u }); pendingPlay = null; return; }
+        if (abilityTargetable) { handlers.onActivate(pendingAbility.unitUid, { unit: u }); pendingAbility = null; return; }
         if (!myTurn) return;
         selectedUnit = (selectedUnit === u || !canAttack(duelRef, mySide, u)) ? null : u;
         render();
       };
     } else {
-      const spellTargetable = pendingPlay && ['enemyUnit', 'anyUnit', 'any'].includes(pendingPlay.needsTarget) && !u.keywords.includes('ward');
-      const targetable = selectedUnit || spellTargetable;
+      const spellTargetable = pendingPlay && ENEMY_SEL.includes(pendingPlay.needsTarget) && !u.keywords.includes('ward');
+      const abilityTargetable = pendingAbility && ENEMY_SEL.includes(pendingAbility.needsTarget) && !u.keywords.includes('ward');
+      const targetable = selectedUnit || spellTargetable || abilityTargetable;
       if (targetable) d.classList.add('targetable');
       d.onclick = (ev) => {
         ev.stopPropagation();
         if (selectedUnit) { handlers.onAttack(selectedUnit, { unit: u }); selectedUnit = null; }
         else if (spellTargetable) { handlers.onPlay(pendingPlay.handIndex, { unit: u }); pendingPlay = null; }
+        else if (abilityTargetable) { handlers.onActivate(pendingAbility.unitUid, { unit: u }); pendingAbility = null; }
       };
     }
     el.appendChild(d);
@@ -243,12 +278,12 @@ export function initDuelUI() {
     }
   });
   $('d-menu-kindle').addEventListener('click', ev => { ev.stopPropagation(); const i = menuHandIndex; hideMenu(); handlers.onKindle(i); });
-  $('d-endturn').addEventListener('click', () => { selectedUnit = null; pendingPlay = null; handlers.onEndTurn(); });
+  $('d-endturn').addEventListener('click', () => { selectedUnit = null; pendingPlay = null; pendingAbility = null; handlers.onEndTurn(); });
   $('d-concede').addEventListener('click', () => handlers.onConcede());
   $('d-auto').addEventListener('click', ev => {
     ev.stopPropagation();
     setAutoUI(!autoOn);
-    selectedUnit = null; pendingPlay = null;
+    selectedUnit = null; pendingPlay = null; pendingAbility = null;
     handlers.onAuto(autoOn);
   });
   $('d-result-close').addEventListener('click', () => handlers.onClose());
@@ -265,6 +300,6 @@ export function initDuelUI() {
   });
   $('duel').addEventListener('click', () => {
     hideMenu();
-    if (selectedUnit || pendingPlay) { selectedUnit = null; pendingPlay = null; setMsg(''); render(); }
+    if (selectedUnit || pendingPlay || pendingAbility) { selectedUnit = null; pendingPlay = null; pendingAbility = null; setMsg(''); render(); }
   });
 }

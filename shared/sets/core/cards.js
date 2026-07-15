@@ -635,6 +635,117 @@ registerCards([
     triggers: { onKindle: [{ effect: 'graveBuff', target: 'self', filter: 'creature', atk: 1, hp: 1, cap: 3 }] },
     name: 'Bogfire Colossus', text: 'Guardian. When you kindle, gains +1/+1 for each creature in your graveyard (up to +3).',
     flavor: 'Six feet of bog-fire and bone, and it hasn\'t finished rising.' },
+
+  // ============================================================
+  // NEW-MECHANICS PASS — five axes the set had never touched, each a new
+  // engine primitive/field rather than a recombination of existing ones:
+  //   • equipment  — a persistent card TYPE: rides a creature, and returns to
+  //                  hand when the wielder falls (engine playCard/sweepDead)
+  //   • additionalCost.discard — a play-time cost paid in cards, not Ember
+  //   • discard    — hand disruption (effects.js), the opponent's hand as a
+  //                  resource to attack
+  //   • summonRandom — conjuration: pull anonymous bodies from a fixed pool
+  //   • ability    — activated abilities: pay Ember, once/turn, on a creature
+  // All five land as NEUTRAL families (see families.js) so they're freely
+  // buildable and don't perturb any faction's rank ladder or balance sims.
+  // ============================================================
+
+  // ---- The Armory: equipment. Unlike a one-shot relic, gear rides its
+  // wielder and returns to your hand when that creature dies, so the buff is
+  // never spent for good — priced a notch above the equivalent relic for it.
+  { id: 'emberforged_blade', set: 'core', rarity: 'uncommon', type: 'equipment', cost: 3,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 2, hp: 0 }] }, needsTarget: 'ownUnit',
+    name: 'Emberforged Blade', text: 'Equip: your creature gets +2 attack. Returns to your hand when the wielder falls.',
+    flavor: 'Reforged after every owner. It has outlived all of them.' },
+  { id: 'oaken_aegis', set: 'core', rarity: 'uncommon', type: 'equipment', cost: 3,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 0, hp: 3 }, { effect: 'grantKeyword', target: 'chosen', keyword: 'guardian' }] }, needsTarget: 'ownUnit',
+    name: 'Oaken Aegis', text: 'Equip: your creature gets +0/+3 and Guardian. Returns to your hand when the wielder falls.',
+    flavor: 'The shield remembers every arm that carried it.' },
+  { id: 'travelers_cloak', set: 'core', rarity: 'common', type: 'equipment', cost: 2,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 0, hp: 2 }, { effect: 'grantKeyword', target: 'chosen', keyword: 'ward' }] }, needsTarget: 'ownUnit',
+    name: "Traveler's Cloak", text: 'Equip: your creature gets +0/+2 and Ward. Returns to your hand when the wielder falls.',
+    flavor: 'Grey wool, road-worn, and quietly proof against the wrong kind of attention.' },
+  { id: 'huntsmans_longbow', set: 'core', rarity: 'rare', type: 'equipment', cost: 4,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 2, hp: 0 }, { effect: 'grantKeyword', target: 'chosen', keyword: 'piercing' }] }, needsTarget: 'ownUnit',
+    name: "Huntsman's Longbow", text: 'Equip: your creature gets +2 attack and Piercing. Returns to your hand when the wielder falls.',
+    flavor: 'Draws heavy, carries far, and never yet stayed with the fallen.' },
+  { id: 'everburning_brand', set: 'core', rarity: 'rare', type: 'equipment', cost: 4,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 1, hp: 2 }, { effect: 'grantKeyword', target: 'chosen', keyword: 'lifesteal' }] }, needsTarget: 'ownUnit',
+    name: 'Everburning Brand', text: 'Equip: your creature gets +1/+2 and Lifesteal. Returns to your hand when the wielder falls.',
+    flavor: 'It has never once gone out, no matter whose hand let it drop.' },
+
+  // ---- Thieves' Cant: hand disruption. The opponent's hand is a resource,
+  // and these attack it — random discards (hands are hidden, so no choosing).
+  { id: 'sticky_fingers', set: 'core', rarity: 'common', type: 'creature', cost: 2, atk: 2, hp: 2, keywords: ['ambush'],
+    triggers: { onPlay: [{ effect: 'discard', who: 'enemy', amount: 1 }] },
+    name: 'Sticky Fingers', text: 'Ambush. When played, your opponent discards a random card.',
+    flavor: "You won't miss it until you reach for it." },
+  { id: 'cutpurse_raid', set: 'core', rarity: 'common', type: 'spell', cost: 2,
+    triggers: { onPlay: [{ effect: 'discard', who: 'enemy', amount: 1 }, { effect: 'draw', amount: 1 }] },
+    name: 'Cutpurse Raid', text: 'Your opponent discards a random card. Draw a card.',
+    flavor: 'A fair trade, by the road\'s arithmetic: their card for yours.' },
+  { id: 'extortionist', set: 'core', rarity: 'uncommon', type: 'creature', cost: 4, atk: 3, hp: 4,
+    triggers: { onPlay: [{ effect: 'discard', who: 'enemy', amount: 1 }, { effect: 'draw', amount: 1 }] },
+    name: 'Extortionist', text: 'When played, your opponent discards a random card and you draw a card.',
+    flavor: 'He always leaves you poorer and never says how.' },
+  { id: 'midnight_raid', set: 'core', rarity: 'uncommon', type: 'spell', cost: 3,
+    triggers: { onPlay: [{ effect: 'discard', who: 'enemy', amount: 2 }] },
+    name: 'Midnight Raid', text: 'Your opponent discards two random cards.',
+    flavor: 'They wake to a lighter pack and a colder camp.' },
+
+  // ---- Desperate Measures: additional costs. These pay in CARDS, not just
+  // Ember — above-rate effects gated by pitching a card from your hand (which
+  // feeds graveyard-matters on the way to the pile).
+  { id: 'desperate_gambit', set: 'core', rarity: 'uncommon', type: 'spell', cost: 1, additionalCost: { discard: 1 },
+    triggers: { onPlay: [{ effect: 'damage', target: 'chosen', amount: 4 }] }, needsTarget: 'any',
+    name: 'Desperate Gambit', text: 'As an additional cost, discard a card. Deal 4 damage to anything.',
+    flavor: 'Everything you have, spent on the one thing in front of you.' },
+  { id: 'pyre_offering', set: 'core', rarity: 'uncommon', type: 'spell', cost: 2, additionalCost: { discard: 1 },
+    triggers: { onPlay: [{ effect: 'draw', amount: 3 }] },
+    name: 'Pyre Offering', text: 'As an additional cost, discard a card. Draw three cards.',
+    flavor: 'Give the fire one page, and it reads you three in return.' },
+  { id: 'grim_bargain', set: 'core', rarity: 'uncommon', type: 'creature', cost: 3, atk: 4, hp: 5, additionalCost: { discard: 1 },
+    name: 'Grim Bargain', text: 'As an additional cost, discard a card.',
+    flavor: 'Big as a barn door, and it cost you exactly one thing you wanted.' },
+
+  // ---- The Wildcaller: conjuration. Spells that summon anonymous creatures
+  // from a fixed pool — a board out of nowhere, at the mercy of the draw.
+  { id: 'wild_summons', set: 'core', rarity: 'uncommon', type: 'spell', cost: 4,
+    triggers: { onPlay: [{ effect: 'summonRandom', pool: ['young_boar', 'wild_boar', 'forest_sow', 'darkwood_wolf'], count: 2 }] },
+    name: 'Wild Summons', text: 'Summon two random beasts.',
+    flavor: 'You call. Something always comes. Rarely what you pictured.' },
+  { id: 'call_of_the_wild', set: 'core', rarity: 'rare', type: 'spell', cost: 6,
+    triggers: { onPlay: [{ effect: 'summonRandom', pool: ['wild_boar', 'darkwood_wolf', 'forest_sow', 'thicket_beast', 'dire_wolf', 'boar_lancer'], count: 3 }] },
+    name: 'Call of the Wild', text: 'Summon three random beasts.',
+    flavor: 'The whole treeline answers at once, and not one of them asks why.' },
+
+  // ---- The Adepts: activated abilities (⚡, pay Ember, once per turn). A
+  // creature that keeps paying off round after round instead of once on entry.
+  { id: 'emberkin_adept', set: 'core', rarity: 'uncommon', type: 'creature', cost: 3, atk: 2, hp: 3,
+    ability: { cost: 1, needsTarget: 'enemyUnit', text: '⚡1: deal 1 damage to an enemy creature.',
+      effects: [{ effect: 'damage', target: 'chosen', amount: 1 }] },
+    name: 'Emberkin Adept', text: '⚡1 (once per turn): deal 1 damage to an enemy creature.',
+    flavor: 'A small flame, offered again and again, wears anything down.' },
+  { id: 'hearth_channeler', set: 'core', rarity: 'uncommon', type: 'creature', cost: 3, atk: 1, hp: 4,
+    ability: { cost: 2, text: '⚡2: restore 2 to your Hearth.',
+      effects: [{ effect: 'heal', target: 'ownHearth', amount: 2 }] },
+    name: 'Hearth Channeler', text: '⚡2 (once per turn): restore 2 to your Hearth.',
+    flavor: 'She does not fight. She keeps the fire from going out, which is harder.' },
+  { id: 'bog_witch', set: 'core', rarity: 'uncommon', type: 'creature', cost: 3, atk: 2, hp: 2,
+    ability: { cost: 2, text: '⚡2: your opponent discards a random card.',
+      effects: [{ effect: 'discard', who: 'enemy', amount: 1 }] },
+    name: 'Bog Witch', text: '⚡2 (once per turn): your opponent discards a random card.',
+    flavor: 'Every turn you leave her be, your hand gets a little emptier.' },
+  { id: 'warcry_captain', set: 'core', rarity: 'rare', type: 'creature', cost: 4, atk: 3, hp: 4,
+    ability: { cost: 2, needsTarget: 'ownUnit', text: '⚡2: give a friendly creature +1/+1.',
+      effects: [{ effect: 'buff', target: 'chosen', atk: 1, hp: 1 }] },
+    name: 'Warcry Captain', text: '⚡2 (once per turn): give a friendly creature +1/+1.',
+    flavor: 'One word from her and the whole line stands an inch taller.' },
+  { id: 'spark_conjurer', set: 'core', rarity: 'rare', type: 'creature', cost: 5, atk: 3, hp: 5,
+    ability: { cost: 3, text: '⚡3: summon a random beast.',
+      effects: [{ effect: 'summonRandom', pool: ['young_boar', 'wild_boar', 'forest_sow', 'darkwood_wolf', 'militia_recruit'], count: 1 }] },
+    name: 'Spark Conjurer', text: '⚡3 (once per turn): summon a random beast.',
+    flavor: 'He is never quite sure what he called until it is already standing there.' },
 ]);
 
 // Starter decks (30 cards) — what a new character begins with,
