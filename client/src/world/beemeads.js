@@ -113,6 +113,9 @@ for (const [dx, dz, rot] of [[-4.5, -2.5, .5], [-6, .5, .9], [-6.5, 3.5, 1.3], [
 campfire(BM.x + 4.5, BM.z - .5);
 
 // The honey table — plank table with the season's pots, waiting on Marla.
+// (It got its errand: shared/quests.js `honey_run` — Marla sends the player
+// here to see why the delivery's late. The pots being full and Odo being
+// slow IS the answer; keep it that way unless a content phase says otherwise.)
 (function honeyTable() {
   const tx = BM.x + 6.5, tz = BM.z + 2.5, rot = .4;
   const g = new THREE.Group();

@@ -162,6 +162,10 @@ but never say "points" or "unlock."
   his knowledge shows in the pack desc and DESIGN text only for now.)
 - **Marla, Harrow, the Wayfarer, everyone else** — superstition and small
   omens. Marla is actively dismissive (someone still has to sell the packs).
+  Her honey-run errand (quest `honey_run`, the realm's southwest pointer)
+  stays commerce-tier: Odo's late delivery is boot leather and shelf stock,
+  never an omen — she has no opinions on either of Odo's seeded doors and
+  must not acquire any.
 
 ## Main quest — Act I: "The Long Ash"
 

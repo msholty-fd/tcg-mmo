@@ -76,6 +76,21 @@ export const QUESTS = [
     obj: have => `Quartermasters owned: ${have}/2`,
     thanks: "Two counted, twice each. That's how you keep a shop — and a village — standing.",
   },
+  // The Bee Meads — Marla's honey run (DESIGN.md worldbuilding iteration 11).
+  // The realm's southwest discovery pointer: nothing else sends a player past
+  // the downs into the flowers, and the meads' honey table was authored
+  // "waiting on Marla" from day one. Visit-objective (the cold_hearth shape);
+  // prereq'd on `practice`, not `twice_counted`, so the pointer doesn't wait
+  // behind a collect grind (the Aldric vex/sash_spoils parallel-offer
+  // precedent). Marla stays commerce-tier per LORE.md: late honey is boot
+  // leather and shelf stock, never an omen.
+  {
+    id: 'honey_run', giver: 'marla', title: 'The Honey Run', minLvl: 3, prereq: 'practice',
+    visit: { x: -147, z: -93, r: 12 }, xp: 240, coins: 25,
+    offer: "Odo's honey is a month late and that shelf doesn't stock itself. He keeps bees in the meads down southwest — take the west road past Wynn's downs, then keep south till the grass turns to flowers. Odds are the pots are packed and sitting on his table while he stands around telling the bees about it. Go put eyes on the place for me. I'd send word, but word doesn't walk back with an answer.",
+    obj: () => "Find Odo's apiary in the Bee Meads",
+    thanks: "Full pots on a packed table, and the man's just slow. Good — slow I can plan around; empty I can't. That's for the boot leather. And when the honey does get here, you'll buy a pot at full price like everyone else.",
+  },
   // Vex and Gruk become quest-givers here: after losing to the player once
   // (the prereq quest, given by Aldric), each offers a follow-up of their own.
   {

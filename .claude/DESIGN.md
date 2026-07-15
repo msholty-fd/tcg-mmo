@@ -1929,6 +1929,64 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **The Honey Run — Marla's Bee Meads errand, the loop's first quest
+  (2026-07-15, worldbuilding loop iteration 11)**: the seeded ledger's ripest
+  entry by its own written trigger. Iteration 10 seeded "a visit-objective
+  side quest threading Marla → the meads, now that the meads have business"
+  and named its condition — "it reads better AFTER the meads have a duel to
+  send players toward" — and Wick shipped in that same iteration, so the
+  condition fired immediately. Shape variance clinched it: the loop's run is
+  landmark (6), landmark (7), duelist (8), road (9), duelist (10) — quest
+  content is a shape the loop had NEVER touched, and the realm staged this
+  one in advance: beemeads.js's honey table has been authored "waiting on
+  Marla" since iteration 7, and Odo's first flavor line ("Honey goes to
+  Marla") already canonized the trade route the quest walks. The pick also
+  feeds the two seeds still waiting on triggers: nothing else in the quest
+  system points a player southwest (the West Road bends north at the downs),
+  so this is the realm's meads discovery pointer — the "traffic" that both
+  the southwest waystone spur and the west-road route trainer are gated on.
+  - **Rejected this survey**: the southwest waystone spur (ripe by the downs
+    rule — Wick gave the meads business — but road work was iteration 9 and
+    back-to-back infrastructure is the same shape fatigue that deferred the
+    meads duelist at 9; ALSO the quest strengthens the spur's own case: a
+    spur should serve traffic, and this creates it — still seeded, riper
+    than ever); the west-road route trainer (trigger "if the route sees
+    traffic" still unmet — no deploy has shipped the road yet); the Red-Sash
+    camp-life pass + windmill (still BLOCKED — `git worktree list` confirms
+    the humanoid-fidelity session still holds main.js); the hot spring
+    (fifth look, parked per surveys 7/8/9/10 — nothing changed); an
+    environmental/life pass (iteration 10's survey found no eligible target
+    — redsash.js is thinnest but its deepening IS the blocked camp-life
+    pass — and nothing changed in one iteration).
+  - **The quest** (`shared/quests.js` only — zero client and zero server
+    code, the generic machinery's first full payoff: Marla is already in
+    quests.js GIVERS, visit progress already rides the pos handler, map
+    markers/tracker/`!` marks all derive from the QUESTS array):
+    `honey_run`, giver marla, minLvl 3, **prereq `practice` not
+    `twice_counted`** — the discovery pointer shouldn't wait behind a
+    collect grind, and parallel offers from one giver are the established
+    Aldric pattern (vex + sash_spoils); array order still offers
+    twice_counted first. Visit target **(−147, −93, r 12)** — the meads
+    heart (CAMPS r 17; r 12 means "properly among the skeps", the
+    cold_hearth r10 / fallen_stone r12 band). **xp 240, coins 25**:
+    deliberately just under cold_hearth's 250 — a shop errand must not
+    outpay the main quest's watershed — but coin-forward (25 vs 20) because
+    Marla pays wages, and it's the realm's longest visit walk (~190 units).
+  - **Voice**: Marla stays commerce-tier (LORE.md updated): the offer routes
+    the player by the real geography ("west road past Wynn's downs, then
+    south till the grass turns to flowers"), tweaks Odo's telling-the-bees
+    practice in her dismissive register, and the thanks lands her signature
+    close ("you'll buy a pot at full price like everyone else"). No omens,
+    no doors: the pots being full and Odo being slow IS the answer — the
+    emptied hive and the mire-shunned blossom stay untouched, and Marla is
+    barred from opinions on them (LORE.md).
+  - **Deliberately NOT done**: no Odo dialogue change (his lines already
+    carry the trade; a quest shouldn't rewrite its own destination); no
+    waystone spur bundled in (one shape per iteration — and the spur now has
+    a cleaner trigger); no reward card (visit quests pay xp/coins — the
+    hall_of_legends/cold_hearth precedent; the meads' card content is Wick's
+    reward pool).
+
 - **Wick the Waxwright — the Bee Meads' duelist (2026-07-15, worldbuilding
   loop iteration 10)**: the seeded ledger's ripest entry, taken at last —
   seeded at iteration 7 with the meads themselves, deliberately deferred at
