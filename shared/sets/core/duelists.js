@@ -219,6 +219,20 @@ const brennaDeck = swap(
   ['wild_boar', 'wild_boar'],
   ['rally_the_line', 'counterspark'],
 );
+// Tolly (the Wether Downs) — the shepherd plays the herd: boarherd base
+// trading burn for flock-wide buffs. Gives `herd_instinct` its FIRST deck
+// owner (it was the last unclaimed core card — every other card is played
+// or dropped by someone).
+// Tuned in sims (500/side vs each starter): 56/72/58 vs boarherd/wardens/
+// redsash. The wardens number rides the documented greedy-AI defense blind
+// spot (the plain boarherd starter already hits 60 there). Rejected: two
+// herd_instincts (~79 vs wardens), tusker-out-for-meal (27 vs redsash —
+// tusker is load-bearing in that matchup).
+const tollyDeck = swap(
+  STARTER_DECKS.boarherd,
+  ['ember_bolt', 'sudden_spark'],
+  ['herd_instinct', 'hearth_meal'],
+);
 
 export const DUELISTS = {
   rowan: {
@@ -284,5 +298,9 @@ export const DUELISTS = {
   brenna: {
     name: 'Brenna Lampwright', deck: brennaDeck,
     rewards: [...brennaDeck, 'second_wind'],
+  },
+  tolly: {
+    name: 'Tolly the Lambward', deck: tollyDeck,
+    rewards: [...tollyDeck, 'forest_sow'],
   },
 };

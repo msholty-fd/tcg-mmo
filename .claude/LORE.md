@@ -117,6 +117,10 @@ but never say "points" or "unlock."
   hours (the Sentinel, the wood's walker) but not what they are — "I keep
   count, not company." Their seeded omen (nights measure the same but feel
   longer) leans on the Going-Out without naming it; do not sharpen it.
+- **Tolly the Lambward** (the Wether Downs, Wynn's young second) — small
+  omens tier, mostly none: drills the herd with cards because the wolves
+  from the wood keep coming west. (Duelists can't surface flavor lines —
+  their knowledge lives here and in DESIGN text only.)
 - **Shepherd Wynn** (the Wether Downs, due west) — small omens tier: keeps
   one small fire nightly ("a dark camp is a borrowed camp"), and their
   bellwether has taken to staring west at nothing. What she watches for is

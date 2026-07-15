@@ -13,7 +13,7 @@ import { scene } from '../scene.js';
 import { groundH } from '../terrain.js';
 import { rand } from '../utils.js';
 import { addCircle, addRect } from '../colliders.js';
-import { M, camCollidables, campfire, hayBale, crate, barrel, signpost, spawnCritter, spawnNPC } from './lib.js';
+import { M, camCollidables, campfire, hayBale, crate, barrel, signpost, spawnCritter, spawnNPC, spawnDuelist } from './lib.js';
 
 const WD = { x: -150, z: -10 };   // heart (constants.js CAMPS r=20)
 
@@ -122,6 +122,14 @@ spawnCritter(() => {
 // Shepherd Wynn — flavour NPC (Bram/Wayfarer/Harrow tier: superstition and
 // small omens, per LORE.md). Ties the downs into the realm's economy the way
 // Harrow's lines do the farm, and carries the zone's seeded hook sideways.
+// Tolly the Lambward — the downs' duelist (the seeded option in this
+// module's header, taken one iteration later): a young shepherd drilling
+// the herd, minimal footprint at a quiet edge of the fold (Cobb/Kestrel
+// pattern — no new structure, no CAMPS change). Wynn stays a flavour NPC
+// on purpose: converting them would short-circuit their six lines behind
+// the duelist interaction (the known dialogue-priority gap).
+export const tolly = spawnDuelist('tolly', WD.x - 12, WD.z + 8, { shirt: 0x7a7464, hat: 0x8a6a3a });
+
 export const wynn = spawnNPC('Shepherd Wynn', WD.x + 2.5, WD.z - 1, { shirt: 0x7a7464, hat: 0x4e4638 });
 wynn.flavor = [
   "Mind the fold wall — such as it is. More suggestion than law, but the flock respects it, and that's most of shepherding.",
