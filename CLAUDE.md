@@ -8,6 +8,9 @@ Deeper notes live in `.claude/`:
 - `.claude/LORE.md` — narrative canon: the founding myth (the Going-Out),
   who-knows-what, voice rules, main-quest acts. **Read before writing any
   quest text, NPC dialogue, or card flavor.**
+- `.claude/DRAFTING.md` — the drafting epic (brainstorm + phased plan):
+  fires as draft pools, kindle feeding the world, the Offering. Nothing
+  decided yet; read before building anything draft-related.
 - `.claude/DEPLOYMENT.md` — deployment checklist (TLS, hashing, hosting…)
 - `.claude/WORKFLOW.md` — **required working style**: worktree per task →
   verify → merge to main → deploy to Fly.io
