@@ -3,7 +3,7 @@ import { $, lerp, smoothstep, rand, ri } from './utils.js';
 import { scene, renderer, camera, sun, hemi, starMat, sunDisc, moonDisc } from './scene.js';
 import { groundH } from './terrain.js';
 import { humanoid, makeLabel, animateFigure } from './entities.js';
-import { STARTERS, ZONES, CAMPS } from './constants.js';
+import { STARTERS, zoneAt } from './constants.js';
 import { player, critters, npcs } from './state.js';
 import { fires, torches, marla, aldric, camCollidables, sentinel, weir, updatePatrols, updateDarkwood, updateHollowmere } from './world.js';
 import { log, updateHUD } from './ui.js';
@@ -135,11 +135,6 @@ try {
 
 // ---------- zones ----------
 let curZone = '', zoneT = 0;
-function zoneAt(x, z) {
-  for (const c of CAMPS) if (Math.hypot(x - c.x, z - c.z) < c.r) return c.name;
-  const d = Math.hypot(x, z);
-  for (const zn of ZONES) if (d < zn.r) return zn.name;
-}
 
 let ePressed = false, tPressed = false;
 
