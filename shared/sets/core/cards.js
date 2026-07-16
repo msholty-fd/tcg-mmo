@@ -718,6 +718,14 @@ registerCards([
     triggers: { onPlay: [{ effect: 'summonRandom', pool: ['wild_boar', 'darkwood_wolf', 'forest_sow', 'thicket_beast', 'dire_wolf', 'boar_lancer'], count: 3 }] },
     name: 'Call of the Wild', text: 'Summon three random beasts.',
     flavor: 'The whole treeline answers at once, and not one of them asks why.' },
+  // The family's first creature — a body whose call outlives the caller. The
+  // onDeath conjure makes it play unlike the two spells (sticky, happy to
+  // trade); statted a notch under warband_champion (5-cost 4/4 frenzy) since
+  // the deathrattle beast (wild_summons's pool, avg ~2 Ember) pays the gap.
+  { id: 'old_whistler', set: 'core', rarity: 'uncommon', type: 'creature', cost: 5, atk: 3, hp: 4,
+    triggers: { onDeath: [{ effect: 'summonRandom', pool: ['young_boar', 'wild_boar', 'forest_sow', 'darkwood_wolf'], count: 1 }] },
+    name: 'Old Whistler', text: 'When this dies, summon a random beast.',
+    flavor: 'The whistle carries further than the whistler.' },
 
   // ---- The Adepts: activated abilities (⚡, pay Ember, once per turn). A
   // creature that keeps paying off round after round instead of once on entry.
