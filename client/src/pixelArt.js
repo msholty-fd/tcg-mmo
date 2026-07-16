@@ -813,6 +813,9 @@ const CARD_ART = {
   grim_bargain:        { sprite: 'colossus', pal: { l: '#5a5060', L: '#423a4a', t: '#6a5a4a', T: '#4a3e32', e: '#c85a4a' } },
 
   // The Wildcaller: conjuration (a summoning howl, greened)
+  // low_whistle is the family's small call — same howl sigil, dimmed a notch
+  // below wild_summons so the commons read quieter than the uncommon
+  low_whistle:         { sprite: 'howl', pal: { g: '#2f4c28', m: '#8fd464', M: '#567f3c' } },
   wild_summons:        { sprite: 'howl', pal: { g: '#3a6132', m: '#aef07a', M: '#6a9a4a' } },
   call_of_the_wild:    { sprite: 'howl', pal: { g: '#4a5a2a', m: '#c8f07a', M: '#8aa84a' } },
   // the family's creature: bark-brown hood with the wildcaller spells' vivid

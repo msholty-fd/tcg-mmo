@@ -412,7 +412,7 @@ export const DUELISTS = {
   },
   tolly: {
     name: 'Tolly the Lambward', deck: tollyDeck,
-    rewards: [...tollyDeck, 'forest_sow'],
+    rewards: [...tollyDeck, 'forest_sow', 'low_whistle'],   // "You barely hear it. Something does." — a shepherd's whistle calls the flock (common, route-trainer reward band; deck untouched, so tuning holds)
   },
   dace: {
     name: 'Dace the Netmender', deck: daceDeck,
