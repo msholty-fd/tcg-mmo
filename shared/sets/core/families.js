@@ -65,7 +65,7 @@ export const FAMILIES = [
   },
   {
     id: 'piercing_vanguard', name: 'Piercing Vanguard',
-    cardIds: ['ironhide_boar', 'warthog_battering_ram', 'boar_lancer', 'tusked_reaver', 'honed_tusks'],
+    cardIds: ['ironhide_boar', 'warthog_battering_ram', 'boar_lancer', 'tusked_reaver', 'honed_tusks', 'first_tusk'],
   },
   {
     id: 'graveyard_remembers', name: 'The Graveyard Remembers',

@@ -390,6 +390,15 @@ registerCards([
     name: 'Boar Lancer', text: 'Piercing.', flavor: 'Rides low, tusks first.' },
   { id: 'tusked_reaver', set: 'core', rarity: 'uncommon', type: 'creature', cost: 3, atk: 3, hp: 3, keywords: ['piercing'], storiedKeyword: 'lifesteal',
     name: 'Tusked Reaver', text: 'Piercing.', flavor: 'The Hollow keeps its own tally of what got through.' },
+  // The vanguard family's chase rare — it had no rare and no 4-drop (every
+  // other faction family has its Trusted-tier card; the big piercing rares
+  // live in other families as legacy placements). Anchored to darkwood_wolf
+  // (3c 3/3 common, same onAttack trigger): +1 cost buys +0/+1, Piercing,
+  // and the rare tag. The compounding attack is the charge gathering speed.
+  { id: 'first_tusk', set: 'core', rarity: 'rare', type: 'creature', cost: 4, atk: 3, hp: 4, keywords: ['piercing'], storiedKeyword: 'frenzy',
+    triggers: { onAttack: [{ effect: 'buff', target: 'self', atk: 1 }] },
+    name: 'First Tusk', text: 'Piercing. Whenever this attacks, it gains +1 attack.',
+    flavor: 'Where she goes through, the sounder follows.' },
   { id: 'honed_tusks', set: 'core', rarity: 'common', type: 'spell', cost: 2,
     triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 1, hp: 0 }, { effect: 'grantKeyword', target: 'chosen', keyword: 'piercing' }] }, needsTarget: 'ownUnit',
     name: 'Honed Tusks', text: 'Give a creature +1 attack and Piercing.', flavor: 'Sharpened on the same stone every winter.' },

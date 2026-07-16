@@ -1929,6 +1929,59 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **First Tusk — the Piercing Vanguard's chase rare, and Gruk's table
+  (2026-07-16, /new-card run 4)**: after three runs feeding the neutral
+  wildcaller, the survey went looking for the thinnest FACTION-gated
+  family and found `piercing_vanguard` (boarherd) at 5 cards with a
+  structural gap no other faction family has: **no rare** — so Gruk's own
+  signature axis had no Trusted-tier chase card (the big piercing rares,
+  emberwood_colossus and rootbound_titan, live in other families as legacy
+  placements) — and no 4-drop. One card fills both. `first_tusk`, core,
+  rare creature, 4 Ember 3/4, Piercing, onAttack → +1 attack (the charge
+  gathering speed), storiedKeyword frenzy (a Storied First Tusk charges
+  twice — the chase card's dream).
+  - **Cost anchor**: darkwood_wolf (3c 3/3 common, the same onAttack
+    trigger) — +1 cost buys +0/+1, Piercing, and the rare tag; sits beside
+    warcry_captain (4c 3/4 rare + repeatable value) at the same slot.
+  - **Circulation — the first run to give the card a TABLE**: a third
+    chained swap() on grukDeck cuts his last militia_recruit (the Boar
+    King fields no militia) for first_tusk ×1; rewards inherit it via the
+    deck spread. Rare-in-a-boss-pool follows the Gruk precedent
+    (rootbound_titan et al.) — route-trainer pools stay common/uncommon,
+    boss pools are the faction gate's chase path. Runs 1–3 stayed
+    reward-pool-only because the wildcaller's duelist doesn't exist yet;
+    here the family's owner IS the roster's boss.
+  - **Verified (the full duelist bar, since a deck changed)**: Gruk
+    500/side vs each starter before AND after — 41/59/39 → 44/61/42
+    (+2–3pp from a strict 1-card upgrade; the greedy AI's documented
+    undervaluing of top-heavy boss decks unchanged), **0 stuck across
+    6000 games**. Deterministic trigger check: summoned first_tusk, two
+    hearth attacks, atk 3→4→5 with Piercing intact. Shell sims (3 copies,
+    boarherd shell, 50/side): 63/71/62 vs the wild_boar control's
+    59/64/62 — a real but bounded rare-tier edge (the shell still loses
+    ~a third of its games). Roster integrity 21/21 (size 30, valid ids,
+    ≤3 copies). Raw-WS e2e 5/5 on a throwaway :8099 server (bogus npc
+    refused, npcduel gruk → duelStart, foe/kind right, foe hand
+    all-nulls, concede → duelEnd). Suites: packs 6653, leaders 198,
+    factions 443→445 (the new card's own assertions), sim-starters
+    byte-identical 60/52/47.
+  - **Family/faction**: piercing_vanguard → boarherd — the loop's first
+    faction-gated card: rare = Trusted rank (or a champion's vouch) to
+    deck it, which is the point of a chase card. Art: `boar` sprite,
+    russet-red matriarch palette (#8a3e2a/#66291c, bone tusks, gold eye)
+    — distinct from the greys (ironhide/warthog) and browns
+    (lancer/reaver).
+  - **Rejected this survey**: a 6th wildcaller card (the family is
+    complete at 5 and its duelist seed is ripe — more cards now would
+    crowd the duelist's own design space); a thieves_cant reaction
+    (back-to-back reaction shapes, and the family reads fine at 4);
+    a Desperate Measures 4th (the additionalCost pool is deliberately
+    scarce — run 2's reasoning holds); a 6c piercing rare (both existing
+    6c piercing rares are already guardian-walls — the family wanted a
+    proactive mid-drop, not a third tower).
+  - **Seeded**: none new — the conjuration duelist (ripe, run 3) remains
+    the queue's head.
+
 - **Something Comes — the Wildcaller's reaction, and the family's 5th card
   (2026-07-16, /new-card run 3)**: fires run 1's seeded trigger — the
   wildcaller now stands at 5 cards, so **the conjuration duelist is

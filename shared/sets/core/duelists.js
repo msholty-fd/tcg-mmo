@@ -42,9 +42,14 @@ const vexDeck = swap(
 // compare stand_and_hold/reckless_charge/pilgrims_vow), plus the previously
 // -unclaimed piercing_barb/warthog_battering_ram keyword-gap fillers.
 const grukDeck = swap(
-  swap(STARTER_DECKS.boarherd, ['young_boar', 'militia_recruit'], ['ironhide_boar', 'emberwood_colossus']),
-  ['quartermaster', 'quartermaster', 'kindled_fury', 'kindled_fury', 'wolf_howl', 'wild_boar', 'wild_boar'],
-  ['boar_lancer', 'tusked_reaver', 'honed_tusks', 'tusks_of_the_hollow', 'boarlords_fury', 'piercing_barb', 'warthog_battering_ram'],
+  swap(
+    swap(STARTER_DECKS.boarherd, ['young_boar', 'militia_recruit'], ['ironhide_boar', 'emberwood_colossus']),
+    ['quartermaster', 'quartermaster', 'kindled_fury', 'kindled_fury', 'wolf_howl', 'wild_boar', 'wild_boar'],
+    ['boar_lancer', 'tusked_reaver', 'honed_tusks', 'tusks_of_the_hollow', 'boarlords_fury', 'piercing_barb', 'warthog_battering_ram'],
+  ),
+  // the last militia_recruit out for the vanguard's chase rare — the Boar
+  // King fields no militia; the First Tusk leads his charge (see DESIGN.md)
+  ['militia_recruit'], ['first_tusk'],
 );
 // Highgate's roster (see DESIGN.md) — a Wardens-based gate captain and a
 // Boarherd-based road warden, swapped with cards no earlier duelist uses.
@@ -356,7 +361,7 @@ export const DUELISTS = {
   },
   gruk: {
     name: 'Gruk the Boar King', deck: grukDeck,
-    rewards: [...grukDeck, 'ironhide_boar', 'emberwood_colossus', 'ember_fang', 'rootbound_titan'],
+    rewards: [...grukDeck, 'ironhide_boar', 'emberwood_colossus', 'ember_fang', 'rootbound_titan'],   // first_tusk rides in via the deck spread (boss pools carry rares — the faction gate's chase path)
   },
   verity: {
     name: 'Captain Verity', deck: verityDeck,
