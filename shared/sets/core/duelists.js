@@ -400,7 +400,7 @@ export const DUELISTS = {
   },
   sorrel: {
     name: 'Sorrel the Boartracker', deck: sorrelDeck,
-    rewards: [...sorrelDeck, 'dire_wolf', 'old_whistler'],   // "The whistle carries further than the whistler." — a tracker learns the old calls (uncommon, within the route-trainer reward band; deck untouched, so tuning holds)
+    rewards: [...sorrelDeck, 'dire_wolf', 'old_whistler', 'something_comes'],   // "The whistle carries further than the whistler." — a tracker learns the old calls (both uncommon, within the route-trainer reward band; deck untouched, so tuning holds)
   },
   finch: {
     name: 'Finch the Relic-Runner', deck: finchDeck,

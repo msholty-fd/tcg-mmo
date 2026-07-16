@@ -1929,6 +1929,53 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **Something Comes — the Wildcaller's reaction, and the family's 5th card
+  (2026-07-16, /new-card run 3)**: fires run 1's seeded trigger — the
+  wildcaller now stands at 5 cards, so **the conjuration duelist is
+  officially ripe** (see Seeded below; this run builds the card, not the
+  person). The design puts conjuration on the counterplay surface: run 1
+  rejected a wildcaller reaction in its death-triggered form
+  (double-randomness), but an ATTACK trigger is deterministic — only the
+  answer is random, which is the family's whole texture. `something_comes`,
+  core, uncommon reaction, 2 Ember, on enemyAttack → summonRandom 1 from
+  the family's standard pool.
+  - **Cost anchor**: ambush_horn exactly (2c uncommon reaction, enemyAttack
+    → a guaranteed 2c 3/1 Cutpurse); the pool averages a ~2c body
+    (1c 2/1 / 2c 2/3 / 2c 1/4 guardian / 3c 3/3), so same rate, paid in
+    variance — can whiff into a Young Boar or hit a Darkwood Wolf.
+  - **Verified**: deterministic scenario test 80/80 across 20 seeds
+    (reaction consumed on enemy attack declaration, exactly one pool beast
+    lands on the defender's field, spent card to graveyard) — the
+    summonRandom-inside-fireReactions combination is novel, though the
+    frame (ambush_horn's summon, ashfall_recall's exhume) already proved
+    arbitrary effects fire there. In-play sims: 3 copies in a boarherd
+    shell vs each starter, 50/side — 54/65/62, vs the wild_boar control
+    shell's 59/64/62 (inside noise, a touch soft vs boarherd — reactions
+    duel gentler, the documented Wick/Dace pattern); 0 stuck across 300
+    games. AI instrumentation over 40 games: set in 25, spent to graveyard
+    in 29, 130 duel-log mentions — the greedy brain plays it unprompted.
+    Suites: packs 6653, leaders 198, factions 441→443 (the new card's own
+    assertions), sim-starters byte-identical 60/52/47.
+  - **Family/faction**: wildcaller → neutral (unchanged rule). Circulation:
+    Boarlands pack (uncommon, automatic) + **Sorrel the Boartracker's
+    reward pool** alongside old_whistler (the tracker collects the old
+    calls; both uncommon, route-trainer band; deck untouched so his
+    56/66/58 tuning holds). Art: the family's `howl` sigil gone cold —
+    teal-green (#7ce0a8 on #22483a), distinct from all three green
+    variants.
+  - **Rejected this survey**: a 3c wildcaller spell (run 2 already filled
+    the cheap slot; a third sorcery outnumbers the family's one creature);
+    building the conjuration duelist in the same run (a duelist is
+    /worldbuilding-tier scope — placement, deck tuning, the full bar; the
+    trigger firing IS this run's contribution); an NPC deck swap (three
+    reward-only wildcaller cards is fine — the future duelist PLAYS them,
+    which is the payoff).
+  - **Seeded → RIPE**: the conjuration-themed duelist. Family at 5
+    (2c common spell / 2c uncommon reaction / 4c uncommon spell /
+    5c uncommon creature / 6c rare spell) — a swap-ready package. The
+    Wildcaller themself as the person remains the open door; the family
+    name is a title looking for an owner.
+
 - **Low Whistle — the Wildcaller's entry point (2026-07-16, /new-card
   run 2)**: takes run 1's own seed ("a 4th/5th wildcaller card if the theme
   earns play") at the family's clearest gap: every conjuration card was

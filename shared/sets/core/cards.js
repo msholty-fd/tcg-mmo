@@ -733,6 +733,13 @@ registerCards([
     triggers: { onDeath: [{ effect: 'summonRandom', pool: ['young_boar', 'wild_boar', 'forest_sow', 'darkwood_wolf'], count: 1 }] },
     name: 'Old Whistler', text: 'When this dies, summon a random beast.',
     flavor: 'The whistle carries further than the whistler.' },
+  // The family's reaction — conjuration on the counterplay surface. Anchored
+  // to ambush_horn (2c uncommon: enemyAttack → a guaranteed 2c 3/1); the same
+  // rate paid in variance from the family's standard pool (avg ~2c body).
+  { id: 'something_comes', set: 'core', rarity: 'uncommon', type: 'reaction', cost: 2,
+    reaction: { on: 'enemyAttack', effects: [{ effect: 'summonRandom', pool: ['young_boar', 'wild_boar', 'forest_sow', 'darkwood_wolf'], count: 1 }] },
+    name: 'Something Comes', text: 'Reaction: when an enemy creature attacks, summon a random beast.',
+    flavor: "You didn't call. It came anyway." },
 
   // ---- The Adepts: activated abilities (⚡, pay Ember, once per turn). A
   // creature that keeps paying off round after round instead of once on entry.

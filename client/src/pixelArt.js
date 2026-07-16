@@ -822,6 +822,9 @@ const CARD_ART = {
   // green as accent + garment (distinct from Cobb's bright farm-green, the
   // Footpad's shadow-green/moonlight-tan, and Tarn's golden-brass browns)
   old_whistler:        { sprite: 'hooded', pal: { h: '#5c4a34', H: '#40331f', m: '#3a6132', e: '#aef07a' } },
+  // the family's reaction: the howl sigil gone cold — teal-green, distinct
+  // from low_whistle's dim green and wild_summons/call_of_the_wild's vivid
+  something_comes:     { sprite: 'howl', pal: { g: '#22483a', m: '#7ce0a8', M: '#4a8a68' } },
 
   // The Adepts: activated abilities (an ember imp; hooded channelers)
   emberkin_adept:      { sprite: 'emberling', pal: { f: '#ff9a30', F: '#ffe070', r: '#c83400' } },
