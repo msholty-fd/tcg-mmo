@@ -663,6 +663,9 @@ const CARD_ART = {
   // ---- Gruk the Boar King: deepening Piercing ----
   boar_lancer:         { sprite: 'boar', pal: { d: '#8a6a3a', D: '#6a4e26' } },
   tusked_reaver:       { sprite: 'boar', pal: { d: '#5a3a2a', D: '#432a1e', e: '#ffb040' } },
+  // first_tusk: the vanguard matriarch — russet-red boar, distinct from the
+  // greys (ironhide/warthog), browns (lancer/reaver), and gruk's own sprite
+  first_tusk:          { sprite: 'boar', pal: { d: '#8a3e2a', D: '#66291c', n: '#e8d8c0', e: '#ffd060' } },
   honed_tusks:         { sprite: 'fury', pal: { f: '#d8c8a0', F: '#fff0d0', r: '#8a7040', d: '#5a4a2a' } },
   tusks_of_the_hollow: { sprite: 'fang', pal: { w: '#e0d0a0', W: '#b8a878', f: '#ff8a20', F: '#ffd060' } },
   boarlords_fury:      { sprite: 'plate', pal: { p: '#8a6a3a', P: '#6a4e26', g: '#ffcf40' } },
