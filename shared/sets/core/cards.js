@@ -710,6 +710,13 @@ registerCards([
 
   // ---- The Wildcaller: conjuration. Spells that summon anonymous creatures
   // from a fixed pool — a board out of nowhere, at the mercy of the draw.
+  // The family's entry point — its only common and only card under 4 Ember.
+  // Priced as exactly half of wild_summons (4c → 2 beasts, same pool): a fair
+  // rate paid in variance, which is the family's whole texture.
+  { id: 'low_whistle', set: 'core', rarity: 'common', type: 'spell', cost: 2,
+    triggers: { onPlay: [{ effect: 'summonRandom', pool: ['young_boar', 'wild_boar', 'forest_sow', 'darkwood_wolf'], count: 1 }] },
+    name: 'Low Whistle', text: 'Summon a random beast.',
+    flavor: 'You barely hear it. Something does.' },
   { id: 'wild_summons', set: 'core', rarity: 'uncommon', type: 'spell', cost: 4,
     triggers: { onPlay: [{ effect: 'summonRandom', pool: ['young_boar', 'wild_boar', 'forest_sow', 'darkwood_wolf'], count: 2 }] },
     name: 'Wild Summons', text: 'Summon two random beasts.',

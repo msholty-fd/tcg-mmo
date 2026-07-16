@@ -136,7 +136,7 @@ export const FAMILIES = [
   {
     id: 'wildcaller', name: 'The Wildcaller',
     // conjuration — summon random creatures from a pool
-    cardIds: ['wild_summons', 'call_of_the_wild', 'old_whistler'],
+    cardIds: ['low_whistle', 'wild_summons', 'call_of_the_wild', 'old_whistler'],
   },
   {
     id: 'adepts', name: 'The Adepts',

@@ -1929,6 +1929,48 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **Low Whistle — the Wildcaller's entry point (2026-07-16, /new-card
+  run 2)**: takes run 1's own seed ("a 4th/5th wildcaller card if the theme
+  earns play") at the family's clearest gap: every conjuration card was
+  4+ Ember and uncommon+ — the theme had no common and nothing playable
+  before turn 4, so a pack opener couldn't cheaply meet the family the
+  Boarlands pack's 70% common weight is built to introduce. `low_whistle`,
+  core, common spell, 2 Ember: summon 1 random beast from wild_summons's
+  exact pool (the pool-consistency rule from run 1 — the family's "small
+  wild things" tier stays legible).
+  - **Cost anchor**: wild_summons itself — 4 Ember for 2 beasts from the
+    same pool; low_whistle is exactly half. A fair rate paid in variance
+    rather than discounted, per the cost-it-high doctrine. Sims: 3 copies
+    in a boarherd shell (ember_bolt/sudden_spark out) vs each starter,
+    50/side — 63/66/66, vs a wild_boar-in-the-same-slots control shell at
+    59/64/62: deltas +2–4pp, inside noise, so the card sims as a fair
+    2-cost body and the uplift over plain boarherd (60/52/47) is the
+    burn→bodies swap itself (the documented greedy-AI burn undervaluation),
+    not the card. 0 stuck across all 600 games; the effect logged ~3.2
+    lines/game.
+  - **Family/faction**: wildcaller → neutral (unchanged rule); family now
+    4 cards — one short of run 1's seeded conjuration-duelist trigger.
+    sim-starters byte-identical 60/52/47; test-factions grew 439→441 (the
+    new card's own assertions, the established pattern).
+  - **Circulation**: Boarlands pack automatically (common, registered);
+    reward pool: **Tolly the Lambward** (a shepherd's low whistle calls the
+    flock — thematically exact for the lambward; common, route-trainer
+    reward band; deck untouched so Tolly's 56/72/58 tuning holds). This
+    spreads the wildcaller family across two trainers' pools (Sorrel
+    carries old_whistler). Art: the family's `howl` sigil dimmed a notch
+    below wild_summons (#8fd464 on #2f4c28) — commons read quieter than
+    the uncommon.
+  - **Rejected this survey**: a Desperate Measures 4th card (family at 3
+    but its additionalCost texture is deliberately scarce — above-rate
+    effects shouldn't be a deep pool); a wildcaller creature at 3c (a
+    second creature crowds the seeded duelist's design space more than a
+    spell does); swapping low_whistle into Tolly's DECK (would re-tune a
+    shipped trainer for a splash — reward-pool-only is run 1's posture and
+    it held).
+  - **Seeded for later**: unchanged from run 1 — the conjuration duelist
+    now needs just ONE more wildcaller card to hit the ~5 trigger; whoever
+    builds it should consider the Wildcaller themself as the person.
+
 - **Old Whistler — the Wildcaller's first creature (2026-07-16, /new-card
   run 1)**: first invocation of the new-card skill. Survey picked the
   thinnest family: the Wildcaller had 2 cards (both spells — wild_summons,
