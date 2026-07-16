@@ -309,6 +309,41 @@ const nellDeck = swap(
   ['kindled_fury', 'kindled_fury'],
   ['yoke_ox', 'wayside_watcher'],
 );
+// Hew (Hobb's Quarry) — the prentice splitter plays the way stone teaches:
+// boarherd base (the quarry is the east's yard — Gruk's Hollow and Sorrel's
+// road are its neighbors, boar country; and it evens the route-trainer bases
+// at 3 boarherd / 3 wardens / 2 redsash) trading fury for patience. Out go
+// kindled_fury x2 — fury wastes rock: strike a seam angry and you've made
+// gravel, not a waystone. NOT Tolly's ember_bolt/sudden_spark outs or
+// Sorrel's militia_recruit outs — same-base trainers must not share the same
+// shape. In come line_holder ("He doesn't move. That's the whole plan." — a
+// stonecutter's whole plan) and stand_and_hold ("Two words. Whole strategy."
+// — what a prentice is told a hundred times a day). Micro-read: "the stone
+// holds" — a guardian body and a guardian grant, no haste, distinct from
+// Tolly's herd buffs, Dace's snares, Wick's punish-attack, and Nell's
+// steady puller.
+// Tuned in sims (500/side vs each starter, 0 stuck anywhere): 49/60/52 vs
+// boarherd/wardens/redsash — between finch (49/53/52) and Tolly (56/72/58),
+// under Sorrel's measured 56/66/58 (the east's road trainer serves Gruk's
+// boss camp, so his band runs high), and power-neutral vs the plain boarherd
+// base (60/52 in the starter spread — staples traded for staples). The 60
+// vs wardens rides the documented greedy-AI defense blind spot. Room stays
+// open below (dace 36/46/44, brenna 32/41/40) for a future east-road
+// trainer — roads duel easier than the places they lead to. Rejected
+// variants, all simmed at 500/side: boarherd wolf_howl+pack_alpha -> same
+// ins (37/45/39 — "no pack at the yard" reads nice but howl/alpha are the
+// base's engine: it guts the deck AND cramps the band a future east-road
+// trainer must fit under); redsash kindled_fury x2 -> same ins (49/51/54 —
+// band-legal, but a bandit sash on an honest mason's prentice reads wrong,
+// the Dace-survey objection verbatim); boarherd kindled_fury x2 ->
+// line_holder+watchers_oath (47/57/49 — statistically a tie with the pick,
+// so theme decided it: stand_and_hold IS the apprentice's whole instruction,
+// and the oath relic serves better as his reward escalation).
+const hewDeck = swap(
+  STARTER_DECKS.boarherd,
+  ['kindled_fury', 'kindled_fury'],
+  ['line_holder', 'stand_and_hold'],
+);
 
 export const DUELISTS = {
   rowan: {
@@ -390,5 +425,9 @@ export const DUELISTS = {
   nell: {
     name: 'Nell the Carter', deck: nellDeck,
     rewards: [...nellDeck, 'roadblock'],   // "The road was never as clear as it looked." — the carter's escalation (Dace's boar_pit pattern)
+  },
+  hew: {
+    name: 'Hew the Splitter', deck: hewDeck,
+    rewards: [...hewDeck, 'watchers_oath'],   // "Sworn once, kept every day since." — a prenticeship in one line (Dace's boar_pit pattern; deliberately not shieldwall_sergeant, a Leader, nor bastion_keep, a rare — route trainers reward modestly)
   },
 };

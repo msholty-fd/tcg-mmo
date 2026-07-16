@@ -1929,6 +1929,104 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **Hew the Splitter — Hobb's Quarry's duelist (2026-07-16, worldbuilding
+  loop iteration 15)**: the seeded ledger's ripest entry, and the loop's
+  most-rehearsed hand-off firing again — iteration 14 seeded "a quarry
+  duelist (apprentice cutter, route-trainer tier)" as the yard's next step,
+  the same landmark→duelist move the west ran three times (downs→Tolly,
+  pond→Dace, meads→Wick). Cadence weighed honestly: the honey run precedent
+  (seeded at 10, shipped at 11) already established that a seed whose
+  condition fires immediately can be paid off the very next loop, and shape
+  variance holds — the run reads duelist (13), landmark (14), duelist (15),
+  never back-to-back, the same rhythm as duelist (8), road (9), duelist
+  (10). The pick also does the strategic work: by the downs rule a flavour
+  landmark earns a route when it earns content, so Hew is what makes the
+  east road *possible* — the exact duelist-before-road ordering the west
+  proved (Dace before the West Road, Wick before the spur).
+  - **A process note, recorded honestly**: the survey found a stale
+    uncommitted worktree (`.claude/worktrees/agent-a366d5420ea34035c`,
+    untouched ~13h, unlocked, no commits, no STATUS entry) containing an
+    abandoned prior attempt at this same iteration — same seed, same base,
+    same outs/ins, different name and reward extra. This iteration was
+    built fresh in its own worktree with its own survey and its own sims
+    (which independently reproduced the abandoned attempt's 49/60/52 —
+    good cross-validation); the stale worktree is flagged in STATUS.md for
+    cleanup rather than adopted or deleted.
+  - **Rejected this survey**: the east road itself (the downs rule runs
+    landmark → duelist → road in that order all three western times — a
+    road to a duel-less yard inverts it; with Hew landed the road is the
+    natural next seed); a quest pointing east (the honey-run pattern — but
+    iteration 14's verdict "the east has no giver with unclaimed business"
+    still holds: Hobb's doors are all seeded/reserved, and the honey run
+    itself came AFTER the meads had their duelist, so quest-before-duelist
+    would invert that precedent too); the Red-Sash camp-life pass +
+    windmill (still BLOCKED — `git worktree list` shows humanoid-fidelity
+    still holding main.js); the hot spring (ninth look, parked per surveys
+    7–14 — nothing changed); an environmental/life pass (same verdict as
+    surveys 10–14: no eligible target — a stone yard is still by its own
+    charter).
+  - **The duelist** (`shared/sets/core/duelists.js` + a spawn in
+    `client/src/world/quarry.js`, 1-line barrel export in world.js, zero
+    server change): Hew, Hobb's prentice — Hobb marks the seams, Hew sets
+    the feathers and wedges and splits the blocks out, and drills with
+    cards between splits: splitting and dueling are the same lesson — read
+    the seam, set your line, and hold. Route-trainer tier by decision (a
+    single 2-card swap, existing cards only, no new art). **Boarherd
+    base** — the east is boar country (Gruk's Hollow and Sorrel's road are
+    the yard's neighbors) and it evens the trainer bases at 3 boarherd /
+    3 wardens / 2 redsash. Out go `kindled_fury` ×2 — fury wastes rock:
+    strike a seam angry and you've made gravel, not a waystone
+    (deliberately NOT Tolly's ember_bolt/sudden_spark outs nor Sorrel's
+    militia_recruit outs — same-base trainers must not share the same
+    shape). In come `line_holder` ("He doesn't move. That's the whole
+    plan." — a stonecutter's whole plan) and `stand_and_hold` ("Two words.
+    Whole strategy." — what a prentice is told a hundred times a day).
+    Micro-read: **"the stone holds"** — a guardian body and a guardian
+    grant, no haste, distinct from Tolly's herd buffs, Dace's snares,
+    Wick's punish-attack, and Nell's steady puller. Reward extra:
+    `watchers_oath` ("Sworn once, kept every day since." — a prenticeship
+    in one line); deliberately NOT `shieldwall_sergeant` (a Leader — route
+    trainers shouldn't hand out banner leaders) nor `bastion_keep` (a
+    rare — trainer extras stay common/uncommon, the dire_wolf…roadblock
+    band). Spawn at (158.5, −24.5), the open working ground between the
+    block stacks and the lower bench — numeric clearance scan: tall block
+    stack 1.38, lower bench ~1.6, Hobb 5.1.
+  - **Tuning** (500 games/side vs each starter, 0 stuck across all 15,000
+    games incl. rejected variants and a Sorrel reference run): **49/60/52**
+    vs boarherd/wardens/redsash — between finch (49/53/52) and Tolly
+    (56/72/58), under Sorrel's measured 56/66/58 (first time Sorrel's
+    ceiling was actually simmed rather than cited — his band runs high
+    because his road serves Gruk's boss camp), and power-neutral vs the
+    plain boarherd base (staples traded for staples). The 60 vs wardens
+    rides the documented greedy-AI defense blind spot. The dace/brenna band
+    (36/46/44, 32/41/40) stays open below him for a future east-road
+    trainer — roads duel easier than the places they lead to. Rejected +
+    simmed at 500/side: boarherd wolf_howl+pack_alpha → same ins (37/45/39
+    — "no pack at the yard" reads nice but howl/alpha are the base's
+    engine; it guts the deck and cramps the band a future road trainer
+    must fit under); redsash kindled_fury ×2 → same ins (49/51/54 —
+    band-legal but a bandit sash on an honest mason's prentice reads
+    wrong, the Dace-survey objection verbatim); boarherd kindled_fury ×2 →
+    line_holder+watchers_oath (47/57/49 — statistically a tie, so theme
+    decided it: stand_and_hold IS the apprentice's instruction, and the
+    oath serves better as his reward escalation). Starter spread untouched
+    and re-verified byte-identical: 60/52/47.
+  - **Deliberately NOT done**: no flavor lines (duelists can't surface
+    them — Hew's knowledge lives in LORE.md, small-omens tier, barred from
+    Hobb's frost-split door, Merle's hour, the millstone, the mine, the
+    ring, and all western doors); no Hobb line edit (his six lines already
+    carry the yard; a prentice line would have him narrating his own
+    staff); no east road bundled (one shape per iteration — and the road
+    should be sited against the yard's final geometry with the duelist
+    standing). **Seeded**: the **east road is now the region's ripest
+    seed** — the quarry has business (the downs rule's trigger fired), and
+    iteration 14 already noted the line to site it on ("the quarry sits
+    nearly on the line from Gruk's road to the Dial Stone"); a Dial Stone
+    leg could make it the east's first fork, but one arm at a time (the
+    west's lesson). Remaining ledger otherwise unchanged: Red-Sash
+    camp-life + windmill (blocked on main.js), hot spring (parked, 9
+    rejections).
+
 - **Hobb's Quarry — the stonecutter's yard on the eastern grass (2026-07-15,
   worldbuilding loop iteration 14)**: the first survey pointed east on
   purpose — the seeded ledger is nearly dry (camp-life + windmill still

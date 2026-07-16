@@ -181,6 +181,19 @@ but never say "points" or "unlock."
   that they won't name the hour — Hobb must never learn or guess which hour
   it is (the missing stone stays Merle's joke). No opinions on the old ring
   in the deep wood, the mine, or any of the western folk's doors.
+- **Hew the Splitter** (Hobb's Quarry, Hobb's prentice) — small omens tier,
+  mostly none: Hobb marks the seams, Hew sets the feathers and wedges and
+  splits the blocks out of the face — the grunt half of the trade — and
+  drills with cards between splits, because splitting and dueling are the
+  same lesson: read the seam, set your line, and hold. He handles the
+  frost-split blocks every day but has no opinion on why they're coming out
+  of the face in midsummer (that door is Hobb's — the calendar is Hobb's
+  business; Hew sets the wedges where he's told). Knows Hobb grumbles about
+  the skywatcher's hour stone but nothing more — he must never learn or
+  guess the hour, and has no opinions on the millstone, the mine, the old
+  ring in the deep wood, or any of the western folk's doors. (Duelists
+  can't surface flavor lines — his knowledge lives here and in DESIGN text
+  only.)
 - **Pedlar Rusk** (the Darkwood road, Gruk side) — small omens tier: sells
   the Night-Gather by daylight and is gone by dusk, and won't say why beyond
   "the light's better." (Vendor interactions can't surface flavor lines —
