@@ -1971,6 +1971,58 @@ considered and rejected.
     now needs just ONE more wildcaller card to hit the ~5 trigger; whoever
     builds it should consider the Wildcaller themself as the person.
 
+- **The East Road — two stones from Gruk's Hollow to Hobb's Quarry
+  (2026-07-16, worldbuilding loop iteration 16)**: the seeded ledger's
+  ripest entry, named twice — iteration 15 closed with "the east road is
+  now the region's ripest seed" (the downs rule's trigger fired the moment
+  Hew gave the yard business), and iteration 14 had already noted the
+  siting geometry. Explicit next-iteration payoff, the honey-run/quarry-
+  duelist cadence (seeded at 10 shipped at 11; seeded at 14 shipped at 15).
+  Shape variance holds: the run reads landmark (14), duelist (15), road
+  (16) — the exact west-side rhythm (downs 2 → Tolly 4, pond 6 → Dace 8 →
+  West Road 9). The east now rehearses the west's complete grammar:
+  landmark → duelist → road.
+  - **Rejected this survey**: nothing else was seriously in contention —
+    a twice-named seed with its trigger fired outranks novel picks by the
+    loop's own rule. Standing rejections re-checked: Red-Sash camp-life +
+    windmill (still BLOCKED — `git worktree list` shows humanoid-fidelity
+    still locked on main.js); the hot spring (tenth look, parked per
+    surveys 7–15 — nothing changed); a Dial Stone fork arm bundled with
+    this road (one arm at a time — the west's lesson, quoted from
+    iteration 15's own seed text; seeded below instead).
+  - **The road** (`client/src/world/roads.js` only, +1 DEST entry and a
+    comment touch-up in quarry.js's header; zero server/shared change):
+    the road continues PAST Gruk's Hollow the way the Darkwood road does —
+    a camp is a destination, not a terminus. **Two stones, not three**:
+    the Gruk-edge → quarry-edge gap is only ~22u, and candidate 3-stone
+    spacing (11.4u) fell far below the precedent band (Darkwood 18.4, spur
+    23, West Road 42); two stones at **22.8u — the meads spur's exact
+    gap** — read as a road without reading as a fence. Stone 1 (126,−45):
+    24.2 from Gruk's center, inside the r=26 circle like the Darkwood
+    road's first stone (20.4), nearest camp prop a collider-free totem at
+    12.2. Stone 2 (144,−31): 17.0 from the quarry's center — the
+    meads-edge precedent verbatim (17 from center, r=17) — nearest
+    collider the mason's hut at 9.4 (spur precedent: 8.2), and Hobb's own
+    west-facing signpost takes over the greeting from there. Both point at
+    a new `DEST.quarry` [157,−20]. Terrain scanned numerically pre-siting
+    (West Road technique): route h 1.23..−1.53, max slope deviation 0.25
+    within r=1.5 (precedent allowed 0.44); sorrel's patrol polyline ≥48.
+  - **Deliberately NOT done**: no Wayfarer line (outer-to-outer road — the
+    Darkwood-road precedent; he names roads he can see from the
+    crossroads, and his east line already ends at Gruk); no third stone
+    (above); no Dial Stone arm; no east-road route trainer (roads earn
+    trainers the way landmarks earn roads — and the dace/brenna band
+    36–44 was left open below Hew for exactly this trainer, per iteration
+    15's tuning notes); no LORE.md change (no new NPC, no new canon).
+  - **Seeded for later**: a **Dial Stone arm forking at the quarry-edge
+    stone** — the east's first fork, viable once the east sees traffic
+    (mind the fork-collider gotcha from iteration 12: site any fork
+    marker's collider clear of a future patrol polyline); an **east-road
+    route trainer** once the road sees traffic (the Nell precedent —
+    infrastructure strictly precedes it; the 36–44 band below Hew is
+    reserved for them). Remaining ledger unchanged: Red-Sash camp-life +
+    windmill (blocked on main.js), hot spring (parked, 10 rejections).
+
 - **Old Whistler — the Wildcaller's first creature (2026-07-16, /new-card
   run 1)**: first invocation of the new-card skill. Survey picked the
   thinnest family: the Wildcaller had 2 cards (both spells — wild_summons,

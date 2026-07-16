@@ -16,8 +16,9 @@
 // Seeded hooks (see DESIGN.md/LORE.md): frost-split blocks coming out of the
 // face in midsummer, and the dressed millstone waiting on a mill nobody has
 // built. The quarry duelist landed one loop later as seeded (Hew, iteration
-// 15, the Tolly/Dace/Wick precedent); the yard now has business, so an east
-// road is the region's open seed (the downs rule).
+// 15, the Tolly/Dace/Wick precedent), and the east road followed (iteration
+// 16, roads.js — the downs rule paid off: two stones from Gruk's Hollow to
+// the yard's southwest approach, where the signpost takes over).
 import * as THREE from 'three';
 import { scene } from '../scene.js';
 import { groundH } from '../terrain.js';
