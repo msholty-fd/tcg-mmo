@@ -148,6 +148,23 @@ export const QUESTS = [
     obj: () => "Hear the ledger at Highgate's shrine",
     thanks: "So now you know the names. The ledger has room for more — the fire doesn't care whose story it keeps, only that it's witnessed.",
   },
+  // The stone order (2026-07-16, worldbuilding iteration 17 — DESIGN.md):
+  // the realm's east pointer, the honey-run pattern verbatim — a commerce
+  // giver sends the player to put eyes on a late order at a supplier's
+  // yard, and the target prop has been authored waiting since the yard was
+  // built (the half-cut waystone on the sledge, quarry.js: "the gilding's
+  // Highgate's coin; the stone's ours"). The offer names the east road
+  // (iteration 16) the way Marla's named the west walk — this quest is
+  // what mints the east traffic both of iteration 16's seeds gate on.
+  // Yara stays commerce-tier per LORE.md: a late stone is cartage and
+  // gilders' fees, never an omen — she has no opinions on Hobb's doors.
+  {
+    id: 'stone_order', giver: 'yara', title: 'Bought and Paid For', minLvl: 4, prereq: 'highgate_gate',
+    visit: { x: 157, z: -20, r: 12 }, xp: 260, coins: 30,
+    offer: "The guild bought a waystone off Mason Hobb two seasons back — cut, gilded, and standing on the Highgate road, paid up front, because stone men don't lift a chisel otherwise. I hold a receipt and no stone. Take the Gruk road east past the hollow — there are new markers up, follow them — and put eyes on his yard for me. If my stone's cut and sitting on the sledge, the delay is the gilders' and I requote them. If it's still in the hill, I want my coin's worth of knowing.",
+    obj: () => "Put eyes on Hobb's Quarry for the guild",
+    thanks: "Cut, trued, on the sledge — and not a fleck of gilt on it. So Hobb kept his half of the paper and the gilders didn't, which is a different letter than the one I'd drafted, and a cheaper one. The guild pays for knowing; this is your share.",
+  },
   // Emberwatch Ruins — a night-only landmark (DESIGN.md). The Sentinel only
   // manifests after dark (client-side visibility gate in world.js/main.js),
   // so this quest is discovery flavor: Aldric points at the rumor, finding
