@@ -1929,6 +1929,74 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **The Stone Order — Yara's visit quest to Hobb's Quarry (2026-07-16,
+  worldbuilding loop iteration 17)**: the survey found nothing ripe — both
+  of iteration 16's east seeds gate on *traffic that doesn't exist yet*,
+  Red-Sash camp-life + windmill stay BLOCKED (humanoid-fidelity still
+  locked on main.js), the hot spring is parked — so the pick is the move
+  that mints the missing trigger: an east-pointing quest, the honey-run
+  pattern verbatim (iteration 11: a quest is what turned "roads exist"
+  into "roads are walked" in the west). Iteration 15's standing objection
+  ("the east has no giver with unclaimed business, and quest-before-
+  duelist would invert precedent") has fully expired: the east now has
+  its duelist (15) and its road (16) — the meads had exactly this state
+  when the honey run shipped. Shape variance is perfect: landmark (14),
+  duelist (15), road (16), quest (17) — the first quest since 11, six
+  iterations back. Quest tier by decision: data-only in shared/quests.js
+  (GIVERS/visit/markers/tracker all generic since 11), zero overlap with
+  the /new-card session running in parallel (which merged Low Whistle and
+  Something Comes into main DURING iterations 16–17 — card files were
+  off-limits this survey on ownership grounds anyway).
+  - **The giver fell out of canon, not casting**: iteration 14 authored
+    the half-cut waystone on the sledge with "the gilding's Highgate's
+    coin; the stone's ours" — a guild order sitting in-world, waiting the
+    way the meads' honey table waited for Marla since 7. **Guildmaster
+    Yara** is the guild: ledger voice ("Filed and countersigned"),
+    already a 4-quest giver, already uses the visit shape
+    (hall_of_legends). LORE.md gains a Yara entry — commerce tier, the
+    Marla register at guild scale, barred from BOTH of Hobb's seeded
+    doors (frost-split, millstone) with the millstone explicitly routed
+    to the windmill option, not her.
+  - **The quest** (`stone_order`, "Bought and Paid For"): giver yara,
+    minLvl 4, prereq `highgate_gate` (parallel-offer beside
+    highgate_ledger/hall_of_legends — the Aldric precedent; a guild
+    errand shouldn't wait behind Yara's full duel chain), visit
+    (157,−20, r12), 260 xp / 30 coins (inside Yara's 150–320/10–30 band,
+    coin-forward because the guild pays for knowing). The offer names the
+    east road — "there are new markers up, follow them" — exactly as
+    Marla's named the west walk: **this quest is the east's directed
+    traffic**, the trigger both of iteration 16's seeds gate on. The
+    thanks text pays off what the player literally sees at the yard: the
+    stone cut and on the sledge, ungilded — Hobb kept his half of the
+    paper, the gilders didn't. Commerce register throughout: a late stone
+    is cartage and fees, never an omen; no doors opened (frost-split and
+    the millstone untouched, Merle's hour untouched).
+  - **Rejected this survey**: paying off either east seed directly (the
+    Dial Stone fork and the east-road trainer both gate on traffic — this
+    quest CREATES it; both are riper next survey than ever); the
+    conjuration duelist (its ~5-card trigger fired mid-iteration when
+    Something Comes landed, but duelists.js belonged to the live card
+    session this survey — and back-to-back with 15's duelist would repeat
+    the shape anyway; NOW RIPE for a future iteration); Red-Sash
+    camp-life + windmill (blocked, main.js still locked); the hot spring
+    (11th look, parked); a Bram or Aldric giver for this errand (Bram's
+    quest charter is Act I's register, Aldric's is the Vex/Gruk chain —
+    a commerce errand dilutes either; Yara IS the commerce register).
+  - **Verification note for the pattern library**: devSeed can't seed
+    quest state, so the raw-WS e2e used the stop-server → edit-profile-
+    row → restart dance for the prereq (node:sqlite on the throwaway DB),
+    with refusal paths tested live before the edit. 20 headless gate
+    assertions + 16 e2e assertions, all green.
+  - **Seeded for later**: the **east-road route trainer's trigger is now
+    met on paper** (directed traffic exists the moment this deploys — the
+    Nell precedent says give it one deploy's grace, then it's the ripest
+    thing in the ledger; the 36–44 band below Hew stays reserved); the
+    Dial Stone fork arm likewise strengthens (a walker sent to the quarry
+    stands two stones from Merle's ring). The **conjuration duelist is
+    now ripe** (family at 5 per its own written trigger) — it wants a
+    survey when no card session owns duelists.js. Red-Sash + windmill
+    unchanged (blocked); hot spring parked (11 rejections).
+
 - **Something Comes — the Wildcaller's reaction, and the family's 5th card
   (2026-07-16, /new-card run 3)**: fires run 1's seeded trigger — the
   wildcaller now stands at 5 cards, so **the conjuration duelist is

@@ -198,6 +198,15 @@ but never say "points" or "unlock."
   the Night-Gather by daylight and is gone by dusk, and won't say why beyond
   "the light's better." (Vendor interactions can't surface flavor lines —
   his knowledge shows in the pack desc and DESIGN text only for now.)
+- **Guildmaster Yara** (Highgate, the Merchant Hall) — commerce tier, the
+  Marla register at guild scale: ledgers, guarantees, receipts. Her stone
+  errand (quest `stone_order`, the realm's east pointer) stays
+  commerce-tier: a late waystone is cartage and gilders' fees, never an
+  omen — she has no opinions on Hobb's seeded doors (the frost-split
+  blocks, the waiting millstone) and must not acquire any. If the guild
+  ever buys the millstone, that's the windmill option's business, not
+  hers. She knows the Chronicle as civic record (the Sela pointer), never
+  as myth.
 - **Marla, Harrow, the Wayfarer, everyone else** — superstition and small
   omens. Marla is actively dismissive (someone still has to sell the packs).
   Her honey-run errand (quest `honey_run`, the realm's southwest pointer)
