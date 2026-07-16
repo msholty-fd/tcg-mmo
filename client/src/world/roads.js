@@ -54,6 +54,7 @@ const DEST = {
   wetherdowns:[-150, -10],
   pellspond: [-141, 58],
   beemeads:  [-147, -93],
+  quarry:    [157, -20],
 };
 
 // A hub crossroads just south of the village where the roads diverge, then
@@ -118,6 +119,21 @@ waystone(-145, 33, ...DEST.pellspond);
 waystone(-146, -30, ...DEST.beemeads, 1.2);  // downs south-edge marker, the fork's other arm
 waystone(-147, -53, ...DEST.beemeads);
 waystone(-148, -76, ...DEST.beemeads);       // meads-edge stone — the skeps are in sight from here
+// the East Road (2026-07-16, worldbuilding iteration 16 — DESIGN.md): the
+// downs rule fired in the east — Hobb's Quarry earned Hew (iteration 15),
+// so the yard has business and gets its route. The road continues PAST
+// Gruk's Hollow the way the Darkwood road does (a camp is a destination,
+// not a terminus): two stones northeast from the hollow's edge to the
+// quarry's southwest approach, where Hobb's own signpost takes over the
+// greeting. Short leg, spur-band spacing (22.8 — the meads spur's exact
+// gap); a Dial Stone arm could fork here one day, but one arm at a time
+// (the west's lesson). Terrain scanned numerically before siting (the
+// West Road technique): route h 1.23..−1.53, max slope deviation 0.25
+// within r=1.5; nearest colliders — quarry hut 9.4 from the edge stone
+// (spur precedent 8.2), Gruk-side props ≥12.2 (and those are collider-
+// free bone dressing); sorrel's patrol polyline ≥48 away.
+waystone(126, -45, ...DEST.quarry);          // Gruk-edge stone, seen from the hollow of bones
+waystone(144, -31, ...DEST.quarry);          // quarry-edge stone — the yard in sight from here
 
 // The Wayfarer — a roaming teller who keeps the roads' stories, stationed at
 // the crossroads hub. First flavour NPC placed out in the Boarlands rather
