@@ -815,6 +815,10 @@ const CARD_ART = {
   // The Wildcaller: conjuration (a summoning howl, greened)
   wild_summons:        { sprite: 'howl', pal: { g: '#3a6132', m: '#aef07a', M: '#6a9a4a' } },
   call_of_the_wild:    { sprite: 'howl', pal: { g: '#4a5a2a', m: '#c8f07a', M: '#8aa84a' } },
+  // the family's creature: bark-brown hood with the wildcaller spells' vivid
+  // green as accent + garment (distinct from Cobb's bright farm-green, the
+  // Footpad's shadow-green/moonlight-tan, and Tarn's golden-brass browns)
+  old_whistler:        { sprite: 'hooded', pal: { h: '#5c4a34', H: '#40331f', m: '#3a6132', e: '#aef07a' } },
 
   // The Adepts: activated abilities (an ember imp; hooded channelers)
   emberkin_adept:      { sprite: 'emberling', pal: { f: '#ff9a30', F: '#ffe070', r: '#c83400' } },

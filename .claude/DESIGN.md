@@ -1929,6 +1929,48 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **Old Whistler — the Wildcaller's first creature (2026-07-16, /new-card
+  run 1)**: first invocation of the new-card skill. Survey picked the
+  thinnest family: the Wildcaller had 2 cards (both spells — wild_summons,
+  call_of_the_wild) against Desperate Measures' 3 and everyone else's 4+,
+  and no creature, so conjuration had no body on any table. `old_whistler`,
+  core, uncommon creature, 5 Ember 3/4, onDeath → summonRandom 1 from
+  wild_summons's exact pool (young_boar/wild_boar/forest_sow/darkwood_wolf
+  — pool consistency keeps the family's "small wild things" tier legible).
+  - **Cost anchor**: warband_champion (5-cost 4/4 frenzy, uncommon) minus a
+    stat point, paid back by the deathrattle beast (~2 Ember of delayed,
+    random value per wild_summons's 4-Ember-for-2 rate). Statted low per
+    the cost-it-high doctrine. Sims: 3 copies in a boarherd shell
+    (kindled_fury ×2 + wolf_howl out) vs each starter, 50/side — 61/62/50
+    vs boarherd/wardens/redsash, i.e. power-neutral against the plain
+    boarherd base (60/52/47), 0 stuck across 300 games. Deathrattle
+    observed firing 28× across 40 instrumented games (the non-fires are
+    the field cap — summonUnit no-ops at 6 — and beasts conjured
+    mid-enemy-turn that died before the per-turn snapshot).
+  - **Family/faction**: wildcaller → deliberately neutral (the
+    new-mechanics-family rule); no rank ladder or starter perturbation —
+    sim-starters byte-identical, test-factions grew 437→439 (the new
+    card's own assertions).
+  - **Circulation**: Boarlands pack automatically (uncommon, registered);
+    reward pool: **Sorrel the Boartracker** (a tracker learns the old
+    calls — the roster's one beast-hunter identity; uncommon, within the
+    route-trainer reward band; deck untouched so Sorrel's 56/66/58 tuning
+    holds). Art: hooded sprite, bark-brown hood + the wildcaller spells'
+    vivid green (#aef07a) as accent/garment — the family's color made a
+    person; distinct from Cobb's farm-green, the Footpad's shadow-green,
+    Tarn's golden-brass.
+  - **Rejected this survey**: a 3rd Desperate Measures card (family at 3,
+    not 2 — thinner existed); a wildcaller reaction ("conjure when your
+    creature dies" — double-randomness reads as noise, and reactions are
+    the deepest family already at 13); an NPC deck swap for the card
+    (no duelist is conjuration-themed today; forcing it into Sorrel's
+    deck would re-tune a trainer for a theme that isn't his — seeded
+    instead, below).
+  - **Seeded for later**: a conjuration-themed duelist when the wild
+    family reaches ~5 cards (the Wildcaller themself as a person is an
+    open door — the family name is already a title looking for an owner);
+    a 4th/5th wildcaller card if the theme earns play.
+
 - **Hew the Splitter — Hobb's Quarry's duelist (2026-07-16, worldbuilding
   loop iteration 15)**: the seeded ledger's ripest entry, and the loop's
   most-rehearsed hand-off firing again — iteration 14 seeded "a quarry
