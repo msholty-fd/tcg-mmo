@@ -15,14 +15,15 @@
 // the songs; stone does the holding" — one light echo, never explained).
 // Seeded hooks (see DESIGN.md/LORE.md): frost-split blocks coming out of the
 // face in midsummer, and the dressed millstone waiting on a mill nobody has
-// built. A quarry duelist can follow a loop later (Tolly/Dace/Wick
-// precedent); the yard earns a road when it earns business (the downs rule).
+// built. The quarry duelist landed one loop later as seeded (Hew, iteration
+// 15, the Tolly/Dace/Wick precedent); the yard now has business, so an east
+// road is the region's open seed (the downs rule).
 import * as THREE from 'three';
 import { scene } from '../scene.js';
 import { groundH } from '../terrain.js';
 import { rand } from '../utils.js';
 import { addCircle, addRect } from '../colliders.js';
-import { M, camCollidables, campfire, fires, crate, barrel, signpost, spawnNPC } from './lib.js';
+import { M, camCollidables, campfire, fires, crate, barrel, signpost, spawnNPC, spawnDuelist } from './lib.js';
 
 const Q = { x: 157, z: -20 };   // heart (constants.js CAMPS r=16)
 
@@ -186,6 +187,16 @@ signpost(Q.x - 12, Q.z + 1, -1.8);   // greets the walk-in from the west
 // unexplained. Stands mid-yard between the sledge and the face; nearest
 // colliders: tool block 2.8, block stack ~3.5, sledge ~4 (labels stay clear).
 export const hobb = spawnNPC('Mason Hobb', Q.x + .5, Q.z + .5, { shirt: 0x8a8578, hat: 0x4e483c });
+// Hew the Splitter — the quarry's duelist (worldbuilding iteration 15, the
+// seeded apprentice cutter): Hobb marks the seams, Hew sets the feathers and
+// wedges and splits the blocks out, and drills with cards between splits —
+// splitting and dueling are the same lesson: read the seam, set your line,
+// and hold. Stands in the open working ground between the block stacks and
+// the lower bench (numeric clearance scan: tall block stack 1.38, lower
+// bench ~1.6, Hobb 5.1 — labels and the ⚔ badge stay clear). Route-trainer
+// tier: deck/rewards in shared/sets/core/duelists.js, no server change.
+export const hew = spawnDuelist('hew', Q.x + 1.5, Q.z - 4.5, { shirt: 0xa39a84, hat: 0x7a715c });
+
 hobb.flavor = [
   "Highgate's walls, the village hearthstones, half the cairns you've walked past — this yard's cut, or my father's, or his. Stone doesn't say who shaped it. So I'm saying.",
   "Every waystone on every road in the realm went out of here on a sledge. The gilding's Highgate's coin. The stone's ours.",
