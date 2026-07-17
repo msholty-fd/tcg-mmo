@@ -2011,6 +2011,88 @@ considered and rejected.
     queue's head; redsash's next structural gap is a frenzied_warband
     rare above kestrel if the faction ever wants a second chase card.
 
+- **The Loomstead — the weaver's stead on the middle eastern grass
+  (2026-07-16, worldbuilding loop iteration 18)**: two-axis survey (nothing
+  ripe was buildable — see rejections). *Map*: the numeric gap scan found
+  the far northwest (−151,117, clearance 60) and the middle-east grass
+  (87,46, clearance 55) as the realm's biggest unclaimed stretches. *Archetype*:
+  **cloth** — the realm's single most visible crafted material (the
+  humanoid fidelity pass put a woven basketweave texture on every shirt in
+  the realm) woven nowhere, the exact retro-explain shape of the meads
+  (Highgate's candles) and the quarry (the waystones). The middle-east
+  site won on archetype fit: iteration 13 authored Nell carting "Wynn's
+  wool" east **with no named destination** — the Loomstead is where the
+  wool goes, closing a dangling economy line the way the honey table
+  waited for Marla. Landmark tier (Downs/Pond/Meads/Quarry precedent):
+  world-module-only, flavour NPC, card-free, no duelist (the downs rule —
+  seeded instead). Shape run: landmark (14), duelist (15), road (16),
+  quest (17), landmark (18).
+  - **Rejected this survey**: the conjuration duelist (ripe by its own
+    written trigger — the Wildcaller family hit 5 mid-iteration-17 — but
+    duelists.js belongs to the live /new-card session `card-first-tusk`
+    this survey; STILL RIPE, wants the next survey where no card session
+    owns the file); the east-road route trainer (same file ownership, AND
+    iteration 17's own note gives it one deploy's grace — the Nell
+    precedent); the Dial Stone fork arm (gated on east traffic actually
+    materializing post-deploy); Red-Sash camp-life + windmill (still
+    BLOCKED — humanoid-fidelity still locked on main.js); the hot spring
+    (12th look, parked); the far-northwest gap (bigger clearance but no
+    archetype story reaches it — RECORDED as the realm's biggest
+    documented unclaimed stretch, future ledger material: whatever lives
+    below the western ridge should be found on purpose, not filled in).
+  - **The place** (`client/src/world/loomstead.js`, shared/zones.js CAMPS
+    (87,46) r=16 — the FIRST zone registered in the promoted shared
+    registry rather than constants.js — wilds.js CLEARINGS r=14): sited by
+    the numeric scan, flattest r=10 disc in the region (center h 1.61, max
+    deviation 0.59, quarry precedent 0.65), zero terrain edits;
+    clearances — Emberwatch ruins 39.5, finch's patrol polyline 31.8, Dial
+    Stone 64.8, village ring 60. Props: Downs-pattern hut as the NORTH
+    backdrop (door south into the yard); the **warp-weighted loom under a
+    lean-to** (cream warp, a madder woven band growing from the beam, a
+    row of stone loom-weights — the realm's shirts, mid-birth); the
+    **drying lines** front-south, broadside to the walk-in — four bolts in
+    cream/woad/weld/madder, the zone's palette carrier and distance read;
+    a tenter frame (woad cloth stretched taut); two lib barrels as dye
+    vats wearing colored tops; wool sacks (Wynn's fleeces, arrived on
+    Nell's cart); the **dye fire** mid-yard under a tripod pot (LORE
+    relationship: TENDED, "a dye pot wants a fire like a held breath"),
+    campfire() + explicit fires.push; a weld/woad dye garden SW on the
+    meads drift pattern (reed-green stems — dark stems read as torches, a
+    caught-and-fixed live-render find); signpost greeting the southwest
+    approach. Palette: dyed cloth against undyed cream — nothing else in
+    the realm carries these colors.
+  - **A layout lesson worth keeping**: the first build put the hut between
+    the southwest approach and the yard — the walk-in view was the back of
+    a hut, and the drying lines (the zone's whole read) hid behind it.
+    Caught in the live render, relaid: the approach must see the payoff
+    prop first, the hut is a backdrop, not a gate. Collider sweep re-run
+    after the relayout (7 probes push out, approach walkable).
+  - **Weaver Ede** — flavour NPC, small-omens tier (LORE.md updated): six
+    lines — the economy read end-to-end (Wynn's fleeces in on Nell's cart,
+    bolts out to Highgate's backs), two craft-texture lines (the loom
+    counts better than she does; Nell's axle decides washing day — the
+    cross-NPC line), ONE tended-fire echo (the held-breath line), and two
+    seeded doors: **the ash-grey bolt that won't take dye** (she blames
+    the water; the grey stays a dyer's grumble, never sharpened) and
+    **the spring thief of red thread** (magpies, she expects; none ever
+    caught). Neither door opens here.
+  - **Deliberately NOT done**: no duelist (downs rule — **seeded**: a
+    Loomstead duelist, an apprentice or a peddler-of-bolts, route-trainer
+    tier, one loop of being found first); no road (the downs rule again —
+    though note the stead sits ~19u north of the Gruk road's walkline and
+    the Emberwatch road passes west; when it earns a route, a SHORT spur
+    is all it needs); no critters (the life is Ede, the fire, and the wind
+    in the cloth); no Nell/Wynn dialogue edits (destination NPCs don't
+    announce new places — the Darkwood-road precedent; Ede's own lines
+    carry the connection).
+  - **Seeded for later**: a Loomstead duelist (route-trainer tier, after
+    a loop of being found); the ash-grey bolt and the red-thread thief
+    (Ede's doors); the far-northwest stretch (recorded above). Standing
+    ledger otherwise: conjuration duelist RIPE (blocked only by card-
+    session file ownership); east-road trainer (one deploy's grace);
+    Dial Stone fork (traffic); Red-Sash + windmill (main.js); hot spring
+    (parked, 12).
+
 - **The Stone Order — Yara's visit quest to Hobb's Quarry (2026-07-16,
   worldbuilding loop iteration 17)**: the survey found nothing ripe — both
   of iteration 16's east seeds gate on *traffic that doesn't exist yet*,
