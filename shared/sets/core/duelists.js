@@ -173,6 +173,10 @@ const marrowDeck = swap(
   ['quartermaster', 'quartermaster', 'kindled_fury', 'kindled_fury', 'sudden_spark', 'sudden_spark', 'wolf_howl', 'ember_bolt'],
   ['bone_delver', 'grave_caller', 'charnel_hound', 'ashen_vigil', 'marrow', 'charnel_colossus', 'unquiet_grave', 'delvers_pick'],
 );
+// charnel_pup deliberately NOT swapped into the deck: both simmed variants
+// (young_boar or militia_recruit out) pushed her already-hottest-in-roster
+// spread further up (69/83/65 → 72/85/68 and 74/85/67 at 500/side) — the
+// pup rides her reward pool instead (see DESIGN.md, /new-card run 7).
 // Halvard Stillwatch (DESIGN.md) — Red-Sash-based (the roster's least-used
 // base at 3 duelists vs Wardens'/Boarherd's 4, keeping any one base from
 // stacking a 5th). "A deck that builds primarily around reaction cards" was
@@ -398,7 +402,7 @@ export const DUELISTS = {
   },
   marrow: {
     name: 'Marrow the Delver', deck: marrowDeck,
-    rewards: [...marrowDeck, 'last_rites', 'second_harvest'],
+    rewards: [...marrowDeck, 'last_rites', 'second_harvest', 'charnel_pup'],   // "Buries nothing. Fetches everything." — the hound's whelp follows the delver (common; deck untouched by decision, see swap comment above)
   },
   halvard: {
     name: 'Halvard Stillwatch', deck: halvardDeck,

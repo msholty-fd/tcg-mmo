@@ -624,6 +624,9 @@ const CARD_ART = {
   rootbound_titan:     { sprite: 'colossus', pal: { l: '#2e4a24', L: '#22381b', t: '#5a3f22', T: '#43301a', e: '#c8f07a' } },
   cinder_warden:       { sprite: 'hooded', pal: { h: '#8a4a2a', H: '#6a381e', e: '#ffb040' } },
   charnel_hound:       { sprite: 'wolf', pal: { g: '#4a5a4a', G: '#384438', e: '#aef07a', n: '#2a332a' } },
+  // charnel_pup: the hound's whelp — same grave-green family, paled toward
+  // bone so the pup reads younger/smaller than the hound
+  charnel_pup:         { sprite: 'wolf', pal: { g: '#8a9a84', G: '#6a7a64', e: '#caf0a8', n: '#4a554a' } },
   grave_caller:        { sprite: 'hooded', pal: { h: '#3a2a4a', H: '#2a1e38', e: '#b070ff' } },
   piercing_barb:       { sprite: 'fang', pal: { w: '#c8ccd0', W: '#9aa0a8', f: '#ff7a20', F: '#ffd050' } },
   widows_kiss:         { sprite: 'talisman', pal: { c: '#5a2a4a', w: '#f0c8d8', W: '#c890a8' } },

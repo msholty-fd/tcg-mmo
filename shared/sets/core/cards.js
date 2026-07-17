@@ -427,6 +427,15 @@ registerCards([
   // those three unclaimed cards in alongside 5 new ones, all built from
   // existing effect primitives (exhume/graveBuff/buff/draw — no engine
   // changes needed).
+  // The graveyard family's 1-drop and second common — the axis had ONE
+  // common across 8 cards, so Strangers barely met it. Anchored to
+  // watchfire_whelp (2c 2/2, same deathrattle) minus one cost and one stat
+  // point each way: a body that dies willingly, feeds graveBuff counts and
+  // exhume targets, and replaces itself on the way down.
+  { id: 'charnel_pup', set: 'core', rarity: 'common', type: 'creature', cost: 1, atk: 1, hp: 1,
+    triggers: { onDeath: [{ effect: 'draw', amount: 1 }] },
+    name: 'Charnel Pup', text: 'When this dies, draw a card.',
+    flavor: 'Buries nothing. Fetches everything.' },
   { id: 'bone_delver', set: 'core', rarity: 'common', type: 'creature', cost: 2, atk: 1, hp: 3,
     triggers: { onPlay: [{ effect: 'graveBuff', filter: 'creature', atk: 1, hp: 0, cap: 2 }] },
     name: 'Bone Delver', text: 'When played, gains +1 attack for each creature in your graveyard (up to +2).',
