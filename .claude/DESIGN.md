@@ -2222,6 +2222,63 @@ considered and rejected.
     queue's head; redsash's next structural gap is a frenzied_warband
     rare above kestrel if the faction ever wants a second chase card.
 
+- **The Kiln Road — the Hollowmere road forks south to the Kilnyard
+  (2026-07-17, worldbuilding loop iteration 29)**: the ledger's ripest seed
+  and a shape change after the duelist (27) and quest (28). The downs rule
+  fired for the Kilnyard exactly as it did for the meads/quarry/Loomstead/
+  Forge — a **fifth** landmark→business→road payoff: business+NPC at 19,
+  directed traffic at 28 (crock_order sends the player "south past
+  Highgate's road, where the green grass gives out to grey"), this the road
+  — and iteration 28's entry named it next ("its road unlocks next survey…
+  site it against the Highgate/Hollowmere corridor"). Client-only, one file
+  (`client/src/world/roads.js`) plus a header note in kilnyard.js;
+  card-free, zero server/shared change.
+  - **The spur** (fork marker + 3 stones, existing `waystone()` builder,
+    colliders self-registered): the Kilnyard sits far south at (−64,−165),
+    and the **Hollowmere road's end stone (−62,−72) is the nearest CLEAN
+    fork** — a Highgate-road fork would start inside Highgate's large r50
+    circle, so despite Harrow's "past Highgate's road" hearsay the Hollowmere
+    corridor is the honest siting (the seed named both). A 1.2-scale edge
+    marker at (−62,−82) leaves due south (10.0 from its parent stone), then
+    stones at (−62,−106), (−63,−133), and (−64,−151) down the western grass
+    to the Kilnyard's north edge (13.6 from its signpost). **The realm's
+    longest spur — three stones, not two** — because the yard is deep south.
+    All point at new `DEST.kilnyard` [−64,−165]. Routed EAST of Hollowmere's
+    r22 circle throughout (min edge clearance 16.0 — a potter gives the mire
+    a wide berth; the road reads as its own south road, not "through the
+    swamp"). Harrow's words are a farmer's hearsay (he's never been); the
+    marked road is the truer answer (the wool_run/Forge-spur pattern).
+    Terrain scanned (West Road technique): route h −4.57..4.75, max slope
+    deviation 0.32 (the yard sits in a low, so the road descends into it).
+  - **Deliberately NOT done**: no Wayfarer line (his southwest line already
+    names Hollowmere from the crossroads; the Kilnyard is a branch off a
+    road he names, the Loomstead/Forge-spur precedent — and a potter's-spur
+    clause would crowd his mire/Hessa line); no crock_order offer edit
+    (Harrow's rough "past Highgate's road" is deliberately a farmer's
+    hearsay — the marked road is simply the truer answer the player finds,
+    the wool_run pattern); no Kilnyard duelist (the downs rule; **seeded**:
+    a Kilnyard duelist for a later window — Fern's second, the Forge
+    cascade's last step).
+  - **Verify:** node --check + build clean (worktree); test-packs 6653/6653,
+    test-factions 459/459; no server/shared change. Live on the dev rig
+    (:8093/:5204): all 4 stones in-scene at exact groundH
+    (3.64/−1.27/−4.48/−4.53, matching the pre-siting scan), arrow rotations
+    match computed atan2 (all point south to the yard, ±π), colliders push
+    out, **Brenna's clearance to any Kiln Road stone confirmed 14.56 live
+    sweeping updatePatrols across 24h** (she patrols the Hollowmere road's
+    upper segment; the sorrel teleport gotcha stays satisfied), screenshot
+    eyeballed (gilded stones stepping south to the kiln, hut, and drying
+    boards), zero console errors. NOT verified: walking the spur in motion
+    (rAF stall — generic waystone path, same posture as the West/East Road
+    and prior spurs).
+  - **Seeded for later**: a **Kilnyard duelist** completes the yard's full
+    grammar (landmark+NPC+quest+road → duelist) at the next duelists.js
+    window — Fern's second, the last step of the Forge cascade. The
+    **conjuration duelist** remains the one genuinely-stuck seed (still
+    needs a home-siting survey — new landmark vs convert-a-wild-place; do
+    not rush-pair with a landmark). Standing: far-NW reserved; far-NE +
+    far-SW banked; Red-Sash + windmill (main.js); hot spring (parked, 14).
+
 - **Vessels for the Harvest — Harrow's craft-to-craft errand to the Kilnyard
   (2026-07-17, worldbuilding loop iteration 28)**: shape variance after the
   Forge duelist (27) — a quest, and the last standing craft-yard seed. The

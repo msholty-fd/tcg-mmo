@@ -57,6 +57,7 @@ const DEST = {
   quarry:    [157, -20],
   loomstead: [87, 46],
   forge:     [46, 86],
+  kilnyard:  [-64, -165],
 };
 
 // A hub crossroads just south of the village where the roads diverge, then
@@ -169,6 +170,29 @@ waystone(74, 45, ...DEST.loomstead);         // yard-edge stone — the drying l
 waystone(37, 48, ...DEST.forge, 1.2);        // Emberwatch-road fork marker, pointing north to the smoke
 waystone(38, 61, ...DEST.forge);
 waystone(41, 74, ...DEST.forge);             // forge-edge stone — the smith's smoke in sight from here
+// the Kiln Road (2026-07-17, worldbuilding iteration 29 — DESIGN.md): the
+// downs rule fired for the Kilnyard — iteration 28's crock_order gave it
+// business AND directed traffic (Harrow sends the player "south past
+// Highgate's road, where the green grass gives out to grey" to see if his
+// storage crocks are fired), the meads/quarry/Loomstead/Forge pattern a
+// fifth time. Harrow's words are a farmer's hearsay (he's never been); the
+// marked road is the truer answer (the wool_run/Forge-spur pattern). The
+// Kilnyard sits far south at (−64,−165); iteration 28 seeded siting it
+// against the "Highgate/Hollowmere corridor," and the Hollowmere road's end
+// stone (−62,−72) is the nearest CLEAN fork (a Highgate-road fork would
+// start inside Highgate's large r50 circle). A 1.2-scale edge marker leaves
+// due south of that stone, then three stones down the western grass to the
+// Kilnyard's north edge — the realm's longest spur (the yard is deep south),
+// so three stones, not two. Routed EAST of Hollowmere's r22 circle
+// throughout (min edge clearance 16.0 — a potter gives the mire a wide
+// berth, and the road reads as its own south road, not "through the swamp").
+// Terrain scanned (West Road technique): route h −4.57..4.75, max slope
+// deviation 0.32; last stone 13.6 from the Kilnyard's own signpost, fork
+// 10.0 from its parent stone.
+waystone(-62, -82, ...DEST.kilnyard, 1.2);   // Hollowmere-road fork marker, pointing south to the kiln
+waystone(-62, -106, ...DEST.kilnyard);
+waystone(-63, -133, ...DEST.kilnyard);
+waystone(-64, -151, ...DEST.kilnyard);       // kiln-edge stone — the potter's smoke in sight from here
 
 // The Wayfarer — a roaming teller who keeps the roads' stories, stationed at
 // the crossroads hub. First flavour NPC placed out in the Boarlands rather
