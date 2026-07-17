@@ -2222,6 +2222,76 @@ considered and rejected.
     queue's head; redsash's next structural gap is a frenzied_warband
     rare above kestrel if the faction ever wants a second chase card.
 
+- **Linnet the Whistler — the Whistlewood's duelist, and the realm's oldest
+  seed closed (2026-07-17, worldbuilding loop iteration 32)**: the ripest
+  seed by a wide margin — iteration 31 built the grove one iteration ago
+  specifically to home this duelist, and it closes the wildcaller card
+  family's homing, a thread open since ~iteration 15 (the realm's
+  oldest-standing seed). Varies the shape after the landmark (31). Unlike
+  the nine craft route-trainers, this one has a THEMED payoff: it gives the
+  wildcaller family its FIRST deck home anywhere — its cards had lived only
+  in packs and reward pools.
+  - **The character**: Linnet, Rook's apprentice — the young caller
+    learning the whistle. The master/apprentice split (resolved at 31 via
+    the Odo→Wick precedent) holds: **Rook stays flavour, Linnet duels**
+    (verified live — rook.duelist is undefined, linnet.duelist is set).
+    Micro-read **"the wild answers"**.
+  - **The deck** (`shared/sets/core/duelists.js` + a spawn in
+    whistlewood.js, 1-line barrel; zero server change): **boarherd base**
+    (the wild she calls IS the boar/wolf family). The swap is
+    **summon-for-summon and thematically exact**: out go the two
+    **boar_matrons** — boarherd's OWN summoner, the sow who breeds young
+    boars on death ("the herd provides") — because Linnet doesn't breed the
+    herd, she CALLS the wild; a fifth distinct boarherd out-shape (NOT
+    Tolly's ember_bolt+sudden_spark, Hew's kindled_fury, Sorrel's
+    militia_recruit, or Gedd's wolf_howl+pack_alpha). In come **low_whistle**
+    (summon 1 random beast) and **wild_summons** (summon 2 — which had NO
+    deck home anywhere before this). Reward **thicket_beast** ("Mostly moss.
+    Partly teeth." — the mossy wild the whistle calls, common, in the
+    call_of_the_wild pool, echoes the grove's moss).
+  - **Tuning** (500/side vs each starter, 0 stuck): **46/50/47** vs
+    boarherd/wardens/redsash — the friendly-mid band (near Gedd 45/56/46,
+    Nell 43/54/49), and power-NEGATIVE vs the plain boarherd base
+    (50/60/52 → 46/50/47). **The finding**: the summon cards ADD board
+    bodies (the greedy AI leverages them hard), so a naive cut BOOSTS the
+    deck — cut ember_bolt×2 → 58/70/60, cut tusker×2 → 52/62/51. Cutting
+    boarherd's OWN summoner (boar_matron, a sticky 2/4 leaving two piglets)
+    is what offsets the summons and keeps a young apprentice at a remote
+    grove dueling gentle. Rejected + simmed at 500/side: the two boosts
+    above; boar_matron+wild_boar → low_whistle+old_whistler (49/59/51 — a
+    hair high, and old_whistler is Sorrel's reward card, where wild_summons
+    homes the never-homed card). Starter spread untouched, byte-identical
+    60/52/47.
+  - **Verify (the full duelist bar):** build + `node --check` clean;
+    test-packs 6653/6653, test-leaders 198/198, test-factions 459/459 (no
+    new cards — the wildcaller family already existed); roster 26, linnet
+    deck 30 legal (ids valid, ≤3 copies); starter spread byte-identical
+    60/52/47; raw-WS e2e 11/11 on :8099 (bogus-npc refused, npcduel linnet
+    → duelStart foe "Linnet the Whistler"/kind npc, foe hand sanitized
+    all-nulls, own hand visible, second-duel-in-room ignored, concede →
+    duelEnd loser-no-rewards). Live on a worktree rig (:8096/:5207): Linnet
+    in-scene with ⚔ badge + 30-card deck, **Rook confirmed still flavour**,
+    spawn (−133,−151) not stuck, clearances healthy (Rook 6.4, fire 3.5,
+    log 3.6), `nearestInteract()` picks her up as a duelist at 2.2u,
+    screenshot eyeballed (Rook flavour by her lean-to + Linnet badged
+    across the fire, the gathered beasts between — the master/apprentice
+    split visible in one frame), prod-bundle dev-hook grep 0 hits, zero
+    console errors. NOT verified: walk-up E-challenge in motion / a
+    played-out live duel (rAF stall — e2e covers the room lifecycle).
+  - **Seeded for later**: **the realm's oldest seed is now CLOSED** — the
+    wildcaller family is homed, conjuration has a duelist, the Whistlewood
+    has its full grammar (landmark + master + duelist). Then (downs rule)
+    the grove earns a ROAD if it earns traffic — it's remote SW, so a road
+    wants a reason (a quest pointing there, or just the duelist drawing
+    players); **seeded: a Whistlewood road/quest when it earns the
+    traffic**. Rook's two doors (the black hind, the whistle) stay unopened.
+    Remaining ledger: a **tannery** (last missing craft archetype); far-NE
+    + far-SW-corner banked gaps; far-NW reserved; Red-Sash + windmill
+    (main.js); hot spring (parked, 14). **The two big standing threads —
+    the craft economy AND the conjuration family — are both now complete;
+    the loop is into genuinely open territory (new archetypes, the banked
+    gaps, or deepening).**
+
 - **The Whistlewood — the beast-caller's grove, and the wild's first face
   (2026-07-17, worldbuilding loop iteration 31)**: iteration 30 declared the
   craft economy complete and flagged the well dry ("the next windows should

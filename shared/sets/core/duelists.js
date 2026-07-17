@@ -522,6 +522,45 @@ const sedgeDeck = swap(
   ['wild_boar', 'wild_boar'],
   ['warded_acolyte', 'second_wind'],
 );
+// Linnet (the Whistlewood) — Rook's apprentice, the young caller: Rook
+// whistles up the wild and it comes; Linnet is learning the whistle, and
+// drills with cards between the lessons, because calling and dueling are the
+// same lesson — you don't force the wild, you let it know it's welcome, and
+// it answers. She is the FIRST deck home the wildcaller family has ever had
+// (its cards lived only in packs and reward pools until now — iteration 31
+// built the grove, iteration 15 seeded "a title looking for an owner"; the
+// master is flavour, the apprentice duels — the Odo->Wick precedent).
+// Boarherd base — the wild she calls IS the boar/wolf family. The swap is
+// summon-for-summon and thematically exact: out go the two boar_matrons —
+// boarherd's OWN summoner, the sow who breeds young boars on death ("the herd
+// provides") — because Linnet doesn't breed the herd, she CALLS the wild;
+// deliberately NOT Tolly's ember_bolt+sudden_spark, Hew's kindled_fury,
+// Sorrel's militia_recruit, or Gedd's wolf_howl+pack_alpha outs (same-base
+// boarherd trainers must not share a shape — a fifth distinct boarherd out).
+// In come low_whistle (summon 1 random beast — the whistle) and wild_summons
+// (summon 2 — the wild answering in force; wild_summons had NO deck home
+// anywhere before this). Micro-read: "the wild answers" — beasts called from
+// the pool, no fire, no herd-breeding, distinct from Tolly's herd buffs,
+// Hew's hold, Sorrel's ambush, Gedd's plodding stock, and every craft
+// trainer.
+// Tuned in sims (500/side vs each starter, 0 stuck): 46/50/47 vs
+// boarherd/wardens/redsash — the friendly-mid band (near Gedd 45/56/46 and
+// Nell 43/54/49), and power-NEGATIVE vs the plain boarherd base (50/60/52 ->
+// 46/50/47): the summon cards ADD board bodies, so cutting boarherd's own
+// summoner (boar_matron, a sticky 2/4 that leaves two piglets) is what keeps
+// the swap from spiking — a young apprentice at a remote grove duels gentle,
+// not like the boss camps. Rejected variants, all simmed at 500/side: cut
+// ember_bolt x2 -> same ins (58/70/60 — a huge +8..10pp BOOST: the summons
+// pile on bodies the greedy AI can't answer, and it duplicates Tolly's burn
+// theme); cut tusker x2 -> same ins (52/62/51 — still boosted, tusker's a
+// weaker cut than the matron); cut boar_matron+wild_boar -> low_whistle+
+// old_whistler (49/59/51 — a hair high, and old_whistler is Sorrel's reward
+// card; the wild_summons build homes the never-homed card instead).
+const linnetDeck = swap(
+  STARTER_DECKS.boarherd,
+  ['boar_matron', 'boar_matron'],
+  ['low_whistle', 'wild_summons'],
+);
 
 export const DUELISTS = {
   rowan: {
@@ -623,5 +662,9 @@ export const DUELISTS = {
   sedge: {
     name: 'Sedge the Wedger', deck: sedgeDeck,
     rewards: [...sedgeDeck, 'hearth_keeper'],   // "The fire never dies on her watch." — the kiln-tender's patience, the fire Fern trusts dark (uncommon; route-trainer reward band, not a Leader/rare; deck untouched, so tuning holds)
+  },
+  linnet: {
+    name: 'Linnet the Whistler', deck: linnetDeck,
+    rewards: [...linnetDeck, 'thicket_beast'],   // "Mostly moss. Partly teeth." — the grove's wild given form, the mossy beast the whistle calls (common, in the call_of_the_wild pool; route-trainer reward band, not a Leader/rare; deck untouched, so tuning holds)
   },
 };
