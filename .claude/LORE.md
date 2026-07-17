@@ -186,6 +186,13 @@ but never say "points" or "unlock."
   that they won't name the hour — Hobb must never learn or guess which hour
   it is (the missing stone stays Merle's joke). No opinions on the old ring
   in the deep wood, the mine, or any of the western folk's doors.
+- **Harrow, as quest-giver** (his errand `crock_order`, the craft-to-craft
+  shape a second time): sends the player to Potter Fern's kiln for the
+  storage crocks his harvest needs — strictly practical, storage jars and a
+  winter's keeping, never an omen. The errand must never touch Harrow's own
+  seeded frost-split door or Fern's (the unmixed glaze, the pit that never
+  runs dry); it is just the farmer who feeds the realm meeting, through the
+  player, the potter who makes what he keeps it in.
 - **Hobb, as quest-giver** (his errand `worn_edges`, the realm's first
   craft-to-craft quest): sends the player to Bryn's Forge for re-edged
   chisels — worn stone-cutting edges and a smith's fire, strictly craft

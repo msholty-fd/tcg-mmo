@@ -2222,6 +2222,64 @@ considered and rejected.
     queue's head; redsash's next structural gap is a frenzied_warband
     rare above kestrel if the faction ever wants a second chase card.
 
+- **Vessels for the Harvest — Harrow's craft-to-craft errand to the Kilnyard
+  (2026-07-17, worldbuilding loop iteration 28)**: shape variance after the
+  Forge duelist (27) — a quest, and the last standing craft-yard seed. The
+  Kilnyard quest was seeded at 20/22 and deferred twice for the same reason
+  (its obvious giver, Marla, would repeat her honey_run supplier-visit);
+  iterations 25 and 27 both recorded the fix — "a non-Marla giver — Harrow,
+  whose farmstead uses crockery, is the standing suggestion." This pays off
+  that recorded plan: the **craft-to-craft shape a second time** (worn_edges
+  was the first). Harrow FEEDS the realm; Fern makes the crocks he KEEPS the
+  harvest in — the farmer depends on the potter and, rooted to his rows in
+  growing season, has never seen her kiln. It also mints the Kilnyard's
+  business, so its road unlocks next (the Forge cascade a second time:
+  quest → road → duelist).
+  - **The quest** (`crock_order`, "Vessels for the Harvest"; `shared/
+    quests.js` + ONE client GIVERS line): giver **harrow** — his first
+    quest, the realm's **third landmark-based giver** after Wynn and Hobb.
+    minLvl 4, prereq `practice` (the discovery-pointer standard; and Harrow's
+    Field is accessible west-central, so a broad audience meets him). visit
+    (−64,−165, r12), 280 xp / 25 coins (the stone_order/worn_edges register).
+    Directions by landmark ("south past Highgate's road, where the green
+    grass gives out to grey") — Fern's kiln is far south, no road yet.
+    Harrow keeps his six flavor lines; his frost-split door is NOT touched
+    (the quest stays storage-jars-and-harvest practical). A quiet warm beat:
+    the farmer who feeds half of Meadowbrook realizing he never thought on
+    the hands that make what he keeps it in.
+  - **Rejected this survey**: a second Forge/quarry duelist or the
+    conjuration duelist (two duelists in a row would be fatigue — Colm was
+    27 — and the conjuration duelist STILL needs its dedicated home-siting
+    survey, not a rush); the Kilnyard road (not earned until this quest
+    gives it business — downs rule); a Marla-given Kilnyard quest (the whole
+    reason it waited — a second Marla supplier-visit repeats honey_run); an
+    Odo-given version (honey pots — tempting and tight, but it would pile a
+    SECOND quest onto the single honey thread the honey_run already covers;
+    Harrow spreads the quest network to a fresh economy, the farm).
+  - **Verify:** node --check + build clean; 20 headless quest-gate
+    assertions (accept/refusals/radius/single-fire/cross-fire/turn-in/
+    id-uniqueness) + 16 raw-WS e2e assertions on a throwaway :8099 server
+    (underlevel + no-prereq refusals, early turn-in refused, outside-radius
+    no-progress, progress single-fire, +25 coins, xp awarded, re-accept
+    refused, persistence across reconnect); suites test-packs 6653/6653,
+    test-factions 459/459. Client wiring live on a worktree Vite (:5204):
+    quest loads client-side (31 quests), giver resolves to Harrow, `harrow`
+    in GIVERS, target confirmed (−64,−165), Harrow's 6 flavor lines intact,
+    zero console errors. NOT verified: full live accept→walk→turn-in in the
+    client UI (server path fully e2e-proven; the generic tracker/marker was
+    verified live at the honey run — same components).
+  - **Seeded for later**: **the Kilnyard is now business-bearing** — its
+    road (a spur; note the Kilnyard is far south at (−64,−165), nearest road
+    the Highgate/Hollowmere corridor — site it against those when it's
+    built) unlocks next survey, then a Kilnyard duelist (the Forge cascade).
+    The **conjuration duelist** remains the one genuinely-stuck seed: it
+    still needs a dedicated home-siting survey (queue-head by age, Wildcaller
+    family at 5, no zone; new-landmark vs convert-a-wild-place). With every
+    craft yard now quested, **the next non-cascade survey should seriously
+    take up the conjuration duelist's home** rather than defer again.
+    Standing: far-NW reserved; far-NE + far-SW banked; Red-Sash + windmill
+    (main.js); hot spring (parked, 14).
+
 - **Colm the Striker — Bryn's Forge's duelist (2026-07-17, worldbuilding
   loop iteration 27)**: the ledger's ripest seed. Iteration 26 gave Bryn's
   Forge its road, making it landmark+NPC+quest+road, and seeded "a Forge
