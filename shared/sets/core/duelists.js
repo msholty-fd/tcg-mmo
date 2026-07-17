@@ -445,6 +445,44 @@ const geddDeck = swap(
   ['wolf_howl', 'pack_alpha'],
   ['old_drover', 'stout_plowman'],
 );
+// Colm (Bryn's Forge) — the striker, Bryn's second: Bryn draws the iron and
+// holds the work, Colm swings the great hammer, and drills with cards
+// between the strikes, because striking and dueling are the same lesson —
+// watch the smith's tongs, hit where she says, hit true, and strike while
+// it's hot. He is the realm's ONE trainer who leans INTO fire: where the
+// shepherd, fisher, and fuller all cut the burn ("a fuller throws no fire"),
+// the smith keeps it — fire is the whole trade. Redsash base — the realm's
+// most aggressive, fiery family (controlled_burn, the fullest burn package),
+// and it evens the route-trainer bases at 3 redsash. Out go the two
+// wild_boars — generic beasts a forge wouldn't field, and NOT Wick's
+// camp_torcher outs nor Finch's young_boar outs (same-base redsash trainers
+// must not share a shape — a third distinct out on the base). In come
+// stoke_the_flames (kindle again + draw — "the fire is never finished
+// eating," the smith stoking her forge) and flame_tender (2/4 guardian that
+// heals the Hearth on kindle — the tended forge fire that warms her back).
+// Micro-read: "strike when it's hot" — a kindle-forward fire lean, distinct
+// from Tolly's herd buffs, Dace's snares, Wick's punish-attack, Nell's
+// steady puller, Hew's immovable hold, Wren's woven guard, and Gedd's
+// plodding stock (and lighter than Tarn's kindle-matters DECK-WIDE identity
+// — this is a two-card nod, not a boss engine).
+// Tuned in sims (500/side vs each starter, 0 stuck): 50/53/54 vs
+// boarherd/wardens/redsash — power-NEUTRAL vs the plain redsash base
+// (49/53/52 — staples for staples, +1/0/+2), landing at finch's level
+// (49/53/52), a notch above the gentle craft yards (Wick 45/44/48, Wren
+// 44/55/49): the smith duels harder than the waxwright because she works
+// the aggressive fire he cut. Rejected variants, all simmed at 500/side:
+// same cut -> stoke+feed_the_fire (48/51/50 — flame_tender is the sturdier
+// on-theme body, and feed_the_fire's self-damage serves better as the
+// reward); stoke+hotblood_recruit (49/52/52 — a Frenzy body, but its flavor
+// is Vex's wannabe-bandit, wrong for an honest smith's hand); boarherd base
+// same ins (49/61/52 — the 61 rides the greedy-AI defense blind spot,
+// boarherd is over-subscribed at 4 trainers, and big beasts read less smith
+// than redsash's fire).
+const colmDeck = swap(
+  STARTER_DECKS.redsash,
+  ['wild_boar', 'wild_boar'],
+  ['stoke_the_flames', 'flame_tender'],
+);
 
 export const DUELISTS = {
   rowan: {
@@ -538,5 +576,9 @@ export const DUELISTS = {
   gedd: {
     name: 'Gedd the Drover', deck: geddDeck,
     rewards: [...geddDeck, 'ironhide_boar'],   // "Fences, walls, militias — all the same to him." — the drover's biggest hog, the prize of the drift (uncommon; route-trainer reward band, not a Leader/rare; deck untouched, so tuning holds)
+  },
+  colm: {
+    name: 'Colm the Striker', deck: colmDeck,
+    rewards: [...colmDeck, 'feed_the_fire'],   // "What burns first, burns brightest." — the forge's escalation, the fire the striker offers on (uncommon spell; route-trainer reward band, not a Leader/rare; deck untouched, so tuning holds)
   },
 };
