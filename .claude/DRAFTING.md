@@ -218,10 +218,17 @@ client/src/hearth.js window + E-priority NPC > player > fire. Packs
 untouched. Open knobs recorded there: pick cost stays free-with-cooldown
 unless it undercuts packs.
 
-**Phase 2 — kindle feeds the fire (#2).** Server-side only: on kindle in an
-online duel, add an anonymous copy of the burned card id to the nearest
-fire's pool (cap pool size; overflow drops oldest). NPC duels included.
-Requires Phase 0. No client change beyond maybe a log line.
+**Phase 2 — kindle feeds the fire (#2). DONE 2026-07-17** (see DESIGN.md
+"Kindle feeds the fire"). Server-side only: every kindle in an online duel
+(human, NPC AI, and autobattle — caught via a duel.log cursor in
+DuelRoom.broadcast) drifts an anonymous copy into the nearest fire within
+KINDLE_FEED_RANGE 40 of the kindling side's position. A full pool is
+**sated** (no churn — griefers can't flush a fire by burning trash;
+drafting is what makes room; decided over oldest-out), and FIRE_COPY_CAP 2
+merges extra dupes into the flame. Phase 1's timed regen stays as the
+floor for fires nobody duels near. Deliberately invisible to the kindling
+player in v1 — a "your memory drifts into the fire" cue is noted as
+legibility polish for later.
 
 **Phase 3 — the Offering (#7).** Engine: new action `offer` (kindle variant
 occupying the turn's kindle slot; max 3 per duel; +1 emberMax like kindle

@@ -14,7 +14,7 @@ import { earnStanding } from '../../shared/factions.js';
 export function createDuelModule(ctx) {
   const { players, activeDuels, challenges, DUELISTS, DuelRoom,
     send, broadcast, sendProfile, markDirty, grant, deckItems, gameHour,
-    CHALLENGE_TTL_MS, CHALLENGE_RANGE } = ctx;
+    CHALLENGE_TTL_MS, CHALLENGE_RANGE, feedFire } = ctx;
 
   // duel victory: XP + quest progress
   function onDuelWin(w, room) {
@@ -92,7 +92,16 @@ export function createDuelModule(ctx) {
   // duel. Same server-synced clock every client renders, so the duel's night
   // state always agrees with the sky the players are looking at.
   const isNight = () => { const h = gameHour(); return h >= 20 || h < 6; };
-  const roomOpts = extra => ({ onEnd: endRoom, grant, onWin: onDuelWin, onChronicle, night: isNight(), ...extra });
+  // drafting Phase 2: every kindle (either side — NPCs and autobattle too)
+  // drifts into the nearest fire that can hear the duel. The duel's location
+  // is the kindling side's live player position (frozen at duel start — the
+  // client stops sending pos while dueling); an AI side borrows its human
+  // opponent's spot, since that's where the duel is happening.
+  const onKindle = (room, side, cardId) => {
+    const live = room.players[side].live || room.players[1 - side].live;
+    if (live && feedFire) feedFire(live.x, live.z, cardId);
+  };
+  const roomOpts = extra => ({ onEnd: endRoom, grant, onWin: onDuelWin, onChronicle, onKindle, night: isNight(), ...extra });
 
   const handlers = {
     challenge(me, msg) {
