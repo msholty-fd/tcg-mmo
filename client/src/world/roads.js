@@ -56,6 +56,7 @@ const DEST = {
   beemeads:  [-147, -93],
   quarry:    [157, -20],
   loomstead: [87, 46],
+  forge:     [46, 86],
 };
 
 // A hub crossroads just south of the village where the roads diverge, then
@@ -151,6 +152,23 @@ waystone(144, -31, ...DEST.quarry);          // quarry-edge stone — the yard i
 waystone(46, 39, ...DEST.loomstead, 1.2);    // Emberwatch-road fork marker, pointing east to the cloth
 waystone(62, 42, ...DEST.loomstead);
 waystone(74, 45, ...DEST.loomstead);         // yard-edge stone — the drying lines are in sight from here
+// the Forge spur (2026-07-17, worldbuilding iteration 26 — DESIGN.md): the
+// downs rule fired for Bryn's Forge — iteration 25's worn_edges gave it
+// business AND directed traffic (Hobb sends the player to the smith "north
+// of the Emberwatch road, look for the smoke"), the meads/quarry/Loomstead
+// pattern a fourth time. The Emberwatch road's LOWER stone (40,42) becomes a
+// minor three-way junction: on to the ruin (NE), the Loomstead fork (SE,
+// above), and now the Forge fork (N). A 1.2-scale edge marker leaves just
+// west of the stone, then two stones due north to the forge's south edge.
+// Routed WEST of finch's northeast-heading patrol throughout (min clearance
+// 5.4 — the sorrel waystone-teleport gotcha), and ≥6.7 clear of the
+// Loomstead spur so the two Emberwatch forks never blur. Terrain scanned
+// (West Road technique): route h 2.09..−1.34, max slope deviation 0.20;
+// last stone 13.6 from the forge's own signpost (a clean hand-off), fork
+// 6.7 from its parent stone (the Bee-Meads/Loomstead twin-marker spacing).
+waystone(37, 48, ...DEST.forge, 1.2);        // Emberwatch-road fork marker, pointing north to the smoke
+waystone(38, 61, ...DEST.forge);
+waystone(41, 74, ...DEST.forge);             // forge-edge stone — the smith's smoke in sight from here
 
 // The Wayfarer — a roaming teller who keeps the roads' stories, stationed at
 // the crossroads hub. First flavour NPC placed out in the Boarlands rather
