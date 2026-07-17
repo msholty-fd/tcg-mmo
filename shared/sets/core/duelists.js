@@ -29,9 +29,16 @@ const rowanDeck = swap(
 // relic; the second swap folds in her own signature card plus two more
 // ambush bandits, replacing generic beast/support filler.
 const vexDeck = swap(
-  swap(STARTER_DECKS.redsash, ['young_boar', 'young_boar'], ['nightstalker', 'tusk_talisman']),
-  ['wild_boar', 'wild_boar', 'quartermaster'],
-  ['red_sash_picklock', 'masked_raider', 'vex'],
+  swap(
+    swap(STARTER_DECKS.redsash, ['young_boar', 'young_boar'], ['nightstalker', 'tusk_talisman']),
+    ['wild_boar', 'wild_boar', 'quartermaster'],
+    ['red_sash_picklock', 'masked_raider', 'vex'],
+  ),
+  // hearth_meal out for the thieves' hand-tax — the first table for ANY
+  // Thieves' Cant card; the queen of tricks skips supper. Sim-picked cut:
+  // quartermaster-out dropped her 54/65/63 to 50/60/58, hearth_meal-out
+  // holds 56/66/64 (500/side, see DESIGN.md /new-card run 8)
+  ['hearth_meal'], ['misdirection'],
 );
 // boarherd already carries one 'gruk' (the "boss plays themself" pattern
 // also used for Vex/vex below) — no need to strip and re-append it.
