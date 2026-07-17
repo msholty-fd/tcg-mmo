@@ -1929,6 +1929,59 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **Ashen Revenant — the ashfall family's 4-drop, and the run that used
+  its controls to tune (2026-07-17, /new-card run 11)**: the ashfall
+  family (emberpeaks faction) jumped 3c→5c with no 4-drop — a real curve
+  hole, deferred three prior runs as "weakest why" only because better
+  gaps existed; with the core families now filled it was the best-
+  motivated pick. Design points the family's onDeath payoff OUTWARD for
+  the first time: `ashen_revenant`, core, uncommon creature, 4 Ember 2/5
+  Guardian, onDeath → 1 damage to all enemy CREATURES (every prior ashfall
+  death trigger buffs your own board or draws; this one hits theirs). LORE
+  check: an ash-figure still holding a coal, the Sentinel's lesser kin.
+  - **Cost anchor + the tuning story**: first drafted 3/4, which shell-
+    simmed 68/78/75 — above BOTH fair-4-drop controls in the identical
+    harness (hearthguard_veteran 61/69/63, charnel_hound 65/76/64), the
+    redsash 75 an outlier (the AOE-on-death punishes go-wide). Dropped to
+    a 2/5 wall (low attack so it isn't a proactive threat; the sweep +
+    Guardian are the value) — but that barely moved it (69/78/74),
+    proving the body wasn't the driver. The decisive control was the
+    family's OWN neighbors in the same slots: **3c ashbound_warden sims
+    67/73/67, 5c The Ashen Sentinel sims 84/88/81** — the revenant's
+    69/78/74 lands cleanly between them, much nearer the 3-drop, exactly
+    where a 4-drop belongs. The high absolutes are the boarherd-midrange
+    shell + greedy AI overvaluing guardian-death value (documented
+    class); in-family-band is the pass bar, and it's met. Kept 2/5.
+  - **Verified**: onDeath scenario 40/40 across 10 seeds (sweeps all enemy
+    CREATURES only — hearth untouched — body to graveyard, Guardian +
+    2/5 confirmed). Shell sims above; 0 stuck across ~2,600 games incl.
+    all five control variants. AI plays it 40/40 games. Suites: packs
+    6653, leaders 198 (unchanged — adding to a banner family didn't
+    perturb the Leader count), factions 457→459, sim-starters
+    byte-identical 60/52/47.
+  - **Family/faction**: ashfall → emberpeaks (uncommon = Known-gated),
+    and it joins the Sentinel's banner (leaders.js unaffected). It also
+    quietly synergizes with cinderfall_rite (the 4c enchantment's
+    onAllyDeath already pings a random enemy — the revenant's own death
+    is another trigger for it) without duplicating (rite = random on any
+    ally death; revenant = all-enemies on its own death). Circulation:
+    Boarlands pack + **The Ashen Sentinel's reward pool** (she leads the
+    banner; boss pool, deck untouched so her spread holds — reward-only,
+    the run-7/run-9 posture). Art: hooded sprite, pale ash hood + bright
+    ember eyes (#8a847a/#ff7a2a), between the warden's warm tan and the
+    Sentinel's dull red.
+  - **Rejected this survey**: expanding either zone set (both are tight
+    16-card designs at the playbook's deliberate 15–16 ceiling —
+    expanding dilutes rather than fills); a random-enemy onDeath (would
+    duplicate cinderfall_rite); a non-Guardian body (breaks the family's
+    die-to-pay identity).
+  - **Honest note on the loop**: 11 runs in, the strongly-motivated core
+    gaps are now essentially exhausted — this one required using controls
+    to justify the pick's power, and the survey had to reach to a thrice-
+    deferred slot. A future run should weigh whether the next-best gap
+    clears the "a card with no home is filler" bar before adding, rather
+    than adding by default.
+
 - **Coal Carrier — the Adepts' 2-drop (2026-07-17, /new-card run 10)**:
   the activated-ability family's curve started at 3 Ember; a 2-drop was
   the family's one structural gap. Run 6 rejected an Adept at COMMON

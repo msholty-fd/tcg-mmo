@@ -758,6 +758,9 @@ const CARD_ART = {
   ember_husk:          { sprite: 'emberling', pal: { f: '#5c4a3e', F: '#9a7a5a', r: '#7a2010', e: '#d8b888' } },
   watchfire_whelp:     { sprite: 'wraith', pal: { a: '#5c564e', A: '#403a34', e: '#d8b888', s: '#2a2620' } },
   ashbound_warden:     { sprite: 'hooded', pal: { h: '#5c564e', H: '#3f3a34', e: '#c8a888' } },
+  // ashen_revenant: paler ash hood than the warden, a brighter ember at the
+  // eyes than the sentinel's dull red — a figure of ash still holding a coal
+  ashen_revenant:      { sprite: 'hooded', pal: { h: '#8a847a', H: '#605a52', e: '#ff7a2a', s: '#cfc6ba' } },
   feed_the_fire:       { sprite: 'burn', pal: { f: '#7a5c48', F: '#c8a888', r: '#5c1810' } },
   cinderfall_rite:     { sprite: 'rite', pal: { b: '#5c564e', B: '#3f3a34', e: '#7a2010', f: '#c8503a' } },
   sentinel:            { sprite: 'hooded', pal: { h: '#3a3632', H: '#242220', e: '#c8503a' } },

@@ -211,6 +211,16 @@ registerCards([
     triggers: { onDeath: [{ effect: 'buff', target: 'allAllies', atk: 1, hp: 0 }] },
     name: 'Ashbound Warden', text: 'Guardian. When this dies, your other creatures get +1 attack.',
     flavor: "Its last duty is the easiest: fall so the others don't have to." },
+  // Fills the ashfall family's 4-cost curve hole (it jumped 3→5). Keeps the
+  // family's Guardian + onDeath-payoff shape but points the payoff OUTWARD —
+  // the first ashfall death trigger that hits the enemy board, not buffs your
+  // own. Anchored under the Sentinel (5c 4/5, onPlay damage-all + onDeath
+  // draw2): a cost cheaper, a stat smaller, and the board-sweep moved to
+  // death so it's telegraphed (worse tempo than her on-play version).
+  { id: 'ashen_revenant', set: 'core', rarity: 'uncommon', type: 'creature', cost: 4, atk: 2, hp: 5, keywords: ['guardian'],
+    triggers: { onDeath: [{ effect: 'damage', target: 'allEnemies', amount: 1 }] },
+    name: 'Ashen Revenant', text: 'Guardian. When this dies, deal 1 damage to all enemy creatures.',
+    flavor: 'When it falls, the ash falls with it.' },
   { id: 'feed_the_fire', set: 'core', rarity: 'uncommon', type: 'spell', cost: 2,
     triggers: { onPlay: [{ effect: 'damage', target: 'chosen', amount: 2 }, { effect: 'draw', amount: 1 }] }, needsTarget: 'ownUnit',
     name: 'Feed the Fire', text: 'Deal 2 damage to a creature you control. Draw a card.', flavor: 'What burns first, burns brightest.' },
