@@ -429,7 +429,7 @@ export const DUELISTS = {
   },
   brenna: {
     name: 'Brenna Lampwright', deck: brennaDeck,
-    rewards: [...brennaDeck, 'second_wind'],
+    rewards: [...brennaDeck, 'second_wind', 'coal_carrier'],   // "The fire goes where she goes." — the lampwright's runner (uncommon, route-trainer band; deck untouched, tuning holds)
   },
   tolly: {
     name: 'Tolly the Lambward', deck: tollyDeck,

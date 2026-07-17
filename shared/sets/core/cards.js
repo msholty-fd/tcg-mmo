@@ -795,6 +795,15 @@ registerCards([
 
   // ---- The Adepts: activated abilities (⚡, pay Ember, once per turn). A
   // creature that keeps paying off round after round instead of once on entry.
+  // The family's 2-drop (its curve started at 3). Anchored to emberkin_adept:
+  // one cost less buys one stat point less and hearth-only targeting — reach
+  // without removal. Uncommon like every Adept (run 6's note stands: abilities
+  // at COMMON rarity is a discoverability question, not a curve gap).
+  { id: 'coal_carrier', set: 'core', rarity: 'uncommon', type: 'creature', cost: 2, atk: 1, hp: 3,
+    ability: { cost: 1, text: '⚡1: deal 1 damage to the enemy Hearth.',
+      effects: [{ effect: 'damage', target: 'enemyHearth', amount: 1 }] },
+    name: 'Coal Carrier', text: '⚡1 (once per turn): deal 1 damage to the enemy Hearth.',
+    flavor: 'The fire goes where she goes.' },
   { id: 'emberkin_adept', set: 'core', rarity: 'uncommon', type: 'creature', cost: 3, atk: 2, hp: 3,
     ability: { cost: 1, needsTarget: 'enemyUnit', text: '⚡1: deal 1 damage to an enemy creature.',
       effects: [{ effect: 'damage', target: 'chosen', amount: 1 }] },
