@@ -17,6 +17,10 @@
 // Seeded doors (DESIGN.md/LORE.md, do not answer here): the ash-grey bolt
 // that won't take any dye, and the spring thief that robs the drying
 // lines of red thread only.
+// Earned its route at iteration 21 (wool_run gave it business at 20): a
+// spur forks off the Emberwatch road and lands two stones from the yard's
+// signpost (roads.js). The already-ripe Loomstead duelist stays seeded
+// until duelists.js frees from the parallel /new-card sessions.
 import * as THREE from 'three';
 import { scene } from '../scene.js';
 import { groundH } from '../terrain.js';

@@ -2169,6 +2169,57 @@ considered and rejected.
     queue's head; redsash's next structural gap is a frenzied_warband
     rare above kestrel if the faction ever wants a second chase card.
 
+- **The Loomstead spur — the Emberwatch road forks to the weaver's yard
+  (2026-07-17, worldbuilding loop iteration 21)**: the ledger's ripest
+  unblocked seed. The downs rule fired for the Loomstead exactly as it did
+  for the meads: business at 18 (the stead itself), then directed traffic
+  at 20 (wool_run sends the player "where the wool goes"), and iteration
+  20's own entry named this next — "its road (a short spur) ... unlocks
+  next survey." Crucially it is the one ripe pick that **doesn't touch
+  duelists.js** (the Loomstead duelist, the east-road trainer, and the
+  conjuration duelist are all ripe-but-blocked for a FIFTH straight survey
+  — a live /new-card session still owns the file; the Michael flag stands).
+  Shape variance holds: the run reads landmark (18), landmark (19), quest
+  (20), road (21) — the first road since 16, five back. One file
+  (`client/src/world/roads.js`) plus a one-line header note in
+  loomstead.js; card-free, zero server/shared change.
+  - **The spur** (fork marker + 2 stones, existing `waystone()` builder,
+    colliders self-registered): the Emberwatch road (the NE ruin road) is
+    the parent — the Loomstead sits ~34 SE of its upper stone. A
+    1.2-scale edge marker at (46,39) leaves the road just past its lower
+    stone (6.7 from it — the Bee-Meads-fork twin-marker technique), then
+    stones at (62,42) and (74,45), all pointing at the new
+    `DEST.loomstead` [87,46]. The last stone lands 4.5 from the yard's own
+    signpost — a clean hand-off, the walker delivered to the cloth. **The
+    binding constraint was finch's patrol**, not terrain: the Emberwatch
+    road is finch's beat (polyline (44,46)→(72,74)), and a stone on a
+    patrol path flips the collision push-out twice a loop (the sorrel
+    teleport gotcha). The whole spur is routed SOUTH of finch — min
+    clearance 7.3 by the pre-siting scan, **confirmed live at 7.28 by
+    sweeping updatePatrols across all 24 hours**. Terrain scanned
+    numerically before siting (West Road technique): route h 3.53..2.04,
+    max slope deviation 0.23 within r=1.5 (no cliffs).
+  - **Deliberately NOT done**: no Wayfarer line (the East Road precedent —
+    he names roads he can see from the crossroads, and his NE line is the
+    ruin's ominous night-tone, which a weaver's-spur clause would clash
+    with; the Emberwatch spur is a branch off a road he already names, not
+    a new radial); no wool_run offer edit (Wynn's "north off the Gruk
+    road, they say" is deliberately vague hearsay — she's never been
+    there, the quest leans on the drying lines as the real landmark, and
+    loose folk-directions are in character; the marked spur is simply the
+    truer answer the player now finds); no duelist (the downs rule, and
+    the file block — **the Loomstead duelist stays seeded, now doubly
+    ripe: found-first loop elapsed AND roaded**).
+  - **Seeded for later**: the Loomstead duelist (route-trainer tier, the
+    instant duelists.js frees — its every precondition is now met);
+    everything else unchanged. Standing ledger: conjuration duelist +
+    east-road trainer RIPE-BLOCKED (5th survey — the coordination flag for
+    Michael is now load-bearing: the loop has spent four iterations
+    routing around a continuously-held duelists.js and is down to its last
+    easy non-duelist picks); a Kilnyard-pointing quest + Kilnyard road
+    (found-first loop elapses next survey); far-northwest (reserved);
+    Red-Sash + windmill (main.js); hot spring (parked, 14).
+
 - **Where the Wool Goes — Wynn's visit quest to the Loomstead (2026-07-17,
   worldbuilding loop iteration 20)**: fourth consecutive survey with every
   duelist-shaped pick file-blocked (a live /new-card session,

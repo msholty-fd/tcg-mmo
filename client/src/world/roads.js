@@ -55,6 +55,7 @@ const DEST = {
   pellspond: [-141, 58],
   beemeads:  [-147, -93],
   quarry:    [157, -20],
+  loomstead: [87, 46],
 };
 
 // A hub crossroads just south of the village where the roads diverge, then
@@ -134,6 +135,22 @@ waystone(-148, -76, ...DEST.beemeads);       // meads-edge stone — the skeps a
 // free bone dressing); sorrel's patrol polyline ≥48 away.
 waystone(126, -45, ...DEST.quarry);          // Gruk-edge stone, seen from the hollow of bones
 waystone(144, -31, ...DEST.quarry);          // quarry-edge stone — the yard in sight from here
+// the Loomstead spur (2026-07-17, worldbuilding iteration 21 — DESIGN.md):
+// the downs rule fired for the Loomstead — iteration 20's wool_run gave it
+// business AND directed traffic (Wynn sends the player "where the wool
+// goes"), the exact meads pattern (Wick's business → the honey run's
+// traffic → the spur). The Emberwatch road (the NE ruin road) forks toward
+// the middle-east grass: a 1.2-scale edge marker leaves it just past its
+// lower stone, then two stones east to the yard's own signpost. Routed
+// SOUTH of finch's patrol polyline throughout (min clearance 7.3 — the
+// sorrel waystone-teleport gotcha: a stone on the path flips the push-out
+// twice a loop). Terrain scanned numerically before siting (the West Road
+// technique): route h 3.53..2.04, max slope deviation 0.23 within r=1.5;
+// last stone 4.5 from the loom's signpost (a clean hand-off), 21.9 from
+// finch's nearest waypoint.
+waystone(46, 39, ...DEST.loomstead, 1.2);    // Emberwatch-road fork marker, pointing east to the cloth
+waystone(62, 42, ...DEST.loomstead);
+waystone(74, 45, ...DEST.loomstead);         // yard-edge stone — the drying lines are in sight from here
 
 // The Wayfarer — a roaming teller who keeps the roads' stories, stationed at
 // the crossroads hub. First flavour NPC placed out in the Boarlands rather
