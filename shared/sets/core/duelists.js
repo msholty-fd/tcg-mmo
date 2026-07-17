@@ -389,7 +389,7 @@ export const DUELISTS = {
   },
   sentinel: {
     name: 'The Ashen Sentinel', deck: sentinelDeck,
-    rewards: [...sentinelDeck, 'stoke_the_flames', 'last_rites', 'pyre_keeper'],
+    rewards: [...sentinelDeck, 'stoke_the_flames', 'last_rites', 'pyre_keeper', 'ashen_revenant'],   // the ashfall 4-drop she leads the banner for — reward-only, deck untouched so her spread holds (uncommon; boss pool, not a route trainer)
   },
   footpad: {
     name: 'A Footpad', deck: footpadDeck,

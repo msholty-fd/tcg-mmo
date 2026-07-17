@@ -89,7 +89,7 @@ export const FAMILIES = [
     // uncategorized; promoted to a gated banner so she can lead it (leaders.js).
     // cinderfall_rite (enchantment) is left neutral, mirroring the set-wide rule
     // that card-TYPE families stay neutral.
-    cardIds: ['ember_husk', 'watchfire_whelp', 'ashbound_warden', 'feed_the_fire', 'sentinel', 'ashfall_colossus'],
+    cardIds: ['ember_husk', 'watchfire_whelp', 'ashbound_warden', 'ashen_revenant', 'feed_the_fire', 'sentinel', 'ashfall_colossus'],
   },
   {
     id: 'relics', name: 'Relics',
