@@ -310,6 +310,21 @@
   #shop .s-card img{width:48px;height:48px;image-rendering:pixelated}
   #shop .s-card .n{font-size:11px;line-height:1.25;margin-top:3px}
   #shop .s-card .r{font-size:10px;color:#9a8f78;font-variant:small-caps;letter-spacing:.06em}
+  /* ---- hearth drafting (fires' offerings — hearth.js) ---- */
+  #hearth{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);display:none;flex-direction:column;gap:10px;
+    width:min(460px,92vw);padding:14px 16px;pointer-events:auto;z-index:8}
+  #hearth .s-head{font-size:15px;text-align:center}
+  #hearth .s-head b{color:var(--gold)}
+  #hearth .h-desc{color:#9a8f78;font-size:11.5px;text-align:center}
+  #hearth .s-reveal{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;min-height:76px}
+  #hearth .s-card{width:76px;padding:6px 4px;text-align:center;border:1px solid var(--gold-dim);border-radius:3px;background:rgba(0,0,0,.3)}
+  #hearth .s-card img{width:48px;height:48px;image-rendering:pixelated}
+  #hearth .s-card .n{font-size:11px;line-height:1.25;margin-top:3px}
+  #hearth .s-card .r{font-size:10px;color:#9a8f78;font-variant:small-caps;letter-spacing:.06em}
+  #hearth .s-card.pickable{cursor:pointer}
+  #hearth .s-card.pickable:hover{border-color:var(--gold);background:rgba(60,40,10,.45)}
+  #hearth .h-empty{color:#9a8f78;font-size:12px;align-self:center;padding:20px 0}
+  #hearth #h-cd{font-size:11.5px;color:#9a8f78}
   #shop .s-card.r-uncommon{border-color:#5a8f5a}
   #shop .s-card.r-uncommon .r{color:#8fe08f}
   #shop .s-card.r-rare{border-color:#7a6fd0}
@@ -533,6 +548,15 @@
     <div class="s-actions">
       <span id="s-coins"></span>
       <button class="wow" id="s-close">Close</button>
+    </div>
+  </div>
+  <div id="hearth" class="panel">
+    <div class="s-head"><b id="h-name"></b> — the fire's offering</div>
+    <div class="h-desc">Embers the realm has left in this fire. Take one and it burns for you — and is gone from here.</div>
+    <div class="s-reveal" id="h-cards"></div>
+    <div class="s-actions">
+      <span id="h-cd"></span>
+      <button class="wow" id="h-close">Close</button>
     </div>
   </div>
   <div id="wardrobe" class="panel">

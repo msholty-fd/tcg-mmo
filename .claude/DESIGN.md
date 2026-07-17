@@ -2303,6 +2303,50 @@ considered and rejected.
     duelist (once homed) or genuinely new archetypes, not a tenth
     route-trainer.**
 
+- **Hearth drafting — fire pools, Phase 1 of the drafting epic (Michael +
+  Claude, 2026-07-17)**: the drafting direction (.claude/DRAFTING.md —
+  brainstormed 2026-07-16, "the world is the pack") lands its first
+  playable slice. Every tended registry fire holds a small server-owned
+  pool of embers; E at the fire (when no NPC/player business is nearer)
+  opens its offering, and taking one removes it for the next visitor —
+  asynchronous drafting with no lobby, the pack passes itself.
+  - **`shared/fires.js`** — curated FIRES registry (12 fires at the
+    campfire() call sites: Bram's Rest, Gruk's Hollow, Red-Sash Camp,
+    Hollowmere, Emberwatch, Wether Downs, Pell's Pond, Bee Meads, Dial
+    Stone, Quarry, Loomstead, Cinderpass), pool constants, and the
+    rarity-weighted roll (packs.js's 70/24/6). Fires carry a `set` (the
+    pass braziers draw from the EMBERPEAKS set — zone cards enter at the
+    zone's threshold, the zone-pack pillar extended to fires) and an
+    optional `faction` bias (60% of rolls restrict to the camp's own
+    faction — Gruk's fire remembers boars). Deliberate exclusions: the
+    village (torches, no campfire — a hearth there is a future
+    worldbuilding iteration), the Deep Darkwood (COLD by lore — no fires,
+    no drafting, the forgetting made mechanical), the Kilnyard/Forge
+    (kilns, not campfires — candidates later).
+  - **Server**: new `worldstate` table in db.js (key→JSON blob, the
+    profiles in-memory-first pattern) — the first shared world state that
+    isn't any one player's. `server/handlers/hearth.js`: `hearthView` +
+    `draftPick`, validated like everything that grants cards (proximity
+    via VENDOR_RANGE, per-player-per-FIRE cooldown 60 real min, pool
+    membership), minting with origin "Drafted from <fire name>". Pools
+    regen 1 ember/30 min to POOL_MAX 5 (catch-up math, no timers) so
+    latecomers never find pure ash — Phase 2 (kindle feeds the fire)
+    replaces regen as the real faucet. Picks are FREE — coins stay the
+    pack sink; drafting's cost is travel + the cooldown, which makes
+    touring the realm the way to draft faster (deliberate; revisit if it
+    undercuts packs).
+  - **Client**: `hearth.js` window (shop.js pattern, [data-card]
+    hover-zoom works on the offering), E-priority NPC > player > fire so
+    a fire only claims E when nothing living is closer.
+  - **Verify**: 2515/2515 headless pool-logic assertions (rolls in-set,
+    deterministic seeding, faction-bias lift 0.25+, cinderpass draws
+    emberpeaks); raw-WS e2e 15/15 on a throwaway :8099 server incl.
+    cooldown/membership/proximity negatives AND pool+cooldown persistence
+    across a server restart; live on a worktree rig (:8093/:5193, rAF
+    stall as usual — manual netTick playbook): real click drafted
+    stand_and_hold from Bram's fire, pool 5→4, cooldown line flipped,
+    screenshot eyeballed. NOT verified: the walk-up prompt in motion.
+
 - **The Kiln Road — the Hollowmere road forks south to the Kilnyard
   (2026-07-17, worldbuilding loop iteration 29)**: the ledger's ripest seed
   and a shape change after the duelist (27) and quest (28). The downs rule

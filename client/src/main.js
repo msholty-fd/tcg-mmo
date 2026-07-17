@@ -10,6 +10,7 @@ import { log, updateHUD } from './ui.js';
 import { keys, cam, started, setStarted, autoWalk, touchMove, isTouch, initTouchControls, tickTouchUI } from './input.js';
 import { resolveCollision } from './colliders.js';
 import { nearestInteract, handleInteract, tickDialogue } from './interact.js';
+import { nearestFire, openHearth } from './hearth.js';
 import { renderTracker, updateMark, npcQuest, npcTurnin } from './quests.js';
 import { initCollection } from './collection.js';
 import { startNet, initNet, netTick, nearestRemote, challengePlayer, requestTrade } from './net.js';
@@ -318,34 +319,39 @@ function update(dt) {
 
   netTick(dt);
 
-  // interact prompt + E key: NPCs first, then nearby real players (E duel / T trade)
+  // interact prompt + E key: NPCs first, then nearby real players (E duel /
+  // T trade), then a registry fire's hearth-draft (shared/fires.js) — the
+  // fire only claims E when nothing living is closer
   const n = nearestInteract();
   const rp = n ? null : nearestRemote();
+  const hf = (n || rp) ? null : nearestFire();
   const pr = $('prompt');
-  if ((n || rp) && hudOpen('prompt')) {
+  if ((n || rp || hf) && hudOpen('prompt')) {
     pr.style.display = 'block';
     $('prompt-text').innerHTML = n
       ? ((n.duelist && !npcQuest(n) && !npcTurnin(n)) ? `<b>E</b> — challenge ${n.name}`
         : n.vendorPack && !npcQuest(n) && !npcTurnin(n) ? `<b>E</b> — browse ${n.name}'s wares`
         : `<b>E</b> — speak with ${n.name}`)
-      : `<b>E</b> — challenge · <b>T</b> — trade with ${rp.name} <span style="color:#8fd0f0">(player)</span>`;
+      : rp ? `<b>E</b> — challenge · <b>T</b> — trade with ${rp.name} <span style="color:#8fd0f0">(player)</span>`
+      : `<b>E</b> — tend ${hf.name}`;
   } else {
     pr.style.display = 'none';
   }
   if (isTouch) {
     // context buttons mirror the prompt: the action button shows whenever
     // there's someone to E, the trade button only beside a real player
-    $('tb-act').style.display = (n || rp) ? '' : 'none';
+    $('tb-act').style.display = (n || rp || hf) ? '' : 'none';
     $('tb-trade').style.display = rp ? '' : 'none';
     $('tb-act').textContent = n
       ? ((n.duelist && !npcQuest(n) && !npcTurnin(n)) ? '⚔' : n.vendorPack && !npcQuest(n) && !npcTurnin(n) ? '🪙' : '💬')
-      : '⚔';
+      : rp ? '⚔' : '🔥';
     tickTouchUI();
   }
   if (keys.KeyE && !ePressed) {
     ePressed = true;
     if (n) handleInteract();
     else if (rp) challengePlayer(rp.id);
+    else if (hf) openHearth(hf);
   }
   if (!keys.KeyE) ePressed = false;
   if (keys.KeyT && !tPressed) {

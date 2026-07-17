@@ -138,5 +138,6 @@ export function createProfiles(dbFile, legacyFile) {
     profiles, registerProfile, markDirty, flushProfiles,
     setPassword, verifyPw, findByName, newProfile,
     validDeck, grant, deckItems,
+    loadWorld: store.loadWorld, saveWorld: store.saveWorld,
   };
 }
