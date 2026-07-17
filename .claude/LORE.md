@@ -268,6 +268,24 @@ but never say "points" or "unlock."
   opinions on the quarry's business, Merle's hour, or anything west. (Duelists
   can't surface flavor lines — his knowledge lives here and in DESIGN text
   only.)
+- **Rook the Wildcaller** (the Whistlewood, the SW old-growth grove) —
+  small omens tier: a beast-caller who whistles up the wild, and to whose
+  small fire the wild things gather calm — the realm's first place defined
+  by the wild, not a craft. Her relationship to the fire is a FRESH tended
+  register: every hearth is a banked coal of the old wood, but hers the
+  beasts have "made their peace with" (one light echo, never explained
+  toward the myth — she does not know the Going-Out, only her wood). She
+  reads the calling as welcome, not power ("they were always here; I just
+  let them know they're welcome") — deliberately NOT conjuring-from-nothing,
+  which keeps the wildcaller card family's "summon" flavour grounded. Two
+  seeded doors, both wild-uncanny and off the myth: **the black hind that
+  comes to her fire on no whistle she called**, and **the whistle itself —
+  no one taught her; she woke past the Kiln Road knowing it** (keep both
+  vague; the whistle is NOT a Going-Out relic and the hind is NOT one of
+  Hessa's mire-memories — the wood keeps its own small strangenesses). She
+  has no opinion on any other zone's doors. The conjuration DUELIST is her
+  apprentice, seeded — the young caller learning the whistle; the master
+  stays flavour, the apprentice duels (the Odo→Wick precedent).
 - **Sedge the Wedger** (the Kilnyard, Fern's second) — small omens tier,
   mostly none: Fern throws and fires, Sedge wedges the clay — kneads the air
   out and centers it true before it ever meets the wheel — and drills with

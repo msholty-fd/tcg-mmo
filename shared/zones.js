@@ -82,6 +82,10 @@ export const CAMPS = [
   // the Emberwatch road, and the north road — where the realm's iron is
   // worked. See DESIGN.md "Bryn's Forge".
   { x: 46, z: 86, r: 16, name: "Bryn's Forge" },
+  // An old-growth grove deep in the southwest wilds, where the wild things
+  // gather to a beast-caller's fire — the realm's first place defined by the
+  // wild, not a craft. See DESIGN.md "The Whistlewood".
+  { x: -137, z: -147, r: 15, name: 'The Whistlewood' },
   // An abandoned mine dug into a rocky rise due north, in the Darkwood — a
   // scenic discovery, not enterable (seeds future underground content). See
   // DESIGN.md "Cinderhollow Mine".

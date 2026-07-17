@@ -30,6 +30,7 @@ export { hobb, hew } from './world/quarry.js';
 export { ede, wren } from './world/loomstead.js';
 export { fern, sedge } from './world/kilnyard.js';
 export { bryn, colm } from './world/forge.js';
+export { rook } from './world/whistlewood.js';
 export { updateDarkwood, tamsin, weir, rusk } from './world/darkwood.js';
 export { marrow } from './world/mine.js';
 export { halvard, ashmonger, pyrelord, varn } from './world/emberpeaks.js';
