@@ -1929,6 +1929,45 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **Charnel Pup — the graveyard's glue common, and the run where the sims
+  said no to a table (2026-07-16, /new-card run 7)**: the survey found
+  graveyard_remembers (boarherd's third axis) carrying ONE common across 8
+  cards and no 1-drop — Strangers barely meet the axis the Boarlands
+  pack's 70%-common slot should introduce. `charnel_pup`, core, common
+  creature, 1 Ember 1/1, onDeath → draw a card. The hound's whelp: a body
+  that dies willingly, feeds graveBuff counts and exhume targets, and
+  replaces itself on the way down.
+  - **Cost anchor**: watchfire_whelp (2c 2/2 common, the identical
+    deathrattle) minus one cost and one stat point each way — a clean
+    linear scale, both common.
+  - **The table decision — sims overruled theme**: Marrow the Delver is
+    the obvious table, and BOTH deck variants were built and simmed at
+    500/side: young_boar ×2 out → 72/85/68, militia_recruit ×2 out →
+    74/85/67, against her 69/83/65 baseline — and that baseline is
+    already the hottest spread in the roster (first time Marrow's been
+    500-game simmed; Gruk the boss sims 44/61/42 for comparison). A +3pp
+    push on the roster's hottest duelist is the wrong direction, so the
+    deck stays byte-identical to main (re-verified: 69/83/65 exact) and
+    the pup rides her REWARD pool only. The swap-site comment records the
+    numbers so the next session doesn't re-litigate blind.
+  - **Flagged, not fixed**: Marrow's pre-existing 69/83/65 heat. Sims
+    overstate graveBuff under the greedy AI (the same class of artifact
+    as the documented wardens-defense blind spot, in the opposite
+    direction), so this is an observation for a future balance pass
+    (Y3 tier), not a card-run fix.
+  - **Verified**: deathrattle scenario 30/30 across 10 seeds (1/1 body,
+    draws exactly one on death, lands in the graveyard). Shell sims
+    (3 copies, 50/side): 64/66/62 vs the wild_boar control's 59/64/62 —
+    inside noise for a glue common; 0 stuck across 300 games. Suites:
+    packs 6653, leaders 198, factions 449→451, sim-starters
+    byte-identical 60/52/47.
+  - **Family/faction**: graveyard_remembers → boarherd. Circulation:
+    Boarlands pack (common) + Marrow's reward pool. Art: charnel_hound's
+    wolf sprite paled toward bone (#8a9a84/#caf0a8) — the pup reads
+    younger than the hound.
+  - **Seeded**: none new — the conjuration duelist (run 3) remains the
+    queue's head; Marrow's heat joins the balance-observations ledger.
+
 - **Old Whetstone — the Armory's entry point (2026-07-16, /new-card
   run 6)**: the loop's first EQUIPMENT pick — the game's newest card type
   had never been touched by a run, its cheapest card was 2 Ember, and the

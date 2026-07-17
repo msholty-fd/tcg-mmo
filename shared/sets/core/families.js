@@ -71,7 +71,7 @@ export const FAMILIES = [
     id: 'graveyard_remembers', name: 'The Graveyard Remembers',
     cardIds: [
       'ashen_shambler', 'last_rites', 'second_harvest', 'charnel_hound', 'grave_caller',
-      'bone_delver', 'unquiet_grave', 'marrow',
+      'bone_delver', 'unquiet_grave', 'marrow', 'charnel_pup',
     ],
   },
   {
