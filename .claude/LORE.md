@@ -186,6 +186,13 @@ but never say "points" or "unlock."
   that they won't name the hour — Hobb must never learn or guess which hour
   it is (the missing stone stays Merle's joke). No opinions on the old ring
   in the deep wood, the mine, or any of the western folk's doors.
+- **Hobb, as quest-giver** (his errand `worn_edges`, the realm's first
+  craft-to-craft quest): sends the player to Bryn's Forge for re-edged
+  chisels — worn stone-cutting edges and a smith's fire, strictly craft
+  tier, never an omen. The errand must never touch Hobb's own seeded doors
+  (the frost-split blocks, the waiting millstone) or Bryn's (the returning
+  shoes, the iron left by no one); it is just two rooted makers, the mason
+  and the smith, meeting through the player for the first time.
 - **Hew the Splitter** (Hobb's Quarry, Hobb's prentice) — small omens tier,
   mostly none: Hobb marks the seams, Hew sets the feathers and wedges and
   splits the blocks out of the face — the grunt half of the trade — and
