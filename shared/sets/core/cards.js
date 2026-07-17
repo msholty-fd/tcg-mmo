@@ -707,6 +707,14 @@ registerCards([
 
   // ---- Thieves' Cant: hand disruption. The opponent's hand is a resource,
   // and these attack it — random discards (hands are hidden, so no choosing).
+  // The family's reaction — the hand-tax joins the counterplay surface, and
+  // fills the enemySpell row's open middle slot (backdraft 1c common /
+  // counterspark 3c rare). cutpurse_raid's exact package (discard 1, draw 1)
+  // at the same 2 Ember, with the reaction condition as the framing.
+  { id: 'misdirection', set: 'core', rarity: 'uncommon', type: 'reaction', cost: 2,
+    reaction: { on: 'enemySpell', effects: [{ effect: 'discard', who: 'enemy', amount: 1 }, { effect: 'draw', amount: 1 }] },
+    name: 'Misdirection', text: 'Reaction: when your opponent plays a spell, they discard a random card and you draw a card.',
+    flavor: 'Watch the hands, not the words.' },
   { id: 'sticky_fingers', set: 'core', rarity: 'common', type: 'creature', cost: 2, atk: 2, hp: 2, keywords: ['ambush'],
     triggers: { onPlay: [{ effect: 'discard', who: 'enemy', amount: 1 }] },
     name: 'Sticky Fingers', text: 'Ambush. When played, your opponent discards a random card.',

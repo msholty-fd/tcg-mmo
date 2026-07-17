@@ -1929,6 +1929,49 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **Misdirection — the Thieves' Cant reaction, and the family's first
+  table (2026-07-16, /new-card run 8)**: the one mechanics family the loop
+  had never touched, rejected three times purely on shape-variance grounds
+  that no longer applied (the last reaction was run 3). The design puts
+  the hand-tax on the counterplay surface and fills the enemySpell row's
+  open middle slot: backdraft (1c common, hearth damage) → **misdirection
+  (2c uncommon)** → counterspark (3c rare, full counter). `misdirection`,
+  core, uncommon reaction, 2 Ember, on enemySpell → the caster discards a
+  random card and you draw one. A tax, not a counter — the spell still
+  resolves.
+  - **Cost anchor**: cutpurse_raid exactly (2c spell, the identical
+    discard-1-draw-1 package); the reaction condition trades the spell's
+    flexibility for the ambush timing — a wash, same price.
+  - **Circulation — the family's first table**: no NPC played ANY
+    Thieves' Cant card. vexDeck's third chained swap folds in
+    misdirection ×1; **the cut was sim-picked, not theme-picked**:
+    quartermaster-out dropped her 54/65/63 baseline to 50/60/58 (the
+    greedy AI misses the body), hearth_meal-out holds 56/66/64 —
+    value-neutral, so the queen of tricks skips supper. Numbers recorded
+    at the swap site. Rewards inherit via the deck spread.
+  - **Verified (full duelist bar)**: scenario test 60/60 across 10 seeds
+    (reaction consumed on enemy cast, caster loses spell + exactly one
+    taxed card, defender draws 1, the spell's effects still resolve, spent
+    card to graveyard — the fires-BEFORE-effects ordering exercised
+    directly). Vex 500/side: 54/65/63 → 56/66/64, 0 stuck across 9000
+    games incl. the rejected variant. Shell sims (3 copies, 50/side):
+    55/63/59 vs the wild_boar control's 59/64/62 — inside noise, the
+    reaction-deck softening pattern. Roster 21/21 valid. Raw-WS e2e 5/5
+    (bogus npc refused, npcduel vex → duelStart, foe/kind right, hand
+    sanitized, concede → duelEnd). Suites: packs 6653, leaders 198,
+    factions 451→453, sim-starters byte-identical 60/52/47.
+  - **Family/faction**: thieves_cant → neutral (the mechanics-pass rule).
+    Art: cutpurse_raid's `rite` sprite gone gold — the lifted purse, not
+    the blood (#e0b050 accents on slate).
+  - **Rejected this survey**: an ashfall 4-drop (the family reads
+    complete-enough and emberpeaks is the second-fattest faction); a 2c
+    common Adept (the run-6 ⚡-discoverability question stands); a
+    thieves rare finisher (the family's missing rare is a chase-card
+    design better paired with a discard-matters payoff mechanic that
+    doesn't exist yet — noted, not seeded).
+  - **Seeded**: none new — the conjuration duelist (run 3) still heads
+    the queue; Marrow's heat (run 7) still on the balance ledger.
+
 - **Charnel Pup — the graveyard's glue common, and the run where the sims
   said no to a table (2026-07-16, /new-card run 7)**: the survey found
   graveyard_remembers (boarherd's third axis) carrying ONE common across 8

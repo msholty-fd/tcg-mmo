@@ -813,6 +813,9 @@ const CARD_ART = {
   everburning_brand:   { sprite: 'talisman', pal: { c: '#dd4400', w: '#ffe080', W: '#ff9a40' } },
 
   // Thieves' Cant: hand disruption (hooded thieves; night deeds on 'rite'/'howl')
+  // misdirection: cutpurse_raid's rite sprite gone gold — the lifted purse,
+  // not the blood; distinct from its grey/red sibling
+  misdirection:        { sprite: 'rite', pal: { b: '#6a6a78', B: '#44444e', e: '#e0b050', f: '#c8a24a' } },
   sticky_fingers:      { sprite: 'hooded', pal: { h: '#3a3a44', H: '#26262e', m: '#5a4a44' } },
   cutpurse_raid:       { sprite: 'rite', pal: { b: '#9a9aa4', B: '#64646e', e: '#c85a4a', f: '#e08070' } },
   extortionist:        { sprite: 'hooded', pal: { h: '#5a2a2a', H: '#401f1f', m: '#3a1414' } },

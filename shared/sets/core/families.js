@@ -126,7 +126,7 @@ export const FAMILIES = [
   {
     id: 'thieves_cant', name: "Thieves' Cant",
     // hand disruption — attack the opponent's hand
-    cardIds: ['sticky_fingers', 'cutpurse_raid', 'extortionist', 'midnight_raid'],
+    cardIds: ['sticky_fingers', 'cutpurse_raid', 'extortionist', 'midnight_raid', 'misdirection'],
   },
   {
     id: 'desperate_measures', name: 'Desperate Measures',
