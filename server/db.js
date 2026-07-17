@@ -21,7 +21,28 @@ export function openProfileStore(dbFile, legacyJsonFile) {
       data       TEXT NOT NULL,
       updated_at INTEGER NOT NULL
     );
+    CREATE TABLE IF NOT EXISTS worldstate (
+      key        TEXT PRIMARY KEY,
+      data       TEXT NOT NULL,
+      updated_at INTEGER NOT NULL
+    );
   `);
+
+  // Shared world state that isn't any one player's (fire draft pools, …):
+  // one JSON blob per key, same in-memory-first pattern as profiles — the
+  // caller owns the live object and saves it back when it changes.
+  const worldUpsert = db.prepare(`
+    INSERT INTO worldstate (key, data, updated_at) VALUES (?, ?, ?)
+    ON CONFLICT(key) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at
+  `);
+  const worldGet = db.prepare('SELECT data FROM worldstate WHERE key = ?');
+  function loadWorld(key) {
+    const row = worldGet.get(key);
+    return row ? JSON.parse(row.data) : null;
+  }
+  function saveWorld(key, obj) {
+    worldUpsert.run(key, JSON.stringify(obj), Date.now());
+  }
 
   const upsert = db.prepare(`
     INSERT INTO profiles (token, name, data, updated_at) VALUES (?, ?, ?, ?)
@@ -70,5 +91,5 @@ export function openProfileStore(dbFile, legacyJsonFile) {
     return out;
   }
 
-  return { loadAll, saveMany, close: () => db.close() };
+  return { loadAll, saveMany, loadWorld, saveWorld, close: () => db.close() };
 }

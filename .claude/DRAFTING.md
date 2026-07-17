@@ -209,13 +209,14 @@ fire locations) from client/src/constants.js to shared/, server derives
 "nearest fire" / duel location authoritatively. Pure refactor, no behavior
 change. Unblocks #2, #4, #7 and Field Effects itself.
 
-**Phase 1 — fire pools + hearth-drafting (#1).** Server-side pool state per
-fire (new world-state persistence in db.js), seeded zone-themed (reuse the
-rarity-weighted roll from packs.js as the seeding function). Client: E at a
-fire with no other business → offering UI (3–5 cards, hover-zoom works via
-[data-card]) → `draftPick` message; server validates proximity + cooldown +
-pool membership, mints, removes from pool. Per-player per-fire daily
-cooldown. Packs untouched.
+**Phase 1 — fire pools + hearth-drafting (#1). DONE 2026-07-17** (see
+DESIGN.md "Hearth drafting" for the full entry). Shipped: shared/fires.js
+(12-fire registry, faction bias, set scoping incl. Cinderpass→emberpeaks),
+worldstate table in db.js, server/handlers/hearth.js (hearthView/draftPick,
+free picks, 60-min per-fire cooldown, 30-min regen to pool max 5),
+client/src/hearth.js window + E-priority NPC > player > fire. Packs
+untouched. Open knobs recorded there: pick cost stays free-with-cooldown
+unless it undercuts packs.
 
 **Phase 2 — kindle feeds the fire (#2).** Server-side only: on kindle in an
 online duel, add an anonymous copy of the burned card id to the nearest

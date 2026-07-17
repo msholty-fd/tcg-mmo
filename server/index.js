@@ -26,6 +26,7 @@ import { EMBERPEAKS_DUELISTS } from '../shared/sets/emberpeaks/duelists.js';
 import { DARKWOOD_DUELISTS } from '../shared/sets/darkwood/duelists.js';
 const DUELISTS = { ...CORE_DUELISTS, ...EMBERPEAKS_DUELISTS, ...DARKWOOD_DUELISTS };
 import { createDevSeedHandlers } from './handlers/devSeed.js';
+import { createHearthHandlers } from './handlers/hearth.js';
 
 const PORT = +(process.env.PORT || 8081);
 const DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -39,7 +40,7 @@ const DIST_DIR = path.join(DIR, '../client/dist');
 const {
   profiles, registerProfile, markDirty, flushProfiles,
   setPassword, verifyPw, findByName, newProfile,
-  validDeck, grant, deckItems,
+  validDeck, grant, deckItems, loadWorld, saveWorld,
 } = createProfiles(DB_FILE, LEGACY_DATA_FILE);
 
 process.on('SIGINT', () => { flushProfiles(); process.exit(0); });
@@ -100,7 +101,7 @@ function sendProfile(p) {
 const ctx = {
   profiles, players, activeDuels, challenges, tradeInvites,
   send, broadcast, sendProfile,
-  markDirty, grant, deckItems, validDeck,
+  markDirty, grant, deckItems, validDeck, loadWorld, saveWorld,
   DuelRoom, gameHour, DUELISTS,
   CHALLENGE_TTL_MS, CHALLENGE_RANGE, VENDOR_RANGE,
 };
@@ -111,6 +112,7 @@ const handlers = {
   ...createCollectionHandlers(ctx),
   ...tradeHandlers,
   ...createDuelModule(ctx).handlers,
+  ...createHearthHandlers(ctx),
   ...createDevSeedHandlers(ctx),   // {} unless DEV_SEED=1 (local rig only)
 };
 

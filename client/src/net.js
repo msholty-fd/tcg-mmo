@@ -17,6 +17,7 @@ import { startRemoteDuel, applyRemoteView, endRemoteDuel, duelActive } from './d
 import { setGameHour } from './main.js';   // safe cycle: called at runtime only
 import { initTrade, onTradeInvite, onTradeStart, onTradeState, onTradeComplete, onTradeCancelled } from './trade.js';
 import { initShop, onPackResult } from './shop.js';
+import { initHearth, onHearthView, onDraftResult } from './hearth.js';
 import { initHall, onHallOfLegends } from './hall.js';
 import { initWardrobe, lookOpts, refreshPlayerMesh } from './wardrobe.js';
 
@@ -194,6 +195,12 @@ function handle(msg) {
     case 'packResult':
       onPackResult(msg);
       break;
+    case 'hearthView':
+      onHearthView(msg);
+      break;
+    case 'draftResult':
+      onDraftResult(msg);
+      break;
     case 'hallOfLegends':
       onHallOfLegends(msg);
       break;
@@ -318,6 +325,11 @@ export function initNet() {
   initShop({
     isConnected: () => connected,
     sendBuyPack: pack => connected && ws.send(JSON.stringify({ t: 'buyPack', pack })),
+  });
+  initHearth({
+    isConnected: () => connected,
+    sendHearthView: fire => connected && ws.send(JSON.stringify({ t: 'hearthView', fire })),
+    sendDraftPick: (fire, card) => connected && ws.send(JSON.stringify({ t: 'draftPick', fire, card })),
   });
   initHall({
     isConnected: () => connected,
