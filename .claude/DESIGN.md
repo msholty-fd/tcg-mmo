@@ -2222,6 +2222,75 @@ considered and rejected.
     queue's head; redsash's next structural gap is a frenzied_warband
     rare above kestrel if the faction ever wants a second chase card.
 
+- **Colm the Striker — Bryn's Forge's duelist (2026-07-17, worldbuilding
+  loop iteration 27)**: the ledger's ripest seed. Iteration 26 gave Bryn's
+  Forge its road, making it landmark+NPC+quest+road, and seeded "a Forge
+  duelist completes the yard's full grammar at the next duelists.js window"
+  — which is open (no card session this survey). Shape variance holds: the
+  last duelist was Gedd (24), three back (quest 25, road 26 between), so
+  this isn't a repeat. **Bryn's Forge becomes the FIFTH full-grammar zone**
+  (landmark→NPC→quest→road→duelist) after the downs, pond, meads, and
+  quarry — and the first NEW landmark of this session's building to reach
+  it (the others predate the numbered loop).
+  - **The character**: Colm, Bryn's second — the striker/hammerman (the
+    Wick/Hew/Wren "young second" precedent). Bryn draws the iron and holds
+    the work; Colm swings the great hammer. He is the realm's **one trainer
+    who leans INTO fire**: where the shepherd, fisher, and fuller all *cut*
+    the burn ("a fuller throws no fire"), the smith keeps it — fire is the
+    whole trade. Micro-read **"strike when it's hot."**
+  - **The deck** (`shared/sets/core/duelists.js` + a spawn in forge.js,
+    1-line barrel; zero server change): **redsash base** — the realm's most
+    aggressive, fiery family (controlled_burn, the fullest burn package),
+    and it evens the route-trainer bases at 3 redsash (Wick, Finch, Colm).
+    The Wick precedent carries the bandit-flavour: redsash justified by the
+    FIRE, not banditry, the way Wick's was by the bee's sting. Out the two
+    **wild_boars** (generic beasts a forge wouldn't field — NOT Wick's
+    camp_torcher nor Finch's young_boar outs; a third distinct redsash
+    out-shape). In **stoke_the_flames** (kindle again + draw, "the fire is
+    never finished eating" — stoking the forge) + **flame_tender** (2/4
+    guardian, heals the Hearth on kindle — the tended forge fire). Reward
+    **feed_the_fire** ("What burns first, burns brightest." — the forge's
+    escalation; uncommon spell, route-trainer band, not a Leader/rare).
+  - **Tuning** (500/side vs each starter, 0 stuck): **50/53/54** vs
+    boarherd/wardens/redsash — **power-NEUTRAL vs the plain redsash base**
+    (49/53/52 — staples for staples, +1/0/+2), landing at Finch's level
+    (49/53/52) and a notch above the gentle craft yards (Wick 45/44/48,
+    Wren 44/55/49): the smith duels harder than the waxwright *because* she
+    works the aggressive fire he cut — thematically coherent, not a power
+    creep, and well below the boss-axis trainers (Sorrel 56/66/58). The
+    kindle-lean stays a two-card nod, lighter than Tarn's kindle-matters
+    deck-wide identity. Rejected + simmed at 500/side: same cut →
+    stoke+feed_the_fire (48/51/50 — flame_tender is the sturdier on-theme
+    body, feed_the_fire serves better as the reward); stoke+hotblood_recruit
+    (49/52/52 — a Frenzy body, but its flavor is Vex's wannabe-bandit,
+    wrong for an honest smith's hand); boarherd base same ins (49/61/52 —
+    the 61 rides the greedy-AI defense blind spot, boarherd over-subscribed
+    at 4 trainers, big beasts read less smith than redsash's fire). Starter
+    spread untouched, re-verified byte-identical 60/52/47.
+  - **Verify (the full duelist bar):** build + `node --check` clean;
+    test-packs 6653/6653, test-leaders 198/198, test-factions 459/459 (no
+    new cards); roster 24, colm deck 30 legal (ids valid, ≤3 copies).
+    Raw-WS e2e 11/11 on a throwaway :8099 server (bogus-npc refused,
+    npcduel colm → duelStart foe "Colm the Striker"/kind npc, foe hand
+    sanitized all-nulls, own hand visible, second-duel-in-room ignored,
+    concede → duelEnd loser-no-rewards). Live on a worktree rig
+    (:8092/:5203): Colm in-scene with ⚔ badge + 30-card deck at (45.5,83),
+    `nearestInteract()` picks him up as a duelist at 2.5u, clearances
+    measured live (Bryn 2.9, hearth 4, anvil 3.9, work rack 4.5, spawn not
+    stuck), screenshot eyeballed (Colm at the glowing hearth beside Smith
+    Bryn, the work rack's gilded band behind), prod-bundle dev-hook grep 0
+    hits, zero console errors. NOT verified: walk-up E-challenge in motion
+    / a played-out live duel (rAF stall — e2e covers the room lifecycle,
+    same posture as every prior duelist).
+  - **Seeded for later**: none new — **Bryn's Forge is now COMPLETE**. Two
+    ripe-ish items remain: the **Kilnyard quest** (still wants a non-Marla
+    giver — Harrow, whose farmstead uses crockery, is the standing
+    suggestion), and the **conjuration duelist** (queue-head by age,
+    Wildcaller family at 5, but still needs a dedicated home-siting survey —
+    it has no zone; new-landmark vs convert-a-wild-place). Standing:
+    far-NW reserved; far-NE + far-SW banked; Red-Sash + windmill (main.js);
+    hot spring (parked, 14).
+
 - **The Forge spur — the Emberwatch road forks north to Bryn's Forge
   (2026-07-17, worldbuilding loop iteration 26)**: the ledger's ripest
   seed and a shape change after the quest (25). The downs rule fired for

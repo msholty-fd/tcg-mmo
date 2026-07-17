@@ -261,6 +261,16 @@ but never say "points" or "unlock."
   opinions on the quarry's business, Merle's hour, or anything west. (Duelists
   can't surface flavor lines — his knowledge lives here and in DESIGN text
   only.)
+- **Colm the Striker** (Bryn's Forge, Bryn's second) — small omens tier,
+  mostly none: Bryn draws the iron and holds the work, Colm swings the great
+  hammer, and drills with cards between the strikes, because striking and
+  dueling are the same lesson — watch the smith's tongs, hit where she says,
+  hit true, and strike while it's hot. Knows the anvil and the fire but
+  nothing of the yard's two mysteries: he has no opinion on the grey mare's
+  returning shoes or the bar-iron left by no one (those are Bryn's doors —
+  the striker swings where he's told and lets the smith puzzle the dark).
+  (Duelists can't surface flavor lines — his knowledge lives here and in
+  DESIGN text only.)
 - **Wren the Fuller** (the Loomstead, Ede's young second) — small omens
   tier, mostly none: Ede weaves the cloth, Wren fulls it — pounds and felts
   the woven wool until it holds together and turns the weather — and drills

@@ -26,7 +26,7 @@ import { scene } from '../scene.js';
 import { groundH } from '../terrain.js';
 import { rand } from '../utils.js';
 import { addCircle, addRect } from '../colliders.js';
-import { M, camCollidables, fires, crate, barrel, signpost, spawnNPC } from './lib.js';
+import { M, camCollidables, fires, crate, barrel, signpost, spawnNPC, spawnDuelist } from './lib.js';
 
 const F = { x: 46, z: 86 };   // heart (shared/zones.js CAMPS r=16)
 
@@ -221,3 +221,12 @@ bryn.flavor = [
   "I've shod a certain grey mare three times now. Nail them on sound of an evening — and come morning the shoes are back on my anvil, cold, and the mare barefoot in her field. I've stopped charging for it.",
   "The bar-iron comes stacked at my door of a morning, more than I ordered and nobody's cart-tracks in the dew. I used to sit up to catch who left it. Now I just thank the dark and get to work.",
 ];
+// Colm the Striker — Bryn's second (worldbuilding iteration 27, the seeded
+// Forge duelist, ripe since the road landed at 26). Bryn draws the iron and
+// holds the work; Colm swings the great hammer, and drills with cards
+// between the strikes. He stands in the open working ground just south of
+// the hearth and anvil, where the striker takes his swing (spawn (45.5,83):
+// clearances measured live — Bryn 2.9, hearth ~4, anvil ~3.9, work rack
+// ~4.5, bar stock ~5.1; spawn not stuck, labels + the ⚔ badge stay clear).
+// Route-trainer tier: deck/rewards in duelists.js, no server change.
+export const colm = spawnDuelist('colm', F.x - .5, F.z - 3, { shirt: 0x6a3a2a, hat: 0x3a2620 });
