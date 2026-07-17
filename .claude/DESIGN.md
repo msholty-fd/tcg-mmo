@@ -1929,6 +1929,45 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **Old Whetstone — the Armory's entry point (2026-07-16, /new-card
+  run 6)**: the loop's first EQUIPMENT pick — the game's newest card type
+  had never been touched by a run, its cheapest card was 2 Ember, and the
+  family held ONE common, so the mechanic was nearly invisible in the
+  pack's 70%-common slot (run 2's Low Whistle rationale, different
+  family). `old_whetstone`, core, common equipment, 1 Ember: +1 attack,
+  returns to hand when the wielder falls.
+  - **Cost anchor**: the 1c-relic accessory line (sentrys_cloak: bare
+    keyword at 1c common) crossed with piercing_barb's rate for +1 atk
+    (2c relic = +1 atk + keyword). The whetstone is the bare +1 at 1c
+    with the equipment return as its premium instead of a keyword —
+    priced AT the relic line, not above it, because the buff is the
+    smallest in the set.
+  - **Verified**: equip scenario test 50/50 across 10 seeds (plays with
+    target, +1 atk applies, rides as unit.equip, returns to hand on
+    wielder death, never graveyarded). Shell sims (3 copies, 50/side):
+    57/67/61 vs the wild_boar control's 59/64/62 — inside noise,
+    power-neutral for the slot; 0 stuck across 300 games. AI
+    instrumentation over 40 games: equipped 20×, returned to hand 11× —
+    the greedy brain drives the full lifecycle unprompted. Suites: packs
+    6653, leaders 198, factions 447→449, sim-starters byte-identical
+    60/52/47.
+  - **Family/faction**: armory → neutral (the mechanics-pass rule,
+    unchanged). Circulation: Boarlands pack (common) + **Hew the
+    Splitter's reward pool** — the stone yard keeps the realm's edges
+    (common, route-trainer band; deck untouched so his 49/60/52 holds,
+    and his defensive "the stone holds" identity stays un-retuned). Art:
+    `talisman` sprite in quarry greys (#8a8f96/#c8ccd2) — a kept stone,
+    no fire; distinct from everburning_brand's flame palette.
+  - **Rejected this survey**: a thieves_cant 5th (third rejection — the
+    family reads fine at 4 and neutral picks were 3 of 5 runs); a 2c
+    common Adept (abilities at common rarity is a bigger design question
+    — the ⚡ button's discoverability for brand-new players — than a
+    curve gap justifies); a 6c relic (relics cap at 3c on purpose:
+    attachments are supporting cast, DESIGN's relic entries never
+    flagged the ceiling as a gap).
+  - **Seeded**: none new — the conjuration duelist (run 3) remains the
+    queue's head.
+
 - **Scrap Dog — the Frenzied Warband's curve-starter (2026-07-16, /new-card
   run 5)**: the survey went to the thinnest FACTION — redsash, 17 cards
   against boarherd's 21 and wardens' 30 — and found neither of its families

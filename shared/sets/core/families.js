@@ -121,7 +121,7 @@ export const FAMILIES = [
   {
     id: 'armory', name: 'The Armory',
     // equipment — persistent gear that returns to hand when its wielder falls
-    cardIds: ['emberforged_blade', 'oaken_aegis', 'travelers_cloak', 'huntsmans_longbow', 'everburning_brand'],
+    cardIds: ['old_whetstone', 'emberforged_blade', 'oaken_aegis', 'travelers_cloak', 'huntsmans_longbow', 'everburning_brand'],
   },
   {
     id: 'thieves_cant', name: "Thieves' Cant",
