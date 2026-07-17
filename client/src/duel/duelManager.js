@@ -106,6 +106,9 @@ export function startRemoteDuel(foeName, side, view, sendAction, kind = 'pvp') {
   openDuel(view, side, kind === 'pvp' ? foeName + ' ⚔ (player)' : foeName, {
     onPlay(i, target) { sendAction({ kind: 'play', i, target: ser(target) }); },
     onKindle(i) { sendAction({ kind: 'kindle', i }); },
+    // the Offering — online duels only (permanent collection change needs
+    // the server); local/offline duels omit this so the menu item disables
+    onOffer(i) { sendAction({ kind: 'offer', i }); },
     onAttack(unit, target) { sendAction({ kind: 'attack', unitUid: unit.uid, target: ser(target) }); },
     onActivate(unitUid, target) { sendAction({ kind: 'activate', unitUid, target: ser(target) }); },
     onEndTurn() { sendAction({ kind: 'end' }); },

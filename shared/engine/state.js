@@ -49,6 +49,7 @@ function makePlayer(deckItems, rng) {
     ember: 0,
     emberMax: 0,
     kindledThisTurn: false,
+    offersUsed: 0,     // Offerings made this duel (engine.js offer(), max OFFER_MAX)
     deck,
     hand: [],
     field: [],

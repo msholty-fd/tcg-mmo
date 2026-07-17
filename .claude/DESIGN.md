@@ -2380,6 +2380,62 @@ considered and rejected.
     duelist (once homed) or genuinely new archetypes, not a tenth
     route-trainer.**
 
+- **The Offering — drafting epic Phase 3, the first engine change
+  (2026-07-17)**: the sweat mechanic from the 2026-07-16 brainstorm, built
+  exactly to the decided spec (DRAFTING.md "Offering design"): on your
+  turn, in place of a normal kindle (same slot, max 3 per duel), you may
+  permanently sacrifice a card from hand — it grants +1 emberMax like any
+  kindle PLUS a bonus in the memory's own voice, and the REAL instance
+  migrates, history intact, into the nearest fire's pool for someone else
+  to find.
+  - *Engine* (`offer()`/`canOffer`/`OFFER_MAX` in engine.js, `offersUsed`
+    in state.js, new `randomAlly` selector in effects.js): bonus flavor
+    from the card's faction, size from rarity tier (common/uncommon/rare =
+    1/2/3), Veteran/Storied embers count one tier higher — boarherd buffs
+    a random ally +t/+t, wardens restores 2t Hearth, redsash (and
+    emberpeaks) burns a random enemy for t, neutral (and darkwood) draws
+    (+1 Hearth at tier 2+). All rows reuse existing effect primitives; the
+    offered card does NOT enter the graveyard — the memory leaves the duel
+    entirely. Offers fire onKindle triggers (an Offer IS a feeding).
+    In-engine an offer strictly beats a kindle BY DESIGN — the real cost
+    is the collection loss, which the engine can't price; that asymmetry
+    is the whole mechanic. The AI never offers (it can't pay a collection
+    price), so NPC/autobattle balance is untouched — sim-starters
+    byte-identical 60/52/47.
+  - *Design correction found during build*: the earlier note "block
+    offering active-deck cards (like trading)" was impossible — offers
+    come from the HAND, and every hand card IS a deck card. Replaced with
+    the **deck-hole** approach: the instance leaves collection AND deck,
+    the deck duels on at 29 (deckItems now skips missing iids), and the
+    player repairs it in the builder. validDeck still requires 30 to save.
+  - *Migration, not destruction, literally*: `offerToFire` ignores range
+    (an Offering ALWAYS lands — nearest fire, wherever the duel), and a
+    full pool evicts its oldest ANONYMOUS ember to make room; real
+    instances are never evicted (pool may briefly exceed max if all-real —
+    rare). Pool entries are now mixed: strings = anonymous (mint on
+    draft), objects = real instances with `offered: {fire, by}`
+    provenance — drafting one TRANSFERS it, owners[] growing like a trade,
+    renown/level travelling. The offerer gets a chat cue ("Your Forest Sow
+    passes into the Boar King's fire. It burns for whoever finds it.") —
+    unlike Phase 2's silent kindle-feed, an Offering is loud on purpose.
+  - *Client*: card-menu item "Offer ✦ (N left)" with a two-click red
+    confirm ("Forever? Confirm ✦") — permanence deserves friction;
+    online-only (local duels have no onOffer handler, button disabled).
+    Hearth window renders offered instances with a gold glow + "✦ offered
+    by <name>" and picks them by iid.
+  - *Verify*: 29/29 headless engine assertions (slot sharing, max 3,
+    no-graveyard, every bonus row incl. hearth-fallback burn and
+    empty-board fizzle, both tiers, renown kicker); raw-WS e2e 28/28
+    (three offers → collection/deck 30→27 with cues, 4th refused, 3
+    instances in Gruk's fire with provenance, draft-back returns the SAME
+    iid with owners grown, follow-up duel starts on the 27-card deck);
+    sim-starters byte-identical, packs/leaders/factions suites green;
+    live on a worktree rig (:8093/:5193): full real-click flow — menu →
+    armed confirm (screenshot) → offer → duel-log + server cue → concede →
+    hearth window showing the Forest Sow with "✦ offered by OfferLive"
+    (screenshot). NOT verified: PvP-side offers (same code path as NPC
+    duels; e2e covers the room plumbing).
+
 - **Kindle feeds the fire — drafting epic Phase 2 (2026-07-17)**: the loop
   closes — what players burn becomes what other players find. Every kindle
   in an online duel drifts an anonymous copy of the burned card into the

@@ -329,7 +329,7 @@ export function initNet() {
   initHearth({
     isConnected: () => connected,
     sendHearthView: fire => connected && ws.send(JSON.stringify({ t: 'hearthView', fire })),
-    sendDraftPick: (fire, card) => connected && ws.send(JSON.stringify({ t: 'draftPick', fire, card })),
+    sendDraftPick: (fire, card, iid) => connected && ws.send(JSON.stringify({ t: 'draftPick', fire, card, iid })),
   });
   initHall({
     isConnected: () => connected,

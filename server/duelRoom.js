@@ -7,7 +7,7 @@ import '../shared/sets/core/cards.js';
 import '../shared/sets/emberpeaks/cards.js';
 import '../shared/sets/darkwood/cards.js';
 import { createDuel, findUnit } from '../shared/engine/state.js';
-import { startTurn, endTurn, playCard, kindle, attack, activateAbility } from '../shared/engine/engine.js';
+import { startTurn, endTurn, playCard, kindle, offer, attack, activateAbility } from '../shared/engine/engine.js';
 import { takeTurn } from '../shared/engine/ai.js';
 
 const RECONNECT_GRACE_MS = 60_000;
@@ -26,6 +26,7 @@ export class DuelRoom {
     this.onWin = opts.onWin;
     this.onChronicle = opts.onChronicle;
     this.onKindle = opts.onKindle;
+    this.onOffer = opts.onOffer;
     this.logCursor = 0;   // duel.log scan position (see broadcast)
     this.dcTimers = [null, null];
     this.botPending = false;
@@ -58,7 +59,7 @@ export class DuelRoom {
       chatter: d.chatter.slice(-12),
       players: d.players.map((p, i) => ({
         hearth: p.hearth, ember: p.ember, emberMax: p.emberMax,
-        kindledThisTurn: p.kindledThisTurn,
+        kindledThisTurn: p.kindledThisTurn, offersUsed: p.offersUsed,
         hand: i === side ? p.hand : p.hand.map(() => null),
         reactions: i === side ? p.reactions : p.reactions.map(() => null),
         enchantments: p.enchantments,   // face-up and persistent — visible to both sides
@@ -88,6 +89,12 @@ export class DuelRoom {
         break;
       case 'kindle':
         kindle(d, side, act.i);
+        break;
+      case 'offer':
+        // the Offering — only ever reaches here from a live human client
+        // (AI and autobattle act via takeTurn, which never offers); the
+        // collection-side migration happens in the onOffer hook below
+        offer(d, side, act.i);
         break;
       case 'attack': {
         const unit = findUnit(d, act.unitUid);
@@ -123,10 +130,11 @@ export class DuelRoom {
     // every state change funnels through here (human actions, AI turns,
     // timeouts), so scanning the log delta catches EVERY kindle — human,
     // NPC, and autobattle alike (drafting Phase 2: kindle feeds the fire)
-    if (this.onKindle) {
+    {
       const log = this.duel.log;
       for (let i = this.logCursor; i < log.length; i++) {
-        if (log[i].type === 'kindle') this.onKindle(this, log[i].side, log[i].card);
+        if (log[i].type === 'kindle' && this.onKindle) this.onKindle(this, log[i].side, log[i].card);
+        if (log[i].type === 'offer' && this.onOffer) this.onOffer(this, log[i]);
       }
       this.logCursor = log.length;
     }

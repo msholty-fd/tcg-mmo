@@ -57,17 +57,22 @@ function render() {
   if (!view.cards.length) {
     wrap.innerHTML = '<div class="h-empty">Only ash and quiet — the fire holds nothing right now.</div>';
   }
-  for (const id of view.cards) {
+  for (const entry of view.cards) {
+    // a string is an anonymous ember; an object is a real instance someone
+    // Offered — history intact, provenance shown, transferred on draft
+    const isInst = typeof entry === 'object' && entry !== null;
+    const id = isInst ? entry.cardId : entry;
     const def = getCard(id);
     if (!def) continue;
     const el = document.createElement('div');
-    el.className = 's-card r-' + def.rarity + (canPick() ? ' pickable' : '');
+    el.className = 's-card r-' + def.rarity + (canPick() ? ' pickable' : '') + (isInst ? ' offered' : '');
     el.dataset.card = id;
     const art = artFor(id);
     el.innerHTML = (art ? `<img src="${art}" alt="">` : '') +
-      `<div class="n">${def.name}</div><div class="r">${def.rarity}</div>`;
+      `<div class="n">${def.name}</div><div class="r">${def.rarity}</div>` +
+      (isInst ? `<div class="prov">✦ offered by ${entry.offered?.by || 'someone'}</div>` : '');
     el.addEventListener('click', () => {
-      if (canPick()) net.sendDraftPick(fire.id, id);
+      if (canPick()) net.sendDraftPick(fire.id, id, isInst ? entry.iid : undefined);
     });
     wrap.appendChild(el);
   }

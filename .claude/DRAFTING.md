@@ -230,15 +230,23 @@ floor for fires nobody duels near. Deliberately invisible to the kindling
 player in v1 — a "your memory drifts into the fire" cue is noted as
 legibility polish for later.
 
-**Phase 3 — the Offering (#7).** Engine: new action `offer` (kindle variant
-occupying the turn's kindle slot; max 3 per duel; +1 emberMax like kindle
-PLUS a small faction-flavored bonus scaled by rarity tier with a renown
-kicker — see "Offering design" above; numbers verified via sim). Server:
-validates human-only + not a
-deck card; moves the REAL instance (owners[] appended → the fire? new
-"held by the fire" state) into the fire's pool; Chronicle origin line.
-Client: distinct UI on the kindle affordance with a confirm (it's
-permanent). The sweat feature.
+**Phase 3 — the Offering (#7). DONE 2026-07-17** (see DESIGN.md "The
+Offering"). Engine `offer()`: kindle-slot variant, max 3/duel, +1 emberMax
++ faction×rarity-tier bonus with renown kicker (Veteran/Storied = +1
+tier); the offered card skips the graveyard (the memory leaves the duel).
+Server: human-only by construction (AI paths never offer); the real
+instance leaves collection AND deck, and ALWAYS lands in the nearest fire
+(any distance; a full pool evicts its oldest anonymous ember — "migration,
+not destruction" means an Offering is never lost). Pool entries now mixed:
+strings = anonymous embers, objects = real instances with `offered:
+{fire, by}` provenance; drafting an instance TRANSFERS it (owners[] grows,
+renown/level travel) instead of minting. Client: two-click red confirm on
+the card menu ("Offer ✦ (N left)" → "Forever? Confirm ✦"), online-only;
+the hearth window shows offered instances with a gold glow + "✦ offered
+by <name>". One design correction made during build: "block offering deck
+cards" was impossible — offers come from the HAND, and hand cards ARE
+deck cards; replaced with the deck-hole approach (deck keeps a hole,
+deckItems tolerates it, repaired in the builder).
 
 **Phase 4 — fire health / cold fires (#3).** Pool level drives fire state:
 fed → dim → cold. Visual (flame scale/light already per-fire in world.js) +

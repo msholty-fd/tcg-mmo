@@ -14,7 +14,7 @@ import { earnStanding } from '../../shared/factions.js';
 export function createDuelModule(ctx) {
   const { players, activeDuels, challenges, DUELISTS, DuelRoom,
     send, broadcast, sendProfile, markDirty, grant, deckItems, gameHour,
-    CHALLENGE_TTL_MS, CHALLENGE_RANGE, feedFire } = ctx;
+    CHALLENGE_TTL_MS, CHALLENGE_RANGE, feedFire, offerToFire } = ctx;
 
   // duel victory: XP + quest progress
   function onDuelWin(w, room) {
@@ -101,7 +101,31 @@ export function createDuelModule(ctx) {
     const live = room.players[side].live || room.players[1 - side].live;
     if (live && feedFire) feedFire(live.x, live.z, cardId);
   };
-  const roomOpts = extra => ({ onEnd: endRoom, grant, onWin: onDuelWin, onChronicle, onKindle, night: isNight(), ...extra });
+
+  // drafting Phase 3 — the Offering's collection side. The engine already
+  // applied the in-duel payoff; here the offered instance permanently
+  // leaves the offerer's collection (and their deck — the deck keeps a
+  // hole until they repair it in the builder; deckItems tolerates it) and
+  // migrates, history intact, into the nearest fire's pool. Human-only by
+  // construction: the log entry can only come from a live client's action.
+  const onOffer = (room, entry) => {
+    const P = room.players[entry.side];
+    if (P.ai || !P.profile) return;
+    const ci = P.profile.cards.findIndex(c => c.iid === entry.iid);
+    if (ci < 0) return;   // already gone (e.g. a replayed/duplicate entry)
+    const [inst] = P.profile.cards.splice(ci, 1);
+    const di = P.profile.deck.indexOf(entry.iid);
+    if (di >= 0) P.profile.deck.splice(di, 1);
+    markDirty(P.profile);
+    const live = P.live || room.players[1 - entry.side].live;
+    const fire = offerToFire ? offerToFire(live?.x, live?.z, inst, P.profile.name) : null;
+    if (P.live) {
+      sendProfile(P.live);
+      if (fire) send(P.live, { t: 'chat', from: '[Server]', text: `Your ${getCard(inst.cardId)?.name || inst.cardId} passes into ${fire.name}. It burns for whoever finds it.` });
+    }
+    console.log(`${P.name} offered ${inst.cardId} (${inst.iid}) → ${fire ? fire.id : 'no fire'}`);
+  };
+  const roomOpts = extra => ({ onEnd: endRoom, grant, onWin: onDuelWin, onChronicle, onKindle, onOffer, night: isNight(), ...extra });
 
   const handlers = {
     challenge(me, msg) {
