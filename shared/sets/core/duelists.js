@@ -365,6 +365,43 @@ const hewDeck = swap(
   ['kindled_fury', 'kindled_fury'],
   ['line_holder', 'stand_and_hold'],
 );
+// Wren (the Loomstead) — Ede's young second, the fuller: Ede weaves the
+// cloth, Wren pounds and felts the woven wool until it holds together and
+// turns the weather (and, drilled between the fulling, a blade). Fulling and
+// dueling are the same lesson — the loose thread frays, the worked cloth
+// holds. Wardens base — the patient/defensive family fits Ede's "warp first,
+// weft after, no hurrying," and it's the yard's own register. Out go two of
+// the base's three ember_bolts — a fuller doesn't throw fire, and cutting the
+// base's efficient reach (rather than sudden_spark) is what keeps the swap
+// power-NEUTRAL instead of a boost (see tuning); deliberately NOT Dace's
+// camp_torcher outs nor Nell's kindled_fury outs (same-base wardens trainers
+// must not share the same shape — a third distinct out on the base). In come
+// pilgrims_vow (+0/+1 and Ward — a thread of guard wound round it, the
+// fuller's felt turned to protection) and sworn_medic (1/3 lifesteal — the
+// mend that rejoins the line: nothing wasted, every loss patched).
+// Micro-read: "nothing frays" — woven guard (Ward) and mended loss
+// (lifesteal), distinct from Hew's immovable hold, Dace's set-and-wait
+// snares, Wick's punish-attack, Nell's steady puller, and Tolly's herd buffs.
+// Tuned in sims (500/side vs each starter, 0 stuck across all runs): 44/55/49
+// vs boarherd/wardens/redsash — the friendly route-trainer band (near Nell
+// 43/54/49 and Wick 45/44/48; a quiet weaving yard duels gentler than the
+// camps and the quarry, the meads precedent), and power-neutral vs the plain
+// wardens base (42/53/47 in the same sim — staples traded for staples). The
+// 55 vs wardens rides the documented greedy-AI defense blind spot (Ward +
+// lifesteal are defensive, which the AI undervalues). Rejected variants, all
+// simmed at 500/side: sudden_spark x2 -> same ins (49/63/56 — a real +7..10pp
+// BOOST over the base, Hew-tier, too strong for a gentle yard: sudden_spark
+// is worse reach than ember_bolt, so cutting it keeps the gains); wardens
+// sudden_spark x2 -> warded_acolyte+sworn_medic (50/64/58 — stronger still,
+// and a plain ward body reads blander than the lifesteal mend); redsash base
+// ember_bolt... n/a — redsash sudden_spark x2 -> same ins (55/65/61 — way
+// over band AND a bandit sash on an honest fuller reads wrong, the Dace/Hew
+// objection verbatim).
+const wrenDeck = swap(
+  STARTER_DECKS.wardens,
+  ['ember_bolt', 'ember_bolt'],
+  ['pilgrims_vow', 'sworn_medic'],
+);
 
 export const DUELISTS = {
   rowan: {
@@ -450,5 +487,9 @@ export const DUELISTS = {
   hew: {
     name: 'Hew the Splitter', deck: hewDeck,
     rewards: [...hewDeck, 'watchers_oath', 'old_whetstone'],   // "Sworn once, kept every day since." — a prenticeship in one line (Dace's boar_pit pattern; deliberately not shieldwall_sergeant, a Leader, nor bastion_keep, a rare — route trainers reward modestly). The whetstone: the stone yard keeps the realm's edges (common; deck untouched, tuning holds)
+  },
+  wren: {
+    name: 'Wren the Fuller', deck: wrenDeck,
+    rewards: [...wrenDeck, 'hearthguard_veteran'],   // "Outlasted three captains." — the fuller's cloth outlasts (uncommon lifesteal, route-trainer reward band; deliberately not a Leader/rare; deck untouched, so tuning holds)
   },
 };

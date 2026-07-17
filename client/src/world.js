@@ -27,7 +27,7 @@ export { pell } from './world/pellspond.js';
 export { odo } from './world/beemeads.js';
 export { merle } from './world/dialstone.js';
 export { hobb, hew } from './world/quarry.js';
-export { ede } from './world/loomstead.js';
+export { ede, wren } from './world/loomstead.js';
 export { fern } from './world/kilnyard.js';
 export { bryn } from './world/forge.js';
 export { updateDarkwood, tamsin, weir, rusk } from './world/darkwood.js';

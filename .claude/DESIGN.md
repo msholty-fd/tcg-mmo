@@ -2222,6 +2222,89 @@ considered and rejected.
     queue's head; redsash's next structural gap is a frenzied_warband
     rare above kestrel if the faction ever wants a second chase card.
 
+- **Wren the Fuller — the Loomstead's duelist (2026-07-17, worldbuilding
+  loop iteration 23)**: **duelists.js freed** — the /new-card factory that
+  held it continuously since iteration 16 finally spun down (no `card-*`
+  worktree this survey, the six-survey Michael flag resolved itself), and
+  the loop immediately spent the window on the ripest blocked seed. Three
+  were ripe (conjuration duelist, east-road trainer, Loomstead duelist);
+  the **Loomstead duelist** won on being the most explicitly teed-up —
+  iteration 21 built its road and wrote "every precondition now met, lands
+  the instant duelists.js frees" — and on being the lowest-risk proven
+  route-trainer lane, converting a possibly-brief window into a clean win.
+  It completes the Loomstead's full grammar (landmark 18, quest 20, road
+  21, duelist 23 — the delayed middle step, the block having forced the
+  road ahead of the duelist for the first time). Shape run: landmark
+  (18,19), quest (20), road (21), landmark (22), duelist (23) — the first
+  duelist since Hew (15), eight iterations back.
+  - **The character**: Wren, Ede's young second — the fuller (Wick/Hew
+    "young second" precedent). Ede weaves; Wren fulls the cloth (pounds and
+    felts the woven wool until it holds and turns weather). Fulling and
+    dueling are one lesson: the loose thread frays, the worked cloth holds.
+    Micro-read **"nothing frays"** — woven guard + mended loss, distinct
+    from every prior trainer.
+  - **The deck** (`shared/sets/core/duelists.js` + a spawn in loomstead.js,
+    1-line barrel export; zero server change): **wardens base** — the
+    patient/defensive family fits Ede's "warp first, weft after, no
+    hurrying" and is the yard's register. Out go two of the base's three
+    **ember_bolts** (a fuller throws no fire; cutting the base's efficient
+    reach — NOT sudden_spark — is what keeps the swap power-neutral, see
+    tuning; and deliberately NOT Dace's camp_torcher nor Nell's kindled_fury
+    outs — a third distinct out-shape on the shared wardens base). In come
+    **pilgrims_vow** (+0/+1 and Ward — a thread of guard wound round it) and
+    **sworn_medic** (1/3 lifesteal — the mend that rejoins the line). Reward
+    extra **hearthguard_veteran** ("Outlasted three captains." — the
+    fuller's cloth outlasts; uncommon lifesteal, route-trainer reward band,
+    deliberately not a Leader/rare — deck untouched so tuning holds).
+  - **Tuning** (500/side vs each starter, 0 stuck across all runs):
+    **44/55/49** vs boarherd/wardens/redsash — the FRIENDLY route-trainer
+    band (near Nell 43/54/49 and Wick 45/44/48; a quiet weaving yard duels
+    gentler than the camps and the quarry — the meads precedent, "an apiary
+    duels friendlier than a bandit route"), and power-neutral vs the plain
+    wardens base (42/53/47 in the same sim — staples for staples). The 55 vs
+    wardens rides the documented greedy-AI defense blind spot (Ward +
+    lifesteal are defensive). **Rejected + simmed at 500/side**: the FIRST
+    pick, sudden_spark x2 → same ins (49/63/56 — a real +7..10pp BOOST, near
+    Hew, too strong for a gentle yard: sudden_spark is worse reach than
+    ember_bolt, so cutting it banks the gain — the ember_bolt cut is what
+    made it lateral); wardens sudden_spark x2 → warded_acolyte+sworn_medic
+    (50/64/58 — stronger still, and a plain ward body reads blander than the
+    lifesteal mend); redsash base sudden_spark x2 → same ins (55/65/61 — way
+    over band, AND a bandit sash on an honest fuller reads wrong, the
+    Dace/Hew objection verbatim). Starter spread untouched, re-verified
+    byte-identical 60/52/47.
+  - **Verify (the full duelist bar):** build + `node --check` clean;
+    test-packs 6653/6653, test-leaders 198/198, test-factions 459/459 (no
+    new cards — existing pool); roster 22 duelists, wren deck 30 legal, all
+    ids valid, ≤3 copies. Raw-WS e2e 11/11 on a throwaway :8099 server
+    (bogus-npc refused, npcduel wren → duelStart with foe name "Wren the
+    Fuller"/kind npc, foe hand sanitized all-nulls, own hand visible,
+    second npcduel-in-room ignored, concede → duelEnd loser-no-rewards).
+    Live on a worktree rig (:8097/:5199): Wren in-scene with mesh + ⚔ badge
+    at (83.5,50), duelist id + 30-card deck resolve client-side,
+    `nearestInteract()` picks her up as a duelist at 2.5u, clearances
+    measured live (Ede 6.4, fire 3.2, tenter 4.2/5.0, sacks 6.0, spawn not
+    stuck), screenshot eyeballed (Wren among the drying lines with Ede
+    behind), prod-bundle dev-hook grep 0 hits, zero console errors. NOT
+    verified: walk-up E-challenge in motion / a played-out live duel (rAF
+    stall, `document.hidden` true — the e2e covers the room lifecycle
+    server-side, same posture as every prior duelist entry).
+  - **Seeded for later**: none new here — the Loomstead is now COMPLETE
+    (landmark, NPC, quest, road, duelist), the fourth full-grammar zone
+    after the downs/pond/meads/quarry. **The two other ripe duelists stay
+    queued for the next duelists.js windows**: the conjuration duelist
+    (queue-head by age, the Wildcaller family at 5 — but it still needs a
+    HOME-siting decision, it has no zone; a survey should decide whether it
+    gets a new landmark or converts a wild place), and the east-road trainer
+    (route-patrol tier, the dace/brenna 36–44 band below Hew reserved for
+    it, walks the East Road). Also still open: the Kilnyard quest+road and a
+    Forge quest+road+duelist cascade (both found-first-elapsed craft yards);
+    far-NW reserved; far-NE + far-SW gaps banked; Red-Sash + windmill
+    (main.js); hot spring (parked, 14). **Note for future surveys: if the
+    card factory restarts and re-holds duelists.js, prefer the remaining
+    landmark/quest/road picks and leave the two queued duelists until the
+    next free window — do not stall.**
+
 - **Bryn's Forge — the smith's yard on the north-central upland (2026-07-17,
   worldbuilding loop iteration 22)**: sixth consecutive survey with every
   duelist-shaped pick file-blocked (a live /new-card session,
