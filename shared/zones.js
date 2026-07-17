@@ -70,6 +70,10 @@ export const CAMPS = [
   // ground in the wedge (scanned, not terraformed — the Pell's Pond
   // technique). See DESIGN.md "Hobb's Quarry".
   { x: 157, z: -20, r: 16, name: "Hobb's Quarry" },
+  // A weaver's stead on the middle eastern grass, between Meadowbrook, the
+  // Emberwatch road, and the Dial Stone — where Wynn's wool becomes the
+  // realm's shirts. See DESIGN.md "The Loomstead".
+  { x: 87, z: 46, r: 16, name: 'The Loomstead' },
   // An abandoned mine dug into a rocky rise due north, in the Darkwood — a
   // scenic discovery, not enterable (seeds future underground content). See
   // DESIGN.md "Cinderhollow Mine".

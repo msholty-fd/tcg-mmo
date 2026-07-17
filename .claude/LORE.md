@@ -198,6 +198,18 @@ but never say "points" or "unlock."
   the Night-Gather by daylight and is gone by dusk, and won't say why beyond
   "the light's better." (Vendor interactions can't surface flavor lines —
   his knowledge shows in the pack desc and DESIGN text only for now.)
+- **Weaver Ede** (the Loomstead, the middle eastern grass) — small omens
+  tier: weaves the realm's shirts from Wynn's wool (Nell's cart brings the
+  fleeces east; the bolts walk on to Highgate and the village), and keeps
+  her dye fire low and even ("a dye pot wants a fire like a held breath" —
+  one light echo of the tended-fire theme, kept at one line, never
+  explained further). Two seeded doors, both gentle: **the ash-grey bolt**
+  that won't take any dye (she blames the water — do not answer without a
+  Loomstead content phase, and the grey stays a dyer's grumble, never
+  sharpened toward forgetting or the Going-Out), and **the spring thief
+  that robs her drying lines of red thread only** (she suspects magpies;
+  nobody has ever seen one do it). No opinions on any western door, on
+  Hobb's stone business, or on the myth — cloth is trade, not omen.
 - **Guildmaster Yara** (Highgate, the Merchant Hall) — commerce tier, the
   Marla register at guild scale: ledgers, guarantees, receipts. Her stone
   errand (quest `stone_order`, the realm's east pointer) stays
