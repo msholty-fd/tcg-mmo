@@ -2222,6 +2222,75 @@ considered and rejected.
     queue's head; redsash's next structural gap is a frenzied_warband
     rare above kestrel if the faction ever wants a second chase card.
 
+- **Worn to the Nub — Hobb's craft-to-craft errand to Bryn's Forge
+  (2026-07-17, worldbuilding loop iteration 25)**: shape variance after two
+  straight duelists (Wren 23, Gedd 24) — a quest, the first non-duelist
+  since the Loomstead spur (21). Two visit-quest seeds were ripe (the
+  Kilnyard quest, seeded 20/22; a Forge quest, seeded 22 — both craft yards
+  past their found-first loops), and the Forge won on FRESHER FRAMING: the
+  Kilnyard's natural giver is Marla, whose honey_run was already a
+  supplier-visit (a second would be her repeating herself), whereas the
+  Forge admits the realm's **first craft-to-craft errand** — one maker
+  sending the player to another, not a commerce giver to a supplier. That
+  freshness broke the tie over seed-age (the Kilnyard seed is older); the
+  Kilnyard quest stays seeded, and should get a non-Marla framing when
+  built. The pick also mints Bryn's Forge's business, so its road unlocks
+  next (the downs rule — the meads/quarry/Loomstead pattern a fourth time).
+  - **The story**: Hobb CUTS every waystone; Bryn BANDS them (the forge's
+    work rack literally hangs a gilded waystone band, authored at 22) —
+    two rooted makers who complete each other's work and, each tied to his
+    own fire/yard, have never met. Hobb's cutting edges are worn; the only
+    forge hot enough to draw new ones is Bryn's; he sends the player to
+    find it ("look for the smoke") and confirm it's real. The mason who
+    cut a thousand waystones has never shaken the hand of the smith who
+    gilded them — the player stands at both ends of that for the first
+    time. Craft-to-craft respect, no reserved-thread touch (Hobb's
+    frost-split door, the millstone, and Bryn's two doors all untouched).
+  - **The quest** (`worn_edges`, "Worn to the Nub"; `shared/quests.js` +
+    ONE client GIVERS line): giver **hobb** — his first quest, the realm's
+    **second landmark-based giver** after Wynn (all others are
+    village/Highgate). minLvl 4, prereq `practice` (the discovery-pointer
+    standard — honey_run/wool_run verbatim; and the giver sits at the
+    quarry, so reaching him gates it naturally). visit (46,86, r12), 280 xp
+    / 25 coins ("mason's coin, for the miles" — mid-band, the
+    stone_order/wool_run register). Directions by SIGHT, no road ("past the
+    Emberwatch road ... look for the smoke") — the Forge's soot chimney and
+    glowing hearth are its distance read, and this is the first content to
+    use them (the wool_run/drying-lines pattern). Hobb keeps his six flavor
+    lines (Bram/Wynn precedent — giver + flavor coexist).
+  - **Rejected this survey**: a third duelist (the conjuration duelist is
+    the last queued one, but back-to-back-to-back duelists is real fatigue
+    AND it still needs a home-siting decision — NOT a quick grab); the
+    Kilnyard quest (above — still seeded, wants a non-Marla giver); a Forge
+    road or Kilnyard road (neither yard had business yet — this quest is
+    what earns the Forge its road, downs rule); a Wildcaller landmark to
+    home the conjuration duelist (weighed and deferred — a whole new wild
+    zone built only to seat a queued duelist is a two-iteration commitment
+    with reserved-thread risk near the Darkwood/mire/peaks; it deserves its
+    own dedicated survey, not a rushed pairing).
+  - **Verify:** node --check + build clean; 20 headless quest-gate
+    assertions (accept/refusals/radius/single-fire/cross-fire/turn-in/
+    id-uniqueness) + 16 raw-WS e2e assertions on a throwaway :8099 server
+    (underlevel + no-prereq refusals, early turn-in refused, outside-radius
+    no-progress, progress single-fire, +25 coins, xp awarded, re-accept
+    refused, persistence across reconnect); suites test-packs 6653/6653,
+    test-leaders 198/198, test-factions 459/459. Client wiring live on a
+    worktree Vite (:5201): quest loads client-side (30 quests), giver
+    resolves to Hobb, `hobb` in GIVERS, target confirmed (46,86), Hobb's 6
+    flavor lines intact, zero console errors. NOT verified: full live
+    accept→walk→turn-in in the client UI (server path fully e2e-proven; the
+    generic tracker/marker was verified live at the honey run — same
+    components).
+  - **Seeded for later**: **Bryn's Forge is now business-bearing** — its
+    road (a spur, likely off the Emberwatch road near finch's beat or the
+    north road) unlocks next survey, and a Forge duelist follows (the
+    quarry/Loomstead cascade). The **Kilnyard quest stays seeded** (wants a
+    non-Marla giver — perhaps Harrow, whose farmstead uses crockery, or a
+    Highgate-market framing). Standing: the **conjuration duelist** still
+    queued and still needs a home decision (a dedicated survey);
+    far-NW reserved; far-NE + far-SW banked; Red-Sash + windmill (main.js);
+    hot spring (parked, 14).
+
 - **Gedd the Drover — the East Road's route trainer (2026-07-17,
   worldbuilding loop iteration 24)**: duelists.js stayed free a second
   survey (no `card-*` worktree), so the loop spent the still-open window on

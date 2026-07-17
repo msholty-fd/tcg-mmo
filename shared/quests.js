@@ -181,6 +181,25 @@ export const QUESTS = [
     obj: () => "Find where Wynn's wool goes",
     thanks: "Bolts on the line and my clip in her sacks. Good. Forty years I've sent wool east, and this is the first time east has a face. The flock won't care, but I'll sleep better knowing the whole of it — shear to shirt.",
   },
+  // Worn to the Nub (2026-07-17, worldbuilding iteration 25 — DESIGN.md): the
+  // realm's first CRAFT-TO-CRAFT errand (prior visit quests were commerce
+  // giver -> supplier; this is one maker sending the player to another). Hobb
+  // CUTS every waystone; Bryn BANDS them (the forge's work rack literally
+  // hangs a gilded waystone band, forge.js) — two makers who complete each
+  // other's work and, rooted to their yards, have never met. Hobb becomes a
+  // giver (his first quest; the realm's second landmark-based giver after
+  // Wynn) — one client GIVERS line, the only non-data change. This mints
+  // Bryn's Forge's business, so its road (the downs rule) unlocks next. Hobb
+  // stays small-omens/craft tier: worn edges and a smith's fire, never an
+  // omen — the quest never touches his frost-split door, the millstone, or
+  // Bryn's two doors.
+  {
+    id: 'worn_edges', giver: 'hobb', title: 'Worn to the Nub', minLvl: 4, prereq: 'practice',
+    visit: { x: 46, z: 86, r: 12 }, xp: 280, coins: 25,
+    offer: "My cutting edges are worn to the nub — thirty years of stone will do that — and there's one fire in this realm hot enough to draw new ones. North-central, past the Emberwatch road: a smith called Bryn. I've banded a thousand waystones with her iron and never once shaken her hand — a mason doesn't leave his yard, and she doesn't leave her fire. Go find her forge for me. Look for the smoke. Tell me it's real and it's hot, and I'll send the whole worn lot up on the next sledge.",
+    obj: () => "Find Bryn's forge by its smoke, north of the Emberwatch road",
+    thanks: "Real, then, and hot enough. Good. Thirty years I've trusted my edges to iron I never watched drawn — feels right that somebody's finally stood at both ends of it. The chisels go up on the next sledge. Here — mason's coin, for the miles.",
+  },
   // Emberwatch Ruins — a night-only landmark (DESIGN.md). The Sentinel only
   // manifests after dark (client-side visibility gate in world.js/main.js),
   // so this quest is discovery flavor: Aldric points at the rumor, finding
