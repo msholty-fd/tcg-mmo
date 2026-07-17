@@ -849,6 +849,9 @@ const CARD_ART = {
   bog_witch:           { sprite: 'hooded', pal: { h: '#3a5a3a', H: '#2a422a', s: '#a8b890', e: '#aef07a', m: '#2e3e2a' } },
   warcry_captain:      { sprite: 'hooded', pal: { h: '#8a4a3a', H: '#66352a', e: '#ffcf40', s: '#d8a878' } },
   spark_conjurer:      { sprite: 'hooded', pal: { h: '#5a3a8a', H: '#43296a', e: '#b070ff', s: '#c8a8d8' } },
+  // coal_carrier: the youngest adept — soot-grey hood, one warm coal-orange
+  // accent; dimmer than hearth_channeler's full russet
+  coal_carrier:        { sprite: 'hooded', pal: { h: '#6a625a', H: '#4c463f', e: '#ff8a30', s: '#d8c8b8' } },
 };
 
 const cache = new Map();

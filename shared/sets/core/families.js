@@ -142,6 +142,6 @@ export const FAMILIES = [
   {
     id: 'adepts', name: 'The Adepts',
     // activated abilities — creatures that pay off round after round
-    cardIds: ['emberkin_adept', 'hearth_channeler', 'bog_witch', 'warcry_captain', 'spark_conjurer'],
+    cardIds: ['coal_carrier', 'emberkin_adept', 'hearth_channeler', 'bog_witch', 'warcry_captain', 'spark_conjurer'],
   },
 ];

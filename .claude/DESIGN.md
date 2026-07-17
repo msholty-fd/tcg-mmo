@@ -1929,6 +1929,42 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **Coal Carrier — the Adepts' 2-drop (2026-07-17, /new-card run 10)**:
+  the activated-ability family's curve started at 3 Ember; a 2-drop was
+  the family's one structural gap. Run 6 rejected an Adept at COMMON
+  rarity (the ⚡ button's discoverability question for brand-new players);
+  uncommon dodges that and matches every existing Adept. `coal_carrier`,
+  core, uncommon creature, 2 Ember 1/3, ⚡1 (once per turn): deal 1 damage
+  to the enemy Hearth — repeatable reach without removal.
+  - **Cost anchor**: emberkin_adept (3c 2/3, ⚡1 → 1 damage to a
+    creature): one cost less buys one stat point less AND hearth-only
+    targeting. LORE note: carried coals are canon (the cold_hearth quest
+    turns on one) — the youngest adept is the kid who walks fire between
+    hearths.
+  - **Verified**: ability scenario 60/60 across 10 seeds (activates
+    through summoning sickness per the ability rule, enemy hearth −1,
+    1 Ember paid, once-per-turn enforced). Shell sims (3 copies,
+    50/side): 52/60/60 vs the wild_boar control's 59/64/62 — a few
+    points under vanilla, the slightly-weak-is-texture band; 0 stuck
+    across 600 games. AI instrumentation: 58 activations across 40
+    games — the greedy brain uses the ability unprompted. Suites: packs
+    6653, leaders 198, factions 455→457, sim-starters byte-identical
+    60/52/47.
+  - **Family/faction**: adepts → neutral (mechanics-pass rule).
+    Circulation: Boarlands pack (uncommon) + **Brenna Lampwright's
+    reward pool** — the lampwright's runner; uncommon, route-trainer
+    band, deck untouched. Tamsin the Charcoal-Burner was the more exact
+    fire-tender but her pool is deliberately darkwood-only circulation —
+    a core card there would muddy the zone-set economy.
+  - **Rejected this survey**: the ashfall 4-drop (fourth look, still the
+    weakest why); a relic (the 1–3c keyword-grant space is saturated —
+    every keyword has one or two); anything wildcaller/desperate
+    (standing decisions hold).
+  - **Seeded**: none new — conjuration duelist still queue-head; the
+    Adepts now span 2–5 Ember and could carry a duelist of their own
+    someday (noted, not seeded: abilities-matter has no payoff primitive
+    yet, so an Adepts duelist is just "a deck with good cards" today).
+
 - **Roadside Law — the ambush aura, completing the keyword-enchantment
   cycle (2026-07-17, /new-card run 9)**: the survey's strongest remaining
   structural signal — the onPlay+onAllySummon keyword-aura cycle covered
