@@ -2133,6 +2133,59 @@ considered and rejected.
     queue's head; redsash's next structural gap is a frenzied_warband
     rare above kestrel if the faction ever wants a second chase card.
 
+- **Where the Wool Goes — Wynn's visit quest to the Loomstead (2026-07-17,
+  worldbuilding loop iteration 20)**: fourth consecutive survey with every
+  duelist-shaped pick file-blocked (a live /new-card session,
+  `card-misdirection`, still holds duelists.js — which now blocks the
+  conjuration duelist, the east-road trainer, AND the Loomstead duelist,
+  whose one-loop-found gap elapsed at 19 and is otherwise ripe). A third
+  landmark in a row would be real shape fatigue (the 6/7 back-to-back was
+  the recorded maximum), roads aren't earned anywhere (downs rule), and
+  the Act-I flavor pass turned out fully shipped (its two unshipped lines
+  — Hessa's and Marla's — are engine-gated: duelists and vendor/givers
+  can't surface `n.flavor`; recorded here so future surveys don't re-walk
+  that dead end). So: the traffic-minting quest shape a third time, aimed
+  at the Loomstead — the same strategic move that made the meads (11) and
+  the quarry (17) road-and-duelist-eligible. Quest tier, quest gap 3
+  (17 → 20), data-only plus ONE client line.
+  - **The giver is the realm's first landmark-based one**: Shepherd Wynn.
+    All prior givers live in the village or Highgate; the quest system's
+    geography now starts where the wool does. The story closes the wool
+    chain end-to-end — **Wynn shears, Nell carts, Ede weaves — and the
+    player walks the whole of it** (~245u, the realm's longest quest
+    walk, west edge to middle east). Wynn's LORE entry gains an explicit
+    bar: the errand is shear-to-shirt practical and must never touch the
+    bellwether door.
+  - **The quest** (`wool_run`, "Where the Wool Goes"): giver wynn, minLvl
+    4, prereq `practice` (the honey-run rationale verbatim — a discovery
+    pointer shouldn't wait behind a grind, but level 1s shouldn't cross
+    boar country), visit (87,46, r12), 280 xp / 20 coins (long walk, but
+    wool money isn't guild money — xp-forward where Yara's was
+    coin-forward). The offer names no road (the Loomstead hasn't earned
+    one): directions are by SIGHT — "you'll know it by the cloth on the
+    lines, dyed every color grass isn't" — the drying lines were authored
+    as the zone's distance read at 18, and this quest is the first
+    content to USE that. The one non-data change: `wynn` added to the
+    client GIVERS map (client/src/quests.js, 1 line + import; Bram
+    precedent proves giver + flavor coexist — her six lines survive).
+  - **Rejected this survey**: all three ripe duelists (file-blocked,
+    above — the STATUS.md flag for Michael from 19 stands); a third
+    landmark (shape fatigue past the recorded 6/7 maximum); a road to the
+    Loomstead or Kilnyard (downs rule — though THIS quest mints the
+    Loomstead's business, so its road unlocks next survey); the Act-I
+    flavor-line completion (dead end, recorded above); a Kilnyard-pointing
+    quest (the yard was seeded LAST iteration — paying off the same place
+    two iterations running needs the seed to say so, and the honey-run
+    pattern ran quest-after-duelist, never quest-after-landmark-direct).
+  - **Seeded for later**: **the Loomstead is now business-bearing** — its
+    road (a short spur from the Gruk road or the crossroads) and its
+    already-ripe duelist both unlock, making the middle-east grass the
+    next cascade the moment duelists.js frees; a Kilnyard-pointing quest
+    (Marla sells Fern's crocks — a natural giver when the yard's found-
+    first loop elapses). Standing: conjuration duelist RIPE-BLOCKED (4th
+    survey, flag stands); far-northwest (reserved); Red-Sash + windmill
+    (main.js); hot spring (parked, 14).
+
 - **The Kilnyard — the potter's yard on the southern grass (2026-07-16,
   worldbuilding loop iteration 19)**: two-axis survey again — the ripe
   seeds stayed blocked for a third consecutive survey (a live /new-card

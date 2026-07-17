@@ -165,6 +165,22 @@ export const QUESTS = [
     obj: () => "Put eyes on Hobb's Quarry for the guild",
     thanks: "Cut, trued, on the sledge — and not a fleck of gilt on it. So Hobb kept his half of the paper and the gilders didn't, which is a different letter than the one I'd drafted, and a cheaper one. The guild pays for knowing; this is your share.",
   },
+  // Where the Wool Goes (2026-07-17, worldbuilding iteration 20 — DESIGN.md):
+  // the traffic-minting visit shape a third time (honey run → west, stone
+  // order → east), now aimed at the Loomstead so the wool chain closes
+  // end-to-end: Wynn shears, Nell carts, Ede weaves — and the player walks
+  // the whole of it. Wynn is the realm's FIRST landmark-based giver (all
+  // priors live in the village or Highgate); her entry in the client GIVERS
+  // map is the only non-data change. Her register stays practical per
+  // LORE.md — no omens, and the quest must never touch what the bellwether
+  // watches for.
+  {
+    id: 'wool_run', giver: 'wynn', title: 'Where the Wool Goes', minLvl: 4, prereq: 'practice',
+    visit: { x: 87, z: 46, r: 12 }, xp: 280, coins: 20,
+    offer: "The season's clip went east on Nell's cart — weeks back now, and wool doesn't write letters. There's a weaver out past the crossroads who turns my fleeces into every shirt you've ever worn; I've never once seen her yard. Go where the wool goes. North off the Gruk road, they say — you'll know it by the cloth on the lines, dyed every color grass isn't. Tell me it got there.",
+    obj: () => "Find where Wynn's wool goes",
+    thanks: "Bolts on the line and my clip in her sacks. Good. Forty years I've sent wool east, and this is the first time east has a face. The flock won't care, but I'll sleep better knowing the whole of it — shear to shirt.",
+  },
   // Emberwatch Ruins — a night-only landmark (DESIGN.md). The Sentinel only
   // manifests after dark (client-side visibility gate in world.js/main.js),
   // so this quest is discovery flavor: Aldric points at the rumor, finding

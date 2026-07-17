@@ -125,6 +125,11 @@ but never say "points" or "unlock."
   one small fire nightly ("a dark camp is a borrowed camp"), and their
   bellwether has taken to staring west at nothing. What she watches for is
   a seeded door — do not answer it without a Wether Downs content phase.
+  Her wool errand (quest `wool_run`, the realm's Loomstead pointer and
+  first landmark-based quest) stays strictly practical: it is about the
+  clip arriving, shear to shirt, and must never mention the bellwether,
+  the west, or anything the flock does — the quest and the door do not
+  touch.
 - **Fisher Pell** (Pell's Pond, the northwest water) — small omens tier:
   smokes the catch over a fire kept low and kept always ("smoke keeps what
   flame would eat"). Two seeded doors, both gentle: the fish over the
