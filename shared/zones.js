@@ -86,6 +86,10 @@ export const CAMPS = [
   // gather to a beast-caller's fire — the realm's first place defined by the
   // wild, not a craft. See DESIGN.md "The Whistlewood".
   { x: -137, z: -147, r: 15, name: 'The Whistlewood' },
+  // A tanner's yard on the west-central grass, off the West Road that carts
+  // Wynn's flock — where the realm's hides become its leather. The last
+  // craft the economy was missing. See DESIGN.md "The Tanyard".
+  { x: -97, z: 5, r: 14, name: 'The Tanyard' },
   // An abandoned mine dug into a rocky rise due north, in the Darkwood — a
   // scenic discovery, not enterable (seeds future underground content). See
   // DESIGN.md "Cinderhollow Mine".
