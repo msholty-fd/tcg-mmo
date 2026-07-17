@@ -10,7 +10,10 @@
 // (center h -2.18, max deviation 0.55 within r=10 — Loomstead precedent
 // 0.59), zero terrain edits; clearances — Emberwatch 39.8, Loomstead 41.3,
 // mine 49.5, off the north road 51.7 and finch's patrol 26.9 (a findable
-// upland landmark; it earns a road later, the Wether Downs pattern).
+// upland landmark; earned its road at iteration 26 — worn_edges gave it
+// business at 25 — a spur forks north off the Emberwatch road to the
+// south-edge stone, roads.js). A Forge duelist stays seeded for the next
+// duelists.js window (the quarry/Loomstead cascade).
 // LORE relationship to the fire: TENDED — and the THIRD distinct tended
 // register: Ede's dye fire is a held breath, Fern's kiln is shut and
 // trusted dark, Bryn's forge is the hungriest hearth in the realm, roared

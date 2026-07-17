@@ -2222,6 +2222,51 @@ considered and rejected.
     queue's head; redsash's next structural gap is a frenzied_warband
     rare above kestrel if the faction ever wants a second chase card.
 
+- **The Forge spur — the Emberwatch road forks north to Bryn's Forge
+  (2026-07-17, worldbuilding loop iteration 26)**: the ledger's ripest
+  seed and a shape change after the quest (25). The downs rule fired for
+  Bryn's Forge exactly as it did for the meads/quarry/Loomstead: business
+  at 22 (the forge itself), directed traffic at 25 (worn_edges sends the
+  player to the smith "north of the Emberwatch road, look for the smoke"),
+  and iteration 25's own entry named this next — "its road unlocks next
+  survey." Client-only, one file (`client/src/world/roads.js`) plus a
+  header note in forge.js; card-free, zero server/shared change. The
+  fourth landmark→business→road payoff, and it varies the shape (last road
+  was the Loomstead spur, 21).
+  - **The spur** (fork marker + 2 stones, existing `waystone()` builder,
+    colliders self-registered): the Emberwatch road's LOWER stone (40,42)
+    becomes a minor **three-way junction** — on to the ruin (NE), the
+    Loomstead fork (SE, iteration 21), and now the Forge fork (N). A
+    1.2-scale edge marker at (37,48) leaves just west of the stone (6.7
+    from it — the Bee-Meads/Loomstead twin-marker spacing), then stones
+    at (38,61) and (41,74) due north to the forge's south edge (13 from
+    center, ~3 inside r16 like every yard-edge stone), 13.6 from the
+    forge's own signpost — a clean hand-off. All point at new
+    `DEST.forge` [46,86]. **The binding constraint was finch's patrol
+    again** (she works the Emberwatch road, (44,46)→(72,74)): the spur is
+    routed WEST of her northeast-heading line, since a stone on a patrol
+    path teleports the NPC (the sorrel gotcha). Min stone-to-finch
+    clearance 5.4 by scan / **7.28 confirmed live sweeping updatePatrols
+    across 24h** (finch's (44,46) dwell point vs the fork stone). Kept
+    ≥6.7 clear of the Loomstead spur so the two Emberwatch forks never
+    blur. Terrain scanned (West Road technique): route h 2.09..−1.34, max
+    slope deviation 0.20.
+  - **Deliberately NOT done**: no Wayfarer line (the Emberwatch spurs are
+    branches off a road he already names from the crossroads — the
+    Loomstead spur set this precedent at 21; and his NE line's ruin-tone
+    would clash with a smith's-spur clause); no worn_edges offer edit
+    (Hobb's "look for the smoke" is deliberately sight-based hearsay — the
+    marked spur is simply the truer answer the player now finds, the
+    wool_run pattern); no Forge duelist (the downs rule, and duelists.js
+    should go to the queued conjuration duelist's home decision first —
+    **seeded**: a Forge duelist for a later window).
+  - **Seeded for later**: a **Forge duelist** (route-trainer, the yard is
+    now landmark+NPC+quest+road — the full grammar's last step, next
+    duelists.js window); the **Kilnyard quest** still seeded (wants a
+    non-Marla giver); the **conjuration duelist** still queued and still
+    needs a home-siting survey; far-NW reserved; far-NE + far-SW banked;
+    Red-Sash + windmill (main.js); hot spring (parked, 14).
+
 - **Worn to the Nub — Hobb's craft-to-craft errand to Bryn's Forge
   (2026-07-17, worldbuilding loop iteration 25)**: shape variance after two
   straight duelists (Wren 23, Gedd 24) — a quest, the first non-duelist
