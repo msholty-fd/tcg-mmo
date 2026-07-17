@@ -2222,6 +2222,82 @@ considered and rejected.
     queue's head; redsash's next structural gap is a frenzied_warband
     rare above kestrel if the faction ever wants a second chase card.
 
+- **Bryn's Forge — the smith's yard on the north-central upland (2026-07-17,
+  worldbuilding loop iteration 22)**: sixth consecutive survey with every
+  duelist-shaped pick file-blocked (a live /new-card session,
+  `card-ashen-revenant`, still owns duelists.js). The recorded plan from 21
+  was "a Kilnyard quest+road next survey," but weighed honestly that is a
+  FOURTH craft-supplier visit quest (honey_run 11, stone_order 17, wool_run
+  20) — real shape-type fatigue — and it pays off a place only three
+  iterations old. The two-axis survey found a stronger pick. *Map*: with
+  the far-northwest reserved (18) and the south/mid-east now filled
+  (Kilnyard 19, Loomstead 18), the **north-central gap** (~46,86, clearance
+  ~40) is the biggest accessible open ground. *Archetype*: **metalwork —
+  the realm's LAST unclaimed craft.** Iron is everywhere (every waystone's
+  gilded band and arrow, Hobb's chisels, the village smithy *building* with
+  no smith, every hinge/nail/shoe) and no one worked it. The forge
+  retro-explains the realm's iron exactly as the Kilnyard did its crockery
+  (candles 7, waystones 14, shirts 18, pots 19, **iron 22**). Landmark
+  tier. Shape run: landmark (18), landmark (19), quest (20), road (21),
+  landmark (22) — the last landmark was three back, no fatigue.
+  - **Why a landmark over the seeded Kilnyard quest** (recorded so the
+    deviation-from-plan is legible): (a) it's a genuine two-axis winner
+    (biggest gap + clearest missing archetype), where the Kilnyard quest is
+    only a conditional/implied seed ("natural when found-first elapses"),
+    not an explicitly-named next-iteration payoff; (b) it AVOIDS the 4th-
+    visit-quest fatigue; (c) **strategically it banks another found-first
+    landmark**, extending the loop's non-duelist runway while duelists.js
+    stays blocked — a landmark seeds a future quest+road+duelist, where a
+    quest spends a seed. The Kilnyard quest stays seeded, not lost.
+  - **Rejected this survey**: the Kilnyard quest (above — still seeded); a
+    Kilnyard road (not earned — no business there yet, downs rule); the
+    three ripe duelists (file-blocked, 6th survey — the Michael flag
+    stands); the far-northeast (145,150, clearance 50) and far-southwest
+    (−155,−155) gaps (smaller archetype fit than metalwork, and further
+    from anything — banked for later); a bog-iron/mine-sourced smith
+    (rejected on reserved-thread proximity — Bryn's iron source stays a
+    vague folk-uncanny door, NOT the Cinderhollow Mine, which is Marrow's
+    Act III).
+  - **The place** (`client/src/world/forge.js`, shared/zones.js CAMPS
+    (46,86) r=16, wilds.js CLEARINGS r=14): sited by numeric scan —
+    flattest r=10 disc in the gap (center h −2.18, max dev 0.55, Loomstead
+    precedent 0.59), zero terrain edits; clearances Emberwatch 39.8,
+    Loomstead 41.3, mine 49.5, off the north road 51.7 and finch's patrol
+    26.9 (a findable upland landmark; earns a road later, Wether Downs
+    pattern). Props: **the forge hearth** — stone base, raised soot chimney
+    hood, glowing coal-bed, a lashed bellows; registers itself in `fires[]`
+    with `userData.fire` (the kiln contract — the forge IS the yard's
+    campfire, the loudest one); anvil on a stump with a hot bar in work and
+    a hammer; slack tub (quench water); **the finished-work rack** — a
+    gilded waystone band, horseshoes, hinge, chisel, hook: the realm's iron
+    hung where you can see where it came from (the zone's read); Tamsin's
+    charcoal heap (the fuel, the economy link); leaning iron bar-stock (the
+    seeded-supply door, standing in-world); a grindstone; Downs-pattern hut
+    as north backdrop (the Loomstead/Kilnyard layout lesson: the southwest
+    approach sees the payoff props, hut behind). Palette: soot-black +
+    forge-glow, warmer/sootier than Hobb's cold stone-grey. LORE fire tier:
+    TENDED — the **third distinct tended register** (Ede's held-breath dye
+    fire, Fern's shut-dark kiln, Bryn's roared-white forge).
+  - **Smith Bryn** — flavour NPC, small-omens tier (LORE.md updated): six
+    lines — the economy read end-to-end (Tamsin's charcoal in; bands,
+    chisels, hinges, shoes out — **Tamsin's charcoal gets its second named
+    customer after Fern**), the color-of-the-heat craft line, the one
+    fire-echo, and two folk-uncanny doors kept firmly off the myth: the
+    grey mare's shoes that keep returning to her anvil, and the bar-iron
+    left at her door by no one. LORE.md bars her explicitly from the mine,
+    the mire, Hessa's thread, and the Going-Out.
+  - **Seeded for later**: a Bryn's Forge quest (a natural giver once its
+    found-first loop elapses — the whole realm needs her ironwork, easy
+    hooks) → then its road (a spur, likely off the Emberwatch road near
+    finch's beat or the north road); a Forge duelist (route-trainer, after
+    the found-first loop); Bryn's two doors. Still-standing ledger:
+    **Kilnyard quest + road** (the next easy seed payoff); conjuration
+    duelist + east-road trainer + Loomstead duelist all RIPE-BLOCKED (6th
+    survey — the coordination flag for Michael is load-bearing: the loop is
+    down to ~2 more easy non-duelist picks before the accessible map
+    genuinely thins); far-northwest (reserved); far-NE + far-SW gaps
+    (banked); Red-Sash + windmill (main.js); hot spring (parked, 14).
+
 - **The Loomstead spur — the Emberwatch road forks to the weaver's yard
   (2026-07-17, worldbuilding loop iteration 21)**: the ledger's ripest
   unblocked seed. The downs rule fired for the Loomstead exactly as it did
