@@ -4,7 +4,7 @@
 
 import { $ } from '../utils.js';
 import { getCard } from '../../../shared/engine/cards.js';
-import { canPlay, canKindle, canAttack, canActivate } from '../../../shared/engine/engine.js';
+import { canPlay, canKindle, canOffer, canAttack, canActivate, OFFER_MAX } from '../../../shared/engine/engine.js';
 import { artFor } from '../pixelArt.js';
 
 const KW_HELP = {
@@ -251,8 +251,23 @@ function showMenu(handIndex, x, y) {
   m.style.top = (y - 90) + 'px';
   $('d-menu-play').disabled = !canPlay(duelRef, mySide, handIndex);
   $('d-menu-kindle').disabled = !canKindle(duelRef, mySide);
+  resetOfferArm();
 }
 function hideMenu() { $('d-cardmenu').style.display = 'none'; menuHandIndex = null; }
+
+// The Offering is PERMANENT (the instance leaves your collection for the
+// nearest fire — drafting Phase 3), so the menu item is two-click: first
+// click arms it red, second click commits. Online-only: local/offline duels
+// have no handlers.onOffer, so the button stays disabled there.
+let offerArmed = false;
+function resetOfferArm() {
+  offerArmed = false;
+  const b = $('d-menu-offer');
+  const left = OFFER_MAX - (duelRef?.players?.[mySide]?.offersUsed || 0);
+  b.textContent = `Offer ✦ (${left} left)`;
+  b.classList.remove('armed');
+  b.disabled = !handlers.onOffer || !canOffer(duelRef, mySide);
+}
 
 let autoOn = false;
 function setAutoUI(on) {
@@ -278,6 +293,17 @@ export function initDuelUI() {
     }
   });
   $('d-menu-kindle').addEventListener('click', ev => { ev.stopPropagation(); const i = menuHandIndex; hideMenu(); handlers.onKindle(i); });
+  $('d-menu-offer').addEventListener('click', ev => {
+    ev.stopPropagation();
+    const b = $('d-menu-offer');
+    if (!offerArmed) {
+      offerArmed = true;
+      b.textContent = 'Forever? Confirm ✦';
+      b.classList.add('armed');
+      return;
+    }
+    const i = menuHandIndex; hideMenu(); handlers.onOffer(i);
+  });
   $('d-endturn').addEventListener('click', () => { selectedUnit = null; pendingPlay = null; pendingAbility = null; handlers.onEndTurn(); });
   $('d-concede').addEventListener('click', () => handlers.onConcede());
   $('d-auto').addEventListener('click', ev => {

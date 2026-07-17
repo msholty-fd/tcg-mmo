@@ -25,6 +25,10 @@ function selectTargets(duel, side, sel, ctx) {
       const pool = foe.field.filter(u => u.hp > 0);
       return pool.length ? [{ unit: pool[Math.floor(duel.rng() * pool.length)] }] : [{ hearth: 1 - side }];
     }
+    case 'randomAlly': {
+      const pool = me.field.filter(u => u.hp > 0);
+      return pool.length ? [{ unit: pool[Math.floor(duel.rng() * pool.length)] }] : [];
+    }
     case 'allEnemies':  return foe.field.map(u => ({ unit: u }));
     case 'allAllies':   return me.field.map(u => ({ unit: u }));
     default: throw new Error('Unknown target selector: ' + sel);

@@ -61,24 +61,53 @@ export function createHearthModule(ctx) {
     return fire;
   }
 
+  // Pool entries are MIXED (since Phase 3): a plain string is an anonymous
+  // ember (seeded / kindle-fed — drafting one mints fresh); an object is a
+  // REAL instance that a player Offered, history intact — drafting one
+  // transfers it, provenance and renown travelling like a trade.
+  const entryId = e => typeof e === 'string' ? e : e.cardId;
+
   // Phase 2 — a kindled memory drifts into the nearest fire that can hear
   // the duel. A full pool is sated (no churn: griefers can't flush a fire's
   // holdings by burning trash — drafting is what makes room), and extra
   // copies past FIRE_COPY_CAP merge into the flame. Returns the fed fire's
   // id, or null if nothing was fed.
-  function feedFire(x, z, cardId) {
-    let best = null, bd = KINDLE_FEED_RANGE;
+  function nearestFireTo(x, z, maxDist) {
+    let best = null, bd = maxDist;
     for (const f of FIRES) {
       const d = Math.hypot(f.x - x, f.z - z);
       if (d < bd) { bd = d; best = f; }
     }
+    return best;
+  }
+
+  function feedFire(x, z, cardId) {
+    const best = nearestFireTo(x, z, KINDLE_FEED_RANGE);
     if (!best) return null;
     const p = pools[best.id];
     if (p.cards.length >= POOL_MAX) return null;
-    if (p.cards.filter(c => c === cardId).length >= FIRE_COPY_CAP) return null;
+    if (p.cards.filter(c => entryId(c) === cardId).length >= FIRE_COPY_CAP) return null;
     p.cards.push(cardId);
     saveWorld('firePools', pools);
     return best.id;
+  }
+
+  // Phase 3 — an Offered instance ALWAYS lands somewhere ("migration, not
+  // destruction" is the decided design): the nearest fire regardless of
+  // range, and a full pool evicts its oldest anonymous ember to make room.
+  // If every ember in the pool is a real instance (rare), the pool may
+  // exceed POOL_MAX — an Offering is never lost. Returns the fire.
+  function offerToFire(x, z, inst, byName) {
+    const fire = nearestFireTo(x ?? 0, z ?? 0, Infinity);
+    const p = pools[fire.id];
+    if (p.cards.length >= POOL_MAX) {
+      const evict = p.cards.findIndex(e => typeof e === 'string');
+      if (evict >= 0) p.cards.splice(evict, 1);
+    }
+    inst.offered = { fire: fire.id, by: byName };
+    p.cards.push(inst);
+    saveWorld('firePools', pools);
+    return fire;
   }
 
   const handlers = {
@@ -100,15 +129,28 @@ export function createHearthModule(ctx) {
         return;
       }
       const pool = pools[fire.id];
-      const idx = pool.cards.indexOf(msg.card);
+      // an iid in the pick means a specific Offered instance; otherwise any
+      // anonymous ember of that card id
+      const idx = pool.cards.findIndex(e => msg.iid
+        ? typeof e === 'object' && e.iid === msg.iid
+        : typeof e === 'string' && e === msg.card);
       if (idx < 0) {
         send(me, { t: 'draftResult', fire: fire.id, error: 'That ember has already been taken.' });
         view(me, fire);
         return;
       }
-      pool.cards.splice(idx, 1);
+      const [entry] = pool.cards.splice(idx, 1);
       picks[fire.id] = now;
-      const inst = grant(me.profile, msg.card, 'Drafted from ' + fire.name);
+      let inst;
+      if (typeof entry === 'string') {
+        inst = grant(me.profile, entry, 'Drafted from ' + fire.name);
+      } else {
+        // a real Offered instance: transfer, don't mint — provenance grows
+        // like a trade, renown/level travel with the ember
+        inst = entry;
+        inst.owners = [...(inst.owners || []), me.profile.name];
+        me.profile.cards.push(inst);
+      }
       markDirty(me.profile);
       saveWorld('firePools', pools);
       sendProfile(me);   // the new card lands before the reveal renders
@@ -118,5 +160,5 @@ export function createHearthModule(ctx) {
     },
   };
 
-  return { handlers, feedFire };
+  return { handlers, feedFire, offerToFire };
 }

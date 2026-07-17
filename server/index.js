@@ -108,9 +108,11 @@ const ctx = {
 
 const { handlers: tradeHandlers, endTrade } = createTradeModule(ctx);
 // hearth before duel: the duel module reads ctx.feedFire so every kindle in
-// an online duel drifts into the nearest fire's pool (drafting Phase 2)
-const { handlers: hearthHandlers, feedFire } = createHearthModule(ctx);
+// an online duel drifts into the nearest fire's pool (drafting Phase 2),
+// and ctx.offerToFire so an Offered instance migrates there (Phase 3)
+const { handlers: hearthHandlers, feedFire, offerToFire } = createHearthModule(ctx);
 ctx.feedFire = feedFire;
+ctx.offerToFire = offerToFire;
 const handlers = {
   ...createWorldHandlers(ctx),
   ...createCollectionHandlers(ctx),

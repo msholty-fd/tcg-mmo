@@ -29,6 +29,7 @@
 import { getCard } from './cards.js';
 import { drawCard, damageUnit, damageHearth, healHearth, findUnit, unitFromCard, say } from './state.js';
 import { runEffect } from './effects.js';
+import { factionOf } from '../factions.js';   // offer(): the fire answers in the memory's own voice
 
 const uname = u => getCard(u.card).name;
 
@@ -168,6 +169,63 @@ export function kindle(duel, side, handIndex) {
   p.graveyard.push(c);
   duel.log.push({ type: 'kindle', side, card: c.card, emberMax: p.emberMax });
   say(duel, `${duel.names[side]} kindles a card (${p.emberMax} Ember).`);
+  for (const u of [...p.field]) fireTriggers(duel, side, u, 'onKindle');
+  fireEnchantmentTriggers(duel, side, 'onKindle');
+  return true;
+}
+
+// ---- the Offering (drafting epic Phase 3, .claude/DRAFTING.md) ----
+// A kindle variant that occupies the SAME once-per-turn slot: feed the fire
+// routinely (kindle) or dramatically (offer). An Offer grants the usual
+// +1 emberMax PLUS a small bonus in the offered memory's own voice — flavor
+// from its faction, size from its rarity tier, and a Veteran/Storied ember
+// counts one tier higher ("the brighter the ember, the more the fire gives
+// back"). The offered card does NOT go to the graveyard: the memory leaves
+// the duel entirely (server-side, the real instance migrates into the
+// nearest fire's pool — permanently out of the offerer's collection, which
+// is the entire cost; in-engine an offer strictly beats a kindle by design).
+// Max OFFER_MAX per duel. The AI never offers — it can't pay a collection
+// price, so the choice is a human's alone.
+export const OFFER_MAX = 3;
+const RARITY_TIER = { common: 1, uncommon: 2, rare: 3 };
+
+// The bonus table: one row per faction, everything reuses existing effect
+// primitives. Zone factions map onto the nearest starter row (emberpeaks
+// burns like redsash); anything else — neutral cards — draws.
+function offerBonus(faction, tier) {
+  switch (faction) {
+    case 'boarherd': return [{ effect: 'buff', target: 'randomAlly', atk: tier, hp: tier }];
+    case 'wardens':  return [{ effect: 'heal', target: 'ownHearth', amount: 2 * tier }];
+    case 'redsash':
+    case 'emberpeaks': return [{ effect: 'damage', target: 'randomEnemy', amount: tier }];
+    default: return [
+      { effect: 'draw', amount: 1 },
+      ...(tier >= 2 ? [{ effect: 'heal', target: 'ownHearth', amount: 1 }] : []),
+    ];
+  }
+}
+
+export function canOffer(duel, side) {
+  return canKindle(duel, side) && duel.players[side].offersUsed < OFFER_MAX;
+}
+
+export function offer(duel, side, handIndex) {
+  if (!canOffer(duel, side)) return false;
+  const p = duel.players[side];
+  const c = p.hand.splice(handIndex, 1)[0];
+  if (!c) return false;
+  const def = getCard(c.card);
+  const faction = factionOf(c.card);
+  // renown kicker: a Veteran (level 2) or Storied (3) ember counts one tier up
+  const tier = (RARITY_TIER[def.rarity] || 1) + (c.level >= 2 ? 1 : 0);
+  p.emberMax++;
+  p.ember++;
+  p.kindledThisTurn = true;
+  p.offersUsed++;
+  duel.log.push({ type: 'offer', side, card: c.card, iid: c.iid, faction, tier, emberMax: p.emberMax });
+  say(duel, `${duel.names[side]} offers ${def.name} to the fire — it will not return (${p.emberMax} Ember).`);
+  for (const e of offerBonus(faction, tier)) runEffect(duel, side, e, { card: c.card, srcIid: c.iid });
+  // an Offer IS a feeding of the fire — kindle-matters cards hear it too
   for (const u of [...p.field]) fireTriggers(duel, side, u, 'onKindle');
   fireEnchantmentTriggers(duel, side, 'onKindle');
   return true;

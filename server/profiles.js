@@ -125,13 +125,18 @@ export function createProfiles(dbFile, legacyFile) {
     return inst;
   }
 
-  // deck items handed to the engine: instances carry their Chronicle level
+  // deck items handed to the engine: instances carry their Chronicle level.
+  // Missing iids are skipped, not fatal: an Offering (drafting Phase 3)
+  // removes an instance mid-ownership, leaving the deck a card short until
+  // the player repairs it in the builder — a 29-card deck still duels.
   function deckItems(profile) {
     const byId = new Map(profile.cards.map(c => [c.iid, c]));
-    return profile.deck.map(iid => {
+    const items = [];
+    for (const iid of profile.deck) {
       const inst = byId.get(iid);
-      return { card: inst.cardId, iid, level: levelOf(inst.renown) };
-    });
+      if (inst) items.push({ card: inst.cardId, iid, level: levelOf(inst.renown) });
+    }
+    return items;
   }
 
   return {
