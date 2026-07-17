@@ -210,6 +210,20 @@ but never say "points" or "unlock."
   that robs her drying lines of red thread only** (she suspects magpies;
   nobody has ever seen one do it). No opinions on any western door, on
   Hobb's stone business, or on the myth — cloth is trade, not omen.
+- **Potter Fern** (the Kilnyard, the southern grass west of Highgate) —
+  small omens tier: digs her clay on site, fires it with Tamsin's
+  charcoal, and sells crocks through Marla and Highgate's market ("every
+  hearth in this realm has a pot of mine on it or one it broke"). Her
+  kiln is the realm's hottest tended fire, and her one fire-echo line
+  stays craft-shaped ("you don't watch a kiln, you listen to it" — never
+  explained further, never myth). Two seeded doors, both gentle: **the
+  spring firing that came out glazed a green she never mixed** (sold by
+  noon, couldn't be repeated — a potter's windfall, never sharpened
+  toward the Going-Out), and **the west pit that never runs dry** ("good
+  clay, better manners. I don't ask" — earth with manners stays a trade
+  grumble; do not answer either without a Kilnyard content phase, and do
+  not let the pit drift toward Hessa's memory-without-fire thread). No
+  opinions on any other zone's doors.
 - **Guildmaster Yara** (Highgate, the Merchant Hall) — commerce tier, the
   Marla register at guild scale: ledgers, guarantees, receipts. Her stone
   errand (quest `stone_order`, the realm's east pointer) stays

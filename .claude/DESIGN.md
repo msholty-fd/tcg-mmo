@@ -2050,6 +2050,80 @@ considered and rejected.
     queue's head; redsash's next structural gap is a frenzied_warband
     rare above kestrel if the faction ever wants a second chase card.
 
+- **The Kilnyard — the potter's yard on the southern grass (2026-07-16,
+  worldbuilding loop iteration 19)**: two-axis survey again — the ripe
+  seeds stayed blocked for a third consecutive survey (a live /new-card
+  session, `card-charnel-pup`, still owns duelists.js; main.js still
+  locked under humanoid-fidelity). *Map*: the southern stretch between
+  Highgate, Hollowmere, and the Bee Meads (clearance ~50) was the biggest
+  buildable unclaimed ground after the far-northwest (recorded at 18,
+  deliberately reserved). *Archetype*: **clay** — every hearth in the
+  realm holds a pot (Ede's dye pot, the cauldrons, Marla's shelf stock)
+  and none of it was fired anywhere; the third leg of the
+  retro-explain run (shirts at 18, waystones at 14, candles at 7).
+  Back-to-back landmarks have precedent (Pond 6 → Meads 7): different
+  region, different craft, different fire. Landmark tier; shape run:
+  duelist (15), road (16), quest (17), landmark (18), landmark (19 — the
+  6/7 exception, taken knowingly with everything else blocked).
+  - **Rejected this survey**: the conjuration duelist (STILL RIPE, still
+    blocked — third survey; it stays the queue's head the moment
+    duelists.js is unowned); the east-road trainer (same file, same
+    block, deploy-grace also still running); the Loomstead duelist (the
+    downs rule — one loop of being found first, and paying off the same
+    place two iterations running needs the seed to say so; it doesn't);
+    a road to the Loomstead (downs rule — no business there yet);
+    Red-Sash camp-life + windmill (main.js, unchanged); the hot spring
+    (13th look, parked); the far-northwest stretch (reserved by its own
+    18-entry: found on purpose, not filled in); implementing more
+    Act-flavored content (Act staging stays sparse — reserved).
+  - **The place** (`client/src/world/kilnyard.js`, shared/zones.js CAMPS
+    (−64,−165) r=16, wilds.js CLEARINGS r=14): sited by numeric scan —
+    flattest r=10 disc in the region (center h −4.65, max dev 0.64,
+    quarry precedent 0.65), zero terrain edits; clearances — Highgate's
+    r=50 circle 55.9, Hollowmere 61, Bee Meads 92, south world-bound 35
+    (the binding constraint). Props: **the beehive kiln** (brick drum,
+    mud dome, flue, arched mouth with the fire banked inside — the group
+    carries `userData.fire` and registers in `fires[]` directly, the
+    same contract campfire() fulfills: the kiln IS the yard's campfire,
+    and its mouth-glow flickers); **the clay pit** authored from props
+    (wet-slick disc flush with ground on the pond technique, plank walk,
+    spade, clay buckets — walkable by design, it's mud not a hole); two
+    drying boards of green ware (rows of raw pots on trestles — the
+    yard's read); fired crock stacks with ONE glazed showpiece (the door,
+    standing in the yard); a shard heap (flat clutter, no collider, the
+    kiln's tax); the potter's wheel with a half-thrown pot; Downs-pattern
+    hut as north backdrop (the Loomstead layout lesson applied from the
+    start: approach from Highgate = east, payoff props face it, hut
+    behind); signpost east. Palette: fired terracotta against raw wet
+    clay — nothing else in the realm carries it. LORE fire tier:
+    TENDED — deliberately the other end of the tended spectrum from
+    Ede's held-breath dye fire ("you don't watch a kiln, you listen").
+  - **Potter Fern** — flavour NPC, small-omens tier (LORE.md updated):
+    six lines — economy end-to-end (pit under her feet, **Tamsin's
+    charcoal in the kiln** — the charcoal trade gets its first named
+    customer — crocks to Marla's shelf and Highgate's market), the
+    centering line (craft texture), the kiln line (the one fire echo),
+    and two seeded doors: **the unglazed firing that came out glazed a
+    green she never mixed** (sold by noon; a windfall, not an omen) and
+    **the west pit that never runs dry** ("I don't ask"). Neither opens
+    here.
+  - **Deliberately NOT done**: no duelist (downs rule — **seeded**: a
+    Kilnyard duelist, route-trainer tier, after a loop of being found);
+    no road (downs rule — though when the yard earns one, note it sits
+    ~56 west of Highgate's circle on the capital's own latitude: a short
+    west spur from the gate road is the natural shape); no critters (the
+    life is Fern, the wheel, and the kiln's listening); no
+    Marla/Tamsin line edits (destination NPCs don't announce new places;
+    Fern's own lines carry both connections).
+  - **Seeded for later**: a Kilnyard duelist; Fern's two doors; a
+    Highgate west spur when the yard earns it. Standing ledger:
+    conjuration duelist RIPE-BLOCKED (3rd survey — flag: if the card
+    factory keeps duelists.js hot indefinitely, the loop and card
+    sessions may need a coordination note from Michael); east-road
+    trainer (deploy grace + file block); Loomstead duelist (one loop);
+    far-northwest (reserved); Red-Sash + windmill (main.js); hot spring
+    (parked, 13).
+
 - **The Loomstead — the weaver's stead on the middle eastern grass
   (2026-07-16, worldbuilding loop iteration 18)**: two-axis survey (nothing
   ripe was buildable — see rejections). *Map*: the numeric gap scan found
