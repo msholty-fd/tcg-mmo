@@ -40,7 +40,7 @@ export const FAMILIES = [
   {
     id: 'frenzied_warband', name: 'Frenzied Warband',
     cardIds: [
-      'red_sash_duelist', 'tuskblade_berserker', 'hotblood_recruit', 'twinblade_mercenary',
+      'red_sash_duelist', 'tuskblade_berserker', 'scrap_dog', 'hotblood_recruit', 'twinblade_mercenary',
       'reckless_charge', 'kestrel', 'warband_champion',
     ],
   },

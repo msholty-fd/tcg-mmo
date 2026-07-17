@@ -354,6 +354,10 @@ registerCards([
   // Frenzy tempo", see STARTERS.redsash) — had none, and was the only
   // keyword in the set with no relic/spell that grants it (compare
   // wardenplate/stolen_blade/blessed_icon/piercing_barb/widows_kiss).
+  // The warband's curve-starter — redsash had no 1-drop in either family;
+  // continues the frenzy stat line exactly (1c 1/2 → 2c 1/3 → 3c 2/3).
+  { id: 'scrap_dog', set: 'core', rarity: 'common', type: 'creature', cost: 1, atk: 1, hp: 2, keywords: ['frenzy'],
+    name: 'Scrap Dog', text: 'Frenzy.', flavor: 'No pedigree. Two bites.' },
   { id: 'hotblood_recruit', set: 'core', rarity: 'common', type: 'creature', cost: 2, atk: 1, hp: 3, keywords: ['frenzy'],
     name: 'Hotblood Recruit', text: 'Frenzy.', flavor: "Vex won't have him yet. He keeps volunteering anyway." },
   { id: 'twinblade_mercenary', set: 'core', rarity: 'common', type: 'creature', cost: 3, atk: 2, hp: 3, keywords: ['frenzy'],

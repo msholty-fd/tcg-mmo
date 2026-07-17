@@ -1929,6 +1929,49 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **Scrap Dog — the Frenzied Warband's curve-starter (2026-07-16, /new-card
+  run 5)**: the survey went to the thinnest FACTION — redsash, 17 cards
+  against boarherd's 21 and wardens' 30 — and found neither of its families
+  fields a 1-drop: the aggro faction had no Stranger-tier curve-starter.
+  `scrap_dog`, core, common creature, 1 Ember 1/2 Frenzy — the camp mutt;
+  everything Kestrel drills bites twice.
+  - **Cost anchor**: the family's own stat line, continued exactly — frenzy
+    bodies run atk ≈ cost−1 with modest hp (hotblood_recruit 2c 1/3,
+    twinblade_mercenary 3c 2/3 → scrap_dog 1c 1/2). Deliberately NOT
+    young_boar's 2/1 shape: frenzy's two attacks price the atk down.
+  - **Circulation**: Boarlands pack (common) + **kestrelDeck** — a second
+    chained swap() cuts her two generic young_boars for scrap_dog ×2 (a
+    like-for-like 1-drop slot trade in her own theme); rewards inherit via
+    the deck spread. The Footpad was considered as the table (early-game
+    redsash) and declined: his identity is ambush, not frenzy, and his
+    exclusive pair is deliberately small.
+  - **Verified (full duelist bar — a deck changed)**: Kestrel 500/side
+    before/after — 45/46/42 → 45/45/42, value-neutral within noise,
+    **0 stuck across 6000 games**; swap confirmed landed (deck 30,
+    scrap_dog ×2, young_boar 0). Shell sims (3 copies in the boarherd
+    midrange shell, 50/side): 52/57/54 — BELOW the wild_boar control's
+    59/64/62, as a 1-drop in a midrange shell should be; its fair-rate
+    argument is the family stat line, not shell power (slightly-weak-is-
+    texture doctrine). Unit check: summons as 1/2 with frenzy (attacksLeft
+    doubling is the engine's existing keyword path, proven by 6 prior
+    frenzy cards). Roster 21/21 valid. Raw-WS e2e 5/5 (bogus npc refused,
+    npcduel kestrel → duelStart, foe/kind right, hand sanitized, concede →
+    duelEnd). Suites: packs 6653, leaders 198, factions 445→447,
+    sim-starters byte-identical 60/52/47.
+  - **Family/faction**: frenzied_warband → redsash — common, so it's
+    buildable by anyone at Stranger; the on-ramp is the point. Art: `wolf`
+    sprite as the mutt — tan hide + sash-red eye (#a07840/#c83a3a),
+    distinct from the grey dire and dark-red bloodmoon wolves.
+  - **Rejected this survey**: a thieves_cant 5th card (neutral again after
+    four neutral-adjacent runs read stale, and the family reads fine at 4);
+    a redsash_bandits card (10 cards, the deeper family — the warband was
+    the gap); a 6c warband finisher (warband_champion already tops the
+    curve at 5, and aggro tops out low by design); Desperate Measures
+    (still deliberately scarce).
+  - **Seeded**: none new — the conjuration duelist (run 3) remains the
+    queue's head; redsash's next structural gap is a frenzied_warband
+    rare above kestrel if the faction ever wants a second chase card.
+
 - **The Stone Order — Yara's visit quest to Hobb's Quarry (2026-07-16,
   worldbuilding loop iteration 17)**: the survey found nothing ripe — both
   of iteration 16's east seeds gate on *traffic that doesn't exist yet*,

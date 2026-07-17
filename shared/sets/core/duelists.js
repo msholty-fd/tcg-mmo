@@ -151,9 +151,14 @@ const marenDeck = swap(
 // replacing off-theme/generic filler (wolf_howl, hearth_meal, pack_alpha,
 // controlled_burn, two kindled_fury, one sudden_spark).
 const kestrelDeck = swap(
-  STARTER_DECKS.redsash,
-  ['controlled_burn', 'wolf_howl', 'hearth_meal', 'pack_alpha', 'kindled_fury', 'kindled_fury', 'sudden_spark'],
-  ['hotblood_recruit', 'twinblade_mercenary', 'twin_fangs', 'reckless_charge', 'bandit_creed', 'kestrel', 'warband_champion'],
+  swap(
+    STARTER_DECKS.redsash,
+    ['controlled_burn', 'wolf_howl', 'hearth_meal', 'pack_alpha', 'kindled_fury', 'kindled_fury', 'sudden_spark'],
+    ['hotblood_recruit', 'twinblade_mercenary', 'twin_fangs', 'reckless_charge', 'bandit_creed', 'kestrel', 'warband_champion'],
+  ),
+  // the generic 1-drops out for the warband's own curve-starter — the camp
+  // mutt bites twice, like everything else Kestrel drills (see DESIGN.md)
+  ['young_boar', 'young_boar'], ['scrap_dog', 'scrap_dog'],
 );
 // Marrow the Delver (DESIGN.md) — Boarherd-based (tied with Red-Sash as the
 // roster's least-used base, keeping Wardens from stacking a 5th duelist).

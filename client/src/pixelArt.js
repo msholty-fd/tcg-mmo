@@ -617,6 +617,9 @@ const CARD_ART = {
   sanctum_guardian:    { sprite: 'hooded', pal: { h: '#9aa8b8', H: '#727e8c', e: '#f0f4ff' } },
   tuskblade_berserker: { sprite: 'boar', pal: { d: '#8a3a2a', D: '#6e2c1e', e: '#ffb040' } },
   bloodmoon_wolf:      { sprite: 'wolf', pal: { g: '#5a2a2a', G: '#441f1f', e: '#ff8a70' } },
+  // scrap_dog: the warband's camp mutt — tan hide, sash-red eye; distinct
+  // from the grey dire and dark-red bloodmoon wolves
+  scrap_dog:           { sprite: 'wolf', pal: { g: '#a07840', G: '#7c5c2e', e: '#c83a3a' } },
   warthog_battering_ram:{ sprite: 'boar', pal: { d: '#5e5a54', D: '#46433e', n: '#a8a49c', m: '#46433e' } },
   rootbound_titan:     { sprite: 'colossus', pal: { l: '#2e4a24', L: '#22381b', t: '#5a3f22', T: '#43301a', e: '#c8f07a' } },
   cinder_warden:       { sprite: 'hooded', pal: { h: '#8a4a2a', H: '#6a381e', e: '#ffb040' } },
