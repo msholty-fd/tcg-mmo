@@ -268,6 +268,21 @@ but never say "points" or "unlock."
   opinions on the quarry's business, Merle's hour, or anything west. (Duelists
   can't surface flavor lines — his knowledge lives here and in DESIGN text
   only.)
+- **Corb the Tanner** (the Tanyard, west-central hide-country) — small
+  omens tier: turns the realm's hides (Wynn's flock, the east's boars, the
+  wood's game) into all its leather — every boot, belt, strap, and binding.
+  Closes the craft economy (the last missing trade). His relationship to the
+  fire is a FRESH register: TENDED but WARY — a small fire held at the yard's
+  downwind edge, well away from the oil-cured hides ("flame and cured hide
+  have one conversation, and it's short"); a light craft-echo, never
+  explained toward the myth. Ties to Wynn end-to-end (the same beast gives
+  her the fleece, him the hide). Two seeded doors, both fresh, craft-framed,
+  off the myth: **the leather he cures that never wears out** (folk bring
+  their oldest boots to be buried, not mended — do NOT connect it to
+  memory/the fire; it is a tanner's uncanny, not a Chronicle echo), and
+  **the tanyard that has never once stunk** (his master blamed the bark; keep
+  it an unsolved craft mystery, not a Going-Out omen). No opinions on any
+  other zone's doors.
 - **Rook the Wildcaller** (the Whistlewood, the SW old-growth grove) —
   small omens tier: a beast-caller who whistles up the wild, and to whose
   small fire the wild things gather calm — the realm's first place defined

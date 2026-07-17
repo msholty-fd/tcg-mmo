@@ -23,6 +23,7 @@ const CLEARINGS = [
   { x: -64, z: -165, r: 14 },  // The Kilnyard — green ware dries in the open; no roots in the pit
   { x: 46, z: 86, r: 14 },     // Bryn's Forge — a fire yard keeps its ground clear of pines
   { x: -137, z: -147, r: 14 }, // The Whistlewood — its own old-growth oaks, not the realm's random pines
+  { x: -97, z: 5, r: 12 },     // The Tanyard — a working yard of pits and frames keeps its ground clear
 ];
 const inClearing = (x, z) => CLEARINGS.some(c => Math.hypot(x - c.x, z - c.z) < c.r);
 

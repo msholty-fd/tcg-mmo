@@ -2222,6 +2222,77 @@ considered and rejected.
     queue's head; redsash's next structural gap is a frenzied_warband
     rare above kestrel if the faction ever wants a second chase card.
 
+- **The Tanyard — the tanner's yard, the last missing craft (2026-07-17,
+  worldbuilding loop iteration 33)**: the first iteration into genuinely
+  open territory (both big standing threads — the craft economy and the
+  conjuration family — closed at 30/32). The two-axis survey found the one
+  clean gap left: *archetype*, **leather** was the last unclaimed craft —
+  every boot, belt, strap, tent-hide, and book-binding in the realm is
+  leather and nothing tanned it (the same retro-explain the Kilnyard did for
+  crockery, the Forge for iron); *map*, a roomy west-central spot off the
+  West Road. A landmark (varying the shape after the duelist), the proven
+  low-risk tier. Fills a real economic hole rather than sprawling — but
+  logged honestly: this is the 8th craft yard, and the craft-landmark well
+  is now genuinely dry (nothing left to retro-explain).
+  - **Rejected this survey**: a Whistlewood road or quest (it would be the
+    THIRD Whistlewood iteration running — the "don't pay off the same place
+    two iterations running" rule; the grove needs a rest, and its road wants
+    real traffic first); the Red-Sash camp-life + windmill (STILL blocked —
+    `git worktree list` shows humanoid-fidelity locked on main.js, ~18
+    iterations now); the far-NE/far-SW banked gaps (remote, and no archetype
+    demanded them over leather); the hot spring (parked, 14 — nothing
+    changed). A deepening was weighed against the tannery and set aside: the
+    realm wanted the leather gap closed before revisiting existing content.
+  - **The place** (`client/src/world/tanyard.js`, shared/zones.js CAMPS
+    (-97,5) r=14, wilds.js CLEARINGS r=12): sited by the numeric scan — the
+    flattest r=14 disc in the west-central gap (center h 4.67, max dev 0.50,
+    under the quarry's 0.65), zero terrain edits; edge clearance 35 to the
+    nearest zone (Wether Downs / Red-Sash), far past the ~9 precedent. Sited
+    for grounding: off the West Road that carts Wynn's flock, in the western
+    hide-country, removed from town as a reeking tanyard should be. **New
+    palette, the Kilnyard/Pell rule**: murky oak-bark tanning-liquor and pale
+    lime pits, warm finished leather — distinct from the farmstead's bright
+    soil. Props: five soaking/tanning **pits** authored flush and walkable
+    (the clay-pit technique — lime pale, tanning dark, soil rims), three
+    **stretching frames** with taut hides, a **scraping beam** with a
+    half-worked hide and scraper, **oak-bark heaps** (the tannin) + rolled
+    leather, the Downs-pattern shed with hides hung along the eave. LORE fire
+    tier: **TENDED but WARY — the one craft yard whose fire is held at arm's
+    length from its own work**, small and downwind of the oil-cured hides (a
+    fresh register; explicit `fires.push`).
+  - **Corb the Tanner** — flavour NPC, small-omens tier (LORE.md updated):
+    six lines — the economy read end-to-end (Wynn's same beast gives fleece
+    to Ede and hide to him; boars off the east from Gruk's crew; leather to
+    every boot and binding), the wary-fire echo, and two fresh craft-framed
+    doors kept off the myth: the leather that never wears out (boots brought
+    back to be buried, not mended) and the tanyard that has never once
+    stunk. **Wynn now feeds TWO trades** (Ede's cloth, Corb's leather) — the
+    same-beast, two-crafts read closes the flock economy.
+  - **Verify:** node --check + build clean; test-packs 6653/6653,
+    test-factions 459/459 (no card/faction change). Live on the dev rig
+    (:8097/:5208): Corb in-scene with 6 lines, `zoneAt(-97,5)` → "The
+    Tanyard" (shared registry), 6-probe collider sweep pushes out (beam,
+    frames, hut, bark, leather, fire), the tanning pits walkable by design
+    (no collider), the wary edge-fire in `fires[]` with `userData.fire`,
+    dialogue DOM pops via handleInteract() (the boar-hide economy line),
+    screenshot eyeballed (the dark tanning pits with rims, the hide-hung
+    frames and shed, the fire held off at the edge), zero console errors.
+    NOT verified: fire flicker in motion + the zone-label HUD flip (generic
+    CAMPS path, rAF stall — same posture as every landmark).
+  - **Seeded for later**: a Tanyard duelist (route-trainer — Corb's second,
+    when the next duelists.js window wants one; but the craft-trainer well
+    is dry, so only if nothing fresher offers); a Tanyard road/quest by the
+    downs rule (it sits near the West Road already, so a spur is short if it
+    earns traffic). **The craft economy is now COMPLETELY done — all eight
+    crafts, every yard's full or partial grammar.** Standing ledger, now
+    thin: the Whistlewood road/quest (rest it a beat first); Red-Sash
+    camp-life + windmill (blocked on main.js); far-NE + far-SW-corner banked
+    gaps (need an archetype); hot spring (parked, 14). **Note for future
+    surveys: the realm's obvious retro-explain gaps are filled. The next
+    iterations should lean toward DEEPENING existing content, connective
+    quests/roads, or a genuinely novel place-KIND (the Whistlewood was one) —
+    not another craft yard or route-trainer.**
+
 - **Linnet the Whistler — the Whistlewood's duelist, and the realm's oldest
   seed closed (2026-07-17, worldbuilding loop iteration 32)**: the ripest
   seed by a wide margin — iteration 31 built the grove one iteration ago
