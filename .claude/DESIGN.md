@@ -1929,6 +1929,46 @@ considered and rejected.
     in packs.js: a FOURTH set, or any single set needing banners + leaders
     + packs at once.
 
+- **Roadside Law — the ambush aura, completing the keyword-enchantment
+  cycle (2026-07-17, /new-card run 9)**: the survey's strongest remaining
+  structural signal — the onPlay+onAllySummon keyword-aura cycle covered
+  guardian (bulwark_doctrine), ward (warding_litany), frenzy
+  (bandit_creed), piercing (boarlords_fury), and lifesteal
+  (verities_oath); **Ambush, the Red-Sash's own signature keyword, was
+  the one missing sixth**. `roadside_law`, core, rare enchantment,
+  5 Ember: your creatures gain Ambush on cast and enter with it
+  afterward.
+  - **Cost anchor**: bandit_creed exactly (5c rare, the cycle's ceiling)
+    — haste-on-everything is the same class of tempo warp as
+    frenzy-on-everything. The engine half was pre-verified before
+    building: grantKeyword already clears summoning sickness on ambush
+    grants (effects.js:82), so the onAllySummon half works as written.
+  - **Verified**: aura scenario 60/60 across 10 seeds (persists in the
+    enchantment zone; existing sick allies gain ambush AND wake; creatures
+    played afterward enter awake and pass canAttack). Shell sims: 31/37/36
+    — tanks, **and so does the anchor in the identical harness**:
+    bandit_creed control in the same slots sims 33/39/40. The greedy AI
+    misplays 5c support auras (casts them over bodies), a cycle-wide
+    artifact, not this card; within noise of its anchor is the pass bar
+    for a cycle-completer. 0 stuck across 600 games. Suites: packs 6653,
+    leaders 198, factions 453→455, sim-starters byte-identical 60/52/47.
+  - **Family/faction**: redsash_bandits → redsash — the faction's second
+    rare-gate chase card, and the aura cycle's second redsash member
+    (creed=frenzy is frenzied_warband; law=ambush is the bandit family
+    proper). Circulation: Boarlands pack + **Vex's rewards as an extra**
+    — deck deliberately untouched: it was sim-retuned one run ago
+    (misdirection), and haste-on-every-bandit is exactly the outlier-
+    heating run 7 warned about; boss pools carry rares (Gruk precedent).
+    Art: the cycle's `plate` sprite in night-ambush tones — shadow-black,
+    sash-red accent, the inverse of creed's red-plate/gold.
+  - **Rejected this survey**: an ashfall 4-drop (still the weakest "why"
+    on the board); a wildcaller 6th (the family is deliberately complete
+    at 5 pending its duelist); putting the law in vexDeck (see above —
+    two consecutive re-tunes of one duelist and a predictable heat
+    spike).
+  - **Seeded**: none new. The keyword-aura cycle is now COMPLETE at six —
+    a future zone set wanting a seventh aura means a new keyword first.
+
 - **Misdirection — the Thieves' Cant reaction, and the family's first
   table (2026-07-16, /new-card run 8)**: the one mechanics family the loop
   had never touched, rejected three times purely on shape-variance grounds

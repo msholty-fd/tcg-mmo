@@ -375,6 +375,19 @@ registerCards([
     },
     name: 'Bandit Creed', text: 'When cast, your creatures gain Frenzy. Creatures you play afterward enter with Frenzy too.',
     flavor: 'Kestrel\'s only rule: never let them get their breath back.' },
+  // Completes the keyword-aura cycle — guardian/ward/frenzy/piercing/lifesteal
+  // all had their enchantment; Ambush (the Red-Sash's own signature keyword)
+  // was the one missing. Costed at the cycle's ceiling beside bandit_creed:
+  // haste-on-everything is the same class of tempo warp as frenzy-on-
+  // everything. grantKeyword already clears summoning sickness on ambush
+  // grants (effects.js), so the onAllySummon half works as written.
+  { id: 'roadside_law', set: 'core', rarity: 'rare', type: 'enchantment', cost: 5,
+    triggers: {
+      onPlay: [{ effect: 'grantKeyword', target: 'allAllies', keyword: 'ambush' }],
+      onAllySummon: [{ effect: 'grantKeyword', target: 'self', keyword: 'ambush' }],
+    },
+    name: 'Roadside Law', text: 'When cast, your creatures gain Ambush. Creatures you play afterward enter with Ambush too.',
+    flavor: 'Strike first. The rest is negotiation.' },
   { id: 'kestrel', set: 'core', rarity: 'rare', type: 'creature', cost: 4, atk: 3, hp: 3, keywords: ['frenzy'],
     triggers: { onPlay: [{ effect: 'damage', target: 'randomEnemy', amount: 1 }, { effect: 'damage', target: 'randomEnemy', amount: 1 }] },
     name: 'Kestrel Twinstrike', text: 'Frenzy. When played, deal 1 damage to a random enemy, twice.',

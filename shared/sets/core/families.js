@@ -35,6 +35,7 @@ export const FAMILIES = [
     cardIds: [
       'tusker', 'red_sash_cutpurse', 'camp_torcher', 'nightstalker', 'red_sash_ambusher',
       'red_sash_picklock', 'masked_raider', 'vex', 'wayside_watcher', 'uninvited_guest',
+      'roadside_law',
     ],
   },
   {
