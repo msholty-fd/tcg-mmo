@@ -402,6 +402,49 @@ const wrenDeck = swap(
   ['ember_bolt', 'ember_bolt'],
   ['pilgrims_vow', 'sworn_medic'],
 );
+// Gedd (the East Road) — the drover: a swineherd minding a domestic drift on
+// the eastern grass, the road between Gruk's Hollow and Hobb's Quarry that
+// iteration 16 built and left trainer-less (every other major road has one).
+// Distinct from the east's two neighbours by trade: Sorrel TRACKS wild game
+// (the hunter), Nell CARTS light craft goods west (wool/fish/honey) — Gedd
+// DRIVES heavy stock, plodding pigs too slow and too many for any cart.
+// Boarherd base — the boar family IS his drift, and it's boar country (Gruk
+// and Sorrel are his neighbours). This is the exact slot AND shape Hew's
+// entry reserved (iteration 15): "boarherd wolf_howl+pack_alpha out ...
+// 37/45/39 ... cramps the band a future east-road trainer must fit under."
+// A drover has no wolf pack and no alpha's cunning — just stock — so out go
+// wolf_howl (the pack's summon-and-draw) and pack_alpha (the rare anthem),
+// gutting the herd engine into plain plodding bodies; deliberately NOT
+// Tolly's ember_bolt/sudden_spark, Hew's kindled_fury, or Sorrel's
+// militia_recruit outs (same-base boarherd trainers must not share a shape —
+// a fourth distinct out on the base). In come old_drover ("driving stock to
+// market since before Harrow's father worked this land" — the drover himself,
+// a 5/5 that never rode a deck till now) and stout_plowman ("a strong back
+// and a longer day" — the drift's plodding pace). Micro-read: "the drift
+// plods through" — big slow stock, no pack, no tricks, distinct from Tolly's
+// herd buffs, Hew's guardian hold, Sorrel's forest_sow ambush, Nell's steady
+// puller, Dace's snares, Wick's punish, and Wren's woven guard.
+// Tuned in sims (500/side vs each starter, 0 stuck): 45/56/46 vs
+// boarherd/wardens/redsash — below Hew's 49/60/52 (the quarry, his road's
+// destination) and far below Sorrel's 56/66/58 (the east's OTHER road
+// trainer, whose road runs to Gruk's boss camp): the east's roads duel
+// harder than the west's gentle craft spurs (Nell 43/54/49, Dace 36/46/44)
+// but still under their destinations, and Gedd is the gentler of the two
+// east-road trainers, which fits — his road skirts Gruk rather than serving
+// it. Power-negative vs the plain boarherd base (50/60/52 -> 45/56/46 — the
+// gutted pack engine); the 56 vs wardens rides the documented greedy-AI
+// defense blind spot (old_drover + stout_plowman are big vanilla bodies the
+// AI blocks poorly). Rejected variants, both simmed at 500/side: same cut ->
+// old_drover+forest_sow (43/54/44 — lower and tempting, but forest_sow is
+// Sorrel's shipped in, and same-region trainers must not share a card); a
+// shallow militia_recruit x2 -> same ins (59/71/60 — barely below the base
+// AND it duplicates Sorrel's exact out-shape, two boarherd east trainers
+// cutting the same card).
+const geddDeck = swap(
+  STARTER_DECKS.boarherd,
+  ['wolf_howl', 'pack_alpha'],
+  ['old_drover', 'stout_plowman'],
+);
 
 export const DUELISTS = {
   rowan: {
@@ -491,5 +534,9 @@ export const DUELISTS = {
   wren: {
     name: 'Wren the Fuller', deck: wrenDeck,
     rewards: [...wrenDeck, 'hearthguard_veteran'],   // "Outlasted three captains." — the fuller's cloth outlasts (uncommon lifesteal, route-trainer reward band; deliberately not a Leader/rare; deck untouched, so tuning holds)
+  },
+  gedd: {
+    name: 'Gedd the Drover', deck: geddDeck,
+    rewards: [...geddDeck, 'ironhide_boar'],   // "Fences, walls, militias — all the same to him." — the drover's biggest hog, the prize of the drift (uncommon; route-trainer reward band, not a Leader/rare; deck untouched, so tuning holds)
   },
 };

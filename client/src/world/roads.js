@@ -193,6 +193,18 @@ export const brenna = spawnDuelist('brenna', -44, -58, { shirt: 0x4a5a6a, hat: 0
 // stone at 2.99, push-out margin 1.99; meads skeps >=14.9, downs cairn 15.8,
 // brenna's polyline 87).
 export const nell = spawnDuelist('nell', -144, -53, { shirt: 0x7a6648, hat: 0x4e4030 });
+// Gedd the Drover (2026-07-17, worldbuilding iteration 24 — DESIGN.md): the
+// East Road's trainer, the last major road left without one. Iteration 16
+// built the road (Gruk's Hollow -> Hobb's Quarry) and iteration 15 reserved
+// this slot (the band below Hew); duelists.js freed at 23, so both queued
+// trainers land in the open window. A swineherd minding a domestic drift on
+// the eastern grass — distinct from Sorrel (tracks wild game) and Nell
+// (carts light goods) by driving heavy stock. He walks the open road BETWEEN
+// the two waystones, kept clear of Gruk's r26 circle (west end 29.4 out) and
+// the quarry's r16 (east end 17.7 out); path runs ~2u off the stone line
+// (min clearance 2.25 — the sorrel waystone-teleport gotcha). Terrain gentle
+// (h -1.33..0.92). Spawn is the midpoint; updatePatrols owns position.
+export const gedd = spawnDuelist('gedd', 138, -38, { shirt: 0x6a5236, hat: 0x4a3a28 });
 
 // Road duelists PATROL their routes, and the realm agrees where they are:
 // position is a pure function of the server-synced game hour (the same
@@ -214,6 +226,7 @@ const PATROLS = [
   { npc: finch, path: [[44, 46], [58, 60], [72, 74]] },         // Emberwatch road, between its waystones
   { npc: brenna, path: [[-30, -48], [-44, -58], [-58, -68]] },  // Hollowmere road, between its waystones
   { npc: nell, path: [[-143, -36], [-144, -53], [-145, -70]] }, // meads spur (the fork's south arm), east of its stones
+  { npc: gedd, path: [[131, -43], [138, -38], [145, -33]] },    // East Road, between Gruk's Hollow and the quarry, off the stone line
 ];
 const PATROL_PERIOD = 1;   // game hours per out-and-back (= 50 real seconds)
 for (const p of PATROLS) {

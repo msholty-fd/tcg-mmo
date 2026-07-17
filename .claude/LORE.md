@@ -243,6 +243,17 @@ but never say "points" or "unlock."
   leaves it — keep the source vague; it is NOT the Cinderhollow Mine, which
   stays Marrow's reserved Act III door, and Bryn must never guess at it).
   No opinions on the mine, the mire, Hessa's thread, or the Going-Out.
+- **Gedd the Drover** (the East Road, between Gruk's Hollow and Hobb's
+  Quarry) — small omens tier, mostly none: a swineherd who minds a domestic
+  drift on the eastern grass and drills with cards between the driving,
+  because droving and dueling are the same lesson — pace the drift, mind the
+  road, and don't let the stock scatter. Distinct from his two road
+  neighbours by trade: Sorrel tracks wild game, Nell carts light craft goods;
+  Gedd drives heavy stock, plodding and many. Gives Gruk's hollow a wide
+  berth (his drift grazes the open road, never the bone-camp) and has no
+  opinions on the quarry's business, Merle's hour, or anything west. (Duelists
+  can't surface flavor lines — his knowledge lives here and in DESIGN text
+  only.)
 - **Wren the Fuller** (the Loomstead, Ede's young second) — small omens
   tier, mostly none: Ede weaves the cloth, Wren fulls it — pounds and felts
   the woven wool until it holds together and turns the weather — and drills
