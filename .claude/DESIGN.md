@@ -2222,6 +2222,89 @@ considered and rejected.
     queue's head; redsash's next structural gap is a frenzied_warband
     rare above kestrel if the faction ever wants a second chase card.
 
+- **Gedd the Drover — the East Road's route trainer (2026-07-17,
+  worldbuilding loop iteration 24)**: duelists.js stayed free a second
+  survey (no `card-*` worktree), so the loop spent the still-open window on
+  the second queued route-trainer rather than risk it re-blocking. The
+  East Road (Gruk's Hollow → Hobb's Quarry, iteration 16) was the last
+  major road without a trainer — every other has one (Sorrel/Gruk,
+  Finch/Emberwatch, Brenna/Hollowmere, Nell/meads-spur) — and iteration 15
+  reserved BOTH its slot and its exact deck shape: "the dace/brenna band
+  36–44 stays open below him for a future east-road trainer," and
+  "boarherd wolf_howl+pack_alpha out → 37/45/39 ... cramps the band a
+  future east-road trainer must fit under." This pays off that double
+  reservation verbatim. **Back-to-back duelists (Wren 23, Gedd 24) is
+  noted and deliberate**: duelists.js was blocked six surveys and could
+  re-block any survey, both long-reserved trainers were ripe, and the two
+  are different sub-types (Wren a defensive zone duelist, Gedd a boarherd
+  road-patrol) — the scarce-window play, not shape drift. With both queued
+  route-trainers now landed, the loop returns to varied shapes next survey.
+  - **The character**: Gedd, a swineherd minding a domestic drift on the
+    eastern grass — distinct from his two road neighbours by trade
+    (Sorrel TRACKS wild game, Nell CARTS light craft goods, Gedd DRIVES
+    heavy stock). Micro-read **"the drift plods through"** — big slow
+    bodies, no pack, no tricks.
+  - **The deck** (`shared/sets/core/duelists.js` + a spawn/PATROLS entry
+    in roads.js, 1-line barrel; zero server change): **boarherd base** —
+    the boar family IS his drift, and it's boar country (Gruk and Sorrel
+    are neighbours). Out **wolf_howl + pack_alpha** — a drover has no wolf
+    pack and no alpha's cunning, just stock; this guts the herd engine into
+    plain plodding bodies (the exact "no pack" cut Hew reserved), and is a
+    fourth distinct out-shape on the shared boarherd base (NOT Tolly's
+    ember_bolt/sudden_spark, Hew's kindled_fury, or Sorrel's
+    militia_recruit). In **old_drover** (5/5 uncommon, "driving stock to
+    market since before Harrow's father" — the drover himself, never on a
+    deck till now) + **stout_plowman** (the drift's plodding pace). Reward
+    **ironhide_boar** (uncommon, the prize hog — route-trainer band, not a
+    Leader/rare).
+  - **Tuning** (500/side vs each starter, 0 stuck): **45/56/46** vs
+    boarherd/wardens/redsash — below Hew's 49/60/52 (the quarry, the road's
+    destination) and far below Sorrel's 56/66/58 (the east's other road
+    trainer, whose road serves Gruk's boss camp): the east's roads duel
+    harder than the west's gentle craft spurs (Nell 43/54/49, Dace
+    36/46/44) but under their destinations, and Gedd is the gentler of the
+    two east trainers — his road skirts Gruk rather than serving it.
+    Power-negative vs plain boarherd (50/60/52 → 45/56/46 — the gutted
+    engine); the 56 vs wardens is the greedy-AI defense blind spot (big
+    vanilla bodies). Rejected + simmed at 500/side: same cut →
+    old_drover+forest_sow (43/54/44 — lower, but forest_sow is Sorrel's
+    shipped in, same-region trainers must not share a card); shallow
+    militia_recruit x2 → same ins (59/71/60 — barely below the base AND
+    duplicates Sorrel's exact out-shape). Starter spread untouched,
+    re-verified byte-identical 60/52/47.
+  - **The patrol**: walks the open road BETWEEN the two waystones,
+    (131,−43)→(138,−38)→(145,−33), ~2u off the stone line. Kept clear of
+    Gruk's r26 circle (west end 29.4 out — a drover gives the bone-camp a
+    wide berth) and the quarry's r16 (east end 17.7 out). Min stone
+    clearance 2.25 by scan, confirmed **2.68 live sweeping updatePatrols
+    across 24h** (the sorrel teleport gotcha — max per-step 1.125, no
+    jump); range of motion spans the endpoints exactly (x 131.0–145.4,
+    z −43.0…−33.3). Terrain gentle (h −1.33..0.92).
+  - **Verify (the full duelist bar):** build + `node --check` clean;
+    test-packs 6653/6653, test-leaders 198/198, test-factions 459/459 (no
+    new cards); roster 23, gedd deck 30 legal (ids valid, ≤3 copies);
+    starter spread byte-identical 60/52/47; raw-WS e2e 11/11 on :8099
+    (bogus-npc refused, npcduel gedd → duelStart foe "Gedd the
+    Drover"/kind npc, foe hand sanitized all-nulls, own hand visible,
+    second-duel-in-room ignored, concede → duelEnd loser-no-rewards). Live
+    on a worktree rig (:8098/:5200): Gedd in-scene with ⚔ badge + 30-card
+    deck, headless patrol replica clean (above), `nearestInteract()` picks
+    him up as a duelist mid-walk, screenshot eyeballed (Gedd on the road by
+    the gilded quarry-edge stone with Hew/the quarry in frame), prod-bundle
+    dev-hook grep 0 hits, zero console errors. NOT verified: walk-up
+    E-challenge in motion / a played-out live duel (rAF stall — e2e covers
+    the room lifecycle, same posture as every prior duelist).
+  - **Seeded for later**: none new — **the East Road is now complete**
+    (built 16, roaded, now walked), and the realm's road-trainer network is
+    FINAL: every major road has its patroller (Sorrel, Finch, Brenna, Nell,
+    Gedd). One ripe duelist remains queued: the **conjuration duelist**
+    (queue-head by age, Wildcaller family at 5) — but it still needs a
+    HOME-siting decision (it has no zone), so it is NOT a quick grab; a
+    survey must decide whether it gets a new landmark or converts a wild
+    place. Otherwise open: Kilnyard quest+road, a Forge quest+road+duelist
+    cascade (found-first craft yards); far-NW reserved; far-NE + far-SW
+    banked; Red-Sash + windmill (main.js); hot spring (parked, 14).
+
 - **Wren the Fuller — the Loomstead's duelist (2026-07-17, worldbuilding
   loop iteration 23)**: **duelists.js freed** — the /new-card factory that
   held it continuously since iteration 16 finally spun down (no `card-*`

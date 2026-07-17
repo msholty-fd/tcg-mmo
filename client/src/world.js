@@ -20,7 +20,7 @@ export { yara, verity, tarn, sela } from './world/highgate.js';
 export { sentinel } from './world/emberwatch.js';
 export { bram, footpad } from './world/bramsrest.js';
 export { hessa, updateHollowmere } from './world/hollowmere.js';
-export { wayfarer, sorrel, finch, brenna, nell, updatePatrols } from './world/roads.js';
+export { wayfarer, sorrel, finch, brenna, nell, gedd, updatePatrols } from './world/roads.js';
 export { harrow, cobb } from './world/harrowfield.js';
 export { wynn, tolly } from './world/wetherdowns.js';
 export { pell } from './world/pellspond.js';
