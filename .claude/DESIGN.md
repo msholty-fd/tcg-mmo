@@ -2222,6 +2222,83 @@ considered and rejected.
     queue's head; redsash's next structural gap is a frenzied_warband
     rare above kestrel if the faction ever wants a second chase card.
 
+- **The Whistlewood — the beast-caller's grove, and the wild's first face
+  (2026-07-17, worldbuilding loop iteration 31)**: iteration 30 declared the
+  craft economy complete and flagged the well dry ("the next windows should
+  go to the conjuration duelist or a new archetype, NOT a tenth
+  route-trainer"). This is that pivot: the realm's **first place defined by
+  the WILD, not a craft** — a landmark, varying the shape after a duelist,
+  and the long-deferred home for the wildcaller card family (5 cards,
+  queued since ~iteration 15). Both axes point here: *map*, the deep SW is
+  a large clean gap; *archetype*, the realm was heavy on workshops and thin
+  on wilderness-with-a-face, and conjuration had no home.
+  - **The Wildcaller knot, resolved** (recorded because it blocked this
+    seed for ~15 iterations): is the conjuration duelist THE Wildcaller, or
+    the Wildcaller's second? The "title looking for an owner" seed implied
+    the former, which fights the flavour-stays-flavour rule. Resolution via
+    the Odo→Wick precedent: **the grove's flavour NPC IS the Wildcaller
+    (the master, the title's owner)**, and the **conjuration duelist is her
+    APPRENTICE** (the young caller, seeded). The title has its owner; the
+    deck goes to the student. This is the piece that made the seed
+    buildable.
+  - **The place** (`client/src/world/whistlewood.js`, shared/zones.js CAMPS
+    (−137,−147) r=15, wilds.js CLEARINGS r=14): sited by the numeric
+    flat-scan — the flattest r=9 disc in the realm's biggest clean gap
+    (center h 2.54, max dev 0.32, under the quarry's 0.65), zero terrain
+    edits; clearances Bee Meads 38, Kilnyard 59, world-bound 45. Deep SW
+    past the Kiln Road's end — removed and wild, a hermit caller's grove.
+    **New palette, the Hollowmere/Pell rule**: deep moss-green old-growth
+    OAKS (gnarled bark trunk + broad rounded sphere-canopies), NOT the
+    realm's conical pines, so the grove reads as its own ancient wood; a
+    CLEARINGS entry keeps the random pines out so only the authored oaks
+    stand. Props: a ring of 12 oaks around an open clearing, mossy floor
+    patches + fallen logs, Rook's bark lean-to (rect collider + cam
+    occluder), a log seat, and — the zone's signature — **the gathered
+    wild**: 2 hinds + 3 hares sitting calm by the fire (module-local
+    meshes, the single-region rule; r128 has no CapsuleGeometry so bodies
+    are cylinders + sphere caps). LORE fire tier: **TENDED, a fresh
+    register no craft yard has — a small fire the WILD has forgiven** (one
+    light echo: "everything wild fears a fire; mine, they've made their
+    peace with"). Explicit `fires.push(campfire(...))` (the 0992af6 lesson).
+  - **Rook the Wildcaller** — flavour NPC, small-omens tier (LORE.md
+    updated): six lines — the economy/cross-NPC read (Sorrel hunts the wild,
+    Wynn fences it out, she whistles and it comes), the wild-trusted-fire
+    echo, the calling-as-welcome-not-power line (keeps the card family's
+    "summon" grounded), and two wild-uncanny doors kept firmly off the
+    myth: the black hind that comes uncalled, and the whistle no one taught
+    her.
+  - **Rejected this survey**: a tenth route-trainer (the Kilnyard cascade
+    is done, and iteration 30 explicitly barred another — the craft-trainer
+    well is dry); a **tannery** landmark (leather is the last clean missing
+    craft archetype — but it's an 8th craft yard, the same shape, "more of
+    the same" over a genuinely-new place-type; still the strongest fresh-
+    CRAFT candidate, noted for later); rushing the conjuration DUELIST here
+    (the downs rule — a new landmark seeds its duelist, never ships it same
+    iteration; and duelists.js was free but the master-is-flavour
+    resolution puts the deck on the apprentice, next window).
+  - **Verify:** node --check + build clean; test-packs 6653/6653,
+    test-factions 459/459 (no card/faction change). Live on the dev rig
+    (:8095/:5206): Rook in-scene with 6 lines, `zoneAt(−137,−147)` → "The
+    Whistlewood" (shared registry), 6-probe collider sweep pushes out (oaks
+    1.25/1.29, lean-to 1.65, fire 1.35, log 1.15, hind 0.95), clearing
+    center walkable, grove fire in `fires[]` with `userData.fire`, dialogue
+    DOM pops via handleInteract() (surfaced the black-hind door line), two
+    screenshots eyeballed (the distinct rounded oak canopies vs pines, the
+    clearing with Rook + a hind + a hare), zero console errors. NOT
+    verified: the fire flicker / any beast motion in motion (rAF stall —
+    the beasts are static by design, so nothing lost) and the zone-label
+    HUD flip (generic CAMPS path, same as every landmark).
+  - **Seeded for later**: the **conjuration duelist** — Rook's apprentice,
+    the young caller, drilling the wildcaller family (wild_summons/
+    call_of_the_wild/old_whistler/low_whistle/something_comes) — lands at
+    the next duelists.js window, FINALLY homing the family and closing the
+    realm's oldest stuck seed; then (downs rule) the grove earns a road if
+    it earns more traffic (note: it's remote SW, so a road wants a reason —
+    a quest, or the duelist). Rook's two doors (the black hind, the
+    whistle). Remaining ledger: a **tannery** (last missing craft
+    archetype); far-NE + far-SW-corner banked gaps; far-NW reserved;
+    Red-Sash + windmill (main.js); hot spring (parked, 14).
+
 - **Sedge the Wedger — the Kilnyard's duelist, and the craft cascade's last
   step (2026-07-17, worldbuilding loop iteration 30)**: the ledger's ripest
   seed — iteration 29's road completed the Kilnyard's preconditions, and
