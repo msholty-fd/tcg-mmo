@@ -19,6 +19,10 @@
 // Seeded doors (DESIGN.md/LORE.md, do not answer here): the firing that
 // came out glazed when no glaze was put on, and the west pit that never
 // runs dry.
+// Earned its quest at iteration 28 (crock_order, Harrow's errand) and its
+// road at 29 — a spur forks south off the Hollowmere road to the yard's
+// north-edge stone (roads.js). A Kilnyard duelist stays seeded for the next
+// duelists.js window (the Forge cascade's last step).
 import * as THREE from 'three';
 import { scene } from '../scene.js';
 import { groundH } from '../terrain.js';
