@@ -373,7 +373,7 @@ export const DUELISTS = {
   },
   vex: {
     name: 'Vex the Red-Sash', deck: vexDeck,
-    rewards: [...vexDeck, 'nightstalker', 'tusk_talisman', 'ashen_rite', 'stolen_blade', 'ambush_horn', 'shakedown'],
+    rewards: [...vexDeck, 'nightstalker', 'tusk_talisman', 'ashen_rite', 'stolen_blade', 'ambush_horn', 'shakedown', 'roadside_law'],   // the ambush aura — her keyword's chase card, rewards-only: her deck was re-tuned last run and haste-on-every-bandit would spike it (boss pools carry rares, Gruk precedent)
   },
   gruk: {
     name: 'Gruk the Boar King', deck: grukDeck,
