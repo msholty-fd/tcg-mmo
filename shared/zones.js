@@ -78,6 +78,10 @@ export const CAMPS = [
   // where the realm's crockery is dug, thrown, and fired. See DESIGN.md
   // "The Kilnyard".
   { x: -64, z: -165, r: 16, name: 'The Kilnyard' },
+  // A smith's forge on the north-central upland grass, between the village,
+  // the Emberwatch road, and the north road — where the realm's iron is
+  // worked. See DESIGN.md "Bryn's Forge".
+  { x: 46, z: 86, r: 16, name: "Bryn's Forge" },
   // An abandoned mine dug into a rocky rise due north, in the Darkwood — a
   // scenic discovery, not enterable (seeds future underground content). See
   // DESIGN.md "Cinderhollow Mine".

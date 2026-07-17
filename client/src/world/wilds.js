@@ -21,6 +21,7 @@ const CLEARINGS = [
   { x: 157, z: -20, r: 15 },   // Hobb's Quarry — a working yard keeps its ground clear
   { x: 87, z: 46, r: 14 },     // The Loomstead — drying lines want wind and sun, not pine shade
   { x: -64, z: -165, r: 14 },  // The Kilnyard — green ware dries in the open; no roots in the pit
+  { x: 46, z: 86, r: 14 },     // Bryn's Forge — a fire yard keeps its ground clear of pines
 ];
 const inClearing = (x, z) => CLEARINGS.some(c => Math.hypot(x - c.x, z - c.z) < c.r);
 

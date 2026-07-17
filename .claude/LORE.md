@@ -229,6 +229,20 @@ but never say "points" or "unlock."
   grumble; do not answer either without a Kilnyard content phase, and do
   not let the pit drift toward Hessa's memory-without-fire thread). No
   opinions on any other zone's doors.
+- **Smith Bryn** (Bryn's Forge, the north-central upland) — small omens
+  tier: works the realm's iron — the gilded waystone bands, Hobb's chisels,
+  every hinge and shoe and nail — with Tamsin's charcoal, and her forge is
+  the realm's hungriest tended fire (her one fire-echo stays craft-shaped:
+  "a forge is the hungriest hearth there is," never explained toward the
+  myth). Two seeded doors, both folk-uncanny and craft-framed, never myth:
+  **the grey mare's shoes she has forged three times that keep turning up
+  back on her cold anvil by morning** (she's stopped charging — a horse
+  that won't stay shod is a folk-tale beat, not a fire omen; do not let it
+  drift toward the cold-hearth hook), and **the bar-iron that arrives
+  stacked at her door on nobody's cart** (she's given up catching who
+  leaves it — keep the source vague; it is NOT the Cinderhollow Mine, which
+  stays Marrow's reserved Act III door, and Bryn must never guess at it).
+  No opinions on the mine, the mire, Hessa's thread, or the Going-Out.
 - **Guildmaster Yara** (Highgate, the Merchant Hall) — commerce tier, the
   Marla register at guild scale: ledgers, guarantees, receipts. Her stone
   errand (quest `stone_order`, the realm's east pointer) stays
