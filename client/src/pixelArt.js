@@ -801,6 +801,8 @@ const CARD_ART = {
 
   // ---- NEW-MECHANICS PASS (see cards.js) ----
   // The Armory: equipment (blades on 'fang', shields/cloaks on 'plate', a brand on 'talisman')
+  // old_whetstone: the talisman sprite in quarry greys — a kept stone, no fire
+  old_whetstone:       { sprite: 'talisman', pal: { c: '#8a8f96', w: '#c8ccd2', W: '#6e737a' } },
   emberforged_blade:   { sprite: 'fang', pal: { w: '#d8c0a0', W: '#a88a60', f: '#ff5a20', F: '#ffd050' } },
   oaken_aegis:         { sprite: 'plate', pal: { p: '#8a6a3a', P: '#664926', g: '#c8a24a' } },
   travelers_cloak:     { sprite: 'plate', pal: { p: '#8a8f96', P: '#5e636a', g: '#bcc0c8' } },

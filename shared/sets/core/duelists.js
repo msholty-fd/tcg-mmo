@@ -438,6 +438,6 @@ export const DUELISTS = {
   },
   hew: {
     name: 'Hew the Splitter', deck: hewDeck,
-    rewards: [...hewDeck, 'watchers_oath'],   // "Sworn once, kept every day since." — a prenticeship in one line (Dace's boar_pit pattern; deliberately not shieldwall_sergeant, a Leader, nor bastion_keep, a rare — route trainers reward modestly)
+    rewards: [...hewDeck, 'watchers_oath', 'old_whetstone'],   // "Sworn once, kept every day since." — a prenticeship in one line (Dace's boar_pit pattern; deliberately not shieldwall_sergeant, a Leader, nor bastion_keep, a rare — route trainers reward modestly). The whetstone: the stone yard keeps the realm's edges (common; deck untouched, tuning holds)
   },
 };

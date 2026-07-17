@@ -666,6 +666,15 @@ registerCards([
   // ---- The Armory: equipment. Unlike a one-shot relic, gear rides its
   // wielder and returns to your hand when that creature dies, so the buff is
   // never spent for good — priced a notch above the equivalent relic for it.
+  // The Armory's entry point — its only 1-drop and second common (the newest
+  // card type was nearly invisible in the 70%-common pack slot). Priced off
+  // the 1c-relic accessory line (sentrys_cloak) and piercing_barb's rate for
+  // +1 atk: the bare buff at 1c, with the return-to-hand as the equipment
+  // premium instead of a keyword.
+  { id: 'old_whetstone', set: 'core', rarity: 'common', type: 'equipment', cost: 1,
+    triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 1, hp: 0 }] }, needsTarget: 'ownUnit',
+    name: 'Old Whetstone', text: 'Equip: your creature gets +1 attack. Returns to your hand when the wielder falls.',
+    flavor: 'Older than every blade it keeps sharp.' },
   { id: 'emberforged_blade', set: 'core', rarity: 'uncommon', type: 'equipment', cost: 3,
     triggers: { onPlay: [{ effect: 'buff', target: 'chosen', atk: 2, hp: 0 }] }, needsTarget: 'ownUnit',
     name: 'Emberforged Blade', text: 'Equip: your creature gets +2 attack. Returns to your hand when the wielder falls.',
