@@ -33,7 +33,7 @@ import { scene } from '../scene.js';
 import { groundH } from '../terrain.js';
 import { rand } from '../utils.js';
 import { addCircle, addRect } from '../colliders.js';
-import { M, camCollidables, campfire, fires, spawnNPC } from './lib.js';
+import { M, camCollidables, campfire, fires, spawnNPC, spawnDuelist } from './lib.js';
 
 const W = { x: -137, z: -147 };   // heart (shared/zones.js CAMPS r=15)
 
@@ -180,3 +180,13 @@ rook.flavor = [
   "Beasts remember kindness longer than people do, and grudges longer still. Feed a thing once, it's yours for life. Cross it once, the same.",
   "Folk call it conjuring, the calling — like I pull them out of nothing. I don't. They were always here. I just let them know they're welcome.",
 ];
+// Linnet the Whistler — Rook's apprentice (worldbuilding iteration 32, the
+// seeded conjuration duelist, ripe the moment iteration 31 built the grove).
+// Rook whistles up the wild; Linnet is learning the whistle, and duels with
+// the wildcaller family (low_whistle/wild_summons) she's the first to carry
+// into a deck. She stands across the clearing from Rook, among the beasts
+// that came (spawn (-133,-151): clearances measured live — fire ~3.6, log
+// seat ~3.5, Rook ~6.3, nearest hind ~6; spawn not stuck, labels + the ⚔
+// badge stay clear). Route-trainer tier: deck/rewards in duelists.js, no
+// server change. The master stays flavour; the apprentice duels.
+export const linnet = spawnDuelist('linnet', W.x + 4, W.z - 4, { shirt: 0x5a6a3e, hat: 0x3a4a2e });

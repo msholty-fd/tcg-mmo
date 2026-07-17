@@ -286,6 +286,16 @@ but never say "points" or "unlock."
   has no opinion on any other zone's doors. The conjuration DUELIST is her
   apprentice, seeded — the young caller learning the whistle; the master
   stays flavour, the apprentice duels (the Odo→Wick precedent).
+- **Linnet the Whistler** (the Whistlewood, Rook's apprentice) — small
+  omens tier, mostly none: Rook whistles up the wild and it comes; Linnet is
+  learning the whistle, and duels with the wildcaller family she's the first
+  to carry into a deck. She reads the calling as Rook taught it — welcome,
+  not power ("you don't force the wild, you let it know it's welcome") — so
+  her flavour must never drift toward conjuring-from-nothing or toward the
+  grove's mysteries: she has no opinion on the black hind that comes uncalled
+  or the whistle no one taught Rook (those are the master's doors — the
+  apprentice is still learning the ordinary calls). (Duelists can't surface
+  flavor lines — her knowledge lives here and in DESIGN text only.)
 - **Sedge the Wedger** (the Kilnyard, Fern's second) — small omens tier,
   mostly none: Fern throws and fires, Sedge wedges the clay — kneads the air
   out and centers it true before it ever meets the wheel — and drills with
