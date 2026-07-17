@@ -243,6 +243,17 @@ but never say "points" or "unlock."
   leaves it — keep the source vague; it is NOT the Cinderhollow Mine, which
   stays Marrow's reserved Act III door, and Bryn must never guess at it).
   No opinions on the mine, the mire, Hessa's thread, or the Going-Out.
+- **Wren the Fuller** (the Loomstead, Ede's young second) — small omens
+  tier, mostly none: Ede weaves the cloth, Wren fulls it — pounds and felts
+  the woven wool until it holds together and turns the weather — and drills
+  with cards between the fulling, because fulling and dueling are the same
+  lesson: the loose thread frays, the worked cloth holds. Knows the loom and
+  the tenter but nothing of what the folk at the wool's far end watch for:
+  do not give Wren opinions on Wynn's bellwether, and keep her clear of the
+  ash-grey bolt and the red-thread thief (Ede's two doors — the apprentice
+  fulls the cloth she's handed, she doesn't puzzle the weaver's mysteries).
+  (Duelists can't surface flavor lines — her knowledge lives here and in
+  DESIGN text only.)
 - **Guildmaster Yara** (Highgate, the Merchant Hall) — commerce tier, the
   Marla register at guild scale: ledgers, guarantees, receipts. Her stone
   errand (quest `stone_order`, the realm's east pointer) stays

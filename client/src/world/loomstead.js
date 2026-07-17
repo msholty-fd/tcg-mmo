@@ -26,7 +26,7 @@ import { scene } from '../scene.js';
 import { groundH } from '../terrain.js';
 import { rand } from '../utils.js';
 import { addCircle, addRect } from '../colliders.js';
-import { M, camCollidables, campfire, fires, barrel, signpost, spawnNPC } from './lib.js';
+import { M, camCollidables, campfire, fires, barrel, signpost, spawnNPC, spawnDuelist } from './lib.js';
 
 const L = { x: 87, z: 46 };   // heart (shared/zones.js CAMPS r=16)
 
@@ -200,6 +200,16 @@ signpost(L.x - 11, L.z - 5, -2.3);
 // the fire and the lines; clearances re-scanned after the layout fix (see
 // DESIGN.md): fire 2.9, lines post ~3.3, sacks ~4.3 (labels stay clear).
 export const ede = spawnNPC('Weaver Ede', L.x + 1, L.z - .5, { shirt: 0x41628a, hat: 0x6a5a3a });
+// Wren the Fuller — Ede's young second (worldbuilding iteration 23, the
+// seeded Loomstead duelist, ripe since the road landed at 21). Ede weaves;
+// Wren fulls the cloth — pounds and felts the woven wool until it holds. She
+// stands in the open working ground west of the fire, by the tenter where
+// the fulled cloth stretches to dry (spawn (83.5,50): clearances measured
+// live — Ede 6.4, dye fire 3.2, tenter posts 4.2/5.0, wool sacks 6.0, loom
+// 10.0; spawn not stuck, labels + the ⚔ badge stay clear). Route-trainer
+// tier: deck/rewards in duelists.js, no
+// server change (core DUELISTS merges into both import sites).
+export const wren = spawnDuelist('wren', L.x - 3.5, L.z + 4, { shirt: 0x8a5a4a, hat: 0x4a3a30 });
 ede.flavor = [
   "Wynn's fleeces come east on Nell's cart, and they leave here as bolts for Highgate's backs. Every shirt in this realm crossed a loom like mine — mind your elbows on the warp.",
   "Warp first, weft after, and no hurrying either. The loom counts better than I do, and it holds a grudge if you argue.",
