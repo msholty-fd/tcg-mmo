@@ -28,7 +28,7 @@ import { scene } from '../scene.js';
 import { groundH } from '../terrain.js';
 import { rand } from '../utils.js';
 import { addCircle, addRect } from '../colliders.js';
-import { M, camCollidables, fires, crate, barrel, signpost, spawnNPC } from './lib.js';
+import { M, camCollidables, fires, crate, barrel, signpost, spawnNPC, spawnDuelist } from './lib.js';
 
 const K = { x: -64, z: -165 };   // heart (shared/zones.js CAMPS r=16)
 
@@ -187,3 +187,12 @@ fern.flavor = [
   "One firing last spring came out glazed rim to foot — a good glaze, a green I've never mixed — and I put no glaze on that load at all. Sold the lot by noon. Couldn't do it again if you paid me.",
   "The west pit never runs dry. Dig it to the boards on market day, it's smooth and full by the next. Good clay, better manners. I don't ask.",
 ];
+// Sedge the Wedger — Fern's second (worldbuilding iteration 30, the seeded
+// Kilnyard duelist, ripe since the road landed at 29 — completes the yard's
+// full grammar). Fern throws and fires; Sedge wedges the clay, kneading the
+// air out and centering it true before it meets the wheel. He works the
+// open ground south of the wheel, between it and the clay pit (spawn
+// (-65,-170): clearances measured live — wheel ~3.2, buckets ~3.8, Fern
+// ~5.9, drying board ~5.2; spawn not stuck, labels + the ⚔ badge stay
+// clear). Route-trainer tier: deck/rewards in duelists.js, no server change.
+export const sedge = spawnDuelist('sedge', K.x - 1, K.z - 5, { shirt: 0x8a7258, hat: 0x5a4636 });

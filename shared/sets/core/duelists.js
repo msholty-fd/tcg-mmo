@@ -483,6 +483,45 @@ const colmDeck = swap(
   ['wild_boar', 'wild_boar'],
   ['stoke_the_flames', 'flame_tender'],
 );
+// Sedge (the Kilnyard) — Fern's second, the wedger: Fern throws and fires,
+// Sedge wedges the clay — kneads the air out and CENTERS it true before it
+// ever meets the wheel — and drills with cards between the wedging, because
+// wedging and dueling are the same lesson: center it true and it stays true,
+// force it and it wobbles forever (Fern's own line, made a person). Wardens
+// base — the patient/defensive family fits the potter's "no hurrying," and
+// completes the Kilnyard's grammar (landmark 19, quest 28, road 29, this).
+// Out go the two wild_boars — a potter fields no wild beasts; deliberately
+// NOT Dace's camp_torcher, Nell's kindled_fury, or Wren's ember_bolt outs
+// (same-base wardens trainers must not share a shape — and cutting burn on
+// wardens either duplicates those or boosts the deck off the defense-blind
+// AI, so the beast cut is what keeps this power-neutral: a fifth distinct
+// wardens out, the first non-burn one). In come warded_acolyte (1/3 Ward —
+// a fired vessel that turns blades: the clay centered true and hardened) and
+// second_wind (+0/+2 and attack again — centered true, it endures and
+// rises). Micro-read: "center it true" — a hardened body and an enduring
+// rise, distinct from Wren's woven-guard grant+lifesteal, Hew's immovable
+// hold, Dace's snares, Nell's puller, Colm's fire, Wick's punish, Tolly's
+// herd buffs, and Gedd's plodding stock.
+// Tuned in sims (500/side vs each starter, 0 stuck): 39/49/45 vs
+// boarherd/wardens/redsash — the FRIENDLY craft-yard band (between Dace
+// 36/46/44 and Nell 43/54/49), gently BELOW the plain wardens base
+// (42/53/47 — the two wild_boar bodies were slightly stronger than a ward
+// body + a combat trick, so the swap nudges down, not up): a quiet potter's
+// yard duels gentler than the camps, the meads precedent. Rejected variants,
+// all simmed at 500/side: sudden_spark x2 -> same ins (50/62/56 — a +8..9pp
+// BOOST off the greedy-AI defense blind spot, too strong for a gentle yard,
+// AND cutting burn risks Wren/Nell/Dace's shapes); wild_boar x2 ->
+// hearth_keeper+warded_acolyte (41/52/48 — near-neutral and hearth_keeper's
+// "the fire never dies on her watch" reads kiln, but it's a 3rd copy of a
+// base card, so it rides the reward pool instead); wild_boar x2 ->
+// warded_acolyte+farmhands_boy (39/49/45 — a tie, so theme decided:
+// second_wind's "get up" is the centered clay that rises, farmhands_boy is
+// just a body).
+const sedgeDeck = swap(
+  STARTER_DECKS.wardens,
+  ['wild_boar', 'wild_boar'],
+  ['warded_acolyte', 'second_wind'],
+);
 
 export const DUELISTS = {
   rowan: {
@@ -580,5 +619,9 @@ export const DUELISTS = {
   colm: {
     name: 'Colm the Striker', deck: colmDeck,
     rewards: [...colmDeck, 'feed_the_fire'],   // "What burns first, burns brightest." — the forge's escalation, the fire the striker offers on (uncommon spell; route-trainer reward band, not a Leader/rare; deck untouched, so tuning holds)
+  },
+  sedge: {
+    name: 'Sedge the Wedger', deck: sedgeDeck,
+    rewards: [...sedgeDeck, 'hearth_keeper'],   // "The fire never dies on her watch." — the kiln-tender's patience, the fire Fern trusts dark (uncommon; route-trainer reward band, not a Leader/rare; deck untouched, so tuning holds)
   },
 };

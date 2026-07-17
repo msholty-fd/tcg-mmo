@@ -2222,6 +2222,87 @@ considered and rejected.
     queue's head; redsash's next structural gap is a frenzied_warband
     rare above kestrel if the faction ever wants a second chase card.
 
+- **Sedge the Wedger — the Kilnyard's duelist, and the craft cascade's last
+  step (2026-07-17, worldbuilding loop iteration 30)**: the ledger's ripest
+  seed — iteration 29's road completed the Kilnyard's preconditions, and
+  the yard's duelist is the last step of its full grammar (landmark 19,
+  quest 28, road 29, this). By the loop's rule (a ripe seed beats a novel
+  idea) it wins over the alternatives. **The Kilnyard is the last craft
+  yard to get its trainer**: the meads→Wick, quarry→Hew, Loomstead→Wren,
+  Forge→Colm cascade closes here — every craft yard now has landmark + NPC
+  + (quest/road) + duelist.
+  - **Saturation, weighed honestly** (recorded because it shaped the
+    build): this is the loop's NINTH route-trainer, and the thematic space
+    is genuinely crowding — the potter overlaps Wren (patient wardens
+    craft), Colm (kiln fire), and Hew (fired-clay-holds). Two other picks
+    were considered against it: (a) a Wildcaller's-home landmark to unblock
+    the conjuration duelist — **rejected**: it carries an unresolved design
+    knot (is the conjuration duelist the Wildcaller, or the Wildcaller's
+    second? the "title looking for an owner" seed implies the former, which
+    fights the flavour-stays-flavour rule) that deserves a genuinely
+    dedicated survey, not a rushed pairing; (b) a tannery landmark (leather
+    is the last clean missing craft archetype) — **rejected as a novel
+    idea over a ripe seed**, but noted as the strongest fresh-landmark
+    candidate if the loop wants variety later. The ripe seed won per the
+    loop's own priority; the saturation is logged as a real signal that
+    future craft-trainers should slow down.
+  - **The character**: Sedge, Fern's second — the wedger. Fern throws and
+    fires; Sedge wedges the clay, kneading the air out and CENTERING it
+    true before it meets the wheel (Fern's own line "center it true and it
+    stays true" made a person). Micro-read **"center it true"** — a
+    hardened body and an enduring rise.
+  - **The deck** (`shared/sets/core/duelists.js` + a spawn in kilnyard.js,
+    1-line barrel; zero server change): **wardens base** (patient potter,
+    "no hurrying"). The interesting tuning finding: **wardens' clean cuts
+    are used up** — Dace cut camp_torcher, Nell kindled_fury, Wren
+    ember_bolt, and cutting the remaining burn (sudden_spark) BOOSTS the
+    deck +8..9pp off the greedy-AI defense blind spot (50/62/56, too strong
+    for a gentle yard). So the swap cuts **wild_boar ×2** instead — "a
+    potter fields no wild beasts," the FIRST non-burn wardens out and a
+    fifth distinct shape — which stays power-neutral. In come
+    **warded_acolyte** (1/3 Ward — a fired vessel that turns blades) and
+    **second_wind** (+0/+2 and attack again — centered true, it endures and
+    rises). Reward **hearth_keeper** ("the fire never dies on her watch" —
+    the kiln-tending Fern trusts dark; uncommon, not a Leader/rare).
+  - **Tuning** (500/side vs each starter, 0 stuck): **39/49/45** vs
+    boarherd/wardens/redsash — the friendly craft-yard band (between Dace
+    36/46/44 and Nell 43/54/49), gently BELOW the plain wardens base
+    (42/53/47 — two wild_boar bodies were slightly stronger than a ward
+    body + a combat trick, so the swap nudges down): a quiet potter's yard
+    duels gentler than the camps, the meads precedent. Rejected + simmed at
+    500/side: sudden_spark cut (50/62/56 — the boost above); wild_boar →
+    hearth_keeper+warded_acolyte (41/52/48 — near-neutral, hearth_keeper
+    reads kiln but it's a 3rd copy of a base card, so it rides the reward
+    pool); wild_boar → warded_acolyte+farmhands_boy (39/49/45 — a tie, so
+    theme decided: second_wind's "get up" is the centered clay that rises).
+    Starter spread untouched, re-verified byte-identical 60/52/47.
+  - **Verify (the full duelist bar):** build + `node --check` clean;
+    test-packs 6653/6653, test-leaders 198/198, test-factions 459/459 (no
+    new cards); roster 25, sedge deck 30 legal (ids valid, ≤3 copies);
+    starter spread byte-identical 60/52/47; raw-WS e2e 11/11 on :8099
+    (bogus-npc refused, npcduel sedge → duelStart foe "Sedge the
+    Wedger"/kind npc, foe hand sanitized all-nulls, own hand visible,
+    second-duel-in-room ignored, concede → duelEnd loser-no-rewards). Live
+    on a worktree rig (:8094/:5205): Sedge in-scene with ⚔ badge + 30-card
+    deck, spawn (−65,−170) not stuck, clearances healthy (wheel 3.2,
+    buckets 3.8, Fern 5.9), `nearestInteract()` picks him up as a duelist
+    at 2.1u, screenshot eyeballed (Sedge by the clay pit with the kiln,
+    wheel, and Fern in frame), prod-bundle dev-hook grep 0 hits, zero
+    console errors. NOT verified: walk-up E-challenge in motion / a
+    played-out live duel (rAF stall — e2e covers the room lifecycle).
+  - **Seeded for later**: none new — **the craft economy is now COMPLETE
+    end-to-end**: every yard (downs/pond/meads/quarry/Loomstead/Kilnyard/
+    Forge) has its full grammar, and the road network is final. The realm's
+    remaining seeds are the **conjuration duelist** (still needs a
+    dedicated home-siting survey — the Wildcaller knot above; the one
+    genuinely-stuck entry) and the fresh-archetype options (a **tannery**
+    for the last missing craft, leather; far-NE + far-SW banked gaps;
+    far-NW reserved; Red-Sash camp-life + windmill blocked on main.js; hot
+    spring parked, 14). **Note for future surveys: the craft-trainer well
+    is dry — the next duelists.js windows should go to the conjuration
+    duelist (once homed) or genuinely new archetypes, not a tenth
+    route-trainer.**
+
 - **The Kiln Road — the Hollowmere road forks south to the Kilnyard
   (2026-07-17, worldbuilding loop iteration 29)**: the ledger's ripest seed
   and a shape change after the duelist (27) and quest (28). The downs rule
