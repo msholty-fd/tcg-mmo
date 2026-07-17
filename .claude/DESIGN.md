@@ -2303,6 +2303,41 @@ considered and rejected.
     duelist (once homed) or genuinely new archetypes, not a tenth
     route-trainer.**
 
+- **Kindle feeds the fire — drafting epic Phase 2 (2026-07-17)**: the loop
+  closes — what players burn becomes what other players find. Every kindle
+  in an online duel drifts an anonymous copy of the burned card into the
+  nearest registry fire within KINDLE_FEED_RANGE (40) of the kindling
+  side's position. Server-side only; deliberately invisible to the
+  kindling player in v1 (a "your memory drifts into the fire" cue is
+  future legibility polish, flagged in DRAFTING.md).
+  - *Mechanism*: a `duel.log` cursor in `DuelRoom.broadcast()` — every
+    state change (human action, AI turn, timeout) funnels through
+    broadcast, so scanning the log delta catches EVERY kindle: human, NPC
+    AI, and autobattle, with zero per-path wiring. `onKindle(room, side,
+    card)` is a room opt like onWin/onChronicle; `handlers/duel.js`
+    resolves the feed position as the kindling side's live player (frozen
+    at duel start), an AI side borrowing its human opponent's spot.
+    `createHearthModule` now returns `{ handlers, feedFire }` (the trade
+    module's shape) and index.js hands feedFire to the duel module via ctx.
+  - *Sated, not churned* (decided): a full pool ignores kindles — no
+    oldest-out overflow. Churn would let anyone flush a fire's holdings by
+    burning trash in repeated duels; sated means DRAFTING is what makes
+    room, so pools evolve at the rate players actually take from them.
+    FIRE_COPY_CAP 2 merges extra dupes into the flame. Phase 1's timed
+    regen stays as the floor for fires nobody duels near. NPC kindles feed
+    too — pools stay alive at low population by design.
+  - *Location incentive, noted*: duels in the open field feed nothing —
+    only fires within 40 units hear a duel. Dueling AT a camp is how you
+    shape its pool, which quietly rewards fighting duelists at their own
+    fires (and previews Field Effects' duel-location mechanics).
+  - *Verify*: 11/11 feedFire unit assertions (nearest/range 40 boundary/
+    sated/copy-cap, via stub ctx + crafted loadWorld pools); raw-WS e2e
+    9/9 (draft to make room → duel Gruk at his fire → kindle → concede →
+    the kindled id appears in the pool; second full-pool duel leaves the
+    multiset unchanged) + 6/6 (AI-side: pass the turn, Gruk's AI kindle
+    lands in BRAM's fire at the human's position — the live-fallback
+    line); build + node --check + test-packs/factions clean.
+
 - **Hearth drafting — fire pools, Phase 1 of the drafting epic (Michael +
   Claude, 2026-07-17)**: the drafting direction (.claude/DRAFTING.md —
   brainstormed 2026-07-16, "the world is the pack") lands its first

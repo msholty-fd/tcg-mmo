@@ -4,18 +4,20 @@
 // everything that grants cards: proximity, per-player-per-fire cooldown, and
 // pool membership, then the server mints authoritatively. Pools live in the
 // worldstate table so what one player leaves behind is what the next finds,
-// across restarts. Phase 2 will make kindling the pools' real faucet; until
-// then a slow timed regen keeps latecomers from finding pure ash.
+// across restarts. Kindling is the pools' living faucet (Phase 2): feedFire
+// is called from the duel module for every kindle in an online duel, so what
+// players (and NPCs) burn nearby becomes what the next visitor can draft.
+// The slow timed regen stays as the floor for fires nobody duels near.
 // ctx supplies { send, sendProfile, markDirty, grant, VENDOR_RANGE, loadWorld, saveWorld }.
 
-import { FIRES, fireById, rollEmber, seedFire, POOL_MAX, REGEN_MS, PICK_COOLDOWN_MS } from '../../shared/fires.js';
+import { FIRES, fireById, rollEmber, seedFire, POOL_MAX, REGEN_MS, PICK_COOLDOWN_MS, KINDLE_FEED_RANGE, FIRE_COPY_CAP } from '../../shared/fires.js';
 // card sets must be registered before any roll — idempotent side-effect
 // imports, same trio as duelRoom.js
 import '../../shared/sets/core/cards.js';
 import '../../shared/sets/emberpeaks/cards.js';
 import '../../shared/sets/darkwood/cards.js';
 
-export function createHearthHandlers(ctx) {
+export function createHearthModule(ctx) {
   const { send, sendProfile, markDirty, grant, VENDOR_RANGE, loadWorld, saveWorld } = ctx;
 
   // { [fireId]: { cards: [cardId], lastRegen: ms } } — in-memory source of
@@ -59,7 +61,27 @@ export function createHearthHandlers(ctx) {
     return fire;
   }
 
-  return {
+  // Phase 2 — a kindled memory drifts into the nearest fire that can hear
+  // the duel. A full pool is sated (no churn: griefers can't flush a fire's
+  // holdings by burning trash — drafting is what makes room), and extra
+  // copies past FIRE_COPY_CAP merge into the flame. Returns the fed fire's
+  // id, or null if nothing was fed.
+  function feedFire(x, z, cardId) {
+    let best = null, bd = KINDLE_FEED_RANGE;
+    for (const f of FIRES) {
+      const d = Math.hypot(f.x - x, f.z - z);
+      if (d < bd) { bd = d; best = f; }
+    }
+    if (!best) return null;
+    const p = pools[best.id];
+    if (p.cards.length >= POOL_MAX) return null;
+    if (p.cards.filter(c => c === cardId).length >= FIRE_COPY_CAP) return null;
+    p.cards.push(cardId);
+    saveWorld('firePools', pools);
+    return best.id;
+  }
+
+  const handlers = {
     hearthView(me, msg) {
       const fire = nearFire(me, msg);
       if (!fire) return;
@@ -95,4 +117,6 @@ export function createHearthHandlers(ctx) {
       console.log(`${me.name} drafted ${inst.cardId} from ${fire.id}`);
     },
   };
+
+  return { handlers, feedFire };
 }

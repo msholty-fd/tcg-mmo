@@ -25,6 +25,8 @@ export class DuelRoom {
     this.grant = opts.grant;
     this.onWin = opts.onWin;
     this.onChronicle = opts.onChronicle;
+    this.onKindle = opts.onKindle;
+    this.logCursor = 0;   // duel.log scan position (see broadcast)
     this.dcTimers = [null, null];
     this.botPending = false;
     this.autoSides = new Set();   // human sides that toggled autobattle
@@ -118,6 +120,16 @@ export class DuelRoom {
   }
 
   broadcast() {
+    // every state change funnels through here (human actions, AI turns,
+    // timeouts), so scanning the log delta catches EVERY kindle — human,
+    // NPC, and autobattle alike (drafting Phase 2: kindle feeds the fire)
+    if (this.onKindle) {
+      const log = this.duel.log;
+      for (let i = this.logCursor; i < log.length; i++) {
+        if (log[i].type === 'kindle') this.onKindle(this, log[i].side, log[i].card);
+      }
+      this.logCursor = log.length;
+    }
     for (let s = 0; s < 2; s++) if (!this.players[s].ai) this.send(s, { t: 'duelState', state: this.view(s) });
     if (this.duel.winner !== null) this.finish();
     else { this.maybeBotTurn(); this.armTurnTimer(); }

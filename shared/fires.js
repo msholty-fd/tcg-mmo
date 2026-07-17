@@ -27,6 +27,10 @@ export const POOL_MAX = 5;                        // embers a fire can hold
 export const REGEN_MS = 30 * 60 * 1000;           // one ember per half hour
 export const PICK_COOLDOWN_MS = 60 * 60 * 1000;   // per player, per fire
 export const HEARTH_RANGE = 6;                    // client prompt radius (server allows slack)
+// Phase 2 — kindle feeds the fire: a duel fought within this range of a fire
+// drifts every kindled memory into its pool (both sides — NPCs kindle too).
+export const KINDLE_FEED_RANGE = 40;              // how far a fire "hears" a duel
+export const FIRE_COPY_CAP = 2;                   // max copies of one card per fire (extra dupes merge into the flame)
 
 // {id, x, z, name, set, faction?} — `set` scopes which card set the fire's
 // embers roll from ("shipping a zone = shipping a set" holds for fires like

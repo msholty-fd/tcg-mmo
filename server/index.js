@@ -26,7 +26,7 @@ import { EMBERPEAKS_DUELISTS } from '../shared/sets/emberpeaks/duelists.js';
 import { DARKWOOD_DUELISTS } from '../shared/sets/darkwood/duelists.js';
 const DUELISTS = { ...CORE_DUELISTS, ...EMBERPEAKS_DUELISTS, ...DARKWOOD_DUELISTS };
 import { createDevSeedHandlers } from './handlers/devSeed.js';
-import { createHearthHandlers } from './handlers/hearth.js';
+import { createHearthModule } from './handlers/hearth.js';
 
 const PORT = +(process.env.PORT || 8081);
 const DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -107,12 +107,16 @@ const ctx = {
 };
 
 const { handlers: tradeHandlers, endTrade } = createTradeModule(ctx);
+// hearth before duel: the duel module reads ctx.feedFire so every kindle in
+// an online duel drifts into the nearest fire's pool (drafting Phase 2)
+const { handlers: hearthHandlers, feedFire } = createHearthModule(ctx);
+ctx.feedFire = feedFire;
 const handlers = {
   ...createWorldHandlers(ctx),
   ...createCollectionHandlers(ctx),
   ...tradeHandlers,
   ...createDuelModule(ctx).handlers,
-  ...createHearthHandlers(ctx),
+  ...hearthHandlers,
   ...createDevSeedHandlers(ctx),   // {} unless DEV_SEED=1 (local rig only)
 };
 
