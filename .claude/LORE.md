@@ -268,6 +268,16 @@ but never say "points" or "unlock."
   opinions on the quarry's business, Merle's hour, or anything west. (Duelists
   can't surface flavor lines — his knowledge lives here and in DESIGN text
   only.)
+- **Sedge the Wedger** (the Kilnyard, Fern's second) — small omens tier,
+  mostly none: Fern throws and fires, Sedge wedges the clay — kneads the air
+  out and centers it true before it ever meets the wheel — and drills with
+  cards between the wedging, because wedging and dueling are the same lesson
+  (center it true and it stays true; force it and it wobbles forever). Knows
+  the pit and the wheel but nothing of the yard's two mysteries: he has no
+  opinion on the firing that came out glazed with no glaze, or the west pit
+  that never runs dry (those are Fern's doors — the wedger centers the clay
+  he's handed and lets the potter puzzle the rest). (Duelists can't surface
+  flavor lines — his knowledge lives here and in DESIGN text only.)
 - **Colm the Striker** (Bryn's Forge, Bryn's second) — small omens tier,
   mostly none: Bryn draws the iron and holds the work, Colm swings the great
   hammer, and drills with cards between the strikes, because striking and
