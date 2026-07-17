@@ -200,6 +200,24 @@ export const QUESTS = [
     obj: () => "Find Bryn's forge by its smoke, north of the Emberwatch road",
     thanks: "Real, then, and hot enough. Good. Thirty years I've trusted my edges to iron I never watched drawn — feels right that somebody's finally stood at both ends of it. The chisels go up on the next sledge. Here — mason's coin, for the miles.",
   },
+  // Vessels for the Harvest (2026-07-17, worldbuilding iteration 28 —
+  // DESIGN.md): the Kilnyard's traffic-minting quest, the craft-to-craft
+  // shape a second time (worn_edges was the first: one maker sending the
+  // player to another). Harrow FEEDS the realm; Fern makes the crocks he
+  // KEEPS the harvest in — the farmer depends on the potter and, rooted to
+  // his rows in growing season, has never seen her kiln. Harrow becomes a
+  // giver (his first quest; the realm's third landmark-based giver after
+  // Wynn and Hobb) — one client GIVERS line, the only non-data change. This
+  // mints the Kilnyard's business, so its road (the downs rule) unlocks
+  // next. Harrow stays practical/craft tier: storage jars and a harvest,
+  // never an omen — the quest never touches his frost-split door.
+  {
+    id: 'crock_order', giver: 'harrow', title: 'Vessels for the Harvest', minLvl: 4, prereq: 'practice',
+    visit: { x: -64, z: -165, r: 12 }, xp: 280, coins: 25,
+    offer: "Harvest is coming, and a harvest with nothing to keep it in is just a field of turnips going soft. I put an order to the potter — Fern, south past Highgate's road, where the green grass gives out to grey — for a winter's worth of storage crocks. Ordered them at planting; haven't seen a one. I don't leave my rows in growing season, so I can't go looking myself. Go and see if my crocks are fired and sitting on her boards. Half of Meadowbrook eats through winter on what I keep in them — I'd sleep better knowing they're coming.",
+    obj: () => "Find Fern's kiln, south past Highgate's road",
+    thanks: "Fired and stacked and waiting on a cart, good. Then the harvest has somewhere to go and Meadowbrook eats till spring. Funny thing — I feed half this village and never once thought on the hands that shape what I keep it in. Here's for the miles. And tell no one I went sentimental over storage jars.",
+  },
   // Emberwatch Ruins — a night-only landmark (DESIGN.md). The Sentinel only
   // manifests after dark (client-side visibility gate in world.js/main.js),
   // so this quest is discovery flavor: Aldric points at the rumor, finding
